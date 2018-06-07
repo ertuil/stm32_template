@@ -1,0 +1,1375 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"stm32f4xx_cryp_tdes.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.CRYP_TDES_ECB,"ax",%progbits
+  22              		.align	2
+  23              		.global	CRYP_TDES_ECB
+  24              		.thumb
+  25              		.thumb_func
+  27              	CRYP_TDES_ECB:
+  28              	.LFB112:
+  29              		.file 1 ".//FWLIB/src/stm32f4xx_cryp_tdes.c"
+   1:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /**
+   2:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @file    stm32f4xx_cryp_tdes.c
+   4:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @version V1.4.0
+   6:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @date    04-August-2014
+   7:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @brief   This file provides high level functions to encrypt and decrypt an 
+   8:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *          input message using TDES in ECB/CBC modes .
+   9:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *          It uses the stm32f4xx_cryp.c/.h drivers to access the STM32F4xx CRYP
+  10:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *          peripheral.
+  11:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *
+  12:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** @verbatim
+  13:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+  14:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****  ===============================================================================
+  15:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****                            ##### How to use this driver #####
+  16:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****  ===============================================================================
+  17:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****  [..]
+  18:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****    (#) Enable The CRYP controller clock using 
+  19:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****        RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_CRYP, ENABLE); function.
+  20:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   
+  21:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****    (#) Encrypt and decrypt using TDES in ECB Mode using CRYP_TDES_ECB() function.
+  22:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   
+  23:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****    (#) Encrypt and decrypt using TDES in CBC Mode using CRYP_TDES_CBC() function.
+  24:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   
+  25:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** @endverbatim
+  26:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *
+  27:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   ******************************************************************************
+  28:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @attention
+  29:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 2
+
+
+  30:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  31:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *
+  32:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  33:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * You may not use this file except in compliance with the License.
+  34:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * You may obtain a copy of the License at:
+  35:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *
+  36:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  37:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *
+  38:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * Unless required by applicable law or agreed to in writing, software 
+  39:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  40:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  41:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * See the License for the specific language governing permissions and
+  42:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * limitations under the License.
+  43:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *
+  44:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   ******************************************************************************
+  45:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   */ 
+  46:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+  47:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /* Includes ------------------------------------------------------------------*/
+  48:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** #include "stm32f4xx_cryp.h"
+  49:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+  50:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+  51:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+  52:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @{
+  53:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   */
+  54:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+  55:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /** @defgroup CRYP 
+  56:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @brief CRYP driver modules
+  57:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @{
+  58:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   */
+  59:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+  60:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /* Private typedef -----------------------------------------------------------*/
+  61:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /* Private define ------------------------------------------------------------*/
+  62:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** #define TDESBUSY_TIMEOUT    ((uint32_t) 0x00010000)
+  63:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+  64:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /* Private macro -------------------------------------------------------------*/
+  65:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /* Private variables ---------------------------------------------------------*/
+  66:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /* Private function prototypes -----------------------------------------------*/
+  67:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /* Private functions ---------------------------------------------------------*/
+  68:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+  69:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+  70:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /** @defgroup CRYP_Private_Functions
+  71:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @{
+  72:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   */ 
+  73:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+  74:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /** @defgroup CRYP_Group7 High Level TDES functions
+  75:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****  *  @brief   High Level TDES functions 
+  76:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****  *
+  77:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** @verbatim   
+  78:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****  ===============================================================================
+  79:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****                       ##### High Level TDES functions #####
+  80:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****  ===============================================================================
+  81:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+  82:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** @endverbatim
+  83:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @{
+  84:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   */
+  85:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+  86:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /**
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 3
+
+
+  87:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @brief  Encrypt and decrypt using TDES in ECB Mode
+  88:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @param  Mode: encryption or decryption Mode.
+  89:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *           This parameter can be one of the following values:
+  90:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *            @arg MODE_ENCRYPT: Encryption
+  91:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *            @arg MODE_DECRYPT: Decryption
+  92:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @param  Key: Key used for TDES algorithm.
+  93:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @param  Ilength: length of the Input buffer, must be a multiple of 8.
+  94:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @param  Input: pointer to the Input buffer.
+  95:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @param  Output: pointer to the returned buffer.
+  96:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @retval An ErrorStatus enumeration value:
+  97:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *          - SUCCESS: Operation done
+  98:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *          - ERROR: Operation failed
+  99:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   */
+ 100:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** ErrorStatus CRYP_TDES_ECB(uint8_t Mode, uint8_t Key[24], uint8_t *Input, 
+ 101:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****                           uint32_t Ilength, uint8_t *Output)
+ 102:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** {
+  30              		.loc 1 102 0
+  31              		.cfi_startproc
+  32              		@ args = 4, pretend = 0, frame = 56
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              	.LVL0:
+  35 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 24
+  38              		.cfi_offset 4, -24
+  39              		.cfi_offset 5, -20
+  40              		.cfi_offset 6, -16
+  41              		.cfi_offset 7, -12
+  42              		.cfi_offset 8, -8
+  43              		.cfi_offset 14, -4
+  44 0004 8EB0     		sub	sp, sp, #56
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 80
+  47 0006 0646     		mov	r6, r0
+  48 0008 0D46     		mov	r5, r1
+  49 000a 9846     		mov	r8, r3
+ 103:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_InitTypeDef TDES_CRYP_InitStructure;
+ 104:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_KeyInitTypeDef TDES_CRYP_KeyInitStructure;
+ 105:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   __IO uint32_t counter = 0;
+  50              		.loc 1 105 0
+  51 000c 0023     		movs	r3, #0
+  52              	.LVL1:
+  53 000e 0193     		str	r3, [sp, #4]
+  54              	.LVL2:
+ 106:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   uint32_t busystatus = 0;
+ 107:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   ErrorStatus status = SUCCESS;
+ 108:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   uint32_t keyaddr    = (uint32_t)Key;
+ 109:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   uint32_t inputaddr  = (uint32_t)Input;
+  55              		.loc 1 109 0
+  56 0010 1446     		mov	r4, r2
+  57              	.LVL3:
+ 110:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   uint32_t outputaddr = (uint32_t)Output;
+  58              		.loc 1 110 0
+  59 0012 149F     		ldr	r7, [sp, #80]
+  60              	.LVL4:
+ 111:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   uint32_t i = 0;
+ 112:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 4
+
+
+ 113:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Crypto structures initialisation*/
+ 114:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_KeyStructInit(&TDES_CRYP_KeyInitStructure);
+  61              		.loc 1 114 0
+  62 0014 02A8     		add	r0, sp, #8
+  63              	.LVL5:
+  64 0016 FFF7FEFF 		bl	CRYP_KeyStructInit
+  65              	.LVL6:
+ 115:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 116:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Crypto Init for Encryption process */
+ 117:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   if(Mode == MODE_ENCRYPT) /* TDES encryption */
+  66              		.loc 1 117 0
+  67 001a 012E     		cmp	r6, #1
+  68 001c 02D1     		bne	.L2
+ 118:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 119:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****      TDES_CRYP_InitStructure.CRYP_AlgoDir = CRYP_AlgoDir_Encrypt;
+  69              		.loc 1 119 0
+  70 001e 0023     		movs	r3, #0
+  71 0020 0A93     		str	r3, [sp, #40]
+  72 0022 01E0     		b	.L3
+  73              	.L2:
+ 120:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   }
+ 121:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   else /*if(Mode == MODE_DECRYPT)*/ /* TDES decryption */
+ 122:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 123:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****      TDES_CRYP_InitStructure.CRYP_AlgoDir = CRYP_AlgoDir_Decrypt;
+  74              		.loc 1 123 0
+  75 0024 0423     		movs	r3, #4
+  76 0026 0A93     		str	r3, [sp, #40]
+  77              	.L3:
+ 124:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   }
+ 125:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 126:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_InitStructure.CRYP_AlgoMode = CRYP_AlgoMode_TDES_ECB;
+  78              		.loc 1 126 0
+  79 0028 0023     		movs	r3, #0
+  80 002a 0B93     		str	r3, [sp, #44]
+ 127:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_InitStructure.CRYP_DataType = CRYP_DataType_8b;
+  81              		.loc 1 127 0
+  82 002c 8023     		movs	r3, #128
+  83 002e 0C93     		str	r3, [sp, #48]
+ 128:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_Init(&TDES_CRYP_InitStructure);
+  84              		.loc 1 128 0
+  85 0030 0AA8     		add	r0, sp, #40
+  86 0032 FFF7FEFF 		bl	CRYP_Init
+  87              	.LVL7:
+ 129:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 130:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Key Initialisation */
+ 131:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_KeyInitStructure.CRYP_Key1Left = __REV(*(uint32_t*)(keyaddr));
+  88              		.loc 1 131 0
+  89 0036 2B68     		ldr	r3, [r5]
+  90              	.LVL8:
+  91              	.LBB30:
+  92              	.LBB31:
+  93              		.file 2 "CORE/core_cmInstr.h"
+   1:CORE/core_cmInstr.h **** /**************************************************************************//**
+   2:CORE/core_cmInstr.h ****  * @file     core_cmInstr.h
+   3:CORE/core_cmInstr.h ****  * @brief    CMSIS Cortex-M Core Instruction Access Header File
+   4:CORE/core_cmInstr.h ****  * @version  V3.20
+   5:CORE/core_cmInstr.h ****  * @date     05. March 2013
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 5
+
+
+   6:CORE/core_cmInstr.h ****  *
+   7:CORE/core_cmInstr.h ****  * @note
+   8:CORE/core_cmInstr.h ****  *
+   9:CORE/core_cmInstr.h ****  ******************************************************************************/
+  10:CORE/core_cmInstr.h **** /* Copyright (c) 2009 - 2013 ARM LIMITED
+  11:CORE/core_cmInstr.h **** 
+  12:CORE/core_cmInstr.h ****    All rights reserved.
+  13:CORE/core_cmInstr.h ****    Redistribution and use in source and binary forms, with or without
+  14:CORE/core_cmInstr.h ****    modification, are permitted provided that the following conditions are met:
+  15:CORE/core_cmInstr.h ****    - Redistributions of source code must retain the above copyright
+  16:CORE/core_cmInstr.h ****      notice, this list of conditions and the following disclaimer.
+  17:CORE/core_cmInstr.h ****    - Redistributions in binary form must reproduce the above copyright
+  18:CORE/core_cmInstr.h ****      notice, this list of conditions and the following disclaimer in the
+  19:CORE/core_cmInstr.h ****      documentation and/or other materials provided with the distribution.
+  20:CORE/core_cmInstr.h ****    - Neither the name of ARM nor the names of its contributors may be used
+  21:CORE/core_cmInstr.h ****      to endorse or promote products derived from this software without
+  22:CORE/core_cmInstr.h ****      specific prior written permission.
+  23:CORE/core_cmInstr.h ****    *
+  24:CORE/core_cmInstr.h ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  25:CORE/core_cmInstr.h ****    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  26:CORE/core_cmInstr.h ****    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  27:CORE/core_cmInstr.h ****    ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+  28:CORE/core_cmInstr.h ****    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  29:CORE/core_cmInstr.h ****    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  30:CORE/core_cmInstr.h ****    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  31:CORE/core_cmInstr.h ****    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  32:CORE/core_cmInstr.h ****    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  33:CORE/core_cmInstr.h ****    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  34:CORE/core_cmInstr.h ****    POSSIBILITY OF SUCH DAMAGE.
+  35:CORE/core_cmInstr.h ****    ---------------------------------------------------------------------------*/
+  36:CORE/core_cmInstr.h **** 
+  37:CORE/core_cmInstr.h **** 
+  38:CORE/core_cmInstr.h **** #ifndef __CORE_CMINSTR_H
+  39:CORE/core_cmInstr.h **** #define __CORE_CMINSTR_H
+  40:CORE/core_cmInstr.h **** 
+  41:CORE/core_cmInstr.h **** 
+  42:CORE/core_cmInstr.h **** /* ##########################  Core Instruction Access  ######################### */
+  43:CORE/core_cmInstr.h **** /** \defgroup CMSIS_Core_InstructionInterface CMSIS Core Instruction Interface
+  44:CORE/core_cmInstr.h ****   Access to dedicated instructions
+  45:CORE/core_cmInstr.h ****   @{
+  46:CORE/core_cmInstr.h **** */
+  47:CORE/core_cmInstr.h **** 
+  48:CORE/core_cmInstr.h **** #if   defined ( __CC_ARM ) /*------------------RealView Compiler -----------------*/
+  49:CORE/core_cmInstr.h **** /* ARM armcc specific functions */
+  50:CORE/core_cmInstr.h **** 
+  51:CORE/core_cmInstr.h **** #if (__ARMCC_VERSION < 400677)
+  52:CORE/core_cmInstr.h ****   #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
+  53:CORE/core_cmInstr.h **** #endif
+  54:CORE/core_cmInstr.h **** 
+  55:CORE/core_cmInstr.h **** 
+  56:CORE/core_cmInstr.h **** /** \brief  No Operation
+  57:CORE/core_cmInstr.h **** 
+  58:CORE/core_cmInstr.h ****     No Operation does nothing. This instruction can be used for code alignment purposes.
+  59:CORE/core_cmInstr.h ****  */
+  60:CORE/core_cmInstr.h **** #define __NOP                             __nop
+  61:CORE/core_cmInstr.h **** 
+  62:CORE/core_cmInstr.h **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 6
+
+
+  63:CORE/core_cmInstr.h **** /** \brief  Wait For Interrupt
+  64:CORE/core_cmInstr.h **** 
+  65:CORE/core_cmInstr.h ****     Wait For Interrupt is a hint instruction that suspends execution
+  66:CORE/core_cmInstr.h ****     until one of a number of events occurs.
+  67:CORE/core_cmInstr.h ****  */
+  68:CORE/core_cmInstr.h **** #define __WFI                             __wfi
+  69:CORE/core_cmInstr.h **** 
+  70:CORE/core_cmInstr.h **** 
+  71:CORE/core_cmInstr.h **** /** \brief  Wait For Event
+  72:CORE/core_cmInstr.h **** 
+  73:CORE/core_cmInstr.h ****     Wait For Event is a hint instruction that permits the processor to enter
+  74:CORE/core_cmInstr.h ****     a low-power state until one of a number of events occurs.
+  75:CORE/core_cmInstr.h ****  */
+  76:CORE/core_cmInstr.h **** #define __WFE                             __wfe
+  77:CORE/core_cmInstr.h **** 
+  78:CORE/core_cmInstr.h **** 
+  79:CORE/core_cmInstr.h **** /** \brief  Send Event
+  80:CORE/core_cmInstr.h **** 
+  81:CORE/core_cmInstr.h ****     Send Event is a hint instruction. It causes an event to be signaled to the CPU.
+  82:CORE/core_cmInstr.h ****  */
+  83:CORE/core_cmInstr.h **** #define __SEV                             __sev
+  84:CORE/core_cmInstr.h **** 
+  85:CORE/core_cmInstr.h **** 
+  86:CORE/core_cmInstr.h **** /** \brief  Instruction Synchronization Barrier
+  87:CORE/core_cmInstr.h **** 
+  88:CORE/core_cmInstr.h ****     Instruction Synchronization Barrier flushes the pipeline in the processor,
+  89:CORE/core_cmInstr.h ****     so that all instructions following the ISB are fetched from cache or
+  90:CORE/core_cmInstr.h ****     memory, after the instruction has been completed.
+  91:CORE/core_cmInstr.h ****  */
+  92:CORE/core_cmInstr.h **** #define __ISB()                           __isb(0xF)
+  93:CORE/core_cmInstr.h **** 
+  94:CORE/core_cmInstr.h **** 
+  95:CORE/core_cmInstr.h **** /** \brief  Data Synchronization Barrier
+  96:CORE/core_cmInstr.h **** 
+  97:CORE/core_cmInstr.h ****     This function acts as a special kind of Data Memory Barrier.
+  98:CORE/core_cmInstr.h ****     It completes when all explicit memory accesses before this instruction complete.
+  99:CORE/core_cmInstr.h ****  */
+ 100:CORE/core_cmInstr.h **** #define __DSB()                           __dsb(0xF)
+ 101:CORE/core_cmInstr.h **** 
+ 102:CORE/core_cmInstr.h **** 
+ 103:CORE/core_cmInstr.h **** /** \brief  Data Memory Barrier
+ 104:CORE/core_cmInstr.h **** 
+ 105:CORE/core_cmInstr.h ****     This function ensures the apparent order of the explicit memory operations before
+ 106:CORE/core_cmInstr.h ****     and after the instruction, without ensuring their completion.
+ 107:CORE/core_cmInstr.h ****  */
+ 108:CORE/core_cmInstr.h **** #define __DMB()                           __dmb(0xF)
+ 109:CORE/core_cmInstr.h **** 
+ 110:CORE/core_cmInstr.h **** 
+ 111:CORE/core_cmInstr.h **** /** \brief  Reverse byte order (32 bit)
+ 112:CORE/core_cmInstr.h **** 
+ 113:CORE/core_cmInstr.h ****     This function reverses the byte order in integer value.
+ 114:CORE/core_cmInstr.h **** 
+ 115:CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 116:CORE/core_cmInstr.h ****     \return               Reversed value
+ 117:CORE/core_cmInstr.h ****  */
+ 118:CORE/core_cmInstr.h **** #define __REV                             __rev
+ 119:CORE/core_cmInstr.h **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 7
+
+
+ 120:CORE/core_cmInstr.h **** 
+ 121:CORE/core_cmInstr.h **** /** \brief  Reverse byte order (16 bit)
+ 122:CORE/core_cmInstr.h **** 
+ 123:CORE/core_cmInstr.h ****     This function reverses the byte order in two unsigned short values.
+ 124:CORE/core_cmInstr.h **** 
+ 125:CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 126:CORE/core_cmInstr.h ****     \return               Reversed value
+ 127:CORE/core_cmInstr.h ****  */
+ 128:CORE/core_cmInstr.h **** #ifndef __NO_EMBEDDED_ASM
+ 129:CORE/core_cmInstr.h **** __attribute__((section(".rev16_text"))) __STATIC_INLINE __ASM uint32_t __REV16(uint32_t value)
+ 130:CORE/core_cmInstr.h **** {
+ 131:CORE/core_cmInstr.h ****   rev16 r0, r0
+ 132:CORE/core_cmInstr.h ****   bx lr
+ 133:CORE/core_cmInstr.h **** }
+ 134:CORE/core_cmInstr.h **** #endif
+ 135:CORE/core_cmInstr.h **** 
+ 136:CORE/core_cmInstr.h **** /** \brief  Reverse byte order in signed short value
+ 137:CORE/core_cmInstr.h **** 
+ 138:CORE/core_cmInstr.h ****     This function reverses the byte order in a signed short value with sign extension to integer.
+ 139:CORE/core_cmInstr.h **** 
+ 140:CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 141:CORE/core_cmInstr.h ****     \return               Reversed value
+ 142:CORE/core_cmInstr.h ****  */
+ 143:CORE/core_cmInstr.h **** #ifndef __NO_EMBEDDED_ASM
+ 144:CORE/core_cmInstr.h **** __attribute__((section(".revsh_text"))) __STATIC_INLINE __ASM int32_t __REVSH(int32_t value)
+ 145:CORE/core_cmInstr.h **** {
+ 146:CORE/core_cmInstr.h ****   revsh r0, r0
+ 147:CORE/core_cmInstr.h ****   bx lr
+ 148:CORE/core_cmInstr.h **** }
+ 149:CORE/core_cmInstr.h **** #endif
+ 150:CORE/core_cmInstr.h **** 
+ 151:CORE/core_cmInstr.h **** 
+ 152:CORE/core_cmInstr.h **** /** \brief  Rotate Right in unsigned value (32 bit)
+ 153:CORE/core_cmInstr.h **** 
+ 154:CORE/core_cmInstr.h ****     This function Rotate Right (immediate) provides the value of the contents of a register rotated
+ 155:CORE/core_cmInstr.h **** 
+ 156:CORE/core_cmInstr.h ****     \param [in]    value  Value to rotate
+ 157:CORE/core_cmInstr.h ****     \param [in]    value  Number of Bits to rotate
+ 158:CORE/core_cmInstr.h ****     \return               Rotated value
+ 159:CORE/core_cmInstr.h ****  */
+ 160:CORE/core_cmInstr.h **** #define __ROR                             __ror
+ 161:CORE/core_cmInstr.h **** 
+ 162:CORE/core_cmInstr.h **** 
+ 163:CORE/core_cmInstr.h **** /** \brief  Breakpoint
+ 164:CORE/core_cmInstr.h **** 
+ 165:CORE/core_cmInstr.h ****     This function causes the processor to enter Debug state.
+ 166:CORE/core_cmInstr.h ****     Debug tools can use this to investigate system state when the instruction at a particular addre
+ 167:CORE/core_cmInstr.h **** 
+ 168:CORE/core_cmInstr.h ****     \param [in]    value  is ignored by the processor.
+ 169:CORE/core_cmInstr.h ****                    If required, a debugger can use it to store additional information about the bre
+ 170:CORE/core_cmInstr.h ****  */
+ 171:CORE/core_cmInstr.h **** #define __BKPT(value)                       __breakpoint(value)
+ 172:CORE/core_cmInstr.h **** 
+ 173:CORE/core_cmInstr.h **** 
+ 174:CORE/core_cmInstr.h **** #if       (__CORTEX_M >= 0x03)
+ 175:CORE/core_cmInstr.h **** 
+ 176:CORE/core_cmInstr.h **** /** \brief  Reverse bit order of value
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 8
+
+
+ 177:CORE/core_cmInstr.h **** 
+ 178:CORE/core_cmInstr.h ****     This function reverses the bit order of the given value.
+ 179:CORE/core_cmInstr.h **** 
+ 180:CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 181:CORE/core_cmInstr.h ****     \return               Reversed value
+ 182:CORE/core_cmInstr.h ****  */
+ 183:CORE/core_cmInstr.h **** #define __RBIT                            __rbit
+ 184:CORE/core_cmInstr.h **** 
+ 185:CORE/core_cmInstr.h **** 
+ 186:CORE/core_cmInstr.h **** /** \brief  LDR Exclusive (8 bit)
+ 187:CORE/core_cmInstr.h **** 
+ 188:CORE/core_cmInstr.h ****     This function performs a exclusive LDR command for 8 bit value.
+ 189:CORE/core_cmInstr.h **** 
+ 190:CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 191:CORE/core_cmInstr.h ****     \return             value of type uint8_t at (*ptr)
+ 192:CORE/core_cmInstr.h ****  */
+ 193:CORE/core_cmInstr.h **** #define __LDREXB(ptr)                     ((uint8_t ) __ldrex(ptr))
+ 194:CORE/core_cmInstr.h **** 
+ 195:CORE/core_cmInstr.h **** 
+ 196:CORE/core_cmInstr.h **** /** \brief  LDR Exclusive (16 bit)
+ 197:CORE/core_cmInstr.h **** 
+ 198:CORE/core_cmInstr.h ****     This function performs a exclusive LDR command for 16 bit values.
+ 199:CORE/core_cmInstr.h **** 
+ 200:CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 201:CORE/core_cmInstr.h ****     \return        value of type uint16_t at (*ptr)
+ 202:CORE/core_cmInstr.h ****  */
+ 203:CORE/core_cmInstr.h **** #define __LDREXH(ptr)                     ((uint16_t) __ldrex(ptr))
+ 204:CORE/core_cmInstr.h **** 
+ 205:CORE/core_cmInstr.h **** 
+ 206:CORE/core_cmInstr.h **** /** \brief  LDR Exclusive (32 bit)
+ 207:CORE/core_cmInstr.h **** 
+ 208:CORE/core_cmInstr.h ****     This function performs a exclusive LDR command for 32 bit values.
+ 209:CORE/core_cmInstr.h **** 
+ 210:CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 211:CORE/core_cmInstr.h ****     \return        value of type uint32_t at (*ptr)
+ 212:CORE/core_cmInstr.h ****  */
+ 213:CORE/core_cmInstr.h **** #define __LDREXW(ptr)                     ((uint32_t ) __ldrex(ptr))
+ 214:CORE/core_cmInstr.h **** 
+ 215:CORE/core_cmInstr.h **** 
+ 216:CORE/core_cmInstr.h **** /** \brief  STR Exclusive (8 bit)
+ 217:CORE/core_cmInstr.h **** 
+ 218:CORE/core_cmInstr.h ****     This function performs a exclusive STR command for 8 bit values.
+ 219:CORE/core_cmInstr.h **** 
+ 220:CORE/core_cmInstr.h ****     \param [in]  value  Value to store
+ 221:CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 222:CORE/core_cmInstr.h ****     \return          0  Function succeeded
+ 223:CORE/core_cmInstr.h ****     \return          1  Function failed
+ 224:CORE/core_cmInstr.h ****  */
+ 225:CORE/core_cmInstr.h **** #define __STREXB(value, ptr)              __strex(value, ptr)
+ 226:CORE/core_cmInstr.h **** 
+ 227:CORE/core_cmInstr.h **** 
+ 228:CORE/core_cmInstr.h **** /** \brief  STR Exclusive (16 bit)
+ 229:CORE/core_cmInstr.h **** 
+ 230:CORE/core_cmInstr.h ****     This function performs a exclusive STR command for 16 bit values.
+ 231:CORE/core_cmInstr.h **** 
+ 232:CORE/core_cmInstr.h ****     \param [in]  value  Value to store
+ 233:CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 9
+
+
+ 234:CORE/core_cmInstr.h ****     \return          0  Function succeeded
+ 235:CORE/core_cmInstr.h ****     \return          1  Function failed
+ 236:CORE/core_cmInstr.h ****  */
+ 237:CORE/core_cmInstr.h **** #define __STREXH(value, ptr)              __strex(value, ptr)
+ 238:CORE/core_cmInstr.h **** 
+ 239:CORE/core_cmInstr.h **** 
+ 240:CORE/core_cmInstr.h **** /** \brief  STR Exclusive (32 bit)
+ 241:CORE/core_cmInstr.h **** 
+ 242:CORE/core_cmInstr.h ****     This function performs a exclusive STR command for 32 bit values.
+ 243:CORE/core_cmInstr.h **** 
+ 244:CORE/core_cmInstr.h ****     \param [in]  value  Value to store
+ 245:CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 246:CORE/core_cmInstr.h ****     \return          0  Function succeeded
+ 247:CORE/core_cmInstr.h ****     \return          1  Function failed
+ 248:CORE/core_cmInstr.h ****  */
+ 249:CORE/core_cmInstr.h **** #define __STREXW(value, ptr)              __strex(value, ptr)
+ 250:CORE/core_cmInstr.h **** 
+ 251:CORE/core_cmInstr.h **** 
+ 252:CORE/core_cmInstr.h **** /** \brief  Remove the exclusive lock
+ 253:CORE/core_cmInstr.h **** 
+ 254:CORE/core_cmInstr.h ****     This function removes the exclusive lock which is created by LDREX.
+ 255:CORE/core_cmInstr.h **** 
+ 256:CORE/core_cmInstr.h ****  */
+ 257:CORE/core_cmInstr.h **** #define __CLREX                           __clrex
+ 258:CORE/core_cmInstr.h **** 
+ 259:CORE/core_cmInstr.h **** 
+ 260:CORE/core_cmInstr.h **** /** \brief  Signed Saturate
+ 261:CORE/core_cmInstr.h **** 
+ 262:CORE/core_cmInstr.h ****     This function saturates a signed value.
+ 263:CORE/core_cmInstr.h **** 
+ 264:CORE/core_cmInstr.h ****     \param [in]  value  Value to be saturated
+ 265:CORE/core_cmInstr.h ****     \param [in]    sat  Bit position to saturate to (1..32)
+ 266:CORE/core_cmInstr.h ****     \return             Saturated value
+ 267:CORE/core_cmInstr.h ****  */
+ 268:CORE/core_cmInstr.h **** #define __SSAT                            __ssat
+ 269:CORE/core_cmInstr.h **** 
+ 270:CORE/core_cmInstr.h **** 
+ 271:CORE/core_cmInstr.h **** /** \brief  Unsigned Saturate
+ 272:CORE/core_cmInstr.h **** 
+ 273:CORE/core_cmInstr.h ****     This function saturates an unsigned value.
+ 274:CORE/core_cmInstr.h **** 
+ 275:CORE/core_cmInstr.h ****     \param [in]  value  Value to be saturated
+ 276:CORE/core_cmInstr.h ****     \param [in]    sat  Bit position to saturate to (0..31)
+ 277:CORE/core_cmInstr.h ****     \return             Saturated value
+ 278:CORE/core_cmInstr.h ****  */
+ 279:CORE/core_cmInstr.h **** #define __USAT                            __usat
+ 280:CORE/core_cmInstr.h **** 
+ 281:CORE/core_cmInstr.h **** 
+ 282:CORE/core_cmInstr.h **** /** \brief  Count leading zeros
+ 283:CORE/core_cmInstr.h **** 
+ 284:CORE/core_cmInstr.h ****     This function counts the number of leading zeros of a data value.
+ 285:CORE/core_cmInstr.h **** 
+ 286:CORE/core_cmInstr.h ****     \param [in]  value  Value to count the leading zeros
+ 287:CORE/core_cmInstr.h ****     \return             number of leading zeros in value
+ 288:CORE/core_cmInstr.h ****  */
+ 289:CORE/core_cmInstr.h **** #define __CLZ                             __clz
+ 290:CORE/core_cmInstr.h **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 10
+
+
+ 291:CORE/core_cmInstr.h **** #endif /* (__CORTEX_M >= 0x03) */
+ 292:CORE/core_cmInstr.h **** 
+ 293:CORE/core_cmInstr.h **** 
+ 294:CORE/core_cmInstr.h **** 
+ 295:CORE/core_cmInstr.h **** #elif defined ( __ICCARM__ ) /*------------------ ICC Compiler -------------------*/
+ 296:CORE/core_cmInstr.h **** /* IAR iccarm specific functions */
+ 297:CORE/core_cmInstr.h **** 
+ 298:CORE/core_cmInstr.h **** #include <cmsis_iar.h>
+ 299:CORE/core_cmInstr.h **** 
+ 300:CORE/core_cmInstr.h **** 
+ 301:CORE/core_cmInstr.h **** #elif defined ( __TMS470__ ) /*---------------- TI CCS Compiler ------------------*/
+ 302:CORE/core_cmInstr.h **** /* TI CCS specific functions */
+ 303:CORE/core_cmInstr.h **** 
+ 304:CORE/core_cmInstr.h **** #include <cmsis_ccs.h>
+ 305:CORE/core_cmInstr.h **** 
+ 306:CORE/core_cmInstr.h **** 
+ 307:CORE/core_cmInstr.h **** #elif defined ( __GNUC__ ) /*------------------ GNU Compiler ---------------------*/
+ 308:CORE/core_cmInstr.h **** /* GNU gcc specific functions */
+ 309:CORE/core_cmInstr.h **** 
+ 310:CORE/core_cmInstr.h **** /* Define macros for porting to both thumb1 and thumb2.
+ 311:CORE/core_cmInstr.h ****  * For thumb1, use low register (r0-r7), specified by constrant "l"
+ 312:CORE/core_cmInstr.h ****  * Otherwise, use general registers, specified by constrant "r" */
+ 313:CORE/core_cmInstr.h **** #if defined (__thumb__) && !defined (__thumb2__)
+ 314:CORE/core_cmInstr.h **** #define __CMSIS_GCC_OUT_REG(r) "=l" (r)
+ 315:CORE/core_cmInstr.h **** #define __CMSIS_GCC_USE_REG(r) "l" (r)
+ 316:CORE/core_cmInstr.h **** #else
+ 317:CORE/core_cmInstr.h **** #define __CMSIS_GCC_OUT_REG(r) "=r" (r)
+ 318:CORE/core_cmInstr.h **** #define __CMSIS_GCC_USE_REG(r) "r" (r)
+ 319:CORE/core_cmInstr.h **** #endif
+ 320:CORE/core_cmInstr.h **** 
+ 321:CORE/core_cmInstr.h **** /** \brief  No Operation
+ 322:CORE/core_cmInstr.h **** 
+ 323:CORE/core_cmInstr.h ****     No Operation does nothing. This instruction can be used for code alignment purposes.
+ 324:CORE/core_cmInstr.h ****  */
+ 325:CORE/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __NOP(void)
+ 326:CORE/core_cmInstr.h **** {
+ 327:CORE/core_cmInstr.h ****   __ASM volatile ("nop");
+ 328:CORE/core_cmInstr.h **** }
+ 329:CORE/core_cmInstr.h **** 
+ 330:CORE/core_cmInstr.h **** 
+ 331:CORE/core_cmInstr.h **** /** \brief  Wait For Interrupt
+ 332:CORE/core_cmInstr.h **** 
+ 333:CORE/core_cmInstr.h ****     Wait For Interrupt is a hint instruction that suspends execution
+ 334:CORE/core_cmInstr.h ****     until one of a number of events occurs.
+ 335:CORE/core_cmInstr.h ****  */
+ 336:CORE/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __WFI(void)
+ 337:CORE/core_cmInstr.h **** {
+ 338:CORE/core_cmInstr.h ****   __ASM volatile ("wfi");
+ 339:CORE/core_cmInstr.h **** }
+ 340:CORE/core_cmInstr.h **** 
+ 341:CORE/core_cmInstr.h **** 
+ 342:CORE/core_cmInstr.h **** /** \brief  Wait For Event
+ 343:CORE/core_cmInstr.h **** 
+ 344:CORE/core_cmInstr.h ****     Wait For Event is a hint instruction that permits the processor to enter
+ 345:CORE/core_cmInstr.h ****     a low-power state until one of a number of events occurs.
+ 346:CORE/core_cmInstr.h ****  */
+ 347:CORE/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __WFE(void)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 11
+
+
+ 348:CORE/core_cmInstr.h **** {
+ 349:CORE/core_cmInstr.h ****   __ASM volatile ("wfe");
+ 350:CORE/core_cmInstr.h **** }
+ 351:CORE/core_cmInstr.h **** 
+ 352:CORE/core_cmInstr.h **** 
+ 353:CORE/core_cmInstr.h **** /** \brief  Send Event
+ 354:CORE/core_cmInstr.h **** 
+ 355:CORE/core_cmInstr.h ****     Send Event is a hint instruction. It causes an event to be signaled to the CPU.
+ 356:CORE/core_cmInstr.h ****  */
+ 357:CORE/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __SEV(void)
+ 358:CORE/core_cmInstr.h **** {
+ 359:CORE/core_cmInstr.h ****   __ASM volatile ("sev");
+ 360:CORE/core_cmInstr.h **** }
+ 361:CORE/core_cmInstr.h **** 
+ 362:CORE/core_cmInstr.h **** 
+ 363:CORE/core_cmInstr.h **** /** \brief  Instruction Synchronization Barrier
+ 364:CORE/core_cmInstr.h **** 
+ 365:CORE/core_cmInstr.h ****     Instruction Synchronization Barrier flushes the pipeline in the processor,
+ 366:CORE/core_cmInstr.h ****     so that all instructions following the ISB are fetched from cache or
+ 367:CORE/core_cmInstr.h ****     memory, after the instruction has been completed.
+ 368:CORE/core_cmInstr.h ****  */
+ 369:CORE/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __ISB(void)
+ 370:CORE/core_cmInstr.h **** {
+ 371:CORE/core_cmInstr.h ****   __ASM volatile ("isb");
+ 372:CORE/core_cmInstr.h **** }
+ 373:CORE/core_cmInstr.h **** 
+ 374:CORE/core_cmInstr.h **** 
+ 375:CORE/core_cmInstr.h **** /** \brief  Data Synchronization Barrier
+ 376:CORE/core_cmInstr.h **** 
+ 377:CORE/core_cmInstr.h ****     This function acts as a special kind of Data Memory Barrier.
+ 378:CORE/core_cmInstr.h ****     It completes when all explicit memory accesses before this instruction complete.
+ 379:CORE/core_cmInstr.h ****  */
+ 380:CORE/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __DSB(void)
+ 381:CORE/core_cmInstr.h **** {
+ 382:CORE/core_cmInstr.h ****   __ASM volatile ("dsb");
+ 383:CORE/core_cmInstr.h **** }
+ 384:CORE/core_cmInstr.h **** 
+ 385:CORE/core_cmInstr.h **** 
+ 386:CORE/core_cmInstr.h **** /** \brief  Data Memory Barrier
+ 387:CORE/core_cmInstr.h **** 
+ 388:CORE/core_cmInstr.h ****     This function ensures the apparent order of the explicit memory operations before
+ 389:CORE/core_cmInstr.h ****     and after the instruction, without ensuring their completion.
+ 390:CORE/core_cmInstr.h ****  */
+ 391:CORE/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __DMB(void)
+ 392:CORE/core_cmInstr.h **** {
+ 393:CORE/core_cmInstr.h ****   __ASM volatile ("dmb");
+ 394:CORE/core_cmInstr.h **** }
+ 395:CORE/core_cmInstr.h **** 
+ 396:CORE/core_cmInstr.h **** 
+ 397:CORE/core_cmInstr.h **** /** \brief  Reverse byte order (32 bit)
+ 398:CORE/core_cmInstr.h **** 
+ 399:CORE/core_cmInstr.h ****     This function reverses the byte order in integer value.
+ 400:CORE/core_cmInstr.h **** 
+ 401:CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 402:CORE/core_cmInstr.h ****     \return               Reversed value
+ 403:CORE/core_cmInstr.h ****  */
+ 404:CORE/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __REV(uint32_t value)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 12
+
+
+ 405:CORE/core_cmInstr.h **** {
+ 406:CORE/core_cmInstr.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
+ 407:CORE/core_cmInstr.h ****   return __builtin_bswap32(value);
+  94              		.loc 2 407 0
+  95 0038 1BBA     		rev	r3, r3
+  96              	.LVL9:
+  97              	.LBE31:
+  98              	.LBE30:
+  99              		.loc 1 131 0
+ 100 003a 0493     		str	r3, [sp, #16]
+ 101              	.LVL10:
+ 132:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   keyaddr+=4;
+ 133:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_KeyInitStructure.CRYP_Key1Right= __REV(*(uint32_t*)(keyaddr));
+ 102              		.loc 1 133 0
+ 103 003c 6B68     		ldr	r3, [r5, #4]
+ 104              	.LVL11:
+ 105              	.LBB32:
+ 106              	.LBB33:
+ 107              		.loc 2 407 0
+ 108 003e 1BBA     		rev	r3, r3
+ 109              	.LVL12:
+ 110              	.LBE33:
+ 111              	.LBE32:
+ 112              		.loc 1 133 0
+ 113 0040 0593     		str	r3, [sp, #20]
+ 114              	.LVL13:
+ 134:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   keyaddr+=4;
+ 135:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_KeyInitStructure.CRYP_Key2Left = __REV(*(uint32_t*)(keyaddr));
+ 115              		.loc 1 135 0
+ 116 0042 AB68     		ldr	r3, [r5, #8]
+ 117              	.LVL14:
+ 118              	.LBB34:
+ 119              	.LBB35:
+ 120              		.loc 2 407 0
+ 121 0044 1BBA     		rev	r3, r3
+ 122              	.LVL15:
+ 123              	.LBE35:
+ 124              	.LBE34:
+ 125              		.loc 1 135 0
+ 126 0046 0693     		str	r3, [sp, #24]
+ 127              	.LVL16:
+ 136:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   keyaddr+=4;
+ 137:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_KeyInitStructure.CRYP_Key2Right= __REV(*(uint32_t*)(keyaddr));
+ 128              		.loc 1 137 0
+ 129 0048 EB68     		ldr	r3, [r5, #12]
+ 130              	.LVL17:
+ 131              	.LBB36:
+ 132              	.LBB37:
+ 133              		.loc 2 407 0
+ 134 004a 1BBA     		rev	r3, r3
+ 135              	.LVL18:
+ 136              	.LBE37:
+ 137              	.LBE36:
+ 138              		.loc 1 137 0
+ 139 004c 0793     		str	r3, [sp, #28]
+ 140              	.LVL19:
+ 138:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   keyaddr+=4;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 13
+
+
+ 139:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_KeyInitStructure.CRYP_Key3Left = __REV(*(uint32_t*)(keyaddr));
+ 141              		.loc 1 139 0
+ 142 004e 2B69     		ldr	r3, [r5, #16]
+ 143              	.LVL20:
+ 144              	.LBB38:
+ 145              	.LBB39:
+ 146              		.loc 2 407 0
+ 147 0050 1BBA     		rev	r3, r3
+ 148              	.LVL21:
+ 149              	.LBE39:
+ 150              	.LBE38:
+ 151              		.loc 1 139 0
+ 152 0052 0893     		str	r3, [sp, #32]
+ 153              	.LVL22:
+ 140:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   keyaddr+=4;
+ 141:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_KeyInitStructure.CRYP_Key3Right= __REV(*(uint32_t*)(keyaddr));
+ 154              		.loc 1 141 0
+ 155 0054 6B69     		ldr	r3, [r5, #20]
+ 156              	.LVL23:
+ 157              	.LBB40:
+ 158              	.LBB41:
+ 159              		.loc 2 407 0
+ 160 0056 1BBA     		rev	r3, r3
+ 161              	.LVL24:
+ 162              	.LBE41:
+ 163              	.LBE40:
+ 164              		.loc 1 141 0
+ 165 0058 0993     		str	r3, [sp, #36]
+ 142:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_KeyInit(& TDES_CRYP_KeyInitStructure);
+ 166              		.loc 1 142 0
+ 167 005a 02A8     		add	r0, sp, #8
+ 168 005c FFF7FEFF 		bl	CRYP_KeyInit
+ 169              	.LVL25:
+ 143:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 144:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Flush IN/OUT FIFO */
+ 145:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_FIFOFlush();
+ 170              		.loc 1 145 0
+ 171 0060 FFF7FEFF 		bl	CRYP_FIFOFlush
+ 172              	.LVL26:
+ 146:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 147:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Enable Crypto processor */
+ 148:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_Cmd(ENABLE);
+ 173              		.loc 1 148 0
+ 174 0064 0120     		movs	r0, #1
+ 175 0066 FFF7FEFF 		bl	CRYP_Cmd
+ 176              	.LVL27:
+ 149:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 150:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   if(CRYP_GetCmdStatus() == DISABLE)
+ 177              		.loc 1 150 0
+ 178 006a FFF7FEFF 		bl	CRYP_GetCmdStatus
+ 179              	.LVL28:
+ 180 006e 60B3     		cbz	r0, .L11
+ 181 0070 0025     		movs	r5, #0
+ 182              	.LVL29:
+ 183 0072 0126     		movs	r6, #1
+ 184 0074 20E0     		b	.L5
+ 185              	.LVL30:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 14
+
+
+ 186              	.L10:
+ 151:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 152:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+ 153:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****        the CRYP peripheral (please check the device sales type. */
+ 154:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     return(ERROR);
+ 155:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   }
+ 156:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   for(i=0; ((i<Ilength) && (status != ERROR)); i+=8)
+ 157:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 158:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     /* Write the Input block in the Input FIFO */
+ 159:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     CRYP_DataIn(*(uint32_t*)(inputaddr));
+ 187              		.loc 1 159 0
+ 188 0076 2068     		ldr	r0, [r4]
+ 189 0078 FFF7FEFF 		bl	CRYP_DataIn
+ 190              	.LVL31:
+ 160:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     inputaddr+=4;
+ 161:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     CRYP_DataIn(*(uint32_t*)(inputaddr));
+ 191              		.loc 1 161 0
+ 192 007c 6068     		ldr	r0, [r4, #4]
+ 193 007e FFF7FEFF 		bl	CRYP_DataIn
+ 194              	.LVL32:
+ 162:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     inputaddr+=4;
+ 195              		.loc 1 162 0
+ 196 0082 0834     		adds	r4, r4, #8
+ 197              	.LVL33:
+ 163:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 164:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     /* Wait until the complete message has been processed */
+ 165:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     counter = 0;
+ 198              		.loc 1 165 0
+ 199 0084 0023     		movs	r3, #0
+ 200 0086 0193     		str	r3, [sp, #4]
+ 201              	.L7:
+ 166:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     do
+ 167:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     {
+ 168:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       busystatus = CRYP_GetFlagStatus(CRYP_FLAG_BUSY);
+ 202              		.loc 1 168 0 discriminator 2
+ 203 0088 1020     		movs	r0, #16
+ 204 008a FFF7FEFF 		bl	CRYP_GetFlagStatus
+ 205              	.LVL34:
+ 206 008e 0246     		mov	r2, r0
+ 207              	.LVL35:
+ 169:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       counter++;
+ 208              		.loc 1 169 0 discriminator 2
+ 209 0090 019B     		ldr	r3, [sp, #4]
+ 210 0092 0133     		adds	r3, r3, #1
+ 211 0094 0193     		str	r3, [sp, #4]
+ 170:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     }while ((counter != TDESBUSY_TIMEOUT) && (busystatus != RESET));
+ 212              		.loc 1 170 0 discriminator 2
+ 213 0096 019B     		ldr	r3, [sp, #4]
+ 214 0098 B3F5803F 		cmp	r3, #65536
+ 215 009c 01D0     		beq	.L6
+ 216              		.loc 1 170 0 is_stmt 0 discriminator 1
+ 217 009e 0028     		cmp	r0, #0
+ 218 00a0 F2D1     		bne	.L7
+ 219              	.L6:
+ 171:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 172:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     if (busystatus != RESET)
+ 220              		.loc 1 172 0 is_stmt 1
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 15
+
+
+ 221 00a2 3AB9     		cbnz	r2, .L12
+ 173:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     {
+ 174:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****        status = ERROR;
+ 175:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     }
+ 176:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     else
+ 177:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     {
+ 178:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 179:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       /* Read the Output block from the Output FIFO */
+ 180:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       *(uint32_t*)(outputaddr) = CRYP_DataOut();
+ 222              		.loc 1 180 0
+ 223 00a4 FFF7FEFF 		bl	CRYP_DataOut
+ 224              	.LVL36:
+ 225 00a8 3860     		str	r0, [r7]
+ 226              	.LVL37:
+ 181:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       outputaddr+=4;
+ 182:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       *(uint32_t*)(outputaddr) = CRYP_DataOut();
+ 227              		.loc 1 182 0
+ 228 00aa FFF7FEFF 		bl	CRYP_DataOut
+ 229              	.LVL38:
+ 230 00ae 7860     		str	r0, [r7, #4]
+ 183:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       outputaddr+=4;
+ 231              		.loc 1 183 0
+ 232 00b0 0837     		adds	r7, r7, #8
+ 233              	.LVL39:
+ 234 00b2 00E0     		b	.L8
+ 235              	.LVL40:
+ 236              	.L12:
+ 174:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     }
+ 237              		.loc 1 174 0
+ 238 00b4 0026     		movs	r6, #0
+ 239              	.LVL41:
+ 240              	.L8:
+ 156:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 241              		.loc 1 156 0 discriminator 2
+ 242 00b6 0835     		adds	r5, r5, #8
+ 243              	.LVL42:
+ 244              	.L5:
+ 156:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 245              		.loc 1 156 0 is_stmt 0 discriminator 1
+ 246 00b8 4545     		cmp	r5, r8
+ 247 00ba 01D2     		bcs	.L9
+ 156:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 248              		.loc 1 156 0 discriminator 3
+ 249 00bc 002E     		cmp	r6, #0
+ 250 00be DAD1     		bne	.L10
+ 251              	.L9:
+ 184:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     }
+ 185:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   }
+ 186:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 187:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Disable Crypto */
+ 188:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_Cmd(DISABLE);
+ 252              		.loc 1 188 0 is_stmt 1
+ 253 00c0 0020     		movs	r0, #0
+ 254 00c2 FFF7FEFF 		bl	CRYP_Cmd
+ 255              	.LVL43:
+ 189:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 190:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   return status; 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 16
+
+
+ 256              		.loc 1 190 0
+ 257 00c6 3046     		mov	r0, r6
+ 258 00c8 00E0     		b	.L4
+ 259              	.LVL44:
+ 260              	.L11:
+ 154:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   }
+ 261              		.loc 1 154 0
+ 262 00ca 0020     		movs	r0, #0
+ 263              	.LVL45:
+ 264              	.L4:
+ 191:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** }
+ 265              		.loc 1 191 0
+ 266 00cc 0EB0     		add	sp, sp, #56
+ 267              	.LCFI2:
+ 268              		.cfi_def_cfa_offset 24
+ 269              		@ sp needed
+ 270 00ce BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 271              		.cfi_endproc
+ 272              	.LFE112:
+ 274 00d2 00BF     		.section	.text.CRYP_TDES_CBC,"ax",%progbits
+ 275              		.align	2
+ 276              		.global	CRYP_TDES_CBC
+ 277              		.thumb
+ 278              		.thumb_func
+ 280              	CRYP_TDES_CBC:
+ 281              	.LFB113:
+ 192:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 193:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** /**
+ 194:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @brief  Encrypt and decrypt using TDES in CBC Mode
+ 195:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @param  Mode: encryption or decryption Mode.
+ 196:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *           This parameter can be one of the following values:
+ 197:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *            @arg MODE_ENCRYPT: Encryption
+ 198:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *            @arg MODE_DECRYPT: Decryption
+ 199:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @param  Key: Key used for TDES algorithm.
+ 200:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @param  InitVectors: Initialisation Vectors used for TDES algorithm.
+ 201:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @param  Input: pointer to the Input buffer.
+ 202:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @param  Ilength: length of the Input buffer, must be a multiple of 8.
+ 203:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @param  Output: pointer to the returned buffer.
+ 204:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   * @retval An ErrorStatus enumeration value:
+ 205:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *          - SUCCESS: Operation done
+ 206:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   *          - ERROR: Operation failed
+ 207:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   */
+ 208:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** ErrorStatus CRYP_TDES_CBC(uint8_t Mode, uint8_t Key[24], uint8_t InitVectors[8],
+ 209:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****                           uint8_t *Input, uint32_t Ilength, uint8_t *Output)
+ 210:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** {
+ 282              		.loc 1 210 0
+ 283              		.cfi_startproc
+ 284              		@ args = 8, pretend = 0, frame = 72
+ 285              		@ frame_needed = 0, uses_anonymous_args = 0
+ 286              	.LVL46:
+ 287 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 288              	.LCFI3:
+ 289              		.cfi_def_cfa_offset 28
+ 290              		.cfi_offset 4, -28
+ 291              		.cfi_offset 5, -24
+ 292              		.cfi_offset 6, -20
+ 293              		.cfi_offset 7, -16
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 17
+
+
+ 294              		.cfi_offset 8, -12
+ 295              		.cfi_offset 9, -8
+ 296              		.cfi_offset 14, -4
+ 297 0004 93B0     		sub	sp, sp, #76
+ 298              	.LCFI4:
+ 299              		.cfi_def_cfa_offset 104
+ 300 0006 8146     		mov	r9, r0
+ 301 0008 0D46     		mov	r5, r1
+ 302 000a 1646     		mov	r6, r2
+ 303 000c DDF86880 		ldr	r8, [sp, #104]
+ 211:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_InitTypeDef TDES_CRYP_InitStructure;
+ 212:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_KeyInitTypeDef TDES_CRYP_KeyInitStructure;
+ 213:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_IVInitTypeDef TDES_CRYP_IVInitStructure;
+ 214:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   __IO uint32_t counter = 0;
+ 304              		.loc 1 214 0
+ 305 0010 0022     		movs	r2, #0
+ 306              	.LVL47:
+ 307 0012 0192     		str	r2, [sp, #4]
+ 308              	.LVL48:
+ 215:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   uint32_t busystatus = 0;
+ 216:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   ErrorStatus status = SUCCESS;
+ 217:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   uint32_t keyaddr    = (uint32_t)Key;
+ 218:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   uint32_t inputaddr  = (uint32_t)Input;
+ 309              		.loc 1 218 0
+ 310 0014 1C46     		mov	r4, r3
+ 311              	.LVL49:
+ 219:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   uint32_t outputaddr = (uint32_t)Output;
+ 312              		.loc 1 219 0
+ 313 0016 1B9F     		ldr	r7, [sp, #108]
+ 314              	.LVL50:
+ 220:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   uint32_t ivaddr     = (uint32_t)InitVectors;
+ 221:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   uint32_t i = 0;
+ 222:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 223:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Crypto structures initialisation*/
+ 224:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_KeyStructInit(&TDES_CRYP_KeyInitStructure);
+ 315              		.loc 1 224 0
+ 316 0018 06A8     		add	r0, sp, #24
+ 317              	.LVL51:
+ 318 001a FFF7FEFF 		bl	CRYP_KeyStructInit
+ 319              	.LVL52:
+ 225:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 226:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Crypto Init for Encryption process */
+ 227:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   if(Mode == MODE_ENCRYPT) /* TDES encryption */
+ 320              		.loc 1 227 0
+ 321 001e B9F1010F 		cmp	r9, #1
+ 322 0022 02D1     		bne	.L15
+ 228:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 229:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     TDES_CRYP_InitStructure.CRYP_AlgoDir = CRYP_AlgoDir_Encrypt;
+ 323              		.loc 1 229 0
+ 324 0024 0023     		movs	r3, #0
+ 325 0026 0E93     		str	r3, [sp, #56]
+ 326 0028 01E0     		b	.L16
+ 327              	.L15:
+ 230:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   }
+ 231:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   else
+ 232:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 233:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     TDES_CRYP_InitStructure.CRYP_AlgoDir = CRYP_AlgoDir_Decrypt;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 18
+
+
+ 328              		.loc 1 233 0
+ 329 002a 0423     		movs	r3, #4
+ 330 002c 0E93     		str	r3, [sp, #56]
+ 331              	.L16:
+ 234:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   }
+ 235:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_InitStructure.CRYP_AlgoMode = CRYP_AlgoMode_TDES_CBC;
+ 332              		.loc 1 235 0
+ 333 002e 0823     		movs	r3, #8
+ 334 0030 0F93     		str	r3, [sp, #60]
+ 236:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_InitStructure.CRYP_DataType = CRYP_DataType_8b;
+ 335              		.loc 1 236 0
+ 336 0032 8023     		movs	r3, #128
+ 337 0034 1093     		str	r3, [sp, #64]
+ 237:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 238:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_Init(&TDES_CRYP_InitStructure);
+ 338              		.loc 1 238 0
+ 339 0036 0EA8     		add	r0, sp, #56
+ 340 0038 FFF7FEFF 		bl	CRYP_Init
+ 341              	.LVL53:
+ 239:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 240:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Key Initialisation */
+ 241:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_KeyInitStructure.CRYP_Key1Left = __REV(*(uint32_t*)(keyaddr));
+ 342              		.loc 1 241 0
+ 343 003c 2B68     		ldr	r3, [r5]
+ 344              	.LVL54:
+ 345              	.LBB42:
+ 346              	.LBB43:
+ 347              		.loc 2 407 0
+ 348 003e 1BBA     		rev	r3, r3
+ 349              	.LVL55:
+ 350              	.LBE43:
+ 351              	.LBE42:
+ 352              		.loc 1 241 0
+ 353 0040 0893     		str	r3, [sp, #32]
+ 354              	.LVL56:
+ 242:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   keyaddr+=4;
+ 243:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_KeyInitStructure.CRYP_Key1Right= __REV(*(uint32_t*)(keyaddr));
+ 355              		.loc 1 243 0
+ 356 0042 6B68     		ldr	r3, [r5, #4]
+ 357              	.LVL57:
+ 358              	.LBB44:
+ 359              	.LBB45:
+ 360              		.loc 2 407 0
+ 361 0044 1BBA     		rev	r3, r3
+ 362              	.LVL58:
+ 363              	.LBE45:
+ 364              	.LBE44:
+ 365              		.loc 1 243 0
+ 366 0046 0993     		str	r3, [sp, #36]
+ 367              	.LVL59:
+ 244:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   keyaddr+=4;
+ 245:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_KeyInitStructure.CRYP_Key2Left = __REV(*(uint32_t*)(keyaddr));
+ 368              		.loc 1 245 0
+ 369 0048 AB68     		ldr	r3, [r5, #8]
+ 370              	.LVL60:
+ 371              	.LBB46:
+ 372              	.LBB47:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 19
+
+
+ 373              		.loc 2 407 0
+ 374 004a 1BBA     		rev	r3, r3
+ 375              	.LVL61:
+ 376              	.LBE47:
+ 377              	.LBE46:
+ 378              		.loc 1 245 0
+ 379 004c 0A93     		str	r3, [sp, #40]
+ 380              	.LVL62:
+ 246:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   keyaddr+=4;
+ 247:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_KeyInitStructure.CRYP_Key2Right= __REV(*(uint32_t*)(keyaddr));
+ 381              		.loc 1 247 0
+ 382 004e EB68     		ldr	r3, [r5, #12]
+ 383              	.LVL63:
+ 384              	.LBB48:
+ 385              	.LBB49:
+ 386              		.loc 2 407 0
+ 387 0050 1BBA     		rev	r3, r3
+ 388              	.LVL64:
+ 389              	.LBE49:
+ 390              	.LBE48:
+ 391              		.loc 1 247 0
+ 392 0052 0B93     		str	r3, [sp, #44]
+ 393              	.LVL65:
+ 248:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   keyaddr+=4;
+ 249:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_KeyInitStructure.CRYP_Key3Left = __REV(*(uint32_t*)(keyaddr));
+ 394              		.loc 1 249 0
+ 395 0054 2B69     		ldr	r3, [r5, #16]
+ 396              	.LVL66:
+ 397              	.LBB50:
+ 398              	.LBB51:
+ 399              		.loc 2 407 0
+ 400 0056 1BBA     		rev	r3, r3
+ 401              	.LVL67:
+ 402              	.LBE51:
+ 403              	.LBE50:
+ 404              		.loc 1 249 0
+ 405 0058 0C93     		str	r3, [sp, #48]
+ 406              	.LVL68:
+ 250:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   keyaddr+=4;
+ 251:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_KeyInitStructure.CRYP_Key3Right= __REV(*(uint32_t*)(keyaddr));
+ 407              		.loc 1 251 0
+ 408 005a 6B69     		ldr	r3, [r5, #20]
+ 409              	.LVL69:
+ 410              	.LBB52:
+ 411              	.LBB53:
+ 412              		.loc 2 407 0
+ 413 005c 1BBA     		rev	r3, r3
+ 414              	.LVL70:
+ 415              	.LBE53:
+ 416              	.LBE52:
+ 417              		.loc 1 251 0
+ 418 005e 0D93     		str	r3, [sp, #52]
+ 252:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_KeyInit(& TDES_CRYP_KeyInitStructure);
+ 419              		.loc 1 252 0
+ 420 0060 06A8     		add	r0, sp, #24
+ 421 0062 FFF7FEFF 		bl	CRYP_KeyInit
+ 422              	.LVL71:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 20
+
+
+ 253:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 254:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Initialization Vectors */
+ 255:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_IVInitStructure.CRYP_IV0Left = __REV(*(uint32_t*)(ivaddr));
+ 423              		.loc 1 255 0
+ 424 0066 3368     		ldr	r3, [r6]
+ 425              	.LVL72:
+ 426              	.LBB54:
+ 427              	.LBB55:
+ 428              		.loc 2 407 0
+ 429 0068 1BBA     		rev	r3, r3
+ 430              	.LVL73:
+ 431              	.LBE55:
+ 432              	.LBE54:
+ 433              		.loc 1 255 0
+ 434 006a 0293     		str	r3, [sp, #8]
+ 435              	.LVL74:
+ 256:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   ivaddr+=4;
+ 257:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   TDES_CRYP_IVInitStructure.CRYP_IV0Right= __REV(*(uint32_t*)(ivaddr));
+ 436              		.loc 1 257 0
+ 437 006c 7368     		ldr	r3, [r6, #4]
+ 438              	.LVL75:
+ 439              	.LBB56:
+ 440              	.LBB57:
+ 441              		.loc 2 407 0
+ 442 006e 1BBA     		rev	r3, r3
+ 443              	.LVL76:
+ 444              	.LBE57:
+ 445              	.LBE56:
+ 446              		.loc 1 257 0
+ 447 0070 0393     		str	r3, [sp, #12]
+ 258:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_IVInit(&TDES_CRYP_IVInitStructure);
+ 448              		.loc 1 258 0
+ 449 0072 02A8     		add	r0, sp, #8
+ 450 0074 FFF7FEFF 		bl	CRYP_IVInit
+ 451              	.LVL77:
+ 259:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 260:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Flush IN/OUT FIFO */
+ 261:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_FIFOFlush();
+ 452              		.loc 1 261 0
+ 453 0078 FFF7FEFF 		bl	CRYP_FIFOFlush
+ 454              	.LVL78:
+ 262:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 263:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Enable Crypto processor */
+ 264:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_Cmd(ENABLE);
+ 455              		.loc 1 264 0
+ 456 007c 0120     		movs	r0, #1
+ 457 007e FFF7FEFF 		bl	CRYP_Cmd
+ 458              	.LVL79:
+ 265:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 266:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   if(CRYP_GetCmdStatus() == DISABLE)
+ 459              		.loc 1 266 0
+ 460 0082 FFF7FEFF 		bl	CRYP_GetCmdStatus
+ 461              	.LVL80:
+ 462 0086 60B3     		cbz	r0, .L24
+ 463 0088 0025     		movs	r5, #0
+ 464              	.LVL81:
+ 465 008a 0126     		movs	r6, #1
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 21
+
+
+ 466              	.LVL82:
+ 467 008c 20E0     		b	.L18
+ 468              	.LVL83:
+ 469              	.L23:
+ 267:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 268:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+ 269:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****        the CRYP peripheral (please check the device sales type. */
+ 270:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     return(ERROR);
+ 271:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   }
+ 272:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   
+ 273:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   for(i=0; ((i<Ilength) && (status != ERROR)); i+=8)
+ 274:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 275:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     /* Write the Input block in the Input FIFO */
+ 276:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     CRYP_DataIn(*(uint32_t*)(inputaddr));
+ 470              		.loc 1 276 0
+ 471 008e 2068     		ldr	r0, [r4]
+ 472 0090 FFF7FEFF 		bl	CRYP_DataIn
+ 473              	.LVL84:
+ 277:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     inputaddr+=4;
+ 278:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     CRYP_DataIn(*(uint32_t*)(inputaddr));
+ 474              		.loc 1 278 0
+ 475 0094 6068     		ldr	r0, [r4, #4]
+ 476 0096 FFF7FEFF 		bl	CRYP_DataIn
+ 477              	.LVL85:
+ 279:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     inputaddr+=4;
+ 478              		.loc 1 279 0
+ 479 009a 0834     		adds	r4, r4, #8
+ 480              	.LVL86:
+ 280:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 281:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     /* Wait until the complete message has been processed */
+ 282:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     counter = 0;
+ 481              		.loc 1 282 0
+ 482 009c 0023     		movs	r3, #0
+ 483 009e 0193     		str	r3, [sp, #4]
+ 484              	.L20:
+ 283:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     do
+ 284:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     {
+ 285:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       busystatus = CRYP_GetFlagStatus(CRYP_FLAG_BUSY);
+ 485              		.loc 1 285 0 discriminator 2
+ 486 00a0 1020     		movs	r0, #16
+ 487 00a2 FFF7FEFF 		bl	CRYP_GetFlagStatus
+ 488              	.LVL87:
+ 489 00a6 0246     		mov	r2, r0
+ 490              	.LVL88:
+ 286:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       counter++;
+ 491              		.loc 1 286 0 discriminator 2
+ 492 00a8 019B     		ldr	r3, [sp, #4]
+ 493 00aa 0133     		adds	r3, r3, #1
+ 494 00ac 0193     		str	r3, [sp, #4]
+ 287:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     }while ((counter != TDESBUSY_TIMEOUT) && (busystatus != RESET));
+ 495              		.loc 1 287 0 discriminator 2
+ 496 00ae 019B     		ldr	r3, [sp, #4]
+ 497 00b0 B3F5803F 		cmp	r3, #65536
+ 498 00b4 01D0     		beq	.L19
+ 499              		.loc 1 287 0 is_stmt 0 discriminator 1
+ 500 00b6 0028     		cmp	r0, #0
+ 501 00b8 F2D1     		bne	.L20
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 22
+
+
+ 502              	.L19:
+ 288:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 289:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     if (busystatus != RESET)
+ 503              		.loc 1 289 0 is_stmt 1
+ 504 00ba 3AB9     		cbnz	r2, .L25
+ 290:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****    {
+ 291:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****        status = ERROR;
+ 292:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     }
+ 293:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     else
+ 294:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     {
+ 295:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 296:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       /* Read the Output block from the Output FIFO */
+ 297:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       *(uint32_t*)(outputaddr) = CRYP_DataOut();
+ 505              		.loc 1 297 0
+ 506 00bc FFF7FEFF 		bl	CRYP_DataOut
+ 507              	.LVL89:
+ 508 00c0 3860     		str	r0, [r7]
+ 509              	.LVL90:
+ 298:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       outputaddr+=4;
+ 299:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       *(uint32_t*)(outputaddr) = CRYP_DataOut();
+ 510              		.loc 1 299 0
+ 511 00c2 FFF7FEFF 		bl	CRYP_DataOut
+ 512              	.LVL91:
+ 513 00c6 7860     		str	r0, [r7, #4]
+ 300:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****       outputaddr+=4;
+ 514              		.loc 1 300 0
+ 515 00c8 0837     		adds	r7, r7, #8
+ 516              	.LVL92:
+ 517 00ca 00E0     		b	.L21
+ 518              	.LVL93:
+ 519              	.L25:
+ 291:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     }
+ 520              		.loc 1 291 0
+ 521 00cc 0026     		movs	r6, #0
+ 522              	.LVL94:
+ 523              	.L21:
+ 273:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 524              		.loc 1 273 0 discriminator 2
+ 525 00ce 0835     		adds	r5, r5, #8
+ 526              	.LVL95:
+ 527              	.L18:
+ 273:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 528              		.loc 1 273 0 is_stmt 0 discriminator 1
+ 529 00d0 4545     		cmp	r5, r8
+ 530 00d2 01D2     		bcs	.L22
+ 273:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   {
+ 531              		.loc 1 273 0 discriminator 3
+ 532 00d4 002E     		cmp	r6, #0
+ 533 00d6 DAD1     		bne	.L23
+ 534              	.L22:
+ 301:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****     }
+ 302:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   }
+ 303:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 304:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   /* Disable Crypto */
+ 305:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   CRYP_Cmd(DISABLE);
+ 535              		.loc 1 305 0 is_stmt 1
+ 536 00d8 0020     		movs	r0, #0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 23
+
+
+ 537 00da FFF7FEFF 		bl	CRYP_Cmd
+ 538              	.LVL96:
+ 306:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** 
+ 307:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   return status; 
+ 539              		.loc 1 307 0
+ 540 00de 3046     		mov	r0, r6
+ 541 00e0 00E0     		b	.L17
+ 542              	.LVL97:
+ 543              	.L24:
+ 270:.//FWLIB/src/stm32f4xx_cryp_tdes.c ****   }
+ 544              		.loc 1 270 0
+ 545 00e2 0020     		movs	r0, #0
+ 546              	.LVL98:
+ 547              	.L17:
+ 308:.//FWLIB/src/stm32f4xx_cryp_tdes.c **** }
+ 548              		.loc 1 308 0
+ 549 00e4 13B0     		add	sp, sp, #76
+ 550              	.LCFI5:
+ 551              		.cfi_def_cfa_offset 28
+ 552              		@ sp needed
+ 553 00e6 BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 554              		.cfi_endproc
+ 555              	.LFE113:
+ 557 00ea 00BF     		.text
+ 558              	.Letext0:
+ 559              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 560              		.file 4 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 561              		.file 5 "USER/stm32f4xx.h"
+ 562              		.file 6 "FWLIB/inc/stm32f4xx_cryp.h"
+ 563              		.file 7 "CORE/core_cm4.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s 			page 24
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_cryp_tdes.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s:22     .text.CRYP_TDES_ECB:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s:27     .text.CRYP_TDES_ECB:0000000000000000 CRYP_TDES_ECB
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s:275    .text.CRYP_TDES_CBC:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccgOpeFQ.s:280    .text.CRYP_TDES_CBC:0000000000000000 CRYP_TDES_CBC
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+CRYP_KeyStructInit
+CRYP_Init
+CRYP_KeyInit
+CRYP_FIFOFlush
+CRYP_Cmd
+CRYP_GetCmdStatus
+CRYP_DataIn
+CRYP_GetFlagStatus
+CRYP_DataOut
+CRYP_IVInit

@@ -1,0 +1,318 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"PID_C_stm32.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.DoPID,"ax",%progbits
+  20              		.align	2
+  21              		.global	DoPID
+  22              		.thumb
+  23              		.thumb_func
+  25              	DoPID:
+  26              	.LFB29:
+  27              		.file 1 ".//FWLIB/src/PID_C_stm32.c"
+   1:.//FWLIB/src/PID_C_stm32.c **** /**
+   2:.//FWLIB/src/PID_C_stm32.c ****   ******************************************************************************
+   3:.//FWLIB/src/PID_C_stm32.c ****   * @file STM32F10x_DSP_Lib/src/PID_C_stm32.c 
+   4:.//FWLIB/src/PID_C_stm32.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/PID_C_stm32.c ****   * @version  V2.0.0
+   6:.//FWLIB/src/PID_C_stm32.c ****   * @date  04/27/2009
+   7:.//FWLIB/src/PID_C_stm32.c ****   * @brief  This source file contains code PID controller
+   8:.//FWLIB/src/PID_C_stm32.c ****   ******************************************************************************
+   9:.//FWLIB/src/PID_C_stm32.c ****   * @copy
+  10:.//FWLIB/src/PID_C_stm32.c ****   *
+  11:.//FWLIB/src/PID_C_stm32.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:.//FWLIB/src/PID_C_stm32.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:.//FWLIB/src/PID_C_stm32.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:.//FWLIB/src/PID_C_stm32.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:.//FWLIB/src/PID_C_stm32.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:.//FWLIB/src/PID_C_stm32.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:.//FWLIB/src/PID_C_stm32.c ****   *
+  18:.//FWLIB/src/PID_C_stm32.c ****   * <h2><center>&copy; COPYRIGHT 2009 STMicroelectronics</center></h2>
+  19:.//FWLIB/src/PID_C_stm32.c ****   */ 
+  20:.//FWLIB/src/PID_C_stm32.c **** 
+  21:.//FWLIB/src/PID_C_stm32.c **** 
+  22:.//FWLIB/src/PID_C_stm32.c **** /* Includes ------------------------------------------------------------------*/
+  23:.//FWLIB/src/PID_C_stm32.c **** #include "stm32f10x.h"
+  24:.//FWLIB/src/PID_C_stm32.c **** #include "stm32_dsp.h"
+  25:.//FWLIB/src/PID_C_stm32.c **** 
+  26:.//FWLIB/src/PID_C_stm32.c **** 
+  27:.//FWLIB/src/PID_C_stm32.c **** /** @addtogroup STM32F10x_DSP_Lib
+  28:.//FWLIB/src/PID_C_stm32.c ****   * @{
+  29:.//FWLIB/src/PID_C_stm32.c ****   */ 
+  30:.//FWLIB/src/PID_C_stm32.c **** 
+  31:.//FWLIB/src/PID_C_stm32.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s 			page 2
+
+
+  32:.//FWLIB/src/PID_C_stm32.c **** /* Private typedef -----------------------------------------------------------*/
+  33:.//FWLIB/src/PID_C_stm32.c **** /* Private define ------------------------------------------------------------*/
+  34:.//FWLIB/src/PID_C_stm32.c **** /* Private macro -------------------------------------------------------------*/
+  35:.//FWLIB/src/PID_C_stm32.c **** /* Private variables ---------------------------------------------------------*/
+  36:.//FWLIB/src/PID_C_stm32.c **** uint16_t PrevError = 0, IntTerm = 0;
+  37:.//FWLIB/src/PID_C_stm32.c **** uint16_t PrevError_C = 0, IntTerm_C = 0;
+  38:.//FWLIB/src/PID_C_stm32.c **** 
+  39:.//FWLIB/src/PID_C_stm32.c **** /* Private function prototypes -----------------------------------------------*/
+  40:.//FWLIB/src/PID_C_stm32.c **** /* Private functions ---------------------------------------------------------*/
+  41:.//FWLIB/src/PID_C_stm32.c **** 
+  42:.//FWLIB/src/PID_C_stm32.c **** 
+  43:.//FWLIB/src/PID_C_stm32.c **** 
+  44:.//FWLIB/src/PID_C_stm32.c **** /**
+  45:.//FWLIB/src/PID_C_stm32.c ****   * @brief  PID in C, Error computed outside the routine
+  46:.//FWLIB/src/PID_C_stm32.c ****   * @param ror: difference between reference and measured value
+  47:.//FWLIB/src/PID_C_stm32.c ****   *   Coeff: pointer to the coefficient table
+  48:.//FWLIB/src/PID_C_stm32.c ****   * @retval : PID output (command)
+  49:.//FWLIB/src/PID_C_stm32.c ****   */
+  50:.//FWLIB/src/PID_C_stm32.c **** uint16_t DoPID(uint16_t Error, uint16_t *Coeff)
+  51:.//FWLIB/src/PID_C_stm32.c **** {
+  28              		.loc 1 51 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  34 0000 30B4     		push	{r4, r5}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 4, -8
+  38              		.cfi_offset 5, -4
+  52:.//FWLIB/src/PID_C_stm32.c ****   uint16_t Kp, Ki, Kd, Output;
+  53:.//FWLIB/src/PID_C_stm32.c **** 
+  54:.//FWLIB/src/PID_C_stm32.c ****   Kp = Coeff[0];
+  39              		.loc 1 54 0
+  40 0002 0A88     		ldrh	r2, [r1]
+  41              	.LVL1:
+  55:.//FWLIB/src/PID_C_stm32.c ****   Ki = Coeff[1];
+  42              		.loc 1 55 0
+  43 0004 4C88     		ldrh	r4, [r1, #2]
+  44              	.LVL2:
+  56:.//FWLIB/src/PID_C_stm32.c ****   Kd = Coeff[2];
+  45              		.loc 1 56 0
+  46 0006 8988     		ldrh	r1, [r1, #4]
+  47              	.LVL3:
+  57:.//FWLIB/src/PID_C_stm32.c **** 
+  58:.//FWLIB/src/PID_C_stm32.c ****   IntTerm_C += Ki*Error;
+  48              		.loc 1 58 0
+  49 0008 094D     		ldr	r5, .L3
+  50 000a 2B88     		ldrh	r3, [r5]
+  51 000c 00FB0433 		mla	r3, r0, r4, r3
+  52 0010 9BB2     		uxth	r3, r3
+  53 0012 2B80     		strh	r3, [r5]	@ movhi
+  59:.//FWLIB/src/PID_C_stm32.c ****   Output = Kp * Error;
+  54              		.loc 1 59 0
+  55 0014 00FB02F2 		mul	r2, r0, r2
+  56              	.LVL4:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s 			page 3
+
+
+  57 0018 92B2     		uxth	r2, r2
+  58              	.LVL5:
+  60:.//FWLIB/src/PID_C_stm32.c ****   Output += IntTerm_C;
+  59              		.loc 1 60 0
+  60 001a 1344     		add	r3, r3, r2
+  61 001c 9BB2     		uxth	r3, r3
+  62              	.LVL6:
+  61:.//FWLIB/src/PID_C_stm32.c ****   Output += Kd * (Error - PrevError_C);
+  63              		.loc 1 61 0
+  64 001e 054C     		ldr	r4, .L3+4
+  65              	.LVL7:
+  66 0020 2288     		ldrh	r2, [r4]
+  67 0022 821A     		subs	r2, r0, r2
+  68 0024 02FB0133 		mla	r3, r2, r1, r3
+  69              	.LVL8:
+  62:.//FWLIB/src/PID_C_stm32.c **** 
+  63:.//FWLIB/src/PID_C_stm32.c ****   PrevError_C = Error;
+  70              		.loc 1 63 0
+  71 0028 2080     		strh	r0, [r4]	@ movhi
+  64:.//FWLIB/src/PID_C_stm32.c **** 
+  65:.//FWLIB/src/PID_C_stm32.c ****   return (Output);
+  66:.//FWLIB/src/PID_C_stm32.c **** }
+  72              		.loc 1 66 0
+  73 002a 98B2     		uxth	r0, r3
+  74              	.LVL9:
+  75 002c 30BC     		pop	{r4, r5}
+  76              	.LCFI1:
+  77              		.cfi_restore 5
+  78              		.cfi_restore 4
+  79              		.cfi_def_cfa_offset 0
+  80 002e 7047     		bx	lr
+  81              	.L4:
+  82              		.align	2
+  83              	.L3:
+  84 0030 00000000 		.word	.LANCHOR0
+  85 0034 00000000 		.word	.LANCHOR1
+  86              		.cfi_endproc
+  87              	.LFE29:
+  89              		.section	.text.DoFullPID,"ax",%progbits
+  90              		.align	2
+  91              		.global	DoFullPID
+  92              		.thumb
+  93              		.thumb_func
+  95              	DoFullPID:
+  96              	.LFB30:
+  67:.//FWLIB/src/PID_C_stm32.c **** 
+  68:.//FWLIB/src/PID_C_stm32.c **** 
+  69:.//FWLIB/src/PID_C_stm32.c **** 
+  70:.//FWLIB/src/PID_C_stm32.c **** /**
+  71:.//FWLIB/src/PID_C_stm32.c ****   * @brief  PID in C, Error computed inside the routine
+  72:.//FWLIB/src/PID_C_stm32.c ****   * @param : Input (measured value)
+  73:.//FWLIB/src/PID_C_stm32.c ****   *   Ref: reference (target value)
+  74:.//FWLIB/src/PID_C_stm32.c ****   *   Coeff: pointer to the coefficient table
+  75:.//FWLIB/src/PID_C_stm32.c ****   * @retval : PID output (command)
+  76:.//FWLIB/src/PID_C_stm32.c ****   */
+  77:.//FWLIB/src/PID_C_stm32.c **** uint16_t DoFullPID(uint16_t In, uint16_t Ref, uint16_t *Coeff)
+  78:.//FWLIB/src/PID_C_stm32.c **** {
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s 			page 4
+
+
+  97              		.loc 1 78 0
+  98              		.cfi_startproc
+  99              		@ args = 0, pretend = 0, frame = 0
+ 100              		@ frame_needed = 0, uses_anonymous_args = 0
+ 101              		@ link register save eliminated.
+ 102              	.LVL10:
+ 103 0000 70B4     		push	{r4, r5, r6}
+ 104              	.LCFI2:
+ 105              		.cfi_def_cfa_offset 12
+ 106              		.cfi_offset 4, -12
+ 107              		.cfi_offset 5, -8
+ 108              		.cfi_offset 6, -4
+  79:.//FWLIB/src/PID_C_stm32.c ****   uint16_t Kp, Ki, Kd, Output, Error;
+  80:.//FWLIB/src/PID_C_stm32.c **** 
+  81:.//FWLIB/src/PID_C_stm32.c ****   Error = Ref - In;
+ 109              		.loc 1 81 0
+ 110 0002 091A     		subs	r1, r1, r0
+ 111              	.LVL11:
+ 112 0004 89B2     		uxth	r1, r1
+ 113              	.LVL12:
+  82:.//FWLIB/src/PID_C_stm32.c ****   Kp = Coeff[0];
+ 114              		.loc 1 82 0
+ 115 0006 1488     		ldrh	r4, [r2]
+ 116              	.LVL13:
+  83:.//FWLIB/src/PID_C_stm32.c ****   Ki = Coeff[1];
+ 117              		.loc 1 83 0
+ 118 0008 5588     		ldrh	r5, [r2, #2]
+ 119              	.LVL14:
+  84:.//FWLIB/src/PID_C_stm32.c ****   Kd = Coeff[2];
+ 120              		.loc 1 84 0
+ 121 000a 9688     		ldrh	r6, [r2, #4]
+ 122              	.LVL15:
+  85:.//FWLIB/src/PID_C_stm32.c **** 
+  86:.//FWLIB/src/PID_C_stm32.c ****   IntTerm_C += Ki*Error;
+ 123              		.loc 1 86 0
+ 124 000c 094A     		ldr	r2, .L7
+ 125              	.LVL16:
+ 126 000e 1388     		ldrh	r3, [r2]
+ 127 0010 05FB0133 		mla	r3, r5, r1, r3
+ 128 0014 9BB2     		uxth	r3, r3
+ 129 0016 1380     		strh	r3, [r2]	@ movhi
+  87:.//FWLIB/src/PID_C_stm32.c ****   Output = Kp * Error;
+ 130              		.loc 1 87 0
+ 131 0018 04FB01F2 		mul	r2, r4, r1
+ 132 001c 92B2     		uxth	r2, r2
+ 133              	.LVL17:
+  88:.//FWLIB/src/PID_C_stm32.c ****   Output += IntTerm_C;
+ 134              		.loc 1 88 0
+ 135 001e 1344     		add	r3, r3, r2
+ 136 0020 9BB2     		uxth	r3, r3
+ 137              	.LVL18:
+  89:.//FWLIB/src/PID_C_stm32.c ****   Output += Kd * (Error - PrevError_C);
+ 138              		.loc 1 89 0
+ 139 0022 054A     		ldr	r2, .L7+4
+ 140 0024 1088     		ldrh	r0, [r2]
+ 141              	.LVL19:
+ 142 0026 081A     		subs	r0, r1, r0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s 			page 5
+
+
+ 143 0028 00FB0630 		mla	r0, r0, r6, r3
+ 144              	.LVL20:
+  90:.//FWLIB/src/PID_C_stm32.c **** 
+  91:.//FWLIB/src/PID_C_stm32.c ****   PrevError_C = Error;
+ 145              		.loc 1 91 0
+ 146 002c 1180     		strh	r1, [r2]	@ movhi
+  92:.//FWLIB/src/PID_C_stm32.c **** 
+  93:.//FWLIB/src/PID_C_stm32.c ****   return (Output);
+  94:.//FWLIB/src/PID_C_stm32.c **** }
+ 147              		.loc 1 94 0
+ 148 002e 80B2     		uxth	r0, r0
+ 149 0030 70BC     		pop	{r4, r5, r6}
+ 150              	.LCFI3:
+ 151              		.cfi_restore 6
+ 152              		.cfi_restore 5
+ 153              		.cfi_restore 4
+ 154              		.cfi_def_cfa_offset 0
+ 155              	.LVL21:
+ 156 0032 7047     		bx	lr
+ 157              	.L8:
+ 158              		.align	2
+ 159              	.L7:
+ 160 0034 00000000 		.word	.LANCHOR0
+ 161 0038 00000000 		.word	.LANCHOR1
+ 162              		.cfi_endproc
+ 163              	.LFE30:
+ 165              		.global	IntTerm_C
+ 166              		.global	PrevError_C
+ 167              		.global	IntTerm
+ 168              		.global	PrevError
+ 169              		.section	.bss.PrevError_C,"aw",%nobits
+ 170              		.align	1
+ 171              		.set	.LANCHOR1,. + 0
+ 174              	PrevError_C:
+ 175 0000 0000     		.space	2
+ 176              		.section	.bss.PrevError,"aw",%nobits
+ 177              		.align	1
+ 180              	PrevError:
+ 181 0000 0000     		.space	2
+ 182              		.section	.bss.IntTerm,"aw",%nobits
+ 183              		.align	1
+ 186              	IntTerm:
+ 187 0000 0000     		.space	2
+ 188              		.section	.bss.IntTerm_C,"aw",%nobits
+ 189              		.align	1
+ 190              		.set	.LANCHOR0,. + 0
+ 193              	IntTerm_C:
+ 194 0000 0000     		.space	2
+ 195              		.text
+ 196              	.Letext0:
+ 197              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 198              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 199              		.file 4 "CORE/core_cm3.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 PID_C_stm32.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:20     .text.DoPID:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:25     .text.DoPID:0000000000000000 DoPID
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:84     .text.DoPID:0000000000000030 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:90     .text.DoFullPID:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:95     .text.DoFullPID:0000000000000000 DoFullPID
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:160    .text.DoFullPID:0000000000000034 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:193    .bss.IntTerm_C:0000000000000000 IntTerm_C
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:174    .bss.PrevError_C:0000000000000000 PrevError_C
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:186    .bss.IntTerm:0000000000000000 IntTerm
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:180    .bss.PrevError:0000000000000000 PrevError
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:170    .bss.PrevError_C:0000000000000000 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:177    .bss.PrevError:0000000000000000 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:183    .bss.IntTerm:0000000000000000 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccGxEwR1.s:189    .bss.IntTerm_C:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

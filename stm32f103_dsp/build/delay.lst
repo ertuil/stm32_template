@@ -1,0 +1,455 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"delay.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.delay_init,"ax",%progbits
+  20              		.align	2
+  21              		.global	delay_init
+  22              		.thumb
+  23              		.thumb_func
+  25              	delay_init:
+  26              	.LFB29:
+  27              		.file 1 ".//SYSTEM/delay.c"
+   1:.//SYSTEM/delay.c **** #include "delay.h"
+   2:.//SYSTEM/delay.c **** ////////////////////////////////////////////////////////////////////////////////// 	 
+   3:.//SYSTEM/delay.c **** //Èç¹ûÐèÒªÊ¹ÓÃOS,Ôò°üÀ¨ÏÂÃæµÄÍ·ÎÄ¼þ¼´¿É.
+   4:.//SYSTEM/delay.c **** #if SYSTEM_SUPPORT_OS
+   5:.//SYSTEM/delay.c **** #include "includes.h"					//ucos Ê¹ÓÃ	  
+   6:.//SYSTEM/delay.c **** #endif
+   7:.//SYSTEM/delay.c **** //////////////////////////////////////////////////////////////////////////////////	 
+   8:.//SYSTEM/delay.c **** //±¾³ÌÐòÖ»¹©Ñ§Ï°Ê¹ÓÃ£¬Î´¾­×÷ÕßÐí¿É£¬²»µÃÓÃÓÚÆäËüÈÎºÎÓÃÍ¾
+   9:.//SYSTEM/delay.c **** //ALIENTEK STM32¿ª·¢°å
+  10:.//SYSTEM/delay.c **** //Ê¹ÓÃSysTickµÄÆÕÍ¨¼ÆÊýÄ£Ê½¶ÔÑÓ³Ù½øÐÐ¹ÜÀí£¨ÊÊºÏSTM32F10xÏµÁÐ£©
+  11:.//SYSTEM/delay.c **** //°üÀ¨delay_us,delay_ms
+  12:.//SYSTEM/delay.c **** //ÕýµãÔ­×Ó@ALIENTEK
+  13:.//SYSTEM/delay.c **** //¼¼ÊõÂÛÌ³:www.openedv.com
+  14:.//SYSTEM/delay.c **** //´´½¨ÈÕÆÚ:2010/1/1
+  15:.//SYSTEM/delay.c **** //°æ±¾£ºV1.8
+  16:.//SYSTEM/delay.c **** //°æÈ¨ËùÓÐ£¬µÁ°æ±Ø¾¿¡£
+  17:.//SYSTEM/delay.c **** //Copyright(C) ¹ãÖÝÊÐÐÇÒíµç×Ó¿Æ¼¼ÓÐÏÞ¹«Ë¾ 2009-2019
+  18:.//SYSTEM/delay.c **** //All rights reserved
+  19:.//SYSTEM/delay.c **** //********************************************************************************
+  20:.//SYSTEM/delay.c **** //V1.2ÐÞ¸ÄËµÃ÷
+  21:.//SYSTEM/delay.c **** //ÐÞÕýÁËÖÐ¶ÏÖÐµ÷ÓÃ³öÏÖËÀÑ­»·µÄ´íÎó
+  22:.//SYSTEM/delay.c **** //·ÀÖ¹ÑÓÊ±²»×¼È·,²ÉÓÃdo while½á¹¹!
+  23:.//SYSTEM/delay.c **** //V1.3ÐÞ¸ÄËµÃ÷
+  24:.//SYSTEM/delay.c **** //Ôö¼ÓÁË¶ÔUCOSIIÑÓÊ±µÄÖ§³Ö.
+  25:.//SYSTEM/delay.c **** //Èç¹ûÊ¹ÓÃucosII,delay_init»á×Ô¶¯ÉèÖÃSYSTICKµÄÖµ,Ê¹Ö®ÓëucosµÄTICKS_PER_SEC¶ÔÓ¦.
+  26:.//SYSTEM/delay.c **** //delay_msºÍdelay_usÒ²½øÐÐÁËÕë¶ÔucosµÄ¸ÄÔì.
+  27:.//SYSTEM/delay.c **** //delay_us¿ÉÒÔÔÚucosÏÂÊ¹ÓÃ,¶øÇÒ×¼È·¶ÈºÜ¸ß,¸üÖØÒªµÄÊÇÃ»ÓÐÕ¼ÓÃ¶îÍâµÄ¶¨Ê±Æ÷.
+  28:.//SYSTEM/delay.c **** //delay_msÔÚucosÏÂ,¿ÉÒÔµ±³ÉOSTimeDlyÀ´ÓÃ,ÔÚÎ´Æô¶¯ucosÊ±,Ëü²ÉÓÃdelay_usÊµÏÖ,´Ó¶ø×¼È·ÑÓÊ±
+  29:.//SYSTEM/delay.c **** //¿ÉÒÔÓÃÀ´³õÊ¼»¯ÍâÉè,ÔÚÆô¶¯ÁËucosÖ®ºódelay_ms¸ù¾ÝÑÓÊ±µÄ³¤¶Ì,Ñ¡ÔñOSTimeDlyÊµÏÖ»òÕßdelay_usÊµÏÖ.
+  30:.//SYSTEM/delay.c **** //V1.4ÐÞ¸ÄËµÃ÷ 20110929
+  31:.//SYSTEM/delay.c **** //ÐÞ¸ÄÁËÊ¹ÓÃucos,µ«ÊÇucosÎ´Æô¶¯µÄÊ±ºò,delay_msÖÐÖÐ¶ÏÎÞ·¨ÏìÓ¦µÄbug.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s 			page 2
+
+
+  32:.//SYSTEM/delay.c **** //V1.5ÐÞ¸ÄËµÃ÷ 20120902
+  33:.//SYSTEM/delay.c **** //ÔÚdelay_us¼ÓÈëucosÉÏËø£¬·ÀÖ¹ÓÉÓÚucos´ò¶Ïdelay_usµÄÖ´ÐÐ£¬¿ÉÄÜµ¼ÖÂµÄÑÓÊ±²»×¼¡£
+  34:.//SYSTEM/delay.c **** //V1.6ÐÞ¸ÄËµÃ÷ 20150109
+  35:.//SYSTEM/delay.c **** //ÔÚdelay_ms¼ÓÈëOSLockNestingÅÐ¶Ï¡£
+  36:.//SYSTEM/delay.c **** //V1.7ÐÞ¸ÄËµÃ÷ 20150319
+  37:.//SYSTEM/delay.c **** //ÐÞ¸ÄOSÖ§³Ö·½Ê½,ÒÔÖ§³ÖÈÎÒâOS(²»ÏÞÓÚUCOSIIºÍUCOSIII,ÀíÂÛÉÏÈÎÒâOS¶¼¿ÉÒÔÖ§³Ö)
+  38:.//SYSTEM/delay.c **** //Ìí¼Ó:delay_osrunning/delay_ostickspersec/delay_osintnestingÈý¸öºê¶¨Òå
+  39:.//SYSTEM/delay.c **** //Ìí¼Ó:delay_osschedlock/delay_osschedunlock/delay_ostimedlyÈý¸öº¯Êý
+  40:.//SYSTEM/delay.c **** //V1.8ÐÞ¸ÄËµÃ÷ 20150519
+  41:.//SYSTEM/delay.c **** //ÐÞÕýUCOSIIIÖ§³ÖÊ±µÄ2¸öbug£º
+  42:.//SYSTEM/delay.c **** //delay_tickspersec¸ÄÎª£ºdelay_ostickspersec
+  43:.//SYSTEM/delay.c **** //delay_intnesting¸ÄÎª£ºdelay_osintnesting
+  44:.//SYSTEM/delay.c **** //////////////////////////////////////////////////////////////////////////////////  
+  45:.//SYSTEM/delay.c **** 
+  46:.//SYSTEM/delay.c **** static u8  fac_us=0;							//usÑÓÊ±±¶³ËÊý			   
+  47:.//SYSTEM/delay.c **** static u16 fac_ms=0;							//msÑÓÊ±±¶³ËÊý,ÔÚucosÏÂ,´ú±íÃ¿¸ö½ÚÅÄµÄmsÊý
+  48:.//SYSTEM/delay.c **** 	
+  49:.//SYSTEM/delay.c **** 	
+  50:.//SYSTEM/delay.c **** #if SYSTEM_SUPPORT_OS							//Èç¹ûSYSTEM_SUPPORT_OS¶¨ÒåÁË,ËµÃ÷ÒªÖ§³ÖOSÁË(²»ÏÞÓÚUCOS).
+  51:.//SYSTEM/delay.c **** //µ±delay_us/delay_msÐèÒªÖ§³ÖOSµÄÊ±ºòÐèÒªÈý¸öÓëOSÏà¹ØµÄºê¶¨ÒåºÍº¯ÊýÀ´Ö§³Ö
+  52:.//SYSTEM/delay.c **** //Ê×ÏÈÊÇ3¸öºê¶¨Òå:
+  53:.//SYSTEM/delay.c **** //    delay_osrunning:ÓÃÓÚ±íÊ¾OSµ±Ç°ÊÇ·ñÕýÔÚÔËÐÐ,ÒÔ¾ö¶¨ÊÇ·ñ¿ÉÒÔÊ¹ÓÃÏà¹Øº¯Êý
+  54:.//SYSTEM/delay.c **** //delay_ostickspersec:ÓÃÓÚ±íÊ¾OSÉè¶¨µÄÊ±ÖÓ½ÚÅÄ,delay_init½«¸ù¾ÝÕâ¸ö²ÎÊýÀ´³õÊ¼¹þsystick
+  55:.//SYSTEM/delay.c **** // delay_osintnesting:ÓÃÓÚ±íÊ¾OSÖÐ¶ÏÇ¶Ì×¼¶±ð,ÒòÎªÖÐ¶ÏÀïÃæ²»¿ÉÒÔµ÷¶È,delay_msÊ¹ÓÃ¸Ã²ÎÊýÀ´¾ö¶¨ÈçºÎÔËÐ
+  56:.//SYSTEM/delay.c **** //È»ºóÊÇ3¸öº¯Êý:
+  57:.//SYSTEM/delay.c **** //  delay_osschedlock:ÓÃÓÚËø¶¨OSÈÎÎñµ÷¶È,½ûÖ¹µ÷¶È
+  58:.//SYSTEM/delay.c **** //delay_osschedunlock:ÓÃÓÚ½âËøOSÈÎÎñµ÷¶È,ÖØÐÂ¿ªÆôµ÷¶È
+  59:.//SYSTEM/delay.c **** //    delay_ostimedly:ÓÃÓÚOSÑÓÊ±,¿ÉÒÔÒýÆðÈÎÎñµ÷¶È.
+  60:.//SYSTEM/delay.c **** 
+  61:.//SYSTEM/delay.c **** //±¾Àý³Ì½ö×÷UCOSIIºÍUCOSIIIµÄÖ§³Ö,ÆäËûOS,Çë×ÔÐÐ²Î¿¼×ÅÒÆÖ²
+  62:.//SYSTEM/delay.c **** //Ö§³ÖUCOSII
+  63:.//SYSTEM/delay.c **** #ifdef 	OS_CRITICAL_METHOD						//OS_CRITICAL_METHOD¶¨ÒåÁË,ËµÃ÷ÒªÖ§³ÖUCOSII				
+  64:.//SYSTEM/delay.c **** #define delay_osrunning		OSRunning			//OSÊÇ·ñÔËÐÐ±ê¼Ç,0,²»ÔËÐÐ;1,ÔÚÔËÐÐ
+  65:.//SYSTEM/delay.c **** #define delay_ostickspersec	OS_TICKS_PER_SEC	//OSÊ±ÖÓ½ÚÅÄ,¼´Ã¿Ãëµ÷¶È´ÎÊý
+  66:.//SYSTEM/delay.c **** #define delay_osintnesting 	OSIntNesting		//ÖÐ¶ÏÇ¶Ì×¼¶±ð,¼´ÖÐ¶ÏÇ¶Ì×´ÎÊý
+  67:.//SYSTEM/delay.c **** #endif
+  68:.//SYSTEM/delay.c **** 
+  69:.//SYSTEM/delay.c **** //Ö§³ÖUCOSIII
+  70:.//SYSTEM/delay.c **** #ifdef 	CPU_CFG_CRITICAL_METHOD					//CPU_CFG_CRITICAL_METHOD¶¨ÒåÁË,ËµÃ÷ÒªÖ§³ÖUCOSIII	
+  71:.//SYSTEM/delay.c **** #define delay_osrunning		OSRunning			//OSÊÇ·ñÔËÐÐ±ê¼Ç,0,²»ÔËÐÐ;1,ÔÚÔËÐÐ
+  72:.//SYSTEM/delay.c **** #define delay_ostickspersec	OSCfg_TickRate_Hz	//OSÊ±ÖÓ½ÚÅÄ,¼´Ã¿Ãëµ÷¶È´ÎÊý
+  73:.//SYSTEM/delay.c **** #define delay_osintnesting 	OSIntNestingCtr		//ÖÐ¶ÏÇ¶Ì×¼¶±ð,¼´ÖÐ¶ÏÇ¶Ì×´ÎÊý
+  74:.//SYSTEM/delay.c **** #endif
+  75:.//SYSTEM/delay.c **** 
+  76:.//SYSTEM/delay.c **** 
+  77:.//SYSTEM/delay.c **** //us¼¶ÑÓÊ±Ê±,¹Ø±ÕÈÎÎñµ÷¶È(·ÀÖ¹´ò¶Ïus¼¶ÑÓ³Ù)
+  78:.//SYSTEM/delay.c **** void delay_osschedlock(void)
+  79:.//SYSTEM/delay.c **** {
+  80:.//SYSTEM/delay.c **** #ifdef CPU_CFG_CRITICAL_METHOD   				//Ê¹ÓÃUCOSIII
+  81:.//SYSTEM/delay.c **** 	OS_ERR err; 
+  82:.//SYSTEM/delay.c **** 	OSSchedLock(&err);							//UCOSIIIµÄ·½Ê½,½ûÖ¹µ÷¶È£¬·ÀÖ¹´ò¶ÏusÑÓÊ±
+  83:.//SYSTEM/delay.c **** #else											//·ñÔòUCOSII
+  84:.//SYSTEM/delay.c **** 	OSSchedLock();								//UCOSIIµÄ·½Ê½,½ûÖ¹µ÷¶È£¬·ÀÖ¹´ò¶ÏusÑÓÊ±
+  85:.//SYSTEM/delay.c **** #endif
+  86:.//SYSTEM/delay.c **** }
+  87:.//SYSTEM/delay.c **** 
+  88:.//SYSTEM/delay.c **** //us¼¶ÑÓÊ±Ê±,»Ö¸´ÈÎÎñµ÷¶È
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s 			page 3
+
+
+  89:.//SYSTEM/delay.c **** void delay_osschedunlock(void)
+  90:.//SYSTEM/delay.c **** {	
+  91:.//SYSTEM/delay.c **** #ifdef CPU_CFG_CRITICAL_METHOD   				//Ê¹ÓÃUCOSIII
+  92:.//SYSTEM/delay.c **** 	OS_ERR err; 
+  93:.//SYSTEM/delay.c **** 	OSSchedUnlock(&err);						//UCOSIIIµÄ·½Ê½,»Ö¸´µ÷¶È
+  94:.//SYSTEM/delay.c **** #else											//·ñÔòUCOSII
+  95:.//SYSTEM/delay.c **** 	OSSchedUnlock();							//UCOSIIµÄ·½Ê½,»Ö¸´µ÷¶È
+  96:.//SYSTEM/delay.c **** #endif
+  97:.//SYSTEM/delay.c **** }
+  98:.//SYSTEM/delay.c **** 
+  99:.//SYSTEM/delay.c **** //µ÷ÓÃOS×Ô´øµÄÑÓÊ±º¯ÊýÑÓÊ±
+ 100:.//SYSTEM/delay.c **** //ticks:ÑÓÊ±µÄ½ÚÅÄÊý
+ 101:.//SYSTEM/delay.c **** void delay_ostimedly(u32 ticks)
+ 102:.//SYSTEM/delay.c **** {
+ 103:.//SYSTEM/delay.c **** #ifdef CPU_CFG_CRITICAL_METHOD
+ 104:.//SYSTEM/delay.c **** 	OS_ERR err; 
+ 105:.//SYSTEM/delay.c **** 	OSTimeDly(ticks,OS_OPT_TIME_PERIODIC,&err);	//UCOSIIIÑÓÊ±²ÉÓÃÖÜÆÚÄ£Ê½
+ 106:.//SYSTEM/delay.c **** #else
+ 107:.//SYSTEM/delay.c **** 	OSTimeDly(ticks);							//UCOSIIÑÓÊ±
+ 108:.//SYSTEM/delay.c **** #endif 
+ 109:.//SYSTEM/delay.c **** }
+ 110:.//SYSTEM/delay.c ****  
+ 111:.//SYSTEM/delay.c **** //systickÖÐ¶Ï·þÎñº¯Êý,Ê¹ÓÃucosÊ±ÓÃµ½
+ 112:.//SYSTEM/delay.c **** void SysTick_Handler(void)
+ 113:.//SYSTEM/delay.c **** {	
+ 114:.//SYSTEM/delay.c **** 	if(delay_osrunning==1)						//OS¿ªÊ¼ÅÜÁË,²ÅÖ´ÐÐÕý³£µÄµ÷¶È´¦Àí
+ 115:.//SYSTEM/delay.c **** 	{
+ 116:.//SYSTEM/delay.c **** 		OSIntEnter();							//½øÈëÖÐ¶Ï
+ 117:.//SYSTEM/delay.c **** 		OSTimeTick();       					//µ÷ÓÃucosµÄÊ±ÖÓ·þÎñ³ÌÐò               
+ 118:.//SYSTEM/delay.c **** 		OSIntExit();       	 					//´¥·¢ÈÎÎñÇÐ»»ÈíÖÐ¶Ï
+ 119:.//SYSTEM/delay.c **** 	}
+ 120:.//SYSTEM/delay.c **** }
+ 121:.//SYSTEM/delay.c **** #endif
+ 122:.//SYSTEM/delay.c **** 
+ 123:.//SYSTEM/delay.c **** 			   
+ 124:.//SYSTEM/delay.c **** //³õÊ¼»¯ÑÓ³Ùº¯Êý
+ 125:.//SYSTEM/delay.c **** //µ±Ê¹ÓÃOSµÄÊ±ºò,´Ëº¯Êý»á³õÊ¼»¯OSµÄÊ±ÖÓ½ÚÅÄ
+ 126:.//SYSTEM/delay.c **** //SYSTICKµÄÊ±ÖÓ¹Ì¶¨ÎªHCLKÊ±ÖÓµÄ1/8
+ 127:.//SYSTEM/delay.c **** //SYSCLK:ÏµÍ³Ê±ÖÓ
+ 128:.//SYSTEM/delay.c **** void delay_init()
+ 129:.//SYSTEM/delay.c **** {
+  28              		.loc 1 129 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+ 130:.//SYSTEM/delay.c **** #if SYSTEM_SUPPORT_OS  							//Èç¹ûÐèÒªÖ§³ÖOS.
+ 131:.//SYSTEM/delay.c **** 	u32 reload;
+ 132:.//SYSTEM/delay.c **** #endif
+ 133:.//SYSTEM/delay.c **** 	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);	//Ñ¡ÔñÍâ²¿Ê±ÖÓ  HCLK/8
+  37              		.loc 1 133 0
+  38 0002 6FF00400 		mvn	r0, #4
+  39 0006 FFF7FEFF 		bl	SysTick_CLKSourceConfig
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s 			page 4
+
+
+  40              	.LVL0:
+ 134:.//SYSTEM/delay.c **** 	fac_us=SystemCoreClock/8000000;				//ÎªÏµÍ³Ê±ÖÓµÄ1/8  
+  41              		.loc 1 134 0
+  42 000a 084B     		ldr	r3, .L3
+  43 000c 1B68     		ldr	r3, [r3]
+  44 000e 084A     		ldr	r2, .L3+4
+  45 0010 A2FB0323 		umull	r2, r3, r2, r3
+  46 0014 C3F34753 		ubfx	r3, r3, #21, #8
+  47 0018 064A     		ldr	r2, .L3+8
+  48 001a 1370     		strb	r3, [r2]
+ 135:.//SYSTEM/delay.c **** #if SYSTEM_SUPPORT_OS  							//Èç¹ûÐèÒªÖ§³ÖOS.
+ 136:.//SYSTEM/delay.c **** 	reload=SystemCoreClock/8000000;				//Ã¿ÃëÖÓµÄ¼ÆÊý´ÎÊý µ¥Î»ÎªM  
+ 137:.//SYSTEM/delay.c **** 	reload*=1000000/delay_ostickspersec;		//¸ù¾Ýdelay_ostickspersecÉè¶¨Òç³öÊ±¼ä
+ 138:.//SYSTEM/delay.c **** 												//reloadÎª24Î»¼Ä´æÆ÷,×î´óÖµ:16777216,ÔÚ72MÏÂ,Ô¼ºÏ1.86s×óÓÒ	
+ 139:.//SYSTEM/delay.c **** 	fac_ms=1000/delay_ostickspersec;			//´ú±íOS¿ÉÒÔÑÓÊ±µÄ×îÉÙµ¥Î»	   
+ 140:.//SYSTEM/delay.c **** 
+ 141:.//SYSTEM/delay.c **** 	SysTick->CTRL|=SysTick_CTRL_TICKINT_Msk;   	//¿ªÆôSYSTICKÖÐ¶Ï
+ 142:.//SYSTEM/delay.c **** 	SysTick->LOAD=reload; 						//Ã¿1/delay_ostickspersecÃëÖÐ¶ÏÒ»´Î	
+ 143:.//SYSTEM/delay.c **** 	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk;   	//¿ªÆôSYSTICK    
+ 144:.//SYSTEM/delay.c **** 
+ 145:.//SYSTEM/delay.c **** #else
+ 146:.//SYSTEM/delay.c **** 	fac_ms=(u16)fac_us*1000;					//·ÇOSÏÂ,´ú±íÃ¿¸ömsÐèÒªµÄsystickÊ±ÖÓÊý   
+  49              		.loc 1 146 0
+  50 001c C3EB4312 		rsb	r2, r3, r3, lsl #5
+  51 0020 03EB8203 		add	r3, r3, r2, lsl #2
+  52 0024 DA00     		lsls	r2, r3, #3
+  53 0026 044B     		ldr	r3, .L3+12
+  54 0028 1A80     		strh	r2, [r3]	@ movhi
+  55 002a 08BD     		pop	{r3, pc}
+  56              	.L4:
+  57              		.align	2
+  58              	.L3:
+  59 002c 00000000 		.word	SystemCoreClock
+  60 0030 83DE1B43 		.word	1125899907
+  61 0034 00000000 		.word	.LANCHOR0
+  62 0038 00000000 		.word	.LANCHOR1
+  63              		.cfi_endproc
+  64              	.LFE29:
+  66              		.section	.text.delay_us,"ax",%progbits
+  67              		.align	2
+  68              		.global	delay_us
+  69              		.thumb
+  70              		.thumb_func
+  72              	delay_us:
+  73              	.LFB30:
+ 147:.//SYSTEM/delay.c **** #endif
+ 148:.//SYSTEM/delay.c **** }								    
+ 149:.//SYSTEM/delay.c **** 
+ 150:.//SYSTEM/delay.c **** #if SYSTEM_SUPPORT_OS  							//Èç¹ûÐèÒªÖ§³ÖOS.
+ 151:.//SYSTEM/delay.c **** //ÑÓÊ±nus
+ 152:.//SYSTEM/delay.c **** //nusÎªÒªÑÓÊ±µÄusÊý.		    								   
+ 153:.//SYSTEM/delay.c **** void delay_us(u32 nus)
+ 154:.//SYSTEM/delay.c **** {		
+ 155:.//SYSTEM/delay.c **** 	u32 ticks;
+ 156:.//SYSTEM/delay.c **** 	u32 told,tnow,tcnt=0;
+ 157:.//SYSTEM/delay.c **** 	u32 reload=SysTick->LOAD;					//LOADµÄÖµ	    	 
+ 158:.//SYSTEM/delay.c **** 	ticks=nus*fac_us; 							//ÐèÒªµÄ½ÚÅÄÊý	  		 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s 			page 5
+
+
+ 159:.//SYSTEM/delay.c **** 	tcnt=0;
+ 160:.//SYSTEM/delay.c **** 	delay_osschedlock();						//×èÖ¹OSµ÷¶È£¬·ÀÖ¹´ò¶ÏusÑÓÊ±
+ 161:.//SYSTEM/delay.c **** 	told=SysTick->VAL;        					//¸Õ½øÈëÊ±µÄ¼ÆÊýÆ÷Öµ
+ 162:.//SYSTEM/delay.c **** 	while(1)
+ 163:.//SYSTEM/delay.c **** 	{
+ 164:.//SYSTEM/delay.c **** 		tnow=SysTick->VAL;	
+ 165:.//SYSTEM/delay.c **** 		if(tnow!=told)
+ 166:.//SYSTEM/delay.c **** 		{	    
+ 167:.//SYSTEM/delay.c **** 			if(tnow<told)tcnt+=told-tnow;		//ÕâÀï×¢ÒâÒ»ÏÂSYSTICKÊÇÒ»¸öµÝ¼õµÄ¼ÆÊýÆ÷¾Í¿ÉÒÔÁË.
+ 168:.//SYSTEM/delay.c **** 			else tcnt+=reload-tnow+told;	    
+ 169:.//SYSTEM/delay.c **** 			told=tnow;
+ 170:.//SYSTEM/delay.c **** 			if(tcnt>=ticks)break;				//Ê±¼ä³¬¹ý/µÈÓÚÒªÑÓ³ÙµÄÊ±¼ä,ÔòÍË³ö.
+ 171:.//SYSTEM/delay.c **** 		}  
+ 172:.//SYSTEM/delay.c **** 	};
+ 173:.//SYSTEM/delay.c **** 	delay_osschedunlock();						//»Ö¸´OSµ÷¶È									    
+ 174:.//SYSTEM/delay.c **** }
+ 175:.//SYSTEM/delay.c **** //ÑÓÊ±nms
+ 176:.//SYSTEM/delay.c **** //nms:ÒªÑÓÊ±µÄmsÊý
+ 177:.//SYSTEM/delay.c **** void delay_ms(u16 nms)
+ 178:.//SYSTEM/delay.c **** {	
+ 179:.//SYSTEM/delay.c **** 	if(delay_osrunning&&delay_osintnesting==0)	//Èç¹ûOSÒÑ¾­ÔÚÅÜÁË,²¢ÇÒ²»ÊÇÔÚÖÐ¶ÏÀïÃæ(ÖÐ¶ÏÀïÃæ²»ÄÜÈÎÎñµ
+ 180:.//SYSTEM/delay.c **** 	{		 
+ 181:.//SYSTEM/delay.c **** 		if(nms>=fac_ms)							//ÑÓÊ±µÄÊ±¼ä´óÓÚOSµÄ×îÉÙÊ±¼äÖÜÆÚ 
+ 182:.//SYSTEM/delay.c **** 		{ 
+ 183:.//SYSTEM/delay.c ****    			delay_ostimedly(nms/fac_ms);		//OSÑÓÊ±
+ 184:.//SYSTEM/delay.c **** 		}
+ 185:.//SYSTEM/delay.c **** 		nms%=fac_ms;							//OSÒÑ¾­ÎÞ·¨Ìá¹©ÕâÃ´Ð¡µÄÑÓÊ±ÁË,²ÉÓÃÆÕÍ¨·½Ê½ÑÓÊ±    
+ 186:.//SYSTEM/delay.c **** 	}
+ 187:.//SYSTEM/delay.c **** 	delay_us((u32)(nms*1000));					//ÆÕÍ¨·½Ê½ÑÓÊ±  
+ 188:.//SYSTEM/delay.c **** }
+ 189:.//SYSTEM/delay.c **** #else //²»ÓÃOSÊ±
+ 190:.//SYSTEM/delay.c **** //ÑÓÊ±nus
+ 191:.//SYSTEM/delay.c **** //nusÎªÒªÑÓÊ±µÄusÊý.		    								   
+ 192:.//SYSTEM/delay.c **** void delay_us(u32 nus)
+ 193:.//SYSTEM/delay.c **** {		
+  74              		.loc 1 193 0
+  75              		.cfi_startproc
+  76              		@ args = 0, pretend = 0, frame = 0
+  77              		@ frame_needed = 0, uses_anonymous_args = 0
+  78              		@ link register save eliminated.
+  79              	.LVL1:
+ 194:.//SYSTEM/delay.c **** 	u32 temp;	    	 
+ 195:.//SYSTEM/delay.c **** 	SysTick->LOAD=nus*fac_us; 					//Ê±¼ä¼ÓÔØ	  		 
+  80              		.loc 1 195 0
+  81 0000 0C4B     		ldr	r3, .L7
+  82 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  83 0004 00FB03F0 		mul	r0, r0, r3
+  84              	.LVL2:
+  85 0008 0B4B     		ldr	r3, .L7+4
+  86 000a 5860     		str	r0, [r3, #4]
+ 196:.//SYSTEM/delay.c **** 	SysTick->VAL=0x00;        					//Çå¿Õ¼ÆÊýÆ÷
+  87              		.loc 1 196 0
+  88 000c 0022     		movs	r2, #0
+  89 000e 9A60     		str	r2, [r3, #8]
+ 197:.//SYSTEM/delay.c **** 	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk ;	//¿ªÊ¼µ¹Êý	  
+  90              		.loc 1 197 0
+  91 0010 1A68     		ldr	r2, [r3]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s 			page 6
+
+
+  92 0012 42F00102 		orr	r2, r2, #1
+  93 0016 1A60     		str	r2, [r3]
+  94              	.L6:
+ 198:.//SYSTEM/delay.c **** 	do
+ 199:.//SYSTEM/delay.c **** 	{
+ 200:.//SYSTEM/delay.c **** 		temp=SysTick->CTRL;
+  95              		.loc 1 200 0 discriminator 1
+  96 0018 074B     		ldr	r3, .L7+4
+  97 001a 1B68     		ldr	r3, [r3]
+  98              	.LVL3:
+ 201:.//SYSTEM/delay.c **** 	}while((temp&0x01)&&!(temp&(1<<16)));		//µÈ´ýÊ±¼äµ½´ï   
+  99              		.loc 1 201 0 discriminator 1
+ 100 001c 03F00113 		and	r3, r3, #65537
+ 101              	.LVL4:
+ 102 0020 012B     		cmp	r3, #1
+ 103 0022 F9D0     		beq	.L6
+ 202:.//SYSTEM/delay.c **** 	SysTick->CTRL&=~SysTick_CTRL_ENABLE_Msk;	//¹Ø±Õ¼ÆÊýÆ÷
+ 104              		.loc 1 202 0
+ 105 0024 044B     		ldr	r3, .L7+4
+ 106 0026 1A68     		ldr	r2, [r3]
+ 107 0028 22F00102 		bic	r2, r2, #1
+ 108 002c 1A60     		str	r2, [r3]
+ 203:.//SYSTEM/delay.c **** 	SysTick->VAL =0X00;      					 //Çå¿Õ¼ÆÊýÆ÷	 
+ 109              		.loc 1 203 0
+ 110 002e 0022     		movs	r2, #0
+ 111 0030 9A60     		str	r2, [r3, #8]
+ 112 0032 7047     		bx	lr
+ 113              	.L8:
+ 114              		.align	2
+ 115              	.L7:
+ 116 0034 00000000 		.word	.LANCHOR0
+ 117 0038 10E000E0 		.word	-536813552
+ 118              		.cfi_endproc
+ 119              	.LFE30:
+ 121              		.section	.text.delay_ms,"ax",%progbits
+ 122              		.align	2
+ 123              		.global	delay_ms
+ 124              		.thumb
+ 125              		.thumb_func
+ 127              	delay_ms:
+ 128              	.LFB31:
+ 204:.//SYSTEM/delay.c **** }
+ 205:.//SYSTEM/delay.c **** //ÑÓÊ±nms
+ 206:.//SYSTEM/delay.c **** //×¢ÒânmsµÄ·¶Î§
+ 207:.//SYSTEM/delay.c **** //SysTick->LOADÎª24Î»¼Ä´æÆ÷,ËùÒÔ,×î´óÑÓÊ±Îª:
+ 208:.//SYSTEM/delay.c **** //nms<=0xffffff*8*1000/SYSCLK
+ 209:.//SYSTEM/delay.c **** //SYSCLKµ¥Î»ÎªHz,nmsµ¥Î»Îªms
+ 210:.//SYSTEM/delay.c **** //¶Ô72MÌõ¼þÏÂ,nms<=1864 
+ 211:.//SYSTEM/delay.c **** void delay_ms(u16 nms)
+ 212:.//SYSTEM/delay.c **** {	 		  	  
+ 129              		.loc 1 212 0
+ 130              		.cfi_startproc
+ 131              		@ args = 0, pretend = 0, frame = 0
+ 132              		@ frame_needed = 0, uses_anonymous_args = 0
+ 133              		@ link register save eliminated.
+ 134              	.LVL5:
+ 213:.//SYSTEM/delay.c **** 	u32 temp;		   
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s 			page 7
+
+
+ 214:.//SYSTEM/delay.c **** 	SysTick->LOAD=(u32)nms*fac_ms;				//Ê±¼ä¼ÓÔØ(SysTick->LOADÎª24bit)
+ 135              		.loc 1 214 0
+ 136 0000 0C4B     		ldr	r3, .L11
+ 137 0002 1B88     		ldrh	r3, [r3]
+ 138 0004 00FB03F0 		mul	r0, r0, r3
+ 139              	.LVL6:
+ 140 0008 0B4B     		ldr	r3, .L11+4
+ 141 000a 5860     		str	r0, [r3, #4]
+ 215:.//SYSTEM/delay.c **** 	SysTick->VAL =0x00;							//Çå¿Õ¼ÆÊýÆ÷
+ 142              		.loc 1 215 0
+ 143 000c 0022     		movs	r2, #0
+ 144 000e 9A60     		str	r2, [r3, #8]
+ 216:.//SYSTEM/delay.c **** 	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk ;	//¿ªÊ¼µ¹Êý  
+ 145              		.loc 1 216 0
+ 146 0010 1A68     		ldr	r2, [r3]
+ 147 0012 42F00102 		orr	r2, r2, #1
+ 148 0016 1A60     		str	r2, [r3]
+ 149              	.L10:
+ 217:.//SYSTEM/delay.c **** 	do
+ 218:.//SYSTEM/delay.c **** 	{
+ 219:.//SYSTEM/delay.c **** 		temp=SysTick->CTRL;
+ 150              		.loc 1 219 0 discriminator 1
+ 151 0018 074B     		ldr	r3, .L11+4
+ 152 001a 1B68     		ldr	r3, [r3]
+ 153              	.LVL7:
+ 220:.//SYSTEM/delay.c **** 	}while((temp&0x01)&&!(temp&(1<<16)));		//µÈ´ýÊ±¼äµ½´ï   
+ 154              		.loc 1 220 0 discriminator 1
+ 155 001c 03F00113 		and	r3, r3, #65537
+ 156              	.LVL8:
+ 157 0020 012B     		cmp	r3, #1
+ 158 0022 F9D0     		beq	.L10
+ 221:.//SYSTEM/delay.c **** 	SysTick->CTRL&=~SysTick_CTRL_ENABLE_Msk;	//¹Ø±Õ¼ÆÊýÆ÷
+ 159              		.loc 1 221 0
+ 160 0024 044B     		ldr	r3, .L11+4
+ 161 0026 1A68     		ldr	r2, [r3]
+ 162 0028 22F00102 		bic	r2, r2, #1
+ 163 002c 1A60     		str	r2, [r3]
+ 222:.//SYSTEM/delay.c **** 	SysTick->VAL =0X00;       					//Çå¿Õ¼ÆÊýÆ÷	  	    
+ 164              		.loc 1 222 0
+ 165 002e 0022     		movs	r2, #0
+ 166 0030 9A60     		str	r2, [r3, #8]
+ 167 0032 7047     		bx	lr
+ 168              	.L12:
+ 169              		.align	2
+ 170              	.L11:
+ 171 0034 00000000 		.word	.LANCHOR1
+ 172 0038 10E000E0 		.word	-536813552
+ 173              		.cfi_endproc
+ 174              	.LFE31:
+ 176              		.section	.bss.fac_us,"aw",%nobits
+ 177              		.set	.LANCHOR0,. + 0
+ 180              	fac_us:
+ 181 0000 00       		.space	1
+ 182              		.section	.bss.fac_ms,"aw",%nobits
+ 183              		.align	1
+ 184              		.set	.LANCHOR1,. + 0
+ 187              	fac_ms:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s 			page 8
+
+
+ 188 0000 0000     		.space	2
+ 189              		.text
+ 190              	.Letext0:
+ 191              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 192              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 193              		.file 4 "CORE/core_cm3.h"
+ 194              		.file 5 "USER/stm32f10x.h"
+ 195              		.file 6 "USER/system_stm32f10x.h"
+ 196              		.file 7 "FWLIB/inc/misc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 delay.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:20     .text.delay_init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:25     .text.delay_init:0000000000000000 delay_init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:59     .text.delay_init:000000000000002c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:67     .text.delay_us:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:72     .text.delay_us:0000000000000000 delay_us
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:116    .text.delay_us:0000000000000034 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:122    .text.delay_ms:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:127    .text.delay_ms:0000000000000000 delay_ms
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:171    .text.delay_ms:0000000000000034 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:180    .bss.fac_us:0000000000000000 fac_us
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:181    .bss.fac_us:0000000000000000 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:183    .bss.fac_ms:0000000000000000 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccmA4Xee.s:187    .bss.fac_ms:0000000000000000 fac_ms
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+SysTick_CLKSourceConfig
+SystemCoreClock

@@ -1,0 +1,715 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"stm32f4xx_rng.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.RNG_DeInit,"ax",%progbits
+  22              		.align	2
+  23              		.global	RNG_DeInit
+  24              		.thumb
+  25              		.thumb_func
+  27              	RNG_DeInit:
+  28              	.LFB112:
+  29              		.file 1 ".//FWLIB/src/stm32f4xx_rng.c"
+   1:.//FWLIB/src/stm32f4xx_rng.c **** /**
+   2:.//FWLIB/src/stm32f4xx_rng.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f4xx_rng.c ****   * @file    stm32f4xx_rng.c
+   4:.//FWLIB/src/stm32f4xx_rng.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f4xx_rng.c ****   * @version V1.4.0
+   6:.//FWLIB/src/stm32f4xx_rng.c ****   * @date    04-August-2014
+   7:.//FWLIB/src/stm32f4xx_rng.c ****   * @brief This file provides firmware functions to manage the following 
+   8:.//FWLIB/src/stm32f4xx_rng.c ****   *          functionalities of the Random Number Generator (RNG) peripheral:           
+   9:.//FWLIB/src/stm32f4xx_rng.c ****   *           + Initialization and Configuration 
+  10:.//FWLIB/src/stm32f4xx_rng.c ****   *           + Get 32 bit Random number      
+  11:.//FWLIB/src/stm32f4xx_rng.c ****   *           + Interrupts and flags management       
+  12:.//FWLIB/src/stm32f4xx_rng.c ****   *         
+  13:.//FWLIB/src/stm32f4xx_rng.c **** @verbatim
+  14:.//FWLIB/src/stm32f4xx_rng.c ****                                  
+  15:.//FWLIB/src/stm32f4xx_rng.c ****  ===================================================================      
+  16:.//FWLIB/src/stm32f4xx_rng.c ****                  ##### How to use this driver #####
+  17:.//FWLIB/src/stm32f4xx_rng.c ****  ===================================================================          
+  18:.//FWLIB/src/stm32f4xx_rng.c ****  [..]
+  19:.//FWLIB/src/stm32f4xx_rng.c ****    (#) Enable The RNG controller clock using 
+  20:.//FWLIB/src/stm32f4xx_rng.c ****        RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_RNG, ENABLE) function.
+  21:.//FWLIB/src/stm32f4xx_rng.c ****                 
+  22:.//FWLIB/src/stm32f4xx_rng.c ****    (#) Activate the RNG peripheral using RNG_Cmd() function.
+  23:.//FWLIB/src/stm32f4xx_rng.c ****             
+  24:.//FWLIB/src/stm32f4xx_rng.c ****    (#) Wait until the 32 bit Random number Generator contains a valid  random data
+  25:.//FWLIB/src/stm32f4xx_rng.c ****       (using polling/interrupt mode). For more details, refer to "Interrupts and 
+  26:.//FWLIB/src/stm32f4xx_rng.c ****       flags management functions" module description.
+  27:.//FWLIB/src/stm32f4xx_rng.c ****              
+  28:.//FWLIB/src/stm32f4xx_rng.c ****    (#) Get the 32 bit Random number using RNG_GetRandomNumber() function
+  29:.//FWLIB/src/stm32f4xx_rng.c ****             
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 2
+
+
+  30:.//FWLIB/src/stm32f4xx_rng.c ****    (#) To get another 32 bit Random number, go to step 3.       
+  31:.//FWLIB/src/stm32f4xx_rng.c ****          
+  32:.//FWLIB/src/stm32f4xx_rng.c ****                 
+  33:.//FWLIB/src/stm32f4xx_rng.c **** @endverbatim
+  34:.//FWLIB/src/stm32f4xx_rng.c ****   *         
+  35:.//FWLIB/src/stm32f4xx_rng.c ****   ******************************************************************************
+  36:.//FWLIB/src/stm32f4xx_rng.c ****   * @attention
+  37:.//FWLIB/src/stm32f4xx_rng.c ****   *
+  38:.//FWLIB/src/stm32f4xx_rng.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  39:.//FWLIB/src/stm32f4xx_rng.c ****   *
+  40:.//FWLIB/src/stm32f4xx_rng.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  41:.//FWLIB/src/stm32f4xx_rng.c ****   * You may not use this file except in compliance with the License.
+  42:.//FWLIB/src/stm32f4xx_rng.c ****   * You may obtain a copy of the License at:
+  43:.//FWLIB/src/stm32f4xx_rng.c ****   *
+  44:.//FWLIB/src/stm32f4xx_rng.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  45:.//FWLIB/src/stm32f4xx_rng.c ****   *
+  46:.//FWLIB/src/stm32f4xx_rng.c ****   * Unless required by applicable law or agreed to in writing, software 
+  47:.//FWLIB/src/stm32f4xx_rng.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  48:.//FWLIB/src/stm32f4xx_rng.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  49:.//FWLIB/src/stm32f4xx_rng.c ****   * See the License for the specific language governing permissions and
+  50:.//FWLIB/src/stm32f4xx_rng.c ****   * limitations under the License.
+  51:.//FWLIB/src/stm32f4xx_rng.c ****   *
+  52:.//FWLIB/src/stm32f4xx_rng.c ****   ******************************************************************************  
+  53:.//FWLIB/src/stm32f4xx_rng.c ****   */
+  54:.//FWLIB/src/stm32f4xx_rng.c **** 
+  55:.//FWLIB/src/stm32f4xx_rng.c **** /* Includes ------------------------------------------------------------------*/
+  56:.//FWLIB/src/stm32f4xx_rng.c **** #include "stm32f4xx_rng.h"
+  57:.//FWLIB/src/stm32f4xx_rng.c **** #include "stm32f4xx_rcc.h"
+  58:.//FWLIB/src/stm32f4xx_rng.c **** 
+  59:.//FWLIB/src/stm32f4xx_rng.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+  60:.//FWLIB/src/stm32f4xx_rng.c ****   * @{
+  61:.//FWLIB/src/stm32f4xx_rng.c ****   */
+  62:.//FWLIB/src/stm32f4xx_rng.c **** 
+  63:.//FWLIB/src/stm32f4xx_rng.c **** /** @defgroup RNG 
+  64:.//FWLIB/src/stm32f4xx_rng.c ****   * @brief RNG driver modules
+  65:.//FWLIB/src/stm32f4xx_rng.c ****   * @{
+  66:.//FWLIB/src/stm32f4xx_rng.c ****   */ 
+  67:.//FWLIB/src/stm32f4xx_rng.c **** 
+  68:.//FWLIB/src/stm32f4xx_rng.c **** /* Private typedef -----------------------------------------------------------*/
+  69:.//FWLIB/src/stm32f4xx_rng.c **** /* Private define ------------------------------------------------------------*/
+  70:.//FWLIB/src/stm32f4xx_rng.c **** /* Private macro -------------------------------------------------------------*/
+  71:.//FWLIB/src/stm32f4xx_rng.c **** /* Private variables ---------------------------------------------------------*/
+  72:.//FWLIB/src/stm32f4xx_rng.c **** /* Private function prototypes -----------------------------------------------*/
+  73:.//FWLIB/src/stm32f4xx_rng.c **** /* Private functions ---------------------------------------------------------*/
+  74:.//FWLIB/src/stm32f4xx_rng.c **** 
+  75:.//FWLIB/src/stm32f4xx_rng.c **** /** @defgroup RNG_Private_Functions
+  76:.//FWLIB/src/stm32f4xx_rng.c ****   * @{
+  77:.//FWLIB/src/stm32f4xx_rng.c ****   */ 
+  78:.//FWLIB/src/stm32f4xx_rng.c **** 
+  79:.//FWLIB/src/stm32f4xx_rng.c **** /** @defgroup RNG_Group1 Initialization and Configuration functions
+  80:.//FWLIB/src/stm32f4xx_rng.c ****  *  @brief    Initialization and Configuration functions 
+  81:.//FWLIB/src/stm32f4xx_rng.c ****  *
+  82:.//FWLIB/src/stm32f4xx_rng.c **** @verbatim    
+  83:.//FWLIB/src/stm32f4xx_rng.c ****  ===============================================================================
+  84:.//FWLIB/src/stm32f4xx_rng.c ****              ##### Initialization and Configuration functions #####
+  85:.//FWLIB/src/stm32f4xx_rng.c ****  ===============================================================================  
+  86:.//FWLIB/src/stm32f4xx_rng.c ****  [..] This section provides functions allowing to 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 3
+
+
+  87:.//FWLIB/src/stm32f4xx_rng.c ****    (+) Initialize the RNG peripheral
+  88:.//FWLIB/src/stm32f4xx_rng.c ****    (+) Enable or disable the RNG peripheral
+  89:.//FWLIB/src/stm32f4xx_rng.c ****    
+  90:.//FWLIB/src/stm32f4xx_rng.c **** @endverbatim
+  91:.//FWLIB/src/stm32f4xx_rng.c ****   * @{
+  92:.//FWLIB/src/stm32f4xx_rng.c ****   */
+  93:.//FWLIB/src/stm32f4xx_rng.c **** 
+  94:.//FWLIB/src/stm32f4xx_rng.c **** /**
+  95:.//FWLIB/src/stm32f4xx_rng.c ****   * @brief  De-initializes the RNG peripheral registers to their default reset values.
+  96:.//FWLIB/src/stm32f4xx_rng.c ****   * @param  None
+  97:.//FWLIB/src/stm32f4xx_rng.c ****   * @retval None
+  98:.//FWLIB/src/stm32f4xx_rng.c ****   */
+  99:.//FWLIB/src/stm32f4xx_rng.c **** void RNG_DeInit(void)
+ 100:.//FWLIB/src/stm32f4xx_rng.c **** {
+  30              		.loc 1 100 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+ 101:.//FWLIB/src/stm32f4xx_rng.c ****   /* Enable RNG reset state */
+ 102:.//FWLIB/src/stm32f4xx_rng.c ****   RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_RNG, ENABLE);
+  39              		.loc 1 102 0
+  40 0002 0121     		movs	r1, #1
+  41 0004 4020     		movs	r0, #64
+  42 0006 FFF7FEFF 		bl	RCC_AHB2PeriphResetCmd
+  43              	.LVL0:
+ 103:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 104:.//FWLIB/src/stm32f4xx_rng.c ****   /* Release RNG from reset state */
+ 105:.//FWLIB/src/stm32f4xx_rng.c ****   RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_RNG, DISABLE);
+  44              		.loc 1 105 0
+  45 000a 0021     		movs	r1, #0
+  46 000c 4020     		movs	r0, #64
+  47 000e FFF7FEFF 		bl	RCC_AHB2PeriphResetCmd
+  48              	.LVL1:
+  49 0012 08BD     		pop	{r3, pc}
+  50              		.cfi_endproc
+  51              	.LFE112:
+  53              		.section	.text.RNG_Cmd,"ax",%progbits
+  54              		.align	2
+  55              		.global	RNG_Cmd
+  56              		.thumb
+  57              		.thumb_func
+  59              	RNG_Cmd:
+  60              	.LFB113:
+ 106:.//FWLIB/src/stm32f4xx_rng.c **** }
+ 107:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 108:.//FWLIB/src/stm32f4xx_rng.c **** /**
+ 109:.//FWLIB/src/stm32f4xx_rng.c ****   * @brief  Enables or disables the RNG peripheral.
+ 110:.//FWLIB/src/stm32f4xx_rng.c ****   * @param  NewState: new state of the RNG peripheral.
+ 111:.//FWLIB/src/stm32f4xx_rng.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 112:.//FWLIB/src/stm32f4xx_rng.c ****   * @retval None
+ 113:.//FWLIB/src/stm32f4xx_rng.c ****   */
+ 114:.//FWLIB/src/stm32f4xx_rng.c **** void RNG_Cmd(FunctionalState NewState)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 4
+
+
+ 115:.//FWLIB/src/stm32f4xx_rng.c **** {
+  61              		.loc 1 115 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66              	.LVL2:
+ 116:.//FWLIB/src/stm32f4xx_rng.c ****   /* Check the parameters */
+ 117:.//FWLIB/src/stm32f4xx_rng.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 118:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 119:.//FWLIB/src/stm32f4xx_rng.c ****   if (NewState != DISABLE)
+  67              		.loc 1 119 0
+  68 0000 28B1     		cbz	r0, .L4
+ 120:.//FWLIB/src/stm32f4xx_rng.c ****   {
+ 121:.//FWLIB/src/stm32f4xx_rng.c ****     /* Enable the RNG */
+ 122:.//FWLIB/src/stm32f4xx_rng.c ****     RNG->CR |= RNG_CR_RNGEN;
+  69              		.loc 1 122 0
+  70 0002 064A     		ldr	r2, .L6
+  71 0004 1368     		ldr	r3, [r2]
+  72 0006 43F00403 		orr	r3, r3, #4
+  73 000a 1360     		str	r3, [r2]
+  74 000c 7047     		bx	lr
+  75              	.L4:
+ 123:.//FWLIB/src/stm32f4xx_rng.c ****   }
+ 124:.//FWLIB/src/stm32f4xx_rng.c ****   else
+ 125:.//FWLIB/src/stm32f4xx_rng.c ****   {
+ 126:.//FWLIB/src/stm32f4xx_rng.c ****     /* Disable the RNG */
+ 127:.//FWLIB/src/stm32f4xx_rng.c ****     RNG->CR &= ~RNG_CR_RNGEN;
+  76              		.loc 1 127 0
+  77 000e 034A     		ldr	r2, .L6
+  78 0010 1368     		ldr	r3, [r2]
+  79 0012 23F00403 		bic	r3, r3, #4
+  80 0016 1360     		str	r3, [r2]
+  81 0018 7047     		bx	lr
+  82              	.L7:
+  83 001a 00BF     		.align	2
+  84              	.L6:
+  85 001c 00080650 		.word	1342572544
+  86              		.cfi_endproc
+  87              	.LFE113:
+  89              		.section	.text.RNG_GetRandomNumber,"ax",%progbits
+  90              		.align	2
+  91              		.global	RNG_GetRandomNumber
+  92              		.thumb
+  93              		.thumb_func
+  95              	RNG_GetRandomNumber:
+  96              	.LFB114:
+ 128:.//FWLIB/src/stm32f4xx_rng.c ****   }
+ 129:.//FWLIB/src/stm32f4xx_rng.c **** }
+ 130:.//FWLIB/src/stm32f4xx_rng.c **** /**
+ 131:.//FWLIB/src/stm32f4xx_rng.c ****   * @}
+ 132:.//FWLIB/src/stm32f4xx_rng.c ****   */
+ 133:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 134:.//FWLIB/src/stm32f4xx_rng.c **** /** @defgroup RNG_Group2 Get 32 bit Random number function
+ 135:.//FWLIB/src/stm32f4xx_rng.c ****  *  @brief    Get 32 bit Random number function 
+ 136:.//FWLIB/src/stm32f4xx_rng.c ****  *
+ 137:.//FWLIB/src/stm32f4xx_rng.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 5
+
+
+ 138:.//FWLIB/src/stm32f4xx_rng.c **** @verbatim    
+ 139:.//FWLIB/src/stm32f4xx_rng.c ****  ===============================================================================
+ 140:.//FWLIB/src/stm32f4xx_rng.c ****                  ##### Get 32 bit Random number function #####
+ 141:.//FWLIB/src/stm32f4xx_rng.c ****  ===============================================================================  
+ 142:.//FWLIB/src/stm32f4xx_rng.c ****  [..] This section provides a function allowing to get the 32 bit Random number  
+ 143:.//FWLIB/src/stm32f4xx_rng.c ****   
+ 144:.//FWLIB/src/stm32f4xx_rng.c ****    (@)  Before to call this function you have to wait till DRDY flag is set,
+ 145:.//FWLIB/src/stm32f4xx_rng.c ****         using RNG_GetFlagStatus(RNG_FLAG_DRDY) function. 
+ 146:.//FWLIB/src/stm32f4xx_rng.c ****    
+ 147:.//FWLIB/src/stm32f4xx_rng.c **** @endverbatim
+ 148:.//FWLIB/src/stm32f4xx_rng.c ****   * @{
+ 149:.//FWLIB/src/stm32f4xx_rng.c ****   */
+ 150:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 151:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 152:.//FWLIB/src/stm32f4xx_rng.c **** /**
+ 153:.//FWLIB/src/stm32f4xx_rng.c ****   * @brief  Returns a 32-bit random number.
+ 154:.//FWLIB/src/stm32f4xx_rng.c ****   *   
+ 155:.//FWLIB/src/stm32f4xx_rng.c ****   * @note   Before to call this function you have to wait till DRDY (data ready)
+ 156:.//FWLIB/src/stm32f4xx_rng.c ****   *         flag is set, using RNG_GetFlagStatus(RNG_FLAG_DRDY) function.
+ 157:.//FWLIB/src/stm32f4xx_rng.c ****   * @note   Each time the the Random number data is read (using RNG_GetRandomNumber()
+ 158:.//FWLIB/src/stm32f4xx_rng.c ****   *         function), the RNG_FLAG_DRDY flag is automatically cleared.
+ 159:.//FWLIB/src/stm32f4xx_rng.c ****   * @note   In the case of a seed error, the generation of random numbers is 
+ 160:.//FWLIB/src/stm32f4xx_rng.c ****   *         interrupted for as long as the SECS bit is '1'. If a number is 
+ 161:.//FWLIB/src/stm32f4xx_rng.c ****   *         available in the RNG_DR register, it must not be used because it may 
+ 162:.//FWLIB/src/stm32f4xx_rng.c ****   *         not have enough entropy. In this case, it is recommended to clear the 
+ 163:.//FWLIB/src/stm32f4xx_rng.c ****   *         SEIS bit(using RNG_ClearFlag(RNG_FLAG_SECS) function), then disable 
+ 164:.//FWLIB/src/stm32f4xx_rng.c ****   *         and enable the RNG peripheral (using RNG_Cmd() function) to 
+ 165:.//FWLIB/src/stm32f4xx_rng.c ****   *         reinitialize and restart the RNG.
+ 166:.//FWLIB/src/stm32f4xx_rng.c ****   * @note   In the case of a clock error, the RNG is no more able to generate 
+ 167:.//FWLIB/src/stm32f4xx_rng.c ****   *         random numbers because the PLL48CLK clock is not correct. User have 
+ 168:.//FWLIB/src/stm32f4xx_rng.c ****   *         to check that the clock controller is correctly configured to provide
+ 169:.//FWLIB/src/stm32f4xx_rng.c ****   *         the RNG clock and clear the CEIS bit (using RNG_ClearFlag(RNG_FLAG_CECS) 
+ 170:.//FWLIB/src/stm32f4xx_rng.c ****   *         function) . The clock error has no impact on the previously generated 
+ 171:.//FWLIB/src/stm32f4xx_rng.c ****   *         random numbers, and the RNG_DR register contents can be used.
+ 172:.//FWLIB/src/stm32f4xx_rng.c ****   *         
+ 173:.//FWLIB/src/stm32f4xx_rng.c ****   * @param  None
+ 174:.//FWLIB/src/stm32f4xx_rng.c ****   * @retval 32-bit random number.
+ 175:.//FWLIB/src/stm32f4xx_rng.c ****   */
+ 176:.//FWLIB/src/stm32f4xx_rng.c **** uint32_t RNG_GetRandomNumber(void)
+ 177:.//FWLIB/src/stm32f4xx_rng.c **** {
+  97              		.loc 1 177 0
+  98              		.cfi_startproc
+  99              		@ args = 0, pretend = 0, frame = 0
+ 100              		@ frame_needed = 0, uses_anonymous_args = 0
+ 101              		@ link register save eliminated.
+ 178:.//FWLIB/src/stm32f4xx_rng.c ****   /* Return the 32 bit random number from the DR register */
+ 179:.//FWLIB/src/stm32f4xx_rng.c ****   return RNG->DR;
+ 102              		.loc 1 179 0
+ 103 0000 014B     		ldr	r3, .L9
+ 104 0002 9868     		ldr	r0, [r3, #8]
+ 180:.//FWLIB/src/stm32f4xx_rng.c **** }
+ 105              		.loc 1 180 0
+ 106 0004 7047     		bx	lr
+ 107              	.L10:
+ 108 0006 00BF     		.align	2
+ 109              	.L9:
+ 110 0008 00080650 		.word	1342572544
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 6
+
+
+ 111              		.cfi_endproc
+ 112              	.LFE114:
+ 114              		.section	.text.RNG_ITConfig,"ax",%progbits
+ 115              		.align	2
+ 116              		.global	RNG_ITConfig
+ 117              		.thumb
+ 118              		.thumb_func
+ 120              	RNG_ITConfig:
+ 121              	.LFB115:
+ 181:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 182:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 183:.//FWLIB/src/stm32f4xx_rng.c **** /**
+ 184:.//FWLIB/src/stm32f4xx_rng.c ****   * @}
+ 185:.//FWLIB/src/stm32f4xx_rng.c ****   */
+ 186:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 187:.//FWLIB/src/stm32f4xx_rng.c **** /** @defgroup RNG_Group3 Interrupts and flags management functions
+ 188:.//FWLIB/src/stm32f4xx_rng.c ****  *  @brief   Interrupts and flags management functions
+ 189:.//FWLIB/src/stm32f4xx_rng.c ****  *
+ 190:.//FWLIB/src/stm32f4xx_rng.c **** @verbatim   
+ 191:.//FWLIB/src/stm32f4xx_rng.c ****  ===============================================================================
+ 192:.//FWLIB/src/stm32f4xx_rng.c ****              ##### Interrupts and flags management functions #####
+ 193:.//FWLIB/src/stm32f4xx_rng.c ****  ===============================================================================  
+ 194:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 195:.//FWLIB/src/stm32f4xx_rng.c ****  [..] This section provides functions allowing to configure the RNG Interrupts and 
+ 196:.//FWLIB/src/stm32f4xx_rng.c ****       to get the status and clear flags and Interrupts pending bits.
+ 197:.//FWLIB/src/stm32f4xx_rng.c ****   
+ 198:.//FWLIB/src/stm32f4xx_rng.c ****  [..] The RNG provides 3 Interrupts sources and 3 Flags:
+ 199:.//FWLIB/src/stm32f4xx_rng.c ****   
+ 200:.//FWLIB/src/stm32f4xx_rng.c ****  *** Flags : ***
+ 201:.//FWLIB/src/stm32f4xx_rng.c ****  ===============
+ 202:.//FWLIB/src/stm32f4xx_rng.c ****  [..] 
+ 203:.//FWLIB/src/stm32f4xx_rng.c ****     (#) RNG_FLAG_DRDY :  In the case of the RNG_DR register contains valid 
+ 204:.//FWLIB/src/stm32f4xx_rng.c ****         random data. it is cleared by reading the valid data(using 
+ 205:.//FWLIB/src/stm32f4xx_rng.c ****         RNG_GetRandomNumber() function).
+ 206:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 207:.//FWLIB/src/stm32f4xx_rng.c ****     (#) RNG_FLAG_CECS : In the case of a seed error detection. 
+ 208:.//FWLIB/src/stm32f4xx_rng.c ****       
+ 209:.//FWLIB/src/stm32f4xx_rng.c ****     (#) RNG_FLAG_SECS : In the case of a clock error detection.
+ 210:.//FWLIB/src/stm32f4xx_rng.c ****               
+ 211:.//FWLIB/src/stm32f4xx_rng.c ****  *** Interrupts ***
+ 212:.//FWLIB/src/stm32f4xx_rng.c ****  ==================
+ 213:.//FWLIB/src/stm32f4xx_rng.c ****  [..] If enabled, an RNG interrupt is pending :
+ 214:.//FWLIB/src/stm32f4xx_rng.c ****     
+ 215:.//FWLIB/src/stm32f4xx_rng.c ****    (#) In the case of the RNG_DR register contains valid random data. 
+ 216:.//FWLIB/src/stm32f4xx_rng.c ****        This interrupt source is cleared once the RNG_DR register has been read 
+ 217:.//FWLIB/src/stm32f4xx_rng.c ****        (using RNG_GetRandomNumber() function) until a new valid value is 
+ 218:.//FWLIB/src/stm32f4xx_rng.c ****        computed; or 
+ 219:.//FWLIB/src/stm32f4xx_rng.c ****    (#) In the case of a seed error : One of the following faulty sequences has 
+ 220:.//FWLIB/src/stm32f4xx_rng.c ****        been detected:
+ 221:.//FWLIB/src/stm32f4xx_rng.c ****        (++) More than 64 consecutive bits at the same value (0 or 1)
+ 222:.//FWLIB/src/stm32f4xx_rng.c ****        (++) More than 32 consecutive alternance of 0 and 1 (0101010101...01)
+ 223:.//FWLIB/src/stm32f4xx_rng.c ****        This interrupt source is cleared using RNG_ClearITPendingBit(RNG_IT_SEI)
+ 224:.//FWLIB/src/stm32f4xx_rng.c ****        function; or
+ 225:.//FWLIB/src/stm32f4xx_rng.c ****    (#) In the case of a clock error : the PLL48CLK (RNG peripheral clock source) 
+ 226:.//FWLIB/src/stm32f4xx_rng.c ****        was not correctly detected (fPLL48CLK< fHCLK/16). This interrupt source is
+ 227:.//FWLIB/src/stm32f4xx_rng.c ****        cleared using RNG_ClearITPendingBit(RNG_IT_CEI) function.
+ 228:.//FWLIB/src/stm32f4xx_rng.c ****        -@- note In this case, User have to check that the clock controller is 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 7
+
+
+ 229:.//FWLIB/src/stm32f4xx_rng.c ****            correctly configured to provide the RNG clock. 
+ 230:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 231:.//FWLIB/src/stm32f4xx_rng.c ****  *** Managing the RNG controller events : ***
+ 232:.//FWLIB/src/stm32f4xx_rng.c ****  ============================================
+ 233:.//FWLIB/src/stm32f4xx_rng.c ****  [..] The user should identify which mode will be used in his application to manage 
+ 234:.//FWLIB/src/stm32f4xx_rng.c ****       the RNG controller events: Polling mode or Interrupt mode.
+ 235:.//FWLIB/src/stm32f4xx_rng.c ****   
+ 236:.//FWLIB/src/stm32f4xx_rng.c ****    (#) In the Polling Mode it is advised to use the following functions:
+ 237:.//FWLIB/src/stm32f4xx_rng.c ****        (++) RNG_GetFlagStatus() : to check if flags events occur. 
+ 238:.//FWLIB/src/stm32f4xx_rng.c ****        (++) RNG_ClearFlag()     : to clear the flags events.
+ 239:.//FWLIB/src/stm32f4xx_rng.c ****   
+ 240:.//FWLIB/src/stm32f4xx_rng.c ****        -@@- RNG_FLAG_DRDY can not be cleared by RNG_ClearFlag(). it is cleared only 
+ 241:.//FWLIB/src/stm32f4xx_rng.c ****             by reading the Random number data.      
+ 242:.//FWLIB/src/stm32f4xx_rng.c ****   
+ 243:.//FWLIB/src/stm32f4xx_rng.c ****    (#)  In the Interrupt Mode it is advised to use the following functions:
+ 244:.//FWLIB/src/stm32f4xx_rng.c ****         (++) RNG_ITConfig()       : to enable or disable the interrupt source.
+ 245:.//FWLIB/src/stm32f4xx_rng.c ****         (++) RNG_GetITStatus()    : to check if Interrupt occurs.
+ 246:.//FWLIB/src/stm32f4xx_rng.c ****         (++) RNG_ClearITPendingBit() : to clear the Interrupt pending Bit 
+ 247:.//FWLIB/src/stm32f4xx_rng.c ****              (corresponding Flag). 
+ 248:.//FWLIB/src/stm32f4xx_rng.c ****   
+ 249:.//FWLIB/src/stm32f4xx_rng.c **** @endverbatim
+ 250:.//FWLIB/src/stm32f4xx_rng.c ****   * @{
+ 251:.//FWLIB/src/stm32f4xx_rng.c ****   */ 
+ 252:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 253:.//FWLIB/src/stm32f4xx_rng.c **** /**
+ 254:.//FWLIB/src/stm32f4xx_rng.c ****   * @brief  Enables or disables the RNG interrupt.
+ 255:.//FWLIB/src/stm32f4xx_rng.c ****   * @note   The RNG provides 3 interrupt sources,
+ 256:.//FWLIB/src/stm32f4xx_rng.c ****   *           - Computed data is ready event (DRDY), and           
+ 257:.//FWLIB/src/stm32f4xx_rng.c ****   *           - Seed error Interrupt (SEI) and 
+ 258:.//FWLIB/src/stm32f4xx_rng.c ****   *           - Clock error Interrupt (CEI), 
+ 259:.//FWLIB/src/stm32f4xx_rng.c ****   *         all these interrupts sources are enabled by setting the IE bit in 
+ 260:.//FWLIB/src/stm32f4xx_rng.c ****   *         CR register. However, each interrupt have its specific status bit
+ 261:.//FWLIB/src/stm32f4xx_rng.c ****   *         (see RNG_GetITStatus() function) and clear bit except the DRDY event
+ 262:.//FWLIB/src/stm32f4xx_rng.c ****   *         (see RNG_ClearITPendingBit() function).
+ 263:.//FWLIB/src/stm32f4xx_rng.c ****   * @param  NewState: new state of the RNG interrupt.
+ 264:.//FWLIB/src/stm32f4xx_rng.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 265:.//FWLIB/src/stm32f4xx_rng.c ****   * @retval None
+ 266:.//FWLIB/src/stm32f4xx_rng.c ****   */
+ 267:.//FWLIB/src/stm32f4xx_rng.c **** void RNG_ITConfig(FunctionalState NewState)
+ 268:.//FWLIB/src/stm32f4xx_rng.c **** {
+ 122              		.loc 1 268 0
+ 123              		.cfi_startproc
+ 124              		@ args = 0, pretend = 0, frame = 0
+ 125              		@ frame_needed = 0, uses_anonymous_args = 0
+ 126              		@ link register save eliminated.
+ 127              	.LVL3:
+ 269:.//FWLIB/src/stm32f4xx_rng.c ****   /* Check the parameters */
+ 270:.//FWLIB/src/stm32f4xx_rng.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 271:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 272:.//FWLIB/src/stm32f4xx_rng.c ****   if (NewState != DISABLE)
+ 128              		.loc 1 272 0
+ 129 0000 28B1     		cbz	r0, .L12
+ 273:.//FWLIB/src/stm32f4xx_rng.c ****   {
+ 274:.//FWLIB/src/stm32f4xx_rng.c ****     /* Enable the RNG interrupt */
+ 275:.//FWLIB/src/stm32f4xx_rng.c ****     RNG->CR |= RNG_CR_IE;
+ 130              		.loc 1 275 0
+ 131 0002 064A     		ldr	r2, .L14
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 8
+
+
+ 132 0004 1368     		ldr	r3, [r2]
+ 133 0006 43F00803 		orr	r3, r3, #8
+ 134 000a 1360     		str	r3, [r2]
+ 135 000c 7047     		bx	lr
+ 136              	.L12:
+ 276:.//FWLIB/src/stm32f4xx_rng.c ****   }
+ 277:.//FWLIB/src/stm32f4xx_rng.c ****   else
+ 278:.//FWLIB/src/stm32f4xx_rng.c ****   {
+ 279:.//FWLIB/src/stm32f4xx_rng.c ****     /* Disable the RNG interrupt */
+ 280:.//FWLIB/src/stm32f4xx_rng.c ****     RNG->CR &= ~RNG_CR_IE;
+ 137              		.loc 1 280 0
+ 138 000e 034A     		ldr	r2, .L14
+ 139 0010 1368     		ldr	r3, [r2]
+ 140 0012 23F00803 		bic	r3, r3, #8
+ 141 0016 1360     		str	r3, [r2]
+ 142 0018 7047     		bx	lr
+ 143              	.L15:
+ 144 001a 00BF     		.align	2
+ 145              	.L14:
+ 146 001c 00080650 		.word	1342572544
+ 147              		.cfi_endproc
+ 148              	.LFE115:
+ 150              		.section	.text.RNG_GetFlagStatus,"ax",%progbits
+ 151              		.align	2
+ 152              		.global	RNG_GetFlagStatus
+ 153              		.thumb
+ 154              		.thumb_func
+ 156              	RNG_GetFlagStatus:
+ 157              	.LFB116:
+ 281:.//FWLIB/src/stm32f4xx_rng.c ****   }
+ 282:.//FWLIB/src/stm32f4xx_rng.c **** }
+ 283:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 284:.//FWLIB/src/stm32f4xx_rng.c **** /**
+ 285:.//FWLIB/src/stm32f4xx_rng.c ****   * @brief  Checks whether the specified RNG flag is set or not.
+ 286:.//FWLIB/src/stm32f4xx_rng.c ****   * @param  RNG_FLAG: specifies the RNG flag to check.
+ 287:.//FWLIB/src/stm32f4xx_rng.c ****   *          This parameter can be one of the following values:
+ 288:.//FWLIB/src/stm32f4xx_rng.c ****   *            @arg RNG_FLAG_DRDY: Data Ready flag.
+ 289:.//FWLIB/src/stm32f4xx_rng.c ****   *            @arg RNG_FLAG_CECS: Clock Error Current flag.
+ 290:.//FWLIB/src/stm32f4xx_rng.c ****   *            @arg RNG_FLAG_SECS: Seed Error Current flag.
+ 291:.//FWLIB/src/stm32f4xx_rng.c ****   * @retval The new state of RNG_FLAG (SET or RESET).
+ 292:.//FWLIB/src/stm32f4xx_rng.c ****   */
+ 293:.//FWLIB/src/stm32f4xx_rng.c **** FlagStatus RNG_GetFlagStatus(uint8_t RNG_FLAG)
+ 294:.//FWLIB/src/stm32f4xx_rng.c **** {
+ 158              		.loc 1 294 0
+ 159              		.cfi_startproc
+ 160              		@ args = 0, pretend = 0, frame = 0
+ 161              		@ frame_needed = 0, uses_anonymous_args = 0
+ 162              		@ link register save eliminated.
+ 163              	.LVL4:
+ 295:.//FWLIB/src/stm32f4xx_rng.c ****   FlagStatus bitstatus = RESET;
+ 296:.//FWLIB/src/stm32f4xx_rng.c ****   /* Check the parameters */
+ 297:.//FWLIB/src/stm32f4xx_rng.c ****   assert_param(IS_RNG_GET_FLAG(RNG_FLAG));
+ 298:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 299:.//FWLIB/src/stm32f4xx_rng.c ****   /* Check the status of the specified RNG flag */
+ 300:.//FWLIB/src/stm32f4xx_rng.c ****   if ((RNG->SR & RNG_FLAG) != (uint8_t)RESET)
+ 164              		.loc 1 300 0
+ 165 0000 034B     		ldr	r3, .L19
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 9
+
+
+ 166 0002 5B68     		ldr	r3, [r3, #4]
+ 167 0004 1842     		tst	r0, r3
+ 168 0006 01D0     		beq	.L18
+ 301:.//FWLIB/src/stm32f4xx_rng.c ****   {
+ 302:.//FWLIB/src/stm32f4xx_rng.c ****     /* RNG_FLAG is set */
+ 303:.//FWLIB/src/stm32f4xx_rng.c ****     bitstatus = SET;
+ 169              		.loc 1 303 0
+ 170 0008 0120     		movs	r0, #1
+ 171              	.LVL5:
+ 172 000a 7047     		bx	lr
+ 173              	.LVL6:
+ 174              	.L18:
+ 304:.//FWLIB/src/stm32f4xx_rng.c ****   }
+ 305:.//FWLIB/src/stm32f4xx_rng.c ****   else
+ 306:.//FWLIB/src/stm32f4xx_rng.c ****   {
+ 307:.//FWLIB/src/stm32f4xx_rng.c ****     /* RNG_FLAG is reset */
+ 308:.//FWLIB/src/stm32f4xx_rng.c ****     bitstatus = RESET;
+ 175              		.loc 1 308 0
+ 176 000c 0020     		movs	r0, #0
+ 177              	.LVL7:
+ 309:.//FWLIB/src/stm32f4xx_rng.c ****   }
+ 310:.//FWLIB/src/stm32f4xx_rng.c ****   /* Return the RNG_FLAG status */
+ 311:.//FWLIB/src/stm32f4xx_rng.c ****   return  bitstatus;
+ 312:.//FWLIB/src/stm32f4xx_rng.c **** }
+ 178              		.loc 1 312 0
+ 179 000e 7047     		bx	lr
+ 180              	.L20:
+ 181              		.align	2
+ 182              	.L19:
+ 183 0010 00080650 		.word	1342572544
+ 184              		.cfi_endproc
+ 185              	.LFE116:
+ 187              		.section	.text.RNG_ClearFlag,"ax",%progbits
+ 188              		.align	2
+ 189              		.global	RNG_ClearFlag
+ 190              		.thumb
+ 191              		.thumb_func
+ 193              	RNG_ClearFlag:
+ 194              	.LFB117:
+ 313:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 314:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 315:.//FWLIB/src/stm32f4xx_rng.c **** /**
+ 316:.//FWLIB/src/stm32f4xx_rng.c ****   * @brief  Clears the RNG flags.
+ 317:.//FWLIB/src/stm32f4xx_rng.c ****   * @param  RNG_FLAG: specifies the flag to clear. 
+ 318:.//FWLIB/src/stm32f4xx_rng.c ****   *          This parameter can be any combination of the following values:
+ 319:.//FWLIB/src/stm32f4xx_rng.c ****   *            @arg RNG_FLAG_CECS: Clock Error Current flag.
+ 320:.//FWLIB/src/stm32f4xx_rng.c ****   *            @arg RNG_FLAG_SECS: Seed Error Current flag.
+ 321:.//FWLIB/src/stm32f4xx_rng.c ****   * @note   RNG_FLAG_DRDY can not be cleared by RNG_ClearFlag() function. 
+ 322:.//FWLIB/src/stm32f4xx_rng.c ****   *         This flag is cleared only by reading the Random number data (using 
+ 323:.//FWLIB/src/stm32f4xx_rng.c ****   *         RNG_GetRandomNumber() function).                           
+ 324:.//FWLIB/src/stm32f4xx_rng.c ****   * @retval None
+ 325:.//FWLIB/src/stm32f4xx_rng.c ****   */
+ 326:.//FWLIB/src/stm32f4xx_rng.c **** void RNG_ClearFlag(uint8_t RNG_FLAG)
+ 327:.//FWLIB/src/stm32f4xx_rng.c **** {
+ 195              		.loc 1 327 0
+ 196              		.cfi_startproc
+ 197              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 10
+
+
+ 198              		@ frame_needed = 0, uses_anonymous_args = 0
+ 199              		@ link register save eliminated.
+ 200              	.LVL8:
+ 328:.//FWLIB/src/stm32f4xx_rng.c ****   /* Check the parameters */
+ 329:.//FWLIB/src/stm32f4xx_rng.c ****   assert_param(IS_RNG_CLEAR_FLAG(RNG_FLAG));
+ 330:.//FWLIB/src/stm32f4xx_rng.c ****   /* Clear the selected RNG flags */
+ 331:.//FWLIB/src/stm32f4xx_rng.c ****   RNG->SR = ~(uint32_t)(((uint32_t)RNG_FLAG) << 4);
+ 201              		.loc 1 331 0
+ 202 0000 6FEA0010 		mvn	r0, r0, lsl #4
+ 203              	.LVL9:
+ 204 0004 014B     		ldr	r3, .L22
+ 205 0006 5860     		str	r0, [r3, #4]
+ 206 0008 7047     		bx	lr
+ 207              	.L23:
+ 208 000a 00BF     		.align	2
+ 209              	.L22:
+ 210 000c 00080650 		.word	1342572544
+ 211              		.cfi_endproc
+ 212              	.LFE117:
+ 214              		.section	.text.RNG_GetITStatus,"ax",%progbits
+ 215              		.align	2
+ 216              		.global	RNG_GetITStatus
+ 217              		.thumb
+ 218              		.thumb_func
+ 220              	RNG_GetITStatus:
+ 221              	.LFB118:
+ 332:.//FWLIB/src/stm32f4xx_rng.c **** }
+ 333:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 334:.//FWLIB/src/stm32f4xx_rng.c **** /**
+ 335:.//FWLIB/src/stm32f4xx_rng.c ****   * @brief  Checks whether the specified RNG interrupt has occurred or not.
+ 336:.//FWLIB/src/stm32f4xx_rng.c ****   * @param  RNG_IT: specifies the RNG interrupt source to check.
+ 337:.//FWLIB/src/stm32f4xx_rng.c ****   *          This parameter can be one of the following values:
+ 338:.//FWLIB/src/stm32f4xx_rng.c ****   *            @arg RNG_IT_CEI: Clock Error Interrupt.
+ 339:.//FWLIB/src/stm32f4xx_rng.c ****   *            @arg RNG_IT_SEI: Seed Error Interrupt.                   
+ 340:.//FWLIB/src/stm32f4xx_rng.c ****   * @retval The new state of RNG_IT (SET or RESET).
+ 341:.//FWLIB/src/stm32f4xx_rng.c ****   */
+ 342:.//FWLIB/src/stm32f4xx_rng.c **** ITStatus RNG_GetITStatus(uint8_t RNG_IT)
+ 343:.//FWLIB/src/stm32f4xx_rng.c **** {
+ 222              		.loc 1 343 0
+ 223              		.cfi_startproc
+ 224              		@ args = 0, pretend = 0, frame = 0
+ 225              		@ frame_needed = 0, uses_anonymous_args = 0
+ 226              		@ link register save eliminated.
+ 227              	.LVL10:
+ 344:.//FWLIB/src/stm32f4xx_rng.c ****   ITStatus bitstatus = RESET;
+ 345:.//FWLIB/src/stm32f4xx_rng.c ****   /* Check the parameters */
+ 346:.//FWLIB/src/stm32f4xx_rng.c ****   assert_param(IS_RNG_GET_IT(RNG_IT));
+ 347:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 348:.//FWLIB/src/stm32f4xx_rng.c ****   /* Check the status of the specified RNG interrupt */
+ 349:.//FWLIB/src/stm32f4xx_rng.c ****   if ((RNG->SR & RNG_IT) != (uint8_t)RESET)
+ 228              		.loc 1 349 0
+ 229 0000 034B     		ldr	r3, .L27
+ 230 0002 5B68     		ldr	r3, [r3, #4]
+ 231 0004 1842     		tst	r0, r3
+ 232 0006 01D0     		beq	.L26
+ 350:.//FWLIB/src/stm32f4xx_rng.c ****   {
+ 351:.//FWLIB/src/stm32f4xx_rng.c ****     /* RNG_IT is set */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 11
+
+
+ 352:.//FWLIB/src/stm32f4xx_rng.c ****     bitstatus = SET;
+ 233              		.loc 1 352 0
+ 234 0008 0120     		movs	r0, #1
+ 235              	.LVL11:
+ 236 000a 7047     		bx	lr
+ 237              	.LVL12:
+ 238              	.L26:
+ 353:.//FWLIB/src/stm32f4xx_rng.c ****   }
+ 354:.//FWLIB/src/stm32f4xx_rng.c ****   else
+ 355:.//FWLIB/src/stm32f4xx_rng.c ****   {
+ 356:.//FWLIB/src/stm32f4xx_rng.c ****     /* RNG_IT is reset */
+ 357:.//FWLIB/src/stm32f4xx_rng.c ****     bitstatus = RESET;
+ 239              		.loc 1 357 0
+ 240 000c 0020     		movs	r0, #0
+ 241              	.LVL13:
+ 358:.//FWLIB/src/stm32f4xx_rng.c ****   }
+ 359:.//FWLIB/src/stm32f4xx_rng.c ****   /* Return the RNG_IT status */
+ 360:.//FWLIB/src/stm32f4xx_rng.c ****   return bitstatus;
+ 361:.//FWLIB/src/stm32f4xx_rng.c **** }
+ 242              		.loc 1 361 0
+ 243 000e 7047     		bx	lr
+ 244              	.L28:
+ 245              		.align	2
+ 246              	.L27:
+ 247 0010 00080650 		.word	1342572544
+ 248              		.cfi_endproc
+ 249              	.LFE118:
+ 251              		.section	.text.RNG_ClearITPendingBit,"ax",%progbits
+ 252              		.align	2
+ 253              		.global	RNG_ClearITPendingBit
+ 254              		.thumb
+ 255              		.thumb_func
+ 257              	RNG_ClearITPendingBit:
+ 258              	.LFB119:
+ 362:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 363:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 364:.//FWLIB/src/stm32f4xx_rng.c **** /**
+ 365:.//FWLIB/src/stm32f4xx_rng.c ****   * @brief  Clears the RNG interrupt pending bit(s).
+ 366:.//FWLIB/src/stm32f4xx_rng.c ****   * @param  RNG_IT: specifies the RNG interrupt pending bit(s) to clear.
+ 367:.//FWLIB/src/stm32f4xx_rng.c ****   *          This parameter can be any combination of the following values:
+ 368:.//FWLIB/src/stm32f4xx_rng.c ****   *            @arg RNG_IT_CEI: Clock Error Interrupt.
+ 369:.//FWLIB/src/stm32f4xx_rng.c ****   *            @arg RNG_IT_SEI: Seed Error Interrupt.
+ 370:.//FWLIB/src/stm32f4xx_rng.c ****   * @retval None
+ 371:.//FWLIB/src/stm32f4xx_rng.c ****   */
+ 372:.//FWLIB/src/stm32f4xx_rng.c **** void RNG_ClearITPendingBit(uint8_t RNG_IT)
+ 373:.//FWLIB/src/stm32f4xx_rng.c **** {
+ 259              		.loc 1 373 0
+ 260              		.cfi_startproc
+ 261              		@ args = 0, pretend = 0, frame = 0
+ 262              		@ frame_needed = 0, uses_anonymous_args = 0
+ 263              		@ link register save eliminated.
+ 264              	.LVL14:
+ 374:.//FWLIB/src/stm32f4xx_rng.c ****   /* Check the parameters */
+ 375:.//FWLIB/src/stm32f4xx_rng.c ****   assert_param(IS_RNG_IT(RNG_IT));
+ 376:.//FWLIB/src/stm32f4xx_rng.c **** 
+ 377:.//FWLIB/src/stm32f4xx_rng.c ****   /* Clear the selected RNG interrupt pending bit */
+ 378:.//FWLIB/src/stm32f4xx_rng.c ****   RNG->SR = (uint8_t)~RNG_IT;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 12
+
+
+ 265              		.loc 1 378 0
+ 266 0000 C043     		mvns	r0, r0
+ 267              	.LVL15:
+ 268 0002 C0B2     		uxtb	r0, r0
+ 269 0004 014B     		ldr	r3, .L30
+ 270 0006 5860     		str	r0, [r3, #4]
+ 271 0008 7047     		bx	lr
+ 272              	.L31:
+ 273 000a 00BF     		.align	2
+ 274              	.L30:
+ 275 000c 00080650 		.word	1342572544
+ 276              		.cfi_endproc
+ 277              	.LFE119:
+ 279              		.text
+ 280              	.Letext0:
+ 281              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 282              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 283              		.file 4 "USER/stm32f4xx.h"
+ 284              		.file 5 "CORE/core_cm4.h"
+ 285              		.file 6 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_rng.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:22     .text.RNG_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:27     .text.RNG_DeInit:0000000000000000 RNG_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:54     .text.RNG_Cmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:59     .text.RNG_Cmd:0000000000000000 RNG_Cmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:85     .text.RNG_Cmd:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:90     .text.RNG_GetRandomNumber:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:95     .text.RNG_GetRandomNumber:0000000000000000 RNG_GetRandomNumber
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:110    .text.RNG_GetRandomNumber:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:115    .text.RNG_ITConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:120    .text.RNG_ITConfig:0000000000000000 RNG_ITConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:146    .text.RNG_ITConfig:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:151    .text.RNG_GetFlagStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:156    .text.RNG_GetFlagStatus:0000000000000000 RNG_GetFlagStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:183    .text.RNG_GetFlagStatus:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:188    .text.RNG_ClearFlag:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:193    .text.RNG_ClearFlag:0000000000000000 RNG_ClearFlag
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:210    .text.RNG_ClearFlag:000000000000000c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:215    .text.RNG_GetITStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:220    .text.RNG_GetITStatus:0000000000000000 RNG_GetITStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:247    .text.RNG_GetITStatus:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:252    .text.RNG_ClearITPendingBit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:257    .text.RNG_ClearITPendingBit:0000000000000000 RNG_ClearITPendingBit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoipEAN.s:275    .text.RNG_ClearITPendingBit:000000000000000c $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_AHB2PeriphResetCmd

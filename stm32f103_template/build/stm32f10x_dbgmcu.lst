@@ -1,0 +1,288 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"stm32f10x_dbgmcu.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.DBGMCU_GetREVID,"ax",%progbits
+  20              		.align	2
+  21              		.global	DBGMCU_GetREVID
+  22              		.thumb
+  23              		.thumb_func
+  25              	DBGMCU_GetREVID:
+  26              	.LFB29:
+  27              		.file 1 ".//FWLIB/src/stm32f10x_dbgmcu.c"
+   1:.//FWLIB/src/stm32f10x_dbgmcu.c **** /**
+   2:.//FWLIB/src/stm32f10x_dbgmcu.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @file    stm32f10x_dbgmcu.c
+   4:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @version V3.5.0
+   6:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @date    11-March-2011
+   7:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @brief   This file provides all the DBGMCU firmware functions.
+   8:.//FWLIB/src/stm32f10x_dbgmcu.c ****   ******************************************************************************
+   9:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @attention
+  10:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *
+  11:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *
+  18:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:.//FWLIB/src/stm32f10x_dbgmcu.c ****   ******************************************************************************
+  20:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  21:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  22:.//FWLIB/src/stm32f10x_dbgmcu.c **** /* Includes ------------------------------------------------------------------*/
+  23:.//FWLIB/src/stm32f10x_dbgmcu.c **** #include "stm32f10x_dbgmcu.h"
+  24:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  25:.//FWLIB/src/stm32f10x_dbgmcu.c **** /** @addtogroup STM32F10x_StdPeriph_Driver
+  26:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @{
+  27:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  28:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  29:.//FWLIB/src/stm32f10x_dbgmcu.c **** /** @defgroup DBGMCU 
+  30:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @brief DBGMCU driver modules
+  31:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @{
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s 			page 2
+
+
+  32:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */ 
+  33:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  34:.//FWLIB/src/stm32f10x_dbgmcu.c **** /** @defgroup DBGMCU_Private_TypesDefinitions
+  35:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @{
+  36:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  37:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  38:.//FWLIB/src/stm32f10x_dbgmcu.c **** /**
+  39:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @}
+  40:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  41:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  42:.//FWLIB/src/stm32f10x_dbgmcu.c **** /** @defgroup DBGMCU_Private_Defines
+  43:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @{
+  44:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  45:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  46:.//FWLIB/src/stm32f10x_dbgmcu.c **** #define IDCODE_DEVID_MASK    ((uint32_t)0x00000FFF)
+  47:.//FWLIB/src/stm32f10x_dbgmcu.c **** /**
+  48:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @}
+  49:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  50:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  51:.//FWLIB/src/stm32f10x_dbgmcu.c **** /** @defgroup DBGMCU_Private_Macros
+  52:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @{
+  53:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  54:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  55:.//FWLIB/src/stm32f10x_dbgmcu.c **** /**
+  56:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @}
+  57:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  58:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  59:.//FWLIB/src/stm32f10x_dbgmcu.c **** /** @defgroup DBGMCU_Private_Variables
+  60:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @{
+  61:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  62:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  63:.//FWLIB/src/stm32f10x_dbgmcu.c **** /**
+  64:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @}
+  65:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  66:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  67:.//FWLIB/src/stm32f10x_dbgmcu.c **** /** @defgroup DBGMCU_Private_FunctionPrototypes
+  68:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @{
+  69:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  70:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  71:.//FWLIB/src/stm32f10x_dbgmcu.c **** /**
+  72:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @}
+  73:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  74:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  75:.//FWLIB/src/stm32f10x_dbgmcu.c **** /** @defgroup DBGMCU_Private_Functions
+  76:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @{
+  77:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  78:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  79:.//FWLIB/src/stm32f10x_dbgmcu.c **** /**
+  80:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @brief  Returns the device revision identifier.
+  81:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @param  None
+  82:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @retval Device revision identifier
+  83:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  84:.//FWLIB/src/stm32f10x_dbgmcu.c **** uint32_t DBGMCU_GetREVID(void)
+  85:.//FWLIB/src/stm32f10x_dbgmcu.c **** {
+  28              		.loc 1 85 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s 			page 3
+
+
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  86:.//FWLIB/src/stm32f10x_dbgmcu.c ****    return(DBGMCU->IDCODE >> 16);
+  33              		.loc 1 86 0
+  34 0000 014B     		ldr	r3, .L2
+  35 0002 1868     		ldr	r0, [r3]
+  87:.//FWLIB/src/stm32f10x_dbgmcu.c **** }
+  36              		.loc 1 87 0
+  37 0004 000C     		lsrs	r0, r0, #16
+  38 0006 7047     		bx	lr
+  39              	.L3:
+  40              		.align	2
+  41              	.L2:
+  42 0008 002004E0 		.word	-536600576
+  43              		.cfi_endproc
+  44              	.LFE29:
+  46              		.section	.text.DBGMCU_GetDEVID,"ax",%progbits
+  47              		.align	2
+  48              		.global	DBGMCU_GetDEVID
+  49              		.thumb
+  50              		.thumb_func
+  52              	DBGMCU_GetDEVID:
+  53              	.LFB30:
+  88:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  89:.//FWLIB/src/stm32f10x_dbgmcu.c **** /**
+  90:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @brief  Returns the device identifier.
+  91:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @param  None
+  92:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @retval Device identifier
+  93:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+  94:.//FWLIB/src/stm32f10x_dbgmcu.c **** uint32_t DBGMCU_GetDEVID(void)
+  95:.//FWLIB/src/stm32f10x_dbgmcu.c **** {
+  54              		.loc 1 95 0
+  55              		.cfi_startproc
+  56              		@ args = 0, pretend = 0, frame = 0
+  57              		@ frame_needed = 0, uses_anonymous_args = 0
+  58              		@ link register save eliminated.
+  96:.//FWLIB/src/stm32f10x_dbgmcu.c ****    return(DBGMCU->IDCODE & IDCODE_DEVID_MASK);
+  59              		.loc 1 96 0
+  60 0000 024B     		ldr	r3, .L5
+  61 0002 1868     		ldr	r0, [r3]
+  97:.//FWLIB/src/stm32f10x_dbgmcu.c **** }
+  62              		.loc 1 97 0
+  63 0004 C0F30B00 		ubfx	r0, r0, #0, #12
+  64 0008 7047     		bx	lr
+  65              	.L6:
+  66 000a 00BF     		.align	2
+  67              	.L5:
+  68 000c 002004E0 		.word	-536600576
+  69              		.cfi_endproc
+  70              	.LFE30:
+  72              		.section	.text.DBGMCU_Config,"ax",%progbits
+  73              		.align	2
+  74              		.global	DBGMCU_Config
+  75              		.thumb
+  76              		.thumb_func
+  78              	DBGMCU_Config:
+  79              	.LFB31:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s 			page 4
+
+
+  98:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+  99:.//FWLIB/src/stm32f10x_dbgmcu.c **** /**
+ 100:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @brief  Configures the specified peripheral and low power mode behavior
+ 101:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *   when the MCU under Debug mode.
+ 102:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @param  DBGMCU_Periph: specifies the peripheral and low power mode.
+ 103:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *   This parameter can be any combination of the following values:
+ 104:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_SLEEP: Keep debugger connection during SLEEP mode              
+ 105:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_STOP: Keep debugger connection during STOP mode               
+ 106:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_STANDBY: Keep debugger connection during STANDBY mode            
+ 107:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_IWDG_STOP: Debug IWDG stopped when Core is halted          
+ 108:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_WWDG_STOP: Debug WWDG stopped when Core is halted          
+ 109:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM1_STOP: TIM1 counter stopped when Core is halted          
+ 110:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM2_STOP: TIM2 counter stopped when Core is halted          
+ 111:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM3_STOP: TIM3 counter stopped when Core is halted          
+ 112:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM4_STOP: TIM4 counter stopped when Core is halted          
+ 113:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_CAN1_STOP: Debug CAN2 stopped when Core is halted           
+ 114:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_I2C1_SMBUS_TIMEOUT: I2C1 SMBUS timeout mode stopped when Core is halted
+ 115:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_I2C2_SMBUS_TIMEOUT: I2C2 SMBUS timeout mode stopped when Core is halted
+ 116:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM5_STOP: TIM5 counter stopped when Core is halted          
+ 117:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM6_STOP: TIM6 counter stopped when Core is halted          
+ 118:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM7_STOP: TIM7 counter stopped when Core is halted          
+ 119:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM8_STOP: TIM8 counter stopped when Core is halted
+ 120:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_CAN2_STOP: Debug CAN2 stopped when Core is halted 
+ 121:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM15_STOP: TIM15 counter stopped when Core is halted
+ 122:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM16_STOP: TIM16 counter stopped when Core is halted
+ 123:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM17_STOP: TIM17 counter stopped when Core is halted                
+ 124:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM9_STOP: TIM9 counter stopped when Core is halted
+ 125:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM10_STOP: TIM10 counter stopped when Core is halted
+ 126:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM11_STOP: TIM11 counter stopped when Core is halted
+ 127:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM12_STOP: TIM12 counter stopped when Core is halted
+ 128:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM13_STOP: TIM13 counter stopped when Core is halted
+ 129:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *     @arg DBGMCU_TIM14_STOP: TIM14 counter stopped when Core is halted
+ 130:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @param  NewState: new state of the specified peripheral in Debug mode.
+ 131:.//FWLIB/src/stm32f10x_dbgmcu.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 132:.//FWLIB/src/stm32f10x_dbgmcu.c ****   * @retval None
+ 133:.//FWLIB/src/stm32f10x_dbgmcu.c ****   */
+ 134:.//FWLIB/src/stm32f10x_dbgmcu.c **** void DBGMCU_Config(uint32_t DBGMCU_Periph, FunctionalState NewState)
+ 135:.//FWLIB/src/stm32f10x_dbgmcu.c **** {
+  80              		.loc 1 135 0
+  81              		.cfi_startproc
+  82              		@ args = 0, pretend = 0, frame = 0
+  83              		@ frame_needed = 0, uses_anonymous_args = 0
+  84              		@ link register save eliminated.
+  85              	.LVL0:
+ 136:.//FWLIB/src/stm32f10x_dbgmcu.c ****   /* Check the parameters */
+ 137:.//FWLIB/src/stm32f10x_dbgmcu.c ****   assert_param(IS_DBGMCU_PERIPH(DBGMCU_Periph));
+ 138:.//FWLIB/src/stm32f10x_dbgmcu.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 139:.//FWLIB/src/stm32f10x_dbgmcu.c **** 
+ 140:.//FWLIB/src/stm32f10x_dbgmcu.c ****   if (NewState != DISABLE)
+  86              		.loc 1 140 0
+  87 0000 21B1     		cbz	r1, .L8
+ 141:.//FWLIB/src/stm32f10x_dbgmcu.c ****   {
+ 142:.//FWLIB/src/stm32f10x_dbgmcu.c ****     DBGMCU->CR |= DBGMCU_Periph;
+  88              		.loc 1 142 0
+  89 0002 054B     		ldr	r3, .L10
+  90 0004 5A68     		ldr	r2, [r3, #4]
+  91 0006 1043     		orrs	r0, r0, r2
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s 			page 5
+
+
+  92              	.LVL1:
+  93 0008 5860     		str	r0, [r3, #4]
+  94 000a 7047     		bx	lr
+  95              	.LVL2:
+  96              	.L8:
+ 143:.//FWLIB/src/stm32f10x_dbgmcu.c ****   }
+ 144:.//FWLIB/src/stm32f10x_dbgmcu.c ****   else
+ 145:.//FWLIB/src/stm32f10x_dbgmcu.c ****   {
+ 146:.//FWLIB/src/stm32f10x_dbgmcu.c ****     DBGMCU->CR &= ~DBGMCU_Periph;
+  97              		.loc 1 146 0
+  98 000c 024A     		ldr	r2, .L10
+  99 000e 5368     		ldr	r3, [r2, #4]
+ 100 0010 23EA0000 		bic	r0, r3, r0
+ 101              	.LVL3:
+ 102 0014 5060     		str	r0, [r2, #4]
+ 103 0016 7047     		bx	lr
+ 104              	.L11:
+ 105              		.align	2
+ 106              	.L10:
+ 107 0018 002004E0 		.word	-536600576
+ 108              		.cfi_endproc
+ 109              	.LFE31:
+ 111              		.text
+ 112              	.Letext0:
+ 113              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 114              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 115              		.file 4 "USER/stm32f10x.h"
+ 116              		.file 5 "CORE/core_cm3.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f10x_dbgmcu.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s:20     .text.DBGMCU_GetREVID:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s:25     .text.DBGMCU_GetREVID:0000000000000000 DBGMCU_GetREVID
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s:42     .text.DBGMCU_GetREVID:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s:47     .text.DBGMCU_GetDEVID:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s:52     .text.DBGMCU_GetDEVID:0000000000000000 DBGMCU_GetDEVID
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s:68     .text.DBGMCU_GetDEVID:000000000000000c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s:73     .text.DBGMCU_Config:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s:78     .text.DBGMCU_Config:0000000000000000 DBGMCU_Config
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc64dmZf.s:107    .text.DBGMCU_Config:0000000000000018 $d
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

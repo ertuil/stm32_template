@@ -1,0 +1,2662 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"stm32f4xx_spi.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.SPI_I2S_DeInit,"ax",%progbits
+  22              		.align	2
+  23              		.global	SPI_I2S_DeInit
+  24              		.thumb
+  25              		.thumb_func
+  27              	SPI_I2S_DeInit:
+  28              	.LFB112:
+  29              		.file 1 ".//FWLIB/src/stm32f4xx_spi.c"
+   1:.//FWLIB/src/stm32f4xx_spi.c **** /**
+   2:.//FWLIB/src/stm32f4xx_spi.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f4xx_spi.c ****   * @file    stm32f4xx_spi.c
+   4:.//FWLIB/src/stm32f4xx_spi.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f4xx_spi.c ****   * @version V1.4.0
+   6:.//FWLIB/src/stm32f4xx_spi.c ****   * @date    04-August-2014
+   7:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:.//FWLIB/src/stm32f4xx_spi.c ****   *          functionalities of the Serial peripheral interface (SPI):
+   9:.//FWLIB/src/stm32f4xx_spi.c ****   *           + Initialization and Configuration
+  10:.//FWLIB/src/stm32f4xx_spi.c ****   *           + Data transfers functions
+  11:.//FWLIB/src/stm32f4xx_spi.c ****   *           + Hardware CRC Calculation
+  12:.//FWLIB/src/stm32f4xx_spi.c ****   *           + DMA transfers management
+  13:.//FWLIB/src/stm32f4xx_spi.c ****   *           + Interrupts and flags management 
+  14:.//FWLIB/src/stm32f4xx_spi.c ****   *           
+  15:.//FWLIB/src/stm32f4xx_spi.c **** @verbatim
+  16:.//FWLIB/src/stm32f4xx_spi.c **** 
+  17:.//FWLIB/src/stm32f4xx_spi.c ****  ===================================================================
+  18:.//FWLIB/src/stm32f4xx_spi.c ****                   ##### How to use this driver #####
+  19:.//FWLIB/src/stm32f4xx_spi.c ****  ===================================================================
+  20:.//FWLIB/src/stm32f4xx_spi.c ****  [..]
+  21:.//FWLIB/src/stm32f4xx_spi.c ****    (#) Enable peripheral clock using the following functions 
+  22:.//FWLIB/src/stm32f4xx_spi.c ****        RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE) for SPI1
+  23:.//FWLIB/src/stm32f4xx_spi.c ****        RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE) for SPI2
+  24:.//FWLIB/src/stm32f4xx_spi.c ****        RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPI3, ENABLE) for SPI3
+  25:.//FWLIB/src/stm32f4xx_spi.c ****        RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPI3, ENABLE) for SPI4
+  26:.//FWLIB/src/stm32f4xx_spi.c ****        RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPI3, ENABLE) for SPI5
+  27:.//FWLIB/src/stm32f4xx_spi.c ****        RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPI3, ENABLE) for SPI6.
+  28:.//FWLIB/src/stm32f4xx_spi.c ****   
+  29:.//FWLIB/src/stm32f4xx_spi.c ****    (#) Enable SCK, MOSI, MISO and NSS GPIO clocks using RCC_AHB1PeriphClockCmd()
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 2
+
+
+  30:.//FWLIB/src/stm32f4xx_spi.c ****        function. In I2S mode, if an external clock source is used then the I2S 
+  31:.//FWLIB/src/stm32f4xx_spi.c ****        CKIN pin GPIO clock should also be enabled.
+  32:.//FWLIB/src/stm32f4xx_spi.c ****   
+  33:.//FWLIB/src/stm32f4xx_spi.c ****    (#) Peripherals alternate function: 
+  34:.//FWLIB/src/stm32f4xx_spi.c ****        (++) Connect the pin to the desired peripherals' Alternate Function (AF) 
+  35:.//FWLIB/src/stm32f4xx_spi.c ****             using GPIO_PinAFConfig() function
+  36:.//FWLIB/src/stm32f4xx_spi.c ****        (++) Configure the desired pin in alternate function by: 
+  37:.//FWLIB/src/stm32f4xx_spi.c ****             GPIO_InitStruct->GPIO_Mode = GPIO_Mode_AF
+  38:.//FWLIB/src/stm32f4xx_spi.c ****        (++) Select the type, pull-up/pull-down and output speed via GPIO_PuPd, 
+  39:.//FWLIB/src/stm32f4xx_spi.c ****             GPIO_OType and GPIO_Speed members
+  40:.//FWLIB/src/stm32f4xx_spi.c ****        (++) Call GPIO_Init() function In I2S mode, if an external clock source is 
+  41:.//FWLIB/src/stm32f4xx_spi.c ****             used then the I2S CKIN pin should be also configured in Alternate 
+  42:.//FWLIB/src/stm32f4xx_spi.c ****             function Push-pull pull-up mode. 
+  43:.//FWLIB/src/stm32f4xx_spi.c ****           
+  44:.//FWLIB/src/stm32f4xx_spi.c ****    (#) Program the Polarity, Phase, First Data, Baud Rate Prescaler, Slave 
+  45:.//FWLIB/src/stm32f4xx_spi.c ****        Management, Peripheral Mode and CRC Polynomial values using the SPI_Init()
+  46:.//FWLIB/src/stm32f4xx_spi.c ****        function.
+  47:.//FWLIB/src/stm32f4xx_spi.c ****        In I2S mode, program the Mode, Standard, Data Format, MCLK Output, Audio 
+  48:.//FWLIB/src/stm32f4xx_spi.c ****        frequency and Polarity using I2S_Init() function. For I2S mode, make sure 
+  49:.//FWLIB/src/stm32f4xx_spi.c ****        that either:
+  50:.//FWLIB/src/stm32f4xx_spi.c ****        (++) I2S PLL is configured using the functions 
+  51:.//FWLIB/src/stm32f4xx_spi.c ****             RCC_I2SCLKConfig(RCC_I2S2CLKSource_PLLI2S), RCC_PLLI2SCmd(ENABLE) and 
+  52:.//FWLIB/src/stm32f4xx_spi.c ****             RCC_GetFlagStatus(RCC_FLAG_PLLI2SRDY); or 
+  53:.//FWLIB/src/stm32f4xx_spi.c ****        (++) External clock source is configured using the function 
+  54:.//FWLIB/src/stm32f4xx_spi.c ****             RCC_I2SCLKConfig(RCC_I2S2CLKSource_Ext) and after setting correctly 
+  55:.//FWLIB/src/stm32f4xx_spi.c ****             the define constant I2S_EXTERNAL_CLOCK_VAL in the stm32f4xx_conf.h file. 
+  56:.//FWLIB/src/stm32f4xx_spi.c ****   
+  57:.//FWLIB/src/stm32f4xx_spi.c ****    (#) Enable the NVIC and the corresponding interrupt using the function 
+  58:.//FWLIB/src/stm32f4xx_spi.c ****        SPI_ITConfig() if you need to use interrupt mode. 
+  59:.//FWLIB/src/stm32f4xx_spi.c ****   
+  60:.//FWLIB/src/stm32f4xx_spi.c ****    (#) When using the DMA mode 
+  61:.//FWLIB/src/stm32f4xx_spi.c ****        (++) Configure the DMA using DMA_Init() function
+  62:.//FWLIB/src/stm32f4xx_spi.c ****        (++) Active the needed channel Request using SPI_I2S_DMACmd() function
+  63:.//FWLIB/src/stm32f4xx_spi.c ****    
+  64:.//FWLIB/src/stm32f4xx_spi.c ****    (#) Enable the SPI using the SPI_Cmd() function or enable the I2S using
+  65:.//FWLIB/src/stm32f4xx_spi.c ****        I2S_Cmd().
+  66:.//FWLIB/src/stm32f4xx_spi.c ****    
+  67:.//FWLIB/src/stm32f4xx_spi.c ****    (#) Enable the DMA using the DMA_Cmd() function when using DMA mode. 
+  68:.//FWLIB/src/stm32f4xx_spi.c ****   
+  69:.//FWLIB/src/stm32f4xx_spi.c ****    (#) Optionally, you can enable/configure the following parameters without
+  70:.//FWLIB/src/stm32f4xx_spi.c ****        re-initialization (i.e there is no need to call again SPI_Init() function):
+  71:.//FWLIB/src/stm32f4xx_spi.c ****        (++) When bidirectional mode (SPI_Direction_1Line_Rx or SPI_Direction_1Line_Tx)
+  72:.//FWLIB/src/stm32f4xx_spi.c ****             is programmed as Data direction parameter using the SPI_Init() function
+  73:.//FWLIB/src/stm32f4xx_spi.c ****             it can be possible to switch between SPI_Direction_Tx or SPI_Direction_Rx
+  74:.//FWLIB/src/stm32f4xx_spi.c ****             using the SPI_BiDirectionalLineConfig() function.
+  75:.//FWLIB/src/stm32f4xx_spi.c ****        (++) When SPI_NSS_Soft is selected as Slave Select Management parameter 
+  76:.//FWLIB/src/stm32f4xx_spi.c ****             using the SPI_Init() function it can be possible to manage the 
+  77:.//FWLIB/src/stm32f4xx_spi.c ****             NSS internal signal using the SPI_NSSInternalSoftwareConfig() function.
+  78:.//FWLIB/src/stm32f4xx_spi.c ****        (++) Reconfigure the data size using the SPI_DataSizeConfig() function  
+  79:.//FWLIB/src/stm32f4xx_spi.c ****        (++) Enable or disable the SS output using the SPI_SSOutputCmd() function  
+  80:.//FWLIB/src/stm32f4xx_spi.c ****             
+  81:.//FWLIB/src/stm32f4xx_spi.c ****     (#) To use the CRC Hardware calculation feature refer to the Peripheral 
+  82:.//FWLIB/src/stm32f4xx_spi.c ****         CRC hardware Calculation subsection.
+  83:.//FWLIB/src/stm32f4xx_spi.c ****      
+  84:.//FWLIB/src/stm32f4xx_spi.c ****   
+  85:.//FWLIB/src/stm32f4xx_spi.c ****  [..] It is possible to use SPI in I2S full duplex mode, in this case, each SPI 
+  86:.//FWLIB/src/stm32f4xx_spi.c ****       peripheral is able to manage sending and receiving data simultaneously
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 3
+
+
+  87:.//FWLIB/src/stm32f4xx_spi.c ****       using two data lines. Each SPI peripheral has an extended block called I2Sxext
+  88:.//FWLIB/src/stm32f4xx_spi.c ****       (ie. I2S2ext for SPI2 and I2S3ext for SPI3).
+  89:.//FWLIB/src/stm32f4xx_spi.c ****       The extension block is not a full SPI IP, it is used only as I2S slave to
+  90:.//FWLIB/src/stm32f4xx_spi.c ****       implement full duplex mode. The extension block uses the same clock sources
+  91:.//FWLIB/src/stm32f4xx_spi.c ****       as its master.          
+  92:.//FWLIB/src/stm32f4xx_spi.c ****       To configure I2S full duplex you have to:
+  93:.//FWLIB/src/stm32f4xx_spi.c ****               
+  94:.//FWLIB/src/stm32f4xx_spi.c ****       (#) Configure SPIx in I2S mode (I2S_Init() function) as described above. 
+  95:.//FWLIB/src/stm32f4xx_spi.c ****              
+  96:.//FWLIB/src/stm32f4xx_spi.c ****       (#) Call the I2S_FullDuplexConfig() function using the same strucutre passed to  
+  97:.//FWLIB/src/stm32f4xx_spi.c ****           I2S_Init() function.
+  98:.//FWLIB/src/stm32f4xx_spi.c ****               
+  99:.//FWLIB/src/stm32f4xx_spi.c ****       (#) Call I2S_Cmd() for SPIx then for its extended block.
+ 100:.//FWLIB/src/stm32f4xx_spi.c ****             
+ 101:.//FWLIB/src/stm32f4xx_spi.c ****       (#) To configure interrupts or DMA requests and to get/clear flag status, 
+ 102:.//FWLIB/src/stm32f4xx_spi.c ****           use I2Sxext instance for the extension block.
+ 103:.//FWLIB/src/stm32f4xx_spi.c ****                
+ 104:.//FWLIB/src/stm32f4xx_spi.c ****  [..] Functions that can be called with I2Sxext instances are: I2S_Cmd(), 
+ 105:.//FWLIB/src/stm32f4xx_spi.c ****       I2S_FullDuplexConfig(), SPI_I2S_ReceiveData(), SPI_I2S_SendData(), 
+ 106:.//FWLIB/src/stm32f4xx_spi.c ****       SPI_I2S_DMACmd(), SPI_I2S_ITConfig(), SPI_I2S_GetFlagStatus(), 
+ 107:.//FWLIB/src/stm32f4xx_spi.c ****       SPI_I2S_ClearFlag(), SPI_I2S_GetITStatus() and SPI_I2S_ClearITPendingBit().
+ 108:.//FWLIB/src/stm32f4xx_spi.c ****                    
+ 109:.//FWLIB/src/stm32f4xx_spi.c ****       Example: To use SPI3 in Full duplex mode (SPI3 is Master Tx, I2S3ext is Slave Rx):
+ 110:.//FWLIB/src/stm32f4xx_spi.c ****               
+ 111:.//FWLIB/src/stm32f4xx_spi.c ****       RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI3, ENABLE);   
+ 112:.//FWLIB/src/stm32f4xx_spi.c ****       I2S_StructInit(&I2SInitStruct);
+ 113:.//FWLIB/src/stm32f4xx_spi.c ****       I2SInitStruct.Mode = I2S_Mode_MasterTx;     
+ 114:.//FWLIB/src/stm32f4xx_spi.c ****       I2S_Init(SPI3, &I2SInitStruct);
+ 115:.//FWLIB/src/stm32f4xx_spi.c ****       I2S_FullDuplexConfig(SPI3ext, &I2SInitStruct)
+ 116:.//FWLIB/src/stm32f4xx_spi.c ****       I2S_Cmd(SPI3, ENABLE);
+ 117:.//FWLIB/src/stm32f4xx_spi.c ****       I2S_Cmd(SPI3ext, ENABLE);
+ 118:.//FWLIB/src/stm32f4xx_spi.c ****       ...
+ 119:.//FWLIB/src/stm32f4xx_spi.c ****       while (SPI_I2S_GetFlagStatus(SPI2, SPI_FLAG_TXE) == RESET)
+ 120:.//FWLIB/src/stm32f4xx_spi.c ****       {}
+ 121:.//FWLIB/src/stm32f4xx_spi.c ****       SPI_I2S_SendData(SPI3, txdata[i]);
+ 122:.//FWLIB/src/stm32f4xx_spi.c ****       ...  
+ 123:.//FWLIB/src/stm32f4xx_spi.c ****       while (SPI_I2S_GetFlagStatus(I2S3ext, SPI_FLAG_RXNE) == RESET)
+ 124:.//FWLIB/src/stm32f4xx_spi.c ****       {}
+ 125:.//FWLIB/src/stm32f4xx_spi.c ****       rxdata[i] = SPI_I2S_ReceiveData(I2S3ext);
+ 126:.//FWLIB/src/stm32f4xx_spi.c ****       ...          
+ 127:.//FWLIB/src/stm32f4xx_spi.c ****                 
+ 128:.//FWLIB/src/stm32f4xx_spi.c ****  [..]       
+ 129:.//FWLIB/src/stm32f4xx_spi.c ****    (@) In I2S mode: if an external clock is used as source clock for the I2S,  
+ 130:.//FWLIB/src/stm32f4xx_spi.c ****        then the define I2S_EXTERNAL_CLOCK_VAL in file stm32f4xx_conf.h should 
+ 131:.//FWLIB/src/stm32f4xx_spi.c ****        be enabled and set to the value of the source clock frequency (in Hz).
+ 132:.//FWLIB/src/stm32f4xx_spi.c ****    
+ 133:.//FWLIB/src/stm32f4xx_spi.c ****    (@) In SPI mode: To use the SPI TI mode, call the function SPI_TIModeCmd() 
+ 134:.//FWLIB/src/stm32f4xx_spi.c ****        just after calling the function SPI_Init().
+ 135:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 136:.//FWLIB/src/stm32f4xx_spi.c **** @endverbatim  
+ 137:.//FWLIB/src/stm32f4xx_spi.c ****   *                                  
+ 138:.//FWLIB/src/stm32f4xx_spi.c ****   ******************************************************************************
+ 139:.//FWLIB/src/stm32f4xx_spi.c ****   * @attention
+ 140:.//FWLIB/src/stm32f4xx_spi.c ****   *
+ 141:.//FWLIB/src/stm32f4xx_spi.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+ 142:.//FWLIB/src/stm32f4xx_spi.c ****   *
+ 143:.//FWLIB/src/stm32f4xx_spi.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 4
+
+
+ 144:.//FWLIB/src/stm32f4xx_spi.c ****   * You may not use this file except in compliance with the License.
+ 145:.//FWLIB/src/stm32f4xx_spi.c ****   * You may obtain a copy of the License at:
+ 146:.//FWLIB/src/stm32f4xx_spi.c ****   *
+ 147:.//FWLIB/src/stm32f4xx_spi.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+ 148:.//FWLIB/src/stm32f4xx_spi.c ****   *
+ 149:.//FWLIB/src/stm32f4xx_spi.c ****   * Unless required by applicable law or agreed to in writing, software 
+ 150:.//FWLIB/src/stm32f4xx_spi.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+ 151:.//FWLIB/src/stm32f4xx_spi.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ 152:.//FWLIB/src/stm32f4xx_spi.c ****   * See the License for the specific language governing permissions and
+ 153:.//FWLIB/src/stm32f4xx_spi.c ****   * limitations under the License.
+ 154:.//FWLIB/src/stm32f4xx_spi.c ****   *
+ 155:.//FWLIB/src/stm32f4xx_spi.c ****   ******************************************************************************  
+ 156:.//FWLIB/src/stm32f4xx_spi.c ****   */ 
+ 157:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 158:.//FWLIB/src/stm32f4xx_spi.c **** /* Includes ------------------------------------------------------------------*/
+ 159:.//FWLIB/src/stm32f4xx_spi.c **** #include "stm32f4xx_spi.h"
+ 160:.//FWLIB/src/stm32f4xx_spi.c **** #include "stm32f4xx_rcc.h"
+ 161:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 162:.//FWLIB/src/stm32f4xx_spi.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+ 163:.//FWLIB/src/stm32f4xx_spi.c ****   * @{
+ 164:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 165:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 166:.//FWLIB/src/stm32f4xx_spi.c **** /** @defgroup SPI 
+ 167:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief SPI driver modules
+ 168:.//FWLIB/src/stm32f4xx_spi.c ****   * @{
+ 169:.//FWLIB/src/stm32f4xx_spi.c ****   */ 
+ 170:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 171:.//FWLIB/src/stm32f4xx_spi.c **** /* Private typedef -----------------------------------------------------------*/
+ 172:.//FWLIB/src/stm32f4xx_spi.c **** /* Private define ------------------------------------------------------------*/
+ 173:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 174:.//FWLIB/src/stm32f4xx_spi.c **** /* SPI registers Masks */
+ 175:.//FWLIB/src/stm32f4xx_spi.c **** #define CR1_CLEAR_MASK            ((uint16_t)0x3040)
+ 176:.//FWLIB/src/stm32f4xx_spi.c **** #define I2SCFGR_CLEAR_MASK        ((uint16_t)0xF040)
+ 177:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 178:.//FWLIB/src/stm32f4xx_spi.c **** /* RCC PLLs masks */
+ 179:.//FWLIB/src/stm32f4xx_spi.c **** #define PLLCFGR_PPLR_MASK         ((uint32_t)0x70000000)
+ 180:.//FWLIB/src/stm32f4xx_spi.c **** #define PLLCFGR_PPLN_MASK         ((uint32_t)0x00007FC0)
+ 181:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 182:.//FWLIB/src/stm32f4xx_spi.c **** #define SPI_CR2_FRF               ((uint16_t)0x0010)
+ 183:.//FWLIB/src/stm32f4xx_spi.c **** #define SPI_SR_TIFRFE             ((uint16_t)0x0100)
+ 184:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 185:.//FWLIB/src/stm32f4xx_spi.c **** /* Private macro -------------------------------------------------------------*/
+ 186:.//FWLIB/src/stm32f4xx_spi.c **** /* Private variables ---------------------------------------------------------*/
+ 187:.//FWLIB/src/stm32f4xx_spi.c **** /* Private function prototypes -----------------------------------------------*/
+ 188:.//FWLIB/src/stm32f4xx_spi.c **** /* Private functions ---------------------------------------------------------*/
+ 189:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 190:.//FWLIB/src/stm32f4xx_spi.c **** /** @defgroup SPI_Private_Functions
+ 191:.//FWLIB/src/stm32f4xx_spi.c ****   * @{
+ 192:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 193:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 194:.//FWLIB/src/stm32f4xx_spi.c **** /** @defgroup SPI_Group1 Initialization and Configuration functions
+ 195:.//FWLIB/src/stm32f4xx_spi.c ****  *  @brief   Initialization and Configuration functions 
+ 196:.//FWLIB/src/stm32f4xx_spi.c ****  *
+ 197:.//FWLIB/src/stm32f4xx_spi.c **** @verbatim   
+ 198:.//FWLIB/src/stm32f4xx_spi.c ****  ===============================================================================
+ 199:.//FWLIB/src/stm32f4xx_spi.c ****              ##### Initialization and Configuration functions ##### 
+ 200:.//FWLIB/src/stm32f4xx_spi.c ****  ===============================================================================  
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 5
+
+
+ 201:.//FWLIB/src/stm32f4xx_spi.c ****  [..] This section provides a set of functions allowing to initialize the SPI 
+ 202:.//FWLIB/src/stm32f4xx_spi.c ****       Direction, SPI Mode, SPI Data Size, SPI Polarity, SPI Phase, SPI NSS 
+ 203:.//FWLIB/src/stm32f4xx_spi.c ****       Management, SPI Baud Rate Prescaler, SPI First Bit and SPI CRC Polynomial.
+ 204:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 205:.//FWLIB/src/stm32f4xx_spi.c ****  [..] The SPI_Init() function follows the SPI configuration procedures for Master 
+ 206:.//FWLIB/src/stm32f4xx_spi.c ****       mode and Slave mode (details for these procedures are available in reference 
+ 207:.//FWLIB/src/stm32f4xx_spi.c ****       manual (RM0090)).
+ 208:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 209:.//FWLIB/src/stm32f4xx_spi.c **** @endverbatim
+ 210:.//FWLIB/src/stm32f4xx_spi.c ****   * @{
+ 211:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 212:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 213:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 214:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  De-initialize the SPIx peripheral registers to their default reset values.
+ 215:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: To select the SPIx/I2Sx peripheral, where x can be: 1, 2, 3, 4, 5 or 6 
+ 216:.//FWLIB/src/stm32f4xx_spi.c ****   *         in SPI mode or 2 or 3 in I2S mode.   
+ 217:.//FWLIB/src/stm32f4xx_spi.c ****   *         
+ 218:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   The extended I2S blocks (ie. I2S2ext and I2S3ext blocks) are de-initialized
+ 219:.//FWLIB/src/stm32f4xx_spi.c ****   *         when the relative I2S peripheral is de-initialized (the extended block's clock
+ 220:.//FWLIB/src/stm32f4xx_spi.c ****   *         is managed by the I2S peripheral clock).
+ 221:.//FWLIB/src/stm32f4xx_spi.c ****   *             
+ 222:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 223:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 224:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_I2S_DeInit(SPI_TypeDef* SPIx)
+ 225:.//FWLIB/src/stm32f4xx_spi.c **** {
+  30              		.loc 1 225 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              	.LVL0:
+  35 0000 08B5     		push	{r3, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 3, -8
+  39              		.cfi_offset 14, -4
+ 226:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 227:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH(SPIx));
+ 228:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 229:.//FWLIB/src/stm32f4xx_spi.c ****   if (SPIx == SPI1)
+  40              		.loc 1 229 0
+  41 0002 2A4B     		ldr	r3, .L9
+  42 0004 9842     		cmp	r0, r3
+  43 0006 0AD1     		bne	.L2
+ 230:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 231:.//FWLIB/src/stm32f4xx_spi.c ****     /* Enable SPI1 reset state */
+ 232:.//FWLIB/src/stm32f4xx_spi.c ****     RCC_APB2PeriphResetCmd(RCC_APB2Periph_SPI1, ENABLE);
+  44              		.loc 1 232 0
+  45 0008 0121     		movs	r1, #1
+  46 000a 4FF48050 		mov	r0, #4096
+  47              	.LVL1:
+  48 000e FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  49              	.LVL2:
+ 233:.//FWLIB/src/stm32f4xx_spi.c ****     /* Release SPI1 from reset state */
+ 234:.//FWLIB/src/stm32f4xx_spi.c ****     RCC_APB2PeriphResetCmd(RCC_APB2Periph_SPI1, DISABLE);
+  50              		.loc 1 234 0
+  51 0012 0021     		movs	r1, #0
+  52 0014 4FF48050 		mov	r0, #4096
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 6
+
+
+  53 0018 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  54              	.LVL3:
+  55 001c 08BD     		pop	{r3, pc}
+  56              	.LVL4:
+  57              	.L2:
+ 235:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 236:.//FWLIB/src/stm32f4xx_spi.c ****   else if (SPIx == SPI2)
+  58              		.loc 1 236 0
+  59 001e 244B     		ldr	r3, .L9+4
+  60 0020 9842     		cmp	r0, r3
+  61 0022 0AD1     		bne	.L4
+ 237:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 238:.//FWLIB/src/stm32f4xx_spi.c ****     /* Enable SPI2 reset state */
+ 239:.//FWLIB/src/stm32f4xx_spi.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPI2, ENABLE);
+  62              		.loc 1 239 0
+  63 0024 0121     		movs	r1, #1
+  64 0026 4FF48040 		mov	r0, #16384
+  65              	.LVL5:
+  66 002a FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  67              	.LVL6:
+ 240:.//FWLIB/src/stm32f4xx_spi.c ****     /* Release SPI2 from reset state */
+ 241:.//FWLIB/src/stm32f4xx_spi.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPI2, DISABLE);
+  68              		.loc 1 241 0
+  69 002e 0021     		movs	r1, #0
+  70 0030 4FF48040 		mov	r0, #16384
+  71 0034 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  72              	.LVL7:
+  73 0038 08BD     		pop	{r3, pc}
+  74              	.LVL8:
+  75              	.L4:
+ 242:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 243:.//FWLIB/src/stm32f4xx_spi.c ****   else if (SPIx == SPI3)
+  76              		.loc 1 243 0
+  77 003a 1E4B     		ldr	r3, .L9+8
+  78 003c 9842     		cmp	r0, r3
+  79 003e 0AD1     		bne	.L5
+ 244:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 245:.//FWLIB/src/stm32f4xx_spi.c ****     /* Enable SPI3 reset state */
+ 246:.//FWLIB/src/stm32f4xx_spi.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPI3, ENABLE);
+  80              		.loc 1 246 0
+  81 0040 0121     		movs	r1, #1
+  82 0042 4FF40040 		mov	r0, #32768
+  83              	.LVL9:
+  84 0046 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  85              	.LVL10:
+ 247:.//FWLIB/src/stm32f4xx_spi.c ****     /* Release SPI3 from reset state */
+ 248:.//FWLIB/src/stm32f4xx_spi.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_SPI3, DISABLE);
+  86              		.loc 1 248 0
+  87 004a 0021     		movs	r1, #0
+  88 004c 4FF40040 		mov	r0, #32768
+  89 0050 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  90              	.LVL11:
+  91 0054 08BD     		pop	{r3, pc}
+  92              	.LVL12:
+  93              	.L5:
+ 249:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 250:.//FWLIB/src/stm32f4xx_spi.c ****   else if (SPIx == SPI4)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 7
+
+
+  94              		.loc 1 250 0
+  95 0056 184B     		ldr	r3, .L9+12
+  96 0058 9842     		cmp	r0, r3
+  97 005a 0AD1     		bne	.L6
+ 251:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 252:.//FWLIB/src/stm32f4xx_spi.c ****     /* Enable SPI4 reset state */
+ 253:.//FWLIB/src/stm32f4xx_spi.c ****     RCC_APB2PeriphResetCmd(RCC_APB2Periph_SPI4, ENABLE);
+  98              		.loc 1 253 0
+  99 005c 0121     		movs	r1, #1
+ 100 005e 4FF40050 		mov	r0, #8192
+ 101              	.LVL13:
+ 102 0062 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+ 103              	.LVL14:
+ 254:.//FWLIB/src/stm32f4xx_spi.c ****     /* Release SPI4 from reset state */
+ 255:.//FWLIB/src/stm32f4xx_spi.c ****     RCC_APB2PeriphResetCmd(RCC_APB2Periph_SPI4, DISABLE);
+ 104              		.loc 1 255 0
+ 105 0066 0021     		movs	r1, #0
+ 106 0068 4FF40050 		mov	r0, #8192
+ 107 006c FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+ 108              	.LVL15:
+ 109 0070 08BD     		pop	{r3, pc}
+ 110              	.LVL16:
+ 111              	.L6:
+ 256:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 257:.//FWLIB/src/stm32f4xx_spi.c ****   else if (SPIx == SPI5)
+ 112              		.loc 1 257 0
+ 113 0072 124B     		ldr	r3, .L9+16
+ 114 0074 9842     		cmp	r0, r3
+ 115 0076 0AD1     		bne	.L7
+ 258:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 259:.//FWLIB/src/stm32f4xx_spi.c ****     /* Enable SPI5 reset state */
+ 260:.//FWLIB/src/stm32f4xx_spi.c ****     RCC_APB2PeriphResetCmd(RCC_APB2Periph_SPI5, ENABLE);
+ 116              		.loc 1 260 0
+ 117 0078 0121     		movs	r1, #1
+ 118 007a 4FF48010 		mov	r0, #1048576
+ 119              	.LVL17:
+ 120 007e FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+ 121              	.LVL18:
+ 261:.//FWLIB/src/stm32f4xx_spi.c ****     /* Release SPI5 from reset state */
+ 262:.//FWLIB/src/stm32f4xx_spi.c ****     RCC_APB2PeriphResetCmd(RCC_APB2Periph_SPI5, DISABLE);
+ 122              		.loc 1 262 0
+ 123 0082 0021     		movs	r1, #0
+ 124 0084 4FF48010 		mov	r0, #1048576
+ 125 0088 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+ 126              	.LVL19:
+ 127 008c 08BD     		pop	{r3, pc}
+ 128              	.LVL20:
+ 129              	.L7:
+ 263:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 264:.//FWLIB/src/stm32f4xx_spi.c ****   else 
+ 265:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 266:.//FWLIB/src/stm32f4xx_spi.c ****     if (SPIx == SPI6)
+ 130              		.loc 1 266 0
+ 131 008e 0C4B     		ldr	r3, .L9+20
+ 132 0090 9842     		cmp	r0, r3
+ 133 0092 09D1     		bne	.L1
+ 267:.//FWLIB/src/stm32f4xx_spi.c ****     {
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 8
+
+
+ 268:.//FWLIB/src/stm32f4xx_spi.c ****       /* Enable SPI6 reset state */
+ 269:.//FWLIB/src/stm32f4xx_spi.c ****       RCC_APB2PeriphResetCmd(RCC_APB2Periph_SPI6, ENABLE);
+ 134              		.loc 1 269 0
+ 135 0094 0121     		movs	r1, #1
+ 136 0096 4FF40010 		mov	r0, #2097152
+ 137              	.LVL21:
+ 138 009a FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+ 139              	.LVL22:
+ 270:.//FWLIB/src/stm32f4xx_spi.c ****       /* Release SPI6 from reset state */
+ 271:.//FWLIB/src/stm32f4xx_spi.c ****       RCC_APB2PeriphResetCmd(RCC_APB2Periph_SPI6, DISABLE);
+ 140              		.loc 1 271 0
+ 141 009e 0021     		movs	r1, #0
+ 142 00a0 4FF40010 		mov	r0, #2097152
+ 143 00a4 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+ 144              	.LVL23:
+ 145              	.L1:
+ 146 00a8 08BD     		pop	{r3, pc}
+ 147              	.L10:
+ 148 00aa 00BF     		.align	2
+ 149              	.L9:
+ 150 00ac 00300140 		.word	1073819648
+ 151 00b0 00380040 		.word	1073756160
+ 152 00b4 003C0040 		.word	1073757184
+ 153 00b8 00340140 		.word	1073820672
+ 154 00bc 00500140 		.word	1073827840
+ 155 00c0 00540140 		.word	1073828864
+ 156              		.cfi_endproc
+ 157              	.LFE112:
+ 159              		.section	.text.SPI_Init,"ax",%progbits
+ 160              		.align	2
+ 161              		.global	SPI_Init
+ 162              		.thumb
+ 163              		.thumb_func
+ 165              	SPI_Init:
+ 166              	.LFB113:
+ 272:.//FWLIB/src/stm32f4xx_spi.c ****     }
+ 273:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 274:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 275:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 276:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 277:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Initializes the SPIx peripheral according to the specified 
+ 278:.//FWLIB/src/stm32f4xx_spi.c ****   *         parameters in the SPI_InitStruct.
+ 279:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be 1, 2, 3, 4, 5 or 6 to select the SPI peripheral.
+ 280:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPI_InitStruct: pointer to a SPI_InitTypeDef structure that
+ 281:.//FWLIB/src/stm32f4xx_spi.c ****   *         contains the configuration information for the specified SPI peripheral.
+ 282:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 283:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 284:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_Init(SPI_TypeDef* SPIx, SPI_InitTypeDef* SPI_InitStruct)
+ 285:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 167              		.loc 1 285 0
+ 168              		.cfi_startproc
+ 169              		@ args = 0, pretend = 0, frame = 0
+ 170              		@ frame_needed = 0, uses_anonymous_args = 0
+ 171              	.LVL24:
+ 172 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 173              	.LCFI1:
+ 174              		.cfi_def_cfa_offset 24
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 9
+
+
+ 175              		.cfi_offset 4, -24
+ 176              		.cfi_offset 5, -20
+ 177              		.cfi_offset 6, -16
+ 178              		.cfi_offset 7, -12
+ 179              		.cfi_offset 8, -8
+ 180              		.cfi_offset 14, -4
+ 181              	.LVL25:
+ 286:.//FWLIB/src/stm32f4xx_spi.c ****   uint16_t tmpreg = 0;
+ 287:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 288:.//FWLIB/src/stm32f4xx_spi.c ****   /* check the parameters */
+ 289:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH(SPIx));
+ 290:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 291:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the SPI parameters */
+ 292:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_DIRECTION_MODE(SPI_InitStruct->SPI_Direction));
+ 293:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_MODE(SPI_InitStruct->SPI_Mode));
+ 294:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_DATASIZE(SPI_InitStruct->SPI_DataSize));
+ 295:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_CPOL(SPI_InitStruct->SPI_CPOL));
+ 296:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_CPHA(SPI_InitStruct->SPI_CPHA));
+ 297:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_NSS(SPI_InitStruct->SPI_NSS));
+ 298:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_BAUDRATE_PRESCALER(SPI_InitStruct->SPI_BaudRatePrescaler));
+ 299:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_FIRST_BIT(SPI_InitStruct->SPI_FirstBit));
+ 300:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_CRC_POLYNOMIAL(SPI_InitStruct->SPI_CRCPolynomial));
+ 301:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 302:.//FWLIB/src/stm32f4xx_spi.c **** /*---------------------------- SPIx CR1 Configuration ------------------------*/
+ 303:.//FWLIB/src/stm32f4xx_spi.c ****   /* Get the SPIx CR1 value */
+ 304:.//FWLIB/src/stm32f4xx_spi.c ****   tmpreg = SPIx->CR1;
+ 182              		.loc 1 304 0
+ 183 0004 0388     		ldrh	r3, [r0]
+ 184              	.LVL26:
+ 305:.//FWLIB/src/stm32f4xx_spi.c ****   /* Clear BIDIMode, BIDIOE, RxONLY, SSM, SSI, LSBFirst, BR, MSTR, CPOL and CPHA bits */
+ 306:.//FWLIB/src/stm32f4xx_spi.c ****   tmpreg &= CR1_CLEAR_MASK;
+ 185              		.loc 1 306 0
+ 186 0006 03F44157 		and	r7, r3, #12352
+ 187              	.LVL27:
+ 307:.//FWLIB/src/stm32f4xx_spi.c ****   /* Configure SPIx: direction, NSS management, first transmitted bit, BaudRate prescaler
+ 308:.//FWLIB/src/stm32f4xx_spi.c ****      master/salve mode, CPOL and CPHA */
+ 309:.//FWLIB/src/stm32f4xx_spi.c ****   /* Set BIDImode, BIDIOE and RxONLY bits according to SPI_Direction value */
+ 310:.//FWLIB/src/stm32f4xx_spi.c ****   /* Set SSM, SSI and MSTR bits according to SPI_Mode and SPI_NSS values */
+ 311:.//FWLIB/src/stm32f4xx_spi.c ****   /* Set LSBFirst bit according to SPI_FirstBit value */
+ 312:.//FWLIB/src/stm32f4xx_spi.c ****   /* Set BR bits according to SPI_BaudRatePrescaler value */
+ 313:.//FWLIB/src/stm32f4xx_spi.c ****   /* Set CPOL bit according to SPI_CPOL value */
+ 314:.//FWLIB/src/stm32f4xx_spi.c ****   /* Set CPHA bit according to SPI_CPHA value */
+ 315:.//FWLIB/src/stm32f4xx_spi.c ****   tmpreg |= (uint16_t)((uint32_t)SPI_InitStruct->SPI_Direction | SPI_InitStruct->SPI_Mode |
+ 188              		.loc 1 315 0
+ 189 000a 0D88     		ldrh	r5, [r1]
+ 190 000c 4E88     		ldrh	r6, [r1, #2]
+ 316:.//FWLIB/src/stm32f4xx_spi.c ****                   SPI_InitStruct->SPI_DataSize | SPI_InitStruct->SPI_CPOL |  
+ 191              		.loc 1 316 0
+ 192 000e 8C88     		ldrh	r4, [r1, #4]
+ 193 0010 B1F80680 		ldrh	r8, [r1, #6]
+ 317:.//FWLIB/src/stm32f4xx_spi.c ****                   SPI_InitStruct->SPI_CPHA | SPI_InitStruct->SPI_NSS |  
+ 194              		.loc 1 317 0
+ 195 0014 0A89     		ldrh	r2, [r1, #8]
+ 196 0016 B1F80AC0 		ldrh	ip, [r1, #10]
+ 318:.//FWLIB/src/stm32f4xx_spi.c ****                   SPI_InitStruct->SPI_BaudRatePrescaler | SPI_InitStruct->SPI_FirstBit);
+ 197              		.loc 1 318 0
+ 198 001a 8B89     		ldrh	r3, [r1, #12]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 10
+
+
+ 199 001c B1F80EE0 		ldrh	lr, [r1, #14]
+ 315:.//FWLIB/src/stm32f4xx_spi.c ****                   SPI_InitStruct->SPI_DataSize | SPI_InitStruct->SPI_CPOL |  
+ 200              		.loc 1 315 0
+ 201 0020 3543     		orrs	r5, r5, r6
+ 202 0022 2543     		orrs	r5, r5, r4
+ 203 0024 48EA0504 		orr	r4, r8, r5
+ 204 0028 1443     		orrs	r4, r4, r2
+ 205 002a 4CEA0402 		orr	r2, ip, r4
+ 206 002e 1A43     		orrs	r2, r2, r3
+ 207 0030 4EEA0203 		orr	r3, lr, r2
+ 208 0034 3B43     		orrs	r3, r3, r7
+ 209              	.LVL28:
+ 319:.//FWLIB/src/stm32f4xx_spi.c ****   /* Write to SPIx CR1 */
+ 320:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->CR1 = tmpreg;
+ 210              		.loc 1 320 0
+ 211 0036 0380     		strh	r3, [r0]	@ movhi
+ 321:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 322:.//FWLIB/src/stm32f4xx_spi.c ****   /* Activate the SPI mode (Reset I2SMOD bit in I2SCFGR register) */
+ 323:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->I2SCFGR &= (uint16_t)~((uint16_t)SPI_I2SCFGR_I2SMOD);
+ 212              		.loc 1 323 0
+ 213 0038 838B     		ldrh	r3, [r0, #28]
+ 214              	.LVL29:
+ 215 003a 9BB2     		uxth	r3, r3
+ 216 003c 23F40063 		bic	r3, r3, #2048
+ 217 0040 9BB2     		uxth	r3, r3
+ 218 0042 8383     		strh	r3, [r0, #28]	@ movhi
+ 219              	.LVL30:
+ 324:.//FWLIB/src/stm32f4xx_spi.c **** /*---------------------------- SPIx CRCPOLY Configuration --------------------*/
+ 325:.//FWLIB/src/stm32f4xx_spi.c ****   /* Write to SPIx CRCPOLY */
+ 326:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->CRCPR = SPI_InitStruct->SPI_CRCPolynomial;
+ 220              		.loc 1 326 0
+ 221 0044 0B8A     		ldrh	r3, [r1, #16]
+ 222 0046 0382     		strh	r3, [r0, #16]	@ movhi
+ 223 0048 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 224              		.cfi_endproc
+ 225              	.LFE113:
+ 227              		.section	.text.I2S_Init,"ax",%progbits
+ 228              		.align	2
+ 229              		.global	I2S_Init
+ 230              		.thumb
+ 231              		.thumb_func
+ 233              	I2S_Init:
+ 234              	.LFB114:
+ 327:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 328:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 329:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 330:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Initializes the SPIx peripheral according to the specified 
+ 331:.//FWLIB/src/stm32f4xx_spi.c ****   *         parameters in the I2S_InitStruct.
+ 332:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be  2 or 3 to select the SPI peripheral (configured in I2S mode).
+ 333:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  I2S_InitStruct: pointer to an I2S_InitTypeDef structure that
+ 334:.//FWLIB/src/stm32f4xx_spi.c ****   *         contains the configuration information for the specified SPI peripheral
+ 335:.//FWLIB/src/stm32f4xx_spi.c ****   *         configured in I2S mode.
+ 336:.//FWLIB/src/stm32f4xx_spi.c ****   *           
+ 337:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   The function calculates the optimal prescaler needed to obtain the most 
+ 338:.//FWLIB/src/stm32f4xx_spi.c ****   *         accurate audio frequency (depending on the I2S clock source, the PLL values 
+ 339:.//FWLIB/src/stm32f4xx_spi.c ****   *         and the product configuration). But in case the prescaler value is greater 
+ 340:.//FWLIB/src/stm32f4xx_spi.c ****   *         than 511, the default value (0x02) will be configured instead.    
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 11
+
+
+ 341:.//FWLIB/src/stm32f4xx_spi.c ****   * 
+ 342:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   if an external clock is used as source clock for the I2S, then the define
+ 343:.//FWLIB/src/stm32f4xx_spi.c ****   *         I2S_EXTERNAL_CLOCK_VAL in file stm32f4xx_conf.h should be enabled and set
+ 344:.//FWLIB/src/stm32f4xx_spi.c ****   *         to the value of the the source clock frequency (in Hz).
+ 345:.//FWLIB/src/stm32f4xx_spi.c ****   *  
+ 346:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 347:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 348:.//FWLIB/src/stm32f4xx_spi.c **** void I2S_Init(SPI_TypeDef* SPIx, I2S_InitTypeDef* I2S_InitStruct)
+ 349:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 235              		.loc 1 349 0
+ 236              		.cfi_startproc
+ 237              		@ args = 0, pretend = 0, frame = 0
+ 238              		@ frame_needed = 0, uses_anonymous_args = 0
+ 239              	.LVL31:
+ 240 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 241              	.LCFI2:
+ 242              		.cfi_def_cfa_offset 20
+ 243              		.cfi_offset 4, -20
+ 244              		.cfi_offset 5, -16
+ 245              		.cfi_offset 6, -12
+ 246              		.cfi_offset 7, -8
+ 247              		.cfi_offset 14, -4
+ 248              	.LVL32:
+ 350:.//FWLIB/src/stm32f4xx_spi.c ****   uint16_t tmpreg = 0, i2sdiv = 2, i2sodd = 0, packetlength = 1;
+ 351:.//FWLIB/src/stm32f4xx_spi.c ****   uint32_t tmp = 0, i2sclk = 0;
+ 352:.//FWLIB/src/stm32f4xx_spi.c **** #ifndef I2S_EXTERNAL_CLOCK_VAL
+ 353:.//FWLIB/src/stm32f4xx_spi.c ****   uint32_t pllm = 0, plln = 0, pllr = 0;
+ 354:.//FWLIB/src/stm32f4xx_spi.c **** #endif /* I2S_EXTERNAL_CLOCK_VAL */
+ 355:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 356:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the I2S parameters */
+ 357:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_23_PERIPH(SPIx));
+ 358:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_I2S_MODE(I2S_InitStruct->I2S_Mode));
+ 359:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_I2S_STANDARD(I2S_InitStruct->I2S_Standard));
+ 360:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_I2S_DATA_FORMAT(I2S_InitStruct->I2S_DataFormat));
+ 361:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_I2S_MCLK_OUTPUT(I2S_InitStruct->I2S_MCLKOutput));
+ 362:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_I2S_AUDIO_FREQ(I2S_InitStruct->I2S_AudioFreq));
+ 363:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_I2S_CPOL(I2S_InitStruct->I2S_CPOL));  
+ 364:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 365:.//FWLIB/src/stm32f4xx_spi.c **** /*----------------------- SPIx I2SCFGR & I2SPR Configuration -----------------*/
+ 366:.//FWLIB/src/stm32f4xx_spi.c ****   /* Clear I2SMOD, I2SE, I2SCFG, PCMSYNC, I2SSTD, CKPOL, DATLEN and CHLEN bits */
+ 367:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->I2SCFGR &= I2SCFGR_CLEAR_MASK; 
+ 249              		.loc 1 367 0
+ 250 0002 838B     		ldrh	r3, [r0, #28]
+ 251 0004 9BB2     		uxth	r3, r3
+ 252 0006 23F47B63 		bic	r3, r3, #4016
+ 253 000a 23F00F03 		bic	r3, r3, #15
+ 254 000e 9BB2     		uxth	r3, r3
+ 255 0010 8383     		strh	r3, [r0, #28]	@ movhi
+ 368:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->I2SPR = 0x0002;
+ 256              		.loc 1 368 0
+ 257 0012 0223     		movs	r3, #2
+ 258 0014 0384     		strh	r3, [r0, #32]	@ movhi
+ 369:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 370:.//FWLIB/src/stm32f4xx_spi.c ****   /* Get the I2SCFGR register value */
+ 371:.//FWLIB/src/stm32f4xx_spi.c ****   tmpreg = SPIx->I2SCFGR;
+ 259              		.loc 1 371 0
+ 260 0016 838B     		ldrh	r3, [r0, #28]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 12
+
+
+ 261 0018 9AB2     		uxth	r2, r3
+ 262              	.LVL33:
+ 372:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 373:.//FWLIB/src/stm32f4xx_spi.c ****   /* If the default value has to be written, reinitialize i2sdiv and i2sodd*/
+ 374:.//FWLIB/src/stm32f4xx_spi.c ****   if(I2S_InitStruct->I2S_AudioFreq == I2S_AudioFreq_Default)
+ 263              		.loc 1 374 0
+ 264 001a 8B68     		ldr	r3, [r1, #8]
+ 265 001c 022B     		cmp	r3, #2
+ 266 001e 55D0     		beq	.L22
+ 375:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 376:.//FWLIB/src/stm32f4xx_spi.c ****     i2sodd = (uint16_t)0;
+ 377:.//FWLIB/src/stm32f4xx_spi.c ****     i2sdiv = (uint16_t)2;   
+ 378:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 379:.//FWLIB/src/stm32f4xx_spi.c ****   /* If the requested audio frequency is not the default, compute the prescaler */
+ 380:.//FWLIB/src/stm32f4xx_spi.c ****   else
+ 381:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 382:.//FWLIB/src/stm32f4xx_spi.c ****     /* Check the frame length (For the Prescaler computing) *******************/
+ 383:.//FWLIB/src/stm32f4xx_spi.c ****     if(I2S_InitStruct->I2S_DataFormat == I2S_DataFormat_16b)
+ 267              		.loc 1 383 0
+ 268 0020 8B88     		ldrh	r3, [r1, #4]
+ 269 0022 13B9     		cbnz	r3, .L23
+ 384:.//FWLIB/src/stm32f4xx_spi.c ****     {
+ 385:.//FWLIB/src/stm32f4xx_spi.c ****       /* Packet length is 16 bits */
+ 386:.//FWLIB/src/stm32f4xx_spi.c ****       packetlength = 1;
+ 270              		.loc 1 386 0
+ 271 0024 4FF0010E 		mov	lr, #1
+ 272 0028 01E0     		b	.L15
+ 273              	.L23:
+ 387:.//FWLIB/src/stm32f4xx_spi.c ****     }
+ 388:.//FWLIB/src/stm32f4xx_spi.c ****     else
+ 389:.//FWLIB/src/stm32f4xx_spi.c ****     {
+ 390:.//FWLIB/src/stm32f4xx_spi.c ****       /* Packet length is 32 bits */
+ 391:.//FWLIB/src/stm32f4xx_spi.c ****       packetlength = 2;
+ 274              		.loc 1 391 0
+ 275 002a 4FF0020E 		mov	lr, #2
+ 276              	.L15:
+ 277              	.LVL34:
+ 392:.//FWLIB/src/stm32f4xx_spi.c ****     }
+ 393:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 394:.//FWLIB/src/stm32f4xx_spi.c ****     /* Get I2S source Clock frequency  ****************************************/
+ 395:.//FWLIB/src/stm32f4xx_spi.c ****       
+ 396:.//FWLIB/src/stm32f4xx_spi.c ****     /* If an external I2S clock has to be used, this define should be set  
+ 397:.//FWLIB/src/stm32f4xx_spi.c ****        in the project configuration or in the stm32f4xx_conf.h file */
+ 398:.//FWLIB/src/stm32f4xx_spi.c ****   #ifdef I2S_EXTERNAL_CLOCK_VAL     
+ 399:.//FWLIB/src/stm32f4xx_spi.c ****     /* Set external clock as I2S clock source */
+ 400:.//FWLIB/src/stm32f4xx_spi.c ****     if ((RCC->CFGR & RCC_CFGR_I2SSRC) == 0)
+ 401:.//FWLIB/src/stm32f4xx_spi.c ****     {
+ 402:.//FWLIB/src/stm32f4xx_spi.c ****       RCC->CFGR |= (uint32_t)RCC_CFGR_I2SSRC;
+ 403:.//FWLIB/src/stm32f4xx_spi.c ****     }
+ 404:.//FWLIB/src/stm32f4xx_spi.c ****     
+ 405:.//FWLIB/src/stm32f4xx_spi.c ****     /* Set the I2S clock to the external clock  value */
+ 406:.//FWLIB/src/stm32f4xx_spi.c ****     i2sclk = I2S_EXTERNAL_CLOCK_VAL;
+ 407:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 408:.//FWLIB/src/stm32f4xx_spi.c ****   #else /* There is no define for External I2S clock source */
+ 409:.//FWLIB/src/stm32f4xx_spi.c ****     /* Set PLLI2S as I2S clock source */
+ 410:.//FWLIB/src/stm32f4xx_spi.c ****     if ((RCC->CFGR & RCC_CFGR_I2SSRC) != 0)
+ 278              		.loc 1 410 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 13
+
+
+ 279 002e 334B     		ldr	r3, .L26
+ 280 0030 9B68     		ldr	r3, [r3, #8]
+ 281 0032 13F4000F 		tst	r3, #8388608
+ 282 0036 04D0     		beq	.L16
+ 411:.//FWLIB/src/stm32f4xx_spi.c ****     {
+ 412:.//FWLIB/src/stm32f4xx_spi.c ****       RCC->CFGR &= ~(uint32_t)RCC_CFGR_I2SSRC;
+ 283              		.loc 1 412 0
+ 284 0038 304C     		ldr	r4, .L26
+ 285 003a A368     		ldr	r3, [r4, #8]
+ 286 003c 23F40003 		bic	r3, r3, #8388608
+ 287 0040 A360     		str	r3, [r4, #8]
+ 288              	.L16:
+ 413:.//FWLIB/src/stm32f4xx_spi.c ****     }    
+ 414:.//FWLIB/src/stm32f4xx_spi.c ****     
+ 415:.//FWLIB/src/stm32f4xx_spi.c ****     /* Get the PLLI2SN value */
+ 416:.//FWLIB/src/stm32f4xx_spi.c ****     plln = (uint32_t)(((RCC->PLLI2SCFGR & RCC_PLLI2SCFGR_PLLI2SN) >> 6) & \
+ 289              		.loc 1 416 0
+ 290 0042 2E4D     		ldr	r5, .L26
+ 291 0044 D5F88460 		ldr	r6, [r5, #132]
+ 292 0048 C6F38816 		ubfx	r6, r6, #6, #9
+ 293              	.LVL35:
+ 417:.//FWLIB/src/stm32f4xx_spi.c ****                       (RCC_PLLI2SCFGR_PLLI2SN >> 6));
+ 418:.//FWLIB/src/stm32f4xx_spi.c ****     
+ 419:.//FWLIB/src/stm32f4xx_spi.c ****     /* Get the PLLI2SR value */
+ 420:.//FWLIB/src/stm32f4xx_spi.c ****     pllr = (uint32_t)(((RCC->PLLI2SCFGR & RCC_PLLI2SCFGR_PLLI2SR) >> 28) & \
+ 294              		.loc 1 420 0
+ 295 004c D5F88430 		ldr	r3, [r5, #132]
+ 296 0050 C3F30273 		ubfx	r3, r3, #28, #3
+ 297              	.LVL36:
+ 421:.//FWLIB/src/stm32f4xx_spi.c ****                       (RCC_PLLI2SCFGR_PLLI2SR >> 28));
+ 422:.//FWLIB/src/stm32f4xx_spi.c ****     
+ 423:.//FWLIB/src/stm32f4xx_spi.c ****     /* Get the PLLM value */
+ 424:.//FWLIB/src/stm32f4xx_spi.c ****     pllm = (uint32_t)(RCC->PLLCFGR & RCC_PLLCFGR_PLLM);
+ 298              		.loc 1 424 0
+ 299 0054 6F68     		ldr	r7, [r5, #4]
+ 300 0056 07F03F07 		and	r7, r7, #63
+ 301              	.LVL37:
+ 425:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 426:.//FWLIB/src/stm32f4xx_spi.c ****     if((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLCFGR_PLLSRC_HSE)
+ 302              		.loc 1 426 0
+ 303 005a 6C68     		ldr	r4, [r5, #4]
+ 304 005c 14F4800F 		tst	r4, #4194304
+ 305 0060 07D0     		beq	.L17
+ 427:.//FWLIB/src/stm32f4xx_spi.c ****     {
+ 428:.//FWLIB/src/stm32f4xx_spi.c ****       /* Get the I2S source clock value */
+ 429:.//FWLIB/src/stm32f4xx_spi.c ****       i2sclk = (uint32_t)(((HSE_VALUE / pllm) * plln) / pllr);
+ 306              		.loc 1 429 0
+ 307 0062 274C     		ldr	r4, .L26+4
+ 308 0064 B4FBF7F4 		udiv	r4, r4, r7
+ 309 0068 04FB06F4 		mul	r4, r4, r6
+ 310 006c B4FBF3F3 		udiv	r3, r4, r3
+ 311              	.LVL38:
+ 312 0070 06E0     		b	.L18
+ 313              	.LVL39:
+ 314              	.L17:
+ 430:.//FWLIB/src/stm32f4xx_spi.c ****     }
+ 431:.//FWLIB/src/stm32f4xx_spi.c ****     else
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 14
+
+
+ 432:.//FWLIB/src/stm32f4xx_spi.c ****     { /* Get the I2S source clock value */
+ 433:.//FWLIB/src/stm32f4xx_spi.c ****       i2sclk = (uint32_t)(((HSI_VALUE / pllm) * plln) / pllr);
+ 315              		.loc 1 433 0
+ 316 0072 244C     		ldr	r4, .L26+8
+ 317 0074 B4FBF7F4 		udiv	r4, r4, r7
+ 318 0078 04FB06F4 		mul	r4, r4, r6
+ 319 007c B4FBF3F3 		udiv	r3, r4, r3
+ 320              	.LVL40:
+ 321              	.L18:
+ 434:.//FWLIB/src/stm32f4xx_spi.c ****     }
+ 435:.//FWLIB/src/stm32f4xx_spi.c ****   #endif /* I2S_EXTERNAL_CLOCK_VAL */
+ 436:.//FWLIB/src/stm32f4xx_spi.c ****     
+ 437:.//FWLIB/src/stm32f4xx_spi.c ****     /* Compute the Real divider depending on the MCLK output state, with a floating point */
+ 438:.//FWLIB/src/stm32f4xx_spi.c ****     if(I2S_InitStruct->I2S_MCLKOutput == I2S_MCLKOutput_Enable)
+ 322              		.loc 1 438 0
+ 323 0080 CC88     		ldrh	r4, [r1, #6]
+ 324 0082 B4F5007F 		cmp	r4, #512
+ 325 0086 09D1     		bne	.L19
+ 439:.//FWLIB/src/stm32f4xx_spi.c ****     {
+ 440:.//FWLIB/src/stm32f4xx_spi.c ****       /* MCLK output is enabled */
+ 441:.//FWLIB/src/stm32f4xx_spi.c ****       tmp = (uint16_t)(((((i2sclk / 256) * 10) / I2S_InitStruct->I2S_AudioFreq)) + 5);
+ 326              		.loc 1 441 0
+ 327 0088 1C0A     		lsrs	r4, r3, #8
+ 328 008a 04EB8404 		add	r4, r4, r4, lsl #2
+ 329 008e 6300     		lsls	r3, r4, #1
+ 330              	.LVL41:
+ 331 0090 8C68     		ldr	r4, [r1, #8]
+ 332 0092 B3FBF4F3 		udiv	r3, r3, r4
+ 333 0096 0533     		adds	r3, r3, #5
+ 334 0098 9BB2     		uxth	r3, r3
+ 335              	.LVL42:
+ 336 009a 0BE0     		b	.L20
+ 337              	.LVL43:
+ 338              	.L19:
+ 442:.//FWLIB/src/stm32f4xx_spi.c ****     }
+ 443:.//FWLIB/src/stm32f4xx_spi.c ****     else
+ 444:.//FWLIB/src/stm32f4xx_spi.c ****     {
+ 445:.//FWLIB/src/stm32f4xx_spi.c ****       /* MCLK output is disabled */
+ 446:.//FWLIB/src/stm32f4xx_spi.c ****       tmp = (uint16_t)(((((i2sclk / (32 * packetlength)) *10 ) / I2S_InitStruct->I2S_AudioFreq)) + 
+ 339              		.loc 1 446 0
+ 340 009c 4FEA4E14 		lsl	r4, lr, #5
+ 341 00a0 B3FBF4F4 		udiv	r4, r3, r4
+ 342 00a4 04EB8404 		add	r4, r4, r4, lsl #2
+ 343 00a8 6300     		lsls	r3, r4, #1
+ 344              	.LVL44:
+ 345 00aa 8C68     		ldr	r4, [r1, #8]
+ 346 00ac B3FBF4F3 		udiv	r3, r3, r4
+ 347 00b0 0533     		adds	r3, r3, #5
+ 348 00b2 9BB2     		uxth	r3, r3
+ 349              	.LVL45:
+ 350              	.L20:
+ 447:.//FWLIB/src/stm32f4xx_spi.c ****     }
+ 448:.//FWLIB/src/stm32f4xx_spi.c ****     
+ 449:.//FWLIB/src/stm32f4xx_spi.c ****     /* Remove the flatting point */
+ 450:.//FWLIB/src/stm32f4xx_spi.c ****     tmp = tmp / 10;  
+ 351              		.loc 1 450 0
+ 352 00b4 144C     		ldr	r4, .L26+12
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 15
+
+
+ 353 00b6 A4FB0343 		umull	r4, r3, r4, r3
+ 354              	.LVL46:
+ 355 00ba DB08     		lsrs	r3, r3, #3
+ 356              	.LVL47:
+ 451:.//FWLIB/src/stm32f4xx_spi.c ****       
+ 452:.//FWLIB/src/stm32f4xx_spi.c ****     /* Check the parity of the divider */
+ 453:.//FWLIB/src/stm32f4xx_spi.c ****     i2sodd = (uint16_t)(tmp & (uint16_t)0x0001);
+ 357              		.loc 1 453 0
+ 358 00bc 03F00104 		and	r4, r3, #1
+ 359              	.LVL48:
+ 454:.//FWLIB/src/stm32f4xx_spi.c ****    
+ 455:.//FWLIB/src/stm32f4xx_spi.c ****     /* Compute the i2sdiv prescaler */
+ 456:.//FWLIB/src/stm32f4xx_spi.c ****     i2sdiv = (uint16_t)((tmp - i2sodd) / 2);
+ 360              		.loc 1 456 0
+ 361 00c0 1B1B     		subs	r3, r3, r4
+ 362              	.LVL49:
+ 363 00c2 C3F34F03 		ubfx	r3, r3, #1, #16
+ 364              	.LVL50:
+ 457:.//FWLIB/src/stm32f4xx_spi.c ****    
+ 458:.//FWLIB/src/stm32f4xx_spi.c ****     /* Get the Mask for the Odd bit (SPI_I2SPR[8]) register */
+ 459:.//FWLIB/src/stm32f4xx_spi.c ****     i2sodd = (uint16_t) (i2sodd << 8);
+ 365              		.loc 1 459 0
+ 366 00c6 2402     		lsls	r4, r4, #8
+ 367              	.LVL51:
+ 368 00c8 A4B2     		uxth	r4, r4
+ 369              	.LVL52:
+ 370 00ca 01E0     		b	.L14
+ 371              	.LVL53:
+ 372              	.L22:
+ 376:.//FWLIB/src/stm32f4xx_spi.c ****     i2sdiv = (uint16_t)2;   
+ 373              		.loc 1 376 0
+ 374 00cc 0024     		movs	r4, #0
+ 377:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 375              		.loc 1 377 0
+ 376 00ce 0223     		movs	r3, #2
+ 377              	.LVL54:
+ 378              	.L14:
+ 460:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 461:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 462:.//FWLIB/src/stm32f4xx_spi.c ****   /* Test if the divider is 1 or 0 or greater than 0xFF */
+ 463:.//FWLIB/src/stm32f4xx_spi.c ****   if ((i2sdiv < 2) || (i2sdiv > 0xFF))
+ 379              		.loc 1 463 0
+ 380 00d0 9D1E     		subs	r5, r3, #2
+ 381 00d2 ADB2     		uxth	r5, r5
+ 382 00d4 FD2D     		cmp	r5, #253
+ 383 00d6 01D9     		bls	.L21
+ 464:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 465:.//FWLIB/src/stm32f4xx_spi.c ****     /* Set the default values */
+ 466:.//FWLIB/src/stm32f4xx_spi.c ****     i2sdiv = 2;
+ 467:.//FWLIB/src/stm32f4xx_spi.c ****     i2sodd = 0;
+ 384              		.loc 1 467 0
+ 385 00d8 0024     		movs	r4, #0
+ 386              	.LVL55:
+ 466:.//FWLIB/src/stm32f4xx_spi.c ****     i2sodd = 0;
+ 387              		.loc 1 466 0
+ 388 00da 0223     		movs	r3, #2
+ 389              	.LVL56:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 16
+
+
+ 390              	.L21:
+ 468:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 469:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 470:.//FWLIB/src/stm32f4xx_spi.c ****   /* Write to SPIx I2SPR register the computed value */
+ 471:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->I2SPR = (uint16_t)((uint16_t)i2sdiv | (uint16_t)(i2sodd | (uint16_t)I2S_InitStruct->I2S_MCL
+ 391              		.loc 1 471 0
+ 392 00dc CD88     		ldrh	r5, [r1, #6]
+ 393 00de 2C43     		orrs	r4, r4, r5
+ 394              	.LVL57:
+ 395 00e0 2343     		orrs	r3, r3, r4
+ 396              	.LVL58:
+ 397 00e2 0384     		strh	r3, [r0, #32]	@ movhi
+ 472:.//FWLIB/src/stm32f4xx_spi.c ****  
+ 473:.//FWLIB/src/stm32f4xx_spi.c ****   /* Configure the I2S with the SPI_InitStruct values */
+ 474:.//FWLIB/src/stm32f4xx_spi.c ****   tmpreg |= (uint16_t)((uint16_t)SPI_I2SCFGR_I2SMOD | (uint16_t)(I2S_InitStruct->I2S_Mode | \
+ 398              		.loc 1 474 0
+ 399 00e4 0C88     		ldrh	r4, [r1]
+ 475:.//FWLIB/src/stm32f4xx_spi.c ****                   (uint16_t)(I2S_InitStruct->I2S_Standard | (uint16_t)(I2S_InitStruct->I2S_DataForm
+ 400              		.loc 1 475 0
+ 401 00e6 4B88     		ldrh	r3, [r1, #2]
+ 402 00e8 8D88     		ldrh	r5, [r1, #4]
+ 476:.//FWLIB/src/stm32f4xx_spi.c ****                   (uint16_t)I2S_InitStruct->I2S_CPOL))));
+ 403              		.loc 1 476 0
+ 404 00ea 8989     		ldrh	r1, [r1, #12]
+ 405              	.LVL59:
+ 475:.//FWLIB/src/stm32f4xx_spi.c ****                   (uint16_t)(I2S_InitStruct->I2S_Standard | (uint16_t)(I2S_InitStruct->I2S_DataForm
+ 406              		.loc 1 475 0
+ 407 00ec 2943     		orrs	r1, r1, r5
+ 408 00ee 0B43     		orrs	r3, r3, r1
+ 474:.//FWLIB/src/stm32f4xx_spi.c ****                   (uint16_t)(I2S_InitStruct->I2S_Standard | (uint16_t)(I2S_InitStruct->I2S_DataForm
+ 409              		.loc 1 474 0
+ 410 00f0 2343     		orrs	r3, r3, r4
+ 411 00f2 1343     		orrs	r3, r3, r2
+ 412 00f4 43F40063 		orr	r3, r3, #2048
+ 413              	.LVL60:
+ 477:.//FWLIB/src/stm32f4xx_spi.c ****  
+ 478:.//FWLIB/src/stm32f4xx_spi.c ****   /* Write to SPIx I2SCFGR */  
+ 479:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->I2SCFGR = tmpreg;
+ 414              		.loc 1 479 0
+ 415 00f8 8383     		strh	r3, [r0, #28]	@ movhi
+ 416 00fa F0BD     		pop	{r4, r5, r6, r7, pc}
+ 417              	.L27:
+ 418              		.align	2
+ 419              	.L26:
+ 420 00fc 00380240 		.word	1073887232
+ 421 0100 00127A00 		.word	8000000
+ 422 0104 0024F400 		.word	16000000
+ 423 0108 CDCCCCCC 		.word	-858993459
+ 424              		.cfi_endproc
+ 425              	.LFE114:
+ 427              		.section	.text.SPI_StructInit,"ax",%progbits
+ 428              		.align	2
+ 429              		.global	SPI_StructInit
+ 430              		.thumb
+ 431              		.thumb_func
+ 433              	SPI_StructInit:
+ 434              	.LFB115:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 17
+
+
+ 480:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 481:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 482:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 483:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Fills each SPI_InitStruct member with its default value.
+ 484:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPI_InitStruct: pointer to a SPI_InitTypeDef structure which will be initialized.
+ 485:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 486:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 487:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_StructInit(SPI_InitTypeDef* SPI_InitStruct)
+ 488:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 435              		.loc 1 488 0
+ 436              		.cfi_startproc
+ 437              		@ args = 0, pretend = 0, frame = 0
+ 438              		@ frame_needed = 0, uses_anonymous_args = 0
+ 439              		@ link register save eliminated.
+ 440              	.LVL61:
+ 489:.//FWLIB/src/stm32f4xx_spi.c **** /*--------------- Reset SPI init structure parameters values -----------------*/
+ 490:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the SPI_Direction member */
+ 491:.//FWLIB/src/stm32f4xx_spi.c ****   SPI_InitStruct->SPI_Direction = SPI_Direction_2Lines_FullDuplex;
+ 441              		.loc 1 491 0
+ 442 0000 0023     		movs	r3, #0
+ 443 0002 0380     		strh	r3, [r0]	@ movhi
+ 492:.//FWLIB/src/stm32f4xx_spi.c ****   /* initialize the SPI_Mode member */
+ 493:.//FWLIB/src/stm32f4xx_spi.c ****   SPI_InitStruct->SPI_Mode = SPI_Mode_Slave;
+ 444              		.loc 1 493 0
+ 445 0004 4380     		strh	r3, [r0, #2]	@ movhi
+ 494:.//FWLIB/src/stm32f4xx_spi.c ****   /* initialize the SPI_DataSize member */
+ 495:.//FWLIB/src/stm32f4xx_spi.c ****   SPI_InitStruct->SPI_DataSize = SPI_DataSize_8b;
+ 446              		.loc 1 495 0
+ 447 0006 8380     		strh	r3, [r0, #4]	@ movhi
+ 496:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the SPI_CPOL member */
+ 497:.//FWLIB/src/stm32f4xx_spi.c ****   SPI_InitStruct->SPI_CPOL = SPI_CPOL_Low;
+ 448              		.loc 1 497 0
+ 449 0008 C380     		strh	r3, [r0, #6]	@ movhi
+ 498:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the SPI_CPHA member */
+ 499:.//FWLIB/src/stm32f4xx_spi.c ****   SPI_InitStruct->SPI_CPHA = SPI_CPHA_1Edge;
+ 450              		.loc 1 499 0
+ 451 000a 0381     		strh	r3, [r0, #8]	@ movhi
+ 500:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the SPI_NSS member */
+ 501:.//FWLIB/src/stm32f4xx_spi.c ****   SPI_InitStruct->SPI_NSS = SPI_NSS_Hard;
+ 452              		.loc 1 501 0
+ 453 000c 4381     		strh	r3, [r0, #10]	@ movhi
+ 502:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the SPI_BaudRatePrescaler member */
+ 503:.//FWLIB/src/stm32f4xx_spi.c ****   SPI_InitStruct->SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2;
+ 454              		.loc 1 503 0
+ 455 000e 8381     		strh	r3, [r0, #12]	@ movhi
+ 504:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the SPI_FirstBit member */
+ 505:.//FWLIB/src/stm32f4xx_spi.c ****   SPI_InitStruct->SPI_FirstBit = SPI_FirstBit_MSB;
+ 456              		.loc 1 505 0
+ 457 0010 C381     		strh	r3, [r0, #14]	@ movhi
+ 506:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the SPI_CRCPolynomial member */
+ 507:.//FWLIB/src/stm32f4xx_spi.c ****   SPI_InitStruct->SPI_CRCPolynomial = 7;
+ 458              		.loc 1 507 0
+ 459 0012 0723     		movs	r3, #7
+ 460 0014 0382     		strh	r3, [r0, #16]	@ movhi
+ 461 0016 7047     		bx	lr
+ 462              		.cfi_endproc
+ 463              	.LFE115:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 18
+
+
+ 465              		.section	.text.I2S_StructInit,"ax",%progbits
+ 466              		.align	2
+ 467              		.global	I2S_StructInit
+ 468              		.thumb
+ 469              		.thumb_func
+ 471              	I2S_StructInit:
+ 472              	.LFB116:
+ 508:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 509:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 510:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 511:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Fills each I2S_InitStruct member with its default value.
+ 512:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  I2S_InitStruct: pointer to a I2S_InitTypeDef structure which will be initialized.
+ 513:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 514:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 515:.//FWLIB/src/stm32f4xx_spi.c **** void I2S_StructInit(I2S_InitTypeDef* I2S_InitStruct)
+ 516:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 473              		.loc 1 516 0
+ 474              		.cfi_startproc
+ 475              		@ args = 0, pretend = 0, frame = 0
+ 476              		@ frame_needed = 0, uses_anonymous_args = 0
+ 477              		@ link register save eliminated.
+ 478              	.LVL62:
+ 517:.//FWLIB/src/stm32f4xx_spi.c **** /*--------------- Reset I2S init structure parameters values -----------------*/
+ 518:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the I2S_Mode member */
+ 519:.//FWLIB/src/stm32f4xx_spi.c ****   I2S_InitStruct->I2S_Mode = I2S_Mode_SlaveTx;
+ 479              		.loc 1 519 0
+ 480 0000 0023     		movs	r3, #0
+ 481 0002 0380     		strh	r3, [r0]	@ movhi
+ 520:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 521:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the I2S_Standard member */
+ 522:.//FWLIB/src/stm32f4xx_spi.c ****   I2S_InitStruct->I2S_Standard = I2S_Standard_Phillips;
+ 482              		.loc 1 522 0
+ 483 0004 4380     		strh	r3, [r0, #2]	@ movhi
+ 523:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 524:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the I2S_DataFormat member */
+ 525:.//FWLIB/src/stm32f4xx_spi.c ****   I2S_InitStruct->I2S_DataFormat = I2S_DataFormat_16b;
+ 484              		.loc 1 525 0
+ 485 0006 8380     		strh	r3, [r0, #4]	@ movhi
+ 526:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 527:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the I2S_MCLKOutput member */
+ 528:.//FWLIB/src/stm32f4xx_spi.c ****   I2S_InitStruct->I2S_MCLKOutput = I2S_MCLKOutput_Disable;
+ 486              		.loc 1 528 0
+ 487 0008 C380     		strh	r3, [r0, #6]	@ movhi
+ 529:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 530:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the I2S_AudioFreq member */
+ 531:.//FWLIB/src/stm32f4xx_spi.c ****   I2S_InitStruct->I2S_AudioFreq = I2S_AudioFreq_Default;
+ 488              		.loc 1 531 0
+ 489 000a 0222     		movs	r2, #2
+ 490 000c 8260     		str	r2, [r0, #8]
+ 532:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 533:.//FWLIB/src/stm32f4xx_spi.c ****   /* Initialize the I2S_CPOL member */
+ 534:.//FWLIB/src/stm32f4xx_spi.c ****   I2S_InitStruct->I2S_CPOL = I2S_CPOL_Low;
+ 491              		.loc 1 534 0
+ 492 000e 8381     		strh	r3, [r0, #12]	@ movhi
+ 493 0010 7047     		bx	lr
+ 494              		.cfi_endproc
+ 495              	.LFE116:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 19
+
+
+ 497 0012 00BF     		.section	.text.SPI_Cmd,"ax",%progbits
+ 498              		.align	2
+ 499              		.global	SPI_Cmd
+ 500              		.thumb
+ 501              		.thumb_func
+ 503              	SPI_Cmd:
+ 504              	.LFB117:
+ 535:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 536:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 537:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 538:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Enables or disables the specified SPI peripheral.
+ 539:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be 1, 2, 3, 4, 5 or 6 to select the SPI peripheral.
+ 540:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  NewState: new state of the SPIx peripheral. 
+ 541:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 542:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 543:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 544:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_Cmd(SPI_TypeDef* SPIx, FunctionalState NewState)
+ 545:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 505              		.loc 1 545 0
+ 506              		.cfi_startproc
+ 507              		@ args = 0, pretend = 0, frame = 0
+ 508              		@ frame_needed = 0, uses_anonymous_args = 0
+ 509              		@ link register save eliminated.
+ 510              	.LVL63:
+ 546:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 547:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH(SPIx));
+ 548:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 549:.//FWLIB/src/stm32f4xx_spi.c ****   if (NewState != DISABLE)
+ 511              		.loc 1 549 0
+ 512 0000 29B1     		cbz	r1, .L31
+ 550:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 551:.//FWLIB/src/stm32f4xx_spi.c ****     /* Enable the selected SPI peripheral */
+ 552:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR1 |= SPI_CR1_SPE;
+ 513              		.loc 1 552 0
+ 514 0002 0388     		ldrh	r3, [r0]
+ 515 0004 9BB2     		uxth	r3, r3
+ 516 0006 43F04003 		orr	r3, r3, #64
+ 517 000a 0380     		strh	r3, [r0]	@ movhi
+ 518 000c 7047     		bx	lr
+ 519              	.L31:
+ 553:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 554:.//FWLIB/src/stm32f4xx_spi.c ****   else
+ 555:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 556:.//FWLIB/src/stm32f4xx_spi.c ****     /* Disable the selected SPI peripheral */
+ 557:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR1 &= (uint16_t)~((uint16_t)SPI_CR1_SPE);
+ 520              		.loc 1 557 0
+ 521 000e 0388     		ldrh	r3, [r0]
+ 522 0010 9BB2     		uxth	r3, r3
+ 523 0012 23F04003 		bic	r3, r3, #64
+ 524 0016 9BB2     		uxth	r3, r3
+ 525 0018 0380     		strh	r3, [r0]	@ movhi
+ 526 001a 7047     		bx	lr
+ 527              		.cfi_endproc
+ 528              	.LFE117:
+ 530              		.section	.text.I2S_Cmd,"ax",%progbits
+ 531              		.align	2
+ 532              		.global	I2S_Cmd
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 20
+
+
+ 533              		.thumb
+ 534              		.thumb_func
+ 536              	I2S_Cmd:
+ 537              	.LFB118:
+ 558:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 559:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 560:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 561:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 562:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Enables or disables the specified SPI peripheral (in I2S mode).
+ 563:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be 2 or 3 to select the SPI peripheral (or I2Sxext 
+ 564:.//FWLIB/src/stm32f4xx_spi.c ****   *         for full duplex mode).
+ 565:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  NewState: new state of the SPIx peripheral. 
+ 566:.//FWLIB/src/stm32f4xx_spi.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 567:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 568:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 569:.//FWLIB/src/stm32f4xx_spi.c **** void I2S_Cmd(SPI_TypeDef* SPIx, FunctionalState NewState)
+ 570:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 538              		.loc 1 570 0
+ 539              		.cfi_startproc
+ 540              		@ args = 0, pretend = 0, frame = 0
+ 541              		@ frame_needed = 0, uses_anonymous_args = 0
+ 542              		@ link register save eliminated.
+ 543              	.LVL64:
+ 571:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 572:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_23_PERIPH_EXT(SPIx));
+ 573:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 574:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 575:.//FWLIB/src/stm32f4xx_spi.c ****   if (NewState != DISABLE)
+ 544              		.loc 1 575 0
+ 545 0000 29B1     		cbz	r1, .L34
+ 576:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 577:.//FWLIB/src/stm32f4xx_spi.c ****     /* Enable the selected SPI peripheral (in I2S mode) */
+ 578:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->I2SCFGR |= SPI_I2SCFGR_I2SE;
+ 546              		.loc 1 578 0
+ 547 0002 838B     		ldrh	r3, [r0, #28]
+ 548 0004 9BB2     		uxth	r3, r3
+ 549 0006 43F48063 		orr	r3, r3, #1024
+ 550 000a 8383     		strh	r3, [r0, #28]	@ movhi
+ 551 000c 7047     		bx	lr
+ 552              	.L34:
+ 579:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 580:.//FWLIB/src/stm32f4xx_spi.c ****   else
+ 581:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 582:.//FWLIB/src/stm32f4xx_spi.c ****     /* Disable the selected SPI peripheral in I2S mode */
+ 583:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->I2SCFGR &= (uint16_t)~((uint16_t)SPI_I2SCFGR_I2SE);
+ 553              		.loc 1 583 0
+ 554 000e 838B     		ldrh	r3, [r0, #28]
+ 555 0010 9BB2     		uxth	r3, r3
+ 556 0012 23F48063 		bic	r3, r3, #1024
+ 557 0016 9BB2     		uxth	r3, r3
+ 558 0018 8383     		strh	r3, [r0, #28]	@ movhi
+ 559 001a 7047     		bx	lr
+ 560              		.cfi_endproc
+ 561              	.LFE118:
+ 563              		.section	.text.SPI_DataSizeConfig,"ax",%progbits
+ 564              		.align	2
+ 565              		.global	SPI_DataSizeConfig
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 21
+
+
+ 566              		.thumb
+ 567              		.thumb_func
+ 569              	SPI_DataSizeConfig:
+ 570              	.LFB119:
+ 584:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 585:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 586:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 587:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 588:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Configures the data size for the selected SPI.
+ 589:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be 1, 2, 3, 4, 5 or 6 to select the SPI peripheral.
+ 590:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPI_DataSize: specifies the SPI data size.
+ 591:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be one of the following values:
+ 592:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_DataSize_16b: Set data frame format to 16bit
+ 593:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_DataSize_8b: Set data frame format to 8bit
+ 594:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 595:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 596:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_DataSizeConfig(SPI_TypeDef* SPIx, uint16_t SPI_DataSize)
+ 597:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 571              		.loc 1 597 0
+ 572              		.cfi_startproc
+ 573              		@ args = 0, pretend = 0, frame = 0
+ 574              		@ frame_needed = 0, uses_anonymous_args = 0
+ 575              		@ link register save eliminated.
+ 576              	.LVL65:
+ 598:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 599:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH(SPIx));
+ 600:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_DATASIZE(SPI_DataSize));
+ 601:.//FWLIB/src/stm32f4xx_spi.c ****   /* Clear DFF bit */
+ 602:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->CR1 &= (uint16_t)~SPI_DataSize_16b;
+ 577              		.loc 1 602 0
+ 578 0000 0388     		ldrh	r3, [r0]
+ 579 0002 9BB2     		uxth	r3, r3
+ 580 0004 23F40063 		bic	r3, r3, #2048
+ 581 0008 9BB2     		uxth	r3, r3
+ 582 000a 0380     		strh	r3, [r0]	@ movhi
+ 603:.//FWLIB/src/stm32f4xx_spi.c ****   /* Set new DFF bit value */
+ 604:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->CR1 |= SPI_DataSize;
+ 583              		.loc 1 604 0
+ 584 000c 0388     		ldrh	r3, [r0]
+ 585 000e 9BB2     		uxth	r3, r3
+ 586 0010 1943     		orrs	r1, r1, r3
+ 587              	.LVL66:
+ 588 0012 0180     		strh	r1, [r0]	@ movhi
+ 589 0014 7047     		bx	lr
+ 590              		.cfi_endproc
+ 591              	.LFE119:
+ 593 0016 00BF     		.section	.text.SPI_BiDirectionalLineConfig,"ax",%progbits
+ 594              		.align	2
+ 595              		.global	SPI_BiDirectionalLineConfig
+ 596              		.thumb
+ 597              		.thumb_func
+ 599              	SPI_BiDirectionalLineConfig:
+ 600              	.LFB120:
+ 605:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 606:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 607:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 608:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Selects the data transfer direction in bidirectional mode for the specified SPI.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 22
+
+
+ 609:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be 1, 2, 3, 4, 5 or 6 to select the SPI peripheral.
+ 610:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPI_Direction: specifies the data transfer direction in bidirectional mode. 
+ 611:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be one of the following values:
+ 612:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_Direction_Tx: Selects Tx transmission direction
+ 613:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_Direction_Rx: Selects Rx receive direction
+ 614:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 615:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 616:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_BiDirectionalLineConfig(SPI_TypeDef* SPIx, uint16_t SPI_Direction)
+ 617:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 601              		.loc 1 617 0
+ 602              		.cfi_startproc
+ 603              		@ args = 0, pretend = 0, frame = 0
+ 604              		@ frame_needed = 0, uses_anonymous_args = 0
+ 605              		@ link register save eliminated.
+ 606              	.LVL67:
+ 618:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 619:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH(SPIx));
+ 620:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_DIRECTION(SPI_Direction));
+ 621:.//FWLIB/src/stm32f4xx_spi.c ****   if (SPI_Direction == SPI_Direction_Tx)
+ 607              		.loc 1 621 0
+ 608 0000 B1F5804F 		cmp	r1, #16384
+ 609 0004 05D1     		bne	.L38
+ 622:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 623:.//FWLIB/src/stm32f4xx_spi.c ****     /* Set the Tx only mode */
+ 624:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR1 |= SPI_Direction_Tx;
+ 610              		.loc 1 624 0
+ 611 0006 0388     		ldrh	r3, [r0]
+ 612 0008 9BB2     		uxth	r3, r3
+ 613 000a 43F48043 		orr	r3, r3, #16384
+ 614 000e 0380     		strh	r3, [r0]	@ movhi
+ 615 0010 7047     		bx	lr
+ 616              	.L38:
+ 625:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 626:.//FWLIB/src/stm32f4xx_spi.c ****   else
+ 627:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 628:.//FWLIB/src/stm32f4xx_spi.c ****     /* Set the Rx only mode */
+ 629:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR1 &= SPI_Direction_Rx;
+ 617              		.loc 1 629 0
+ 618 0012 0388     		ldrh	r3, [r0]
+ 619 0014 9BB2     		uxth	r3, r3
+ 620 0016 23F48043 		bic	r3, r3, #16384
+ 621 001a 9BB2     		uxth	r3, r3
+ 622 001c 0380     		strh	r3, [r0]	@ movhi
+ 623 001e 7047     		bx	lr
+ 624              		.cfi_endproc
+ 625              	.LFE120:
+ 627              		.section	.text.SPI_NSSInternalSoftwareConfig,"ax",%progbits
+ 628              		.align	2
+ 629              		.global	SPI_NSSInternalSoftwareConfig
+ 630              		.thumb
+ 631              		.thumb_func
+ 633              	SPI_NSSInternalSoftwareConfig:
+ 634              	.LFB121:
+ 630:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 631:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 632:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 633:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 23
+
+
+ 634:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Configures internally by software the NSS pin for the selected SPI.
+ 635:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be 1, 2, 3, 4, 5 or 6 to select the SPI peripheral.
+ 636:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPI_NSSInternalSoft: specifies the SPI NSS internal state.
+ 637:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be one of the following values:
+ 638:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_NSSInternalSoft_Set: Set NSS pin internally
+ 639:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_NSSInternalSoft_Reset: Reset NSS pin internally
+ 640:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 641:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 642:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_NSSInternalSoftwareConfig(SPI_TypeDef* SPIx, uint16_t SPI_NSSInternalSoft)
+ 643:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 635              		.loc 1 643 0
+ 636              		.cfi_startproc
+ 637              		@ args = 0, pretend = 0, frame = 0
+ 638              		@ frame_needed = 0, uses_anonymous_args = 0
+ 639              		@ link register save eliminated.
+ 640              	.LVL68:
+ 644:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 645:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH(SPIx));
+ 646:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_NSS_INTERNAL(SPI_NSSInternalSoft));
+ 647:.//FWLIB/src/stm32f4xx_spi.c ****   if (SPI_NSSInternalSoft != SPI_NSSInternalSoft_Reset)
+ 641              		.loc 1 647 0
+ 642 0000 4FF6FF63 		movw	r3, #65279
+ 643 0004 9942     		cmp	r1, r3
+ 644 0006 05D0     		beq	.L41
+ 648:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 649:.//FWLIB/src/stm32f4xx_spi.c ****     /* Set NSS pin internally by software */
+ 650:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR1 |= SPI_NSSInternalSoft_Set;
+ 645              		.loc 1 650 0
+ 646 0008 0388     		ldrh	r3, [r0]
+ 647 000a 9BB2     		uxth	r3, r3
+ 648 000c 43F48073 		orr	r3, r3, #256
+ 649 0010 0380     		strh	r3, [r0]	@ movhi
+ 650 0012 7047     		bx	lr
+ 651              	.L41:
+ 651:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 652:.//FWLIB/src/stm32f4xx_spi.c ****   else
+ 653:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 654:.//FWLIB/src/stm32f4xx_spi.c ****     /* Reset NSS pin internally by software */
+ 655:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR1 &= SPI_NSSInternalSoft_Reset;
+ 652              		.loc 1 655 0
+ 653 0014 0388     		ldrh	r3, [r0]
+ 654 0016 9BB2     		uxth	r3, r3
+ 655 0018 23F48073 		bic	r3, r3, #256
+ 656 001c 9BB2     		uxth	r3, r3
+ 657 001e 0380     		strh	r3, [r0]	@ movhi
+ 658 0020 7047     		bx	lr
+ 659              		.cfi_endproc
+ 660              	.LFE121:
+ 662 0022 00BF     		.section	.text.SPI_SSOutputCmd,"ax",%progbits
+ 663              		.align	2
+ 664              		.global	SPI_SSOutputCmd
+ 665              		.thumb
+ 666              		.thumb_func
+ 668              	SPI_SSOutputCmd:
+ 669              	.LFB122:
+ 656:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 657:.//FWLIB/src/stm32f4xx_spi.c **** }
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 24
+
+
+ 658:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 659:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 660:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Enables or disables the SS output for the selected SPI.
+ 661:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be 1, 2, 3, 4, 5 or 6 to select the SPI peripheral.
+ 662:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  NewState: new state of the SPIx SS output. 
+ 663:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 664:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 665:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 666:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_SSOutputCmd(SPI_TypeDef* SPIx, FunctionalState NewState)
+ 667:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 670              		.loc 1 667 0
+ 671              		.cfi_startproc
+ 672              		@ args = 0, pretend = 0, frame = 0
+ 673              		@ frame_needed = 0, uses_anonymous_args = 0
+ 674              		@ link register save eliminated.
+ 675              	.LVL69:
+ 668:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 669:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH(SPIx));
+ 670:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 671:.//FWLIB/src/stm32f4xx_spi.c ****   if (NewState != DISABLE)
+ 676              		.loc 1 671 0
+ 677 0000 29B1     		cbz	r1, .L44
+ 672:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 673:.//FWLIB/src/stm32f4xx_spi.c ****     /* Enable the selected SPI SS output */
+ 674:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR2 |= (uint16_t)SPI_CR2_SSOE;
+ 678              		.loc 1 674 0
+ 679 0002 8388     		ldrh	r3, [r0, #4]
+ 680 0004 9BB2     		uxth	r3, r3
+ 681 0006 43F00403 		orr	r3, r3, #4
+ 682 000a 8380     		strh	r3, [r0, #4]	@ movhi
+ 683 000c 7047     		bx	lr
+ 684              	.L44:
+ 675:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 676:.//FWLIB/src/stm32f4xx_spi.c ****   else
+ 677:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 678:.//FWLIB/src/stm32f4xx_spi.c ****     /* Disable the selected SPI SS output */
+ 679:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR2 &= (uint16_t)~((uint16_t)SPI_CR2_SSOE);
+ 685              		.loc 1 679 0
+ 686 000e 8388     		ldrh	r3, [r0, #4]
+ 687 0010 9BB2     		uxth	r3, r3
+ 688 0012 23F00403 		bic	r3, r3, #4
+ 689 0016 9BB2     		uxth	r3, r3
+ 690 0018 8380     		strh	r3, [r0, #4]	@ movhi
+ 691 001a 7047     		bx	lr
+ 692              		.cfi_endproc
+ 693              	.LFE122:
+ 695              		.section	.text.SPI_TIModeCmd,"ax",%progbits
+ 696              		.align	2
+ 697              		.global	SPI_TIModeCmd
+ 698              		.thumb
+ 699              		.thumb_func
+ 701              	SPI_TIModeCmd:
+ 702              	.LFB123:
+ 680:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 681:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 682:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 683:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 25
+
+
+ 684:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Enables or disables the SPIx/I2Sx DMA interface.
+ 685:.//FWLIB/src/stm32f4xx_spi.c ****   *   
+ 686:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   This function can be called only after the SPI_Init() function has 
+ 687:.//FWLIB/src/stm32f4xx_spi.c ****   *         been called. 
+ 688:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   When TI mode is selected, the control bits SSM, SSI, CPOL and CPHA 
+ 689:.//FWLIB/src/stm32f4xx_spi.c ****   *         are not taken into consideration and are configured by hardware
+ 690:.//FWLIB/src/stm32f4xx_spi.c ****   *         respectively to the TI mode requirements.  
+ 691:.//FWLIB/src/stm32f4xx_spi.c ****   * 
+ 692:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be 1, 2, 3, 4, 5 or 6 
+ 693:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  NewState: new state of the selected SPI TI communication mode.
+ 694:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 695:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 696:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 697:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_TIModeCmd(SPI_TypeDef* SPIx, FunctionalState NewState)
+ 698:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 703              		.loc 1 698 0
+ 704              		.cfi_startproc
+ 705              		@ args = 0, pretend = 0, frame = 0
+ 706              		@ frame_needed = 0, uses_anonymous_args = 0
+ 707              		@ link register save eliminated.
+ 708              	.LVL70:
+ 699:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 700:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH(SPIx));
+ 701:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 702:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 703:.//FWLIB/src/stm32f4xx_spi.c ****   if (NewState != DISABLE)
+ 709              		.loc 1 703 0
+ 710 0000 29B1     		cbz	r1, .L47
+ 704:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 705:.//FWLIB/src/stm32f4xx_spi.c ****     /* Enable the TI mode for the selected SPI peripheral */
+ 706:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR2 |= SPI_CR2_FRF;
+ 711              		.loc 1 706 0
+ 712 0002 8388     		ldrh	r3, [r0, #4]
+ 713 0004 9BB2     		uxth	r3, r3
+ 714 0006 43F01003 		orr	r3, r3, #16
+ 715 000a 8380     		strh	r3, [r0, #4]	@ movhi
+ 716 000c 7047     		bx	lr
+ 717              	.L47:
+ 707:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 708:.//FWLIB/src/stm32f4xx_spi.c ****   else
+ 709:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 710:.//FWLIB/src/stm32f4xx_spi.c ****     /* Disable the TI mode for the selected SPI peripheral */
+ 711:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR2 &= (uint16_t)~SPI_CR2_FRF;
+ 718              		.loc 1 711 0
+ 719 000e 8388     		ldrh	r3, [r0, #4]
+ 720 0010 9BB2     		uxth	r3, r3
+ 721 0012 23F01003 		bic	r3, r3, #16
+ 722 0016 9BB2     		uxth	r3, r3
+ 723 0018 8380     		strh	r3, [r0, #4]	@ movhi
+ 724 001a 7047     		bx	lr
+ 725              		.cfi_endproc
+ 726              	.LFE123:
+ 728              		.section	.text.I2S_FullDuplexConfig,"ax",%progbits
+ 729              		.align	2
+ 730              		.global	I2S_FullDuplexConfig
+ 731              		.thumb
+ 732              		.thumb_func
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 26
+
+
+ 734              	I2S_FullDuplexConfig:
+ 735              	.LFB124:
+ 712:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 713:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 714:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 715:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 716:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Configures the full duplex mode for the I2Sx peripheral using its
+ 717:.//FWLIB/src/stm32f4xx_spi.c ****   *         extension I2Sxext according to the specified parameters in the 
+ 718:.//FWLIB/src/stm32f4xx_spi.c ****   *         I2S_InitStruct.
+ 719:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  I2Sxext: where x can be  2 or 3 to select the I2S peripheral extension block.
+ 720:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  I2S_InitStruct: pointer to an I2S_InitTypeDef structure that
+ 721:.//FWLIB/src/stm32f4xx_spi.c ****   *         contains the configuration information for the specified I2S peripheral
+ 722:.//FWLIB/src/stm32f4xx_spi.c ****   *         extension.
+ 723:.//FWLIB/src/stm32f4xx_spi.c ****   * 
+ 724:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   The structure pointed by I2S_InitStruct parameter should be the same
+ 725:.//FWLIB/src/stm32f4xx_spi.c ****   *         used for the master I2S peripheral. In this case, if the master is 
+ 726:.//FWLIB/src/stm32f4xx_spi.c ****   *         configured as transmitter, the slave will be receiver and vice versa.
+ 727:.//FWLIB/src/stm32f4xx_spi.c ****   *         Or you can force a different mode by modifying the field I2S_Mode to the
+ 728:.//FWLIB/src/stm32f4xx_spi.c ****   *         value I2S_SlaveRx or I2S_SlaveTx indepedently of the master configuration.    
+ 729:.//FWLIB/src/stm32f4xx_spi.c ****   *         
+ 730:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   The I2S full duplex extension can be configured in slave mode only.    
+ 731:.//FWLIB/src/stm32f4xx_spi.c ****   *  
+ 732:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 733:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 734:.//FWLIB/src/stm32f4xx_spi.c **** void I2S_FullDuplexConfig(SPI_TypeDef* I2Sxext, I2S_InitTypeDef* I2S_InitStruct)
+ 735:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 736              		.loc 1 735 0
+ 737              		.cfi_startproc
+ 738              		@ args = 0, pretend = 0, frame = 0
+ 739              		@ frame_needed = 0, uses_anonymous_args = 0
+ 740              		@ link register save eliminated.
+ 741              	.LVL71:
+ 742 0000 30B4     		push	{r4, r5}
+ 743              	.LCFI3:
+ 744              		.cfi_def_cfa_offset 8
+ 745              		.cfi_offset 4, -8
+ 746              		.cfi_offset 5, -4
+ 747              	.LVL72:
+ 736:.//FWLIB/src/stm32f4xx_spi.c ****   uint16_t tmpreg = 0, tmp = 0;
+ 737:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 738:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the I2S parameters */
+ 739:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_I2S_EXT_PERIPH(I2Sxext));
+ 740:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_I2S_MODE(I2S_InitStruct->I2S_Mode));
+ 741:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_I2S_STANDARD(I2S_InitStruct->I2S_Standard));
+ 742:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_I2S_DATA_FORMAT(I2S_InitStruct->I2S_DataFormat));
+ 743:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_I2S_CPOL(I2S_InitStruct->I2S_CPOL));  
+ 744:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 745:.//FWLIB/src/stm32f4xx_spi.c **** /*----------------------- SPIx I2SCFGR & I2SPR Configuration -----------------*/
+ 746:.//FWLIB/src/stm32f4xx_spi.c ****   /* Clear I2SMOD, I2SE, I2SCFG, PCMSYNC, I2SSTD, CKPOL, DATLEN and CHLEN bits */
+ 747:.//FWLIB/src/stm32f4xx_spi.c ****   I2Sxext->I2SCFGR &= I2SCFGR_CLEAR_MASK; 
+ 748              		.loc 1 747 0
+ 749 0002 838B     		ldrh	r3, [r0, #28]
+ 750 0004 9BB2     		uxth	r3, r3
+ 751 0006 23F47B63 		bic	r3, r3, #4016
+ 752 000a 23F00F03 		bic	r3, r3, #15
+ 753 000e 9BB2     		uxth	r3, r3
+ 754 0010 8383     		strh	r3, [r0, #28]	@ movhi
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 27
+
+
+ 748:.//FWLIB/src/stm32f4xx_spi.c ****   I2Sxext->I2SPR = 0x0002;
+ 755              		.loc 1 748 0
+ 756 0012 0223     		movs	r3, #2
+ 757 0014 0384     		strh	r3, [r0, #32]	@ movhi
+ 749:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 750:.//FWLIB/src/stm32f4xx_spi.c ****   /* Get the I2SCFGR register value */
+ 751:.//FWLIB/src/stm32f4xx_spi.c ****   tmpreg = I2Sxext->I2SCFGR;
+ 758              		.loc 1 751 0
+ 759 0016 838B     		ldrh	r3, [r0, #28]
+ 760 0018 9CB2     		uxth	r4, r3
+ 761              	.LVL73:
+ 752:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 753:.//FWLIB/src/stm32f4xx_spi.c ****   /* Get the mode to be configured for the extended I2S */
+ 754:.//FWLIB/src/stm32f4xx_spi.c ****   if ((I2S_InitStruct->I2S_Mode == I2S_Mode_MasterTx) || (I2S_InitStruct->I2S_Mode == I2S_Mode_Slav
+ 762              		.loc 1 754 0
+ 763 001a 0B88     		ldrh	r3, [r1]
+ 764 001c B3F5007F 		cmp	r3, #512
+ 765 0020 03D0     		beq	.L51
+ 766              		.loc 1 754 0 is_stmt 0 discriminator 1
+ 767 0022 2BB9     		cbnz	r3, .L52
+ 755:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 756:.//FWLIB/src/stm32f4xx_spi.c ****     tmp = I2S_Mode_SlaveRx;
+ 768              		.loc 1 756 0 is_stmt 1
+ 769 0024 4FF48073 		mov	r3, #256
+ 770 0028 03E0     		b	.L50
+ 771              	.L51:
+ 772 002a 4FF48073 		mov	r3, #256
+ 773 002e 00E0     		b	.L50
+ 774              	.L52:
+ 757:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 758:.//FWLIB/src/stm32f4xx_spi.c ****   else
+ 759:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 760:.//FWLIB/src/stm32f4xx_spi.c ****     if ((I2S_InitStruct->I2S_Mode == I2S_Mode_MasterRx) || (I2S_InitStruct->I2S_Mode == I2S_Mode_Sl
+ 761:.//FWLIB/src/stm32f4xx_spi.c ****     {
+ 762:.//FWLIB/src/stm32f4xx_spi.c ****       tmp = I2S_Mode_SlaveTx;
+ 775              		.loc 1 762 0
+ 776 0030 0023     		movs	r3, #0
+ 777              	.L50:
+ 778              	.LVL74:
+ 763:.//FWLIB/src/stm32f4xx_spi.c ****     }
+ 764:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 765:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 766:.//FWLIB/src/stm32f4xx_spi.c ****  
+ 767:.//FWLIB/src/stm32f4xx_spi.c ****   /* Configure the I2S with the SPI_InitStruct values */
+ 768:.//FWLIB/src/stm32f4xx_spi.c ****   tmpreg |= (uint16_t)((uint16_t)SPI_I2SCFGR_I2SMOD | (uint16_t)(tmp | \
+ 769:.//FWLIB/src/stm32f4xx_spi.c ****                   (uint16_t)(I2S_InitStruct->I2S_Standard | (uint16_t)(I2S_InitStruct->I2S_DataForm
+ 779              		.loc 1 769 0
+ 780 0032 4D88     		ldrh	r5, [r1, #2]
+ 781 0034 8A88     		ldrh	r2, [r1, #4]
+ 770:.//FWLIB/src/stm32f4xx_spi.c ****                   (uint16_t)I2S_InitStruct->I2S_CPOL))));
+ 782              		.loc 1 770 0
+ 783 0036 8989     		ldrh	r1, [r1, #12]
+ 784              	.LVL75:
+ 769:.//FWLIB/src/stm32f4xx_spi.c ****                   (uint16_t)I2S_InitStruct->I2S_CPOL))));
+ 785              		.loc 1 769 0
+ 786 0038 0A43     		orrs	r2, r2, r1
+ 787 003a 2A43     		orrs	r2, r2, r5
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 28
+
+
+ 768:.//FWLIB/src/stm32f4xx_spi.c ****                   (uint16_t)(I2S_InitStruct->I2S_Standard | (uint16_t)(I2S_InitStruct->I2S_DataForm
+ 788              		.loc 1 768 0
+ 789 003c 1343     		orrs	r3, r3, r2
+ 790              	.LVL76:
+ 791 003e 2343     		orrs	r3, r3, r4
+ 792 0040 43F40063 		orr	r3, r3, #2048
+ 793              	.LVL77:
+ 771:.//FWLIB/src/stm32f4xx_spi.c ****  
+ 772:.//FWLIB/src/stm32f4xx_spi.c ****   /* Write to SPIx I2SCFGR */  
+ 773:.//FWLIB/src/stm32f4xx_spi.c ****   I2Sxext->I2SCFGR = tmpreg;
+ 794              		.loc 1 773 0
+ 795 0044 8383     		strh	r3, [r0, #28]	@ movhi
+ 774:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 796              		.loc 1 774 0
+ 797 0046 30BC     		pop	{r4, r5}
+ 798              	.LCFI4:
+ 799              		.cfi_restore 5
+ 800              		.cfi_restore 4
+ 801              		.cfi_def_cfa_offset 0
+ 802 0048 7047     		bx	lr
+ 803              		.cfi_endproc
+ 804              	.LFE124:
+ 806 004a 00BF     		.section	.text.SPI_I2S_ReceiveData,"ax",%progbits
+ 807              		.align	2
+ 808              		.global	SPI_I2S_ReceiveData
+ 809              		.thumb
+ 810              		.thumb_func
+ 812              	SPI_I2S_ReceiveData:
+ 813              	.LFB125:
+ 775:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 776:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 777:.//FWLIB/src/stm32f4xx_spi.c ****   * @}
+ 778:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 779:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 780:.//FWLIB/src/stm32f4xx_spi.c **** /** @defgroup SPI_Group2 Data transfers functions
+ 781:.//FWLIB/src/stm32f4xx_spi.c ****  *  @brief   Data transfers functions
+ 782:.//FWLIB/src/stm32f4xx_spi.c ****  *
+ 783:.//FWLIB/src/stm32f4xx_spi.c **** @verbatim   
+ 784:.//FWLIB/src/stm32f4xx_spi.c ****  ===============================================================================
+ 785:.//FWLIB/src/stm32f4xx_spi.c ****                       ##### Data transfers functions #####
+ 786:.//FWLIB/src/stm32f4xx_spi.c ****  ===============================================================================  
+ 787:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 788:.//FWLIB/src/stm32f4xx_spi.c ****  [..] This section provides a set of functions allowing to manage the SPI data 
+ 789:.//FWLIB/src/stm32f4xx_spi.c ****       transfers. In reception, data are received and then stored into an internal 
+ 790:.//FWLIB/src/stm32f4xx_spi.c ****       Rx buffer while. In transmission, data are first stored into an internal Tx 
+ 791:.//FWLIB/src/stm32f4xx_spi.c ****       buffer before being transmitted.
+ 792:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 793:.//FWLIB/src/stm32f4xx_spi.c ****  [..] The read access of the SPI_DR register can be done using the SPI_I2S_ReceiveData()
+ 794:.//FWLIB/src/stm32f4xx_spi.c ****       function and returns the Rx buffered value. Whereas a write access to the SPI_DR 
+ 795:.//FWLIB/src/stm32f4xx_spi.c ****       can be done using SPI_I2S_SendData() function and stores the written data into 
+ 796:.//FWLIB/src/stm32f4xx_spi.c ****       Tx buffer.
+ 797:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 798:.//FWLIB/src/stm32f4xx_spi.c **** @endverbatim
+ 799:.//FWLIB/src/stm32f4xx_spi.c ****   * @{
+ 800:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 801:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 802:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 29
+
+
+ 803:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Returns the most recent received data by the SPIx/I2Sx peripheral. 
+ 804:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: To select the SPIx/I2Sx peripheral, where x can be: 1, 2, 3, 4, 5 or 6 
+ 805:.//FWLIB/src/stm32f4xx_spi.c ****   *         in SPI mode or 2 or 3 in I2S mode or I2Sxext for I2S full duplex mode. 
+ 806:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval The value of the received data.
+ 807:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 808:.//FWLIB/src/stm32f4xx_spi.c **** uint16_t SPI_I2S_ReceiveData(SPI_TypeDef* SPIx)
+ 809:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 814              		.loc 1 809 0
+ 815              		.cfi_startproc
+ 816              		@ args = 0, pretend = 0, frame = 0
+ 817              		@ frame_needed = 0, uses_anonymous_args = 0
+ 818              		@ link register save eliminated.
+ 819              	.LVL78:
+ 810:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 811:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH_EXT(SPIx));
+ 812:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 813:.//FWLIB/src/stm32f4xx_spi.c ****   /* Return the data in the DR register */
+ 814:.//FWLIB/src/stm32f4xx_spi.c ****   return SPIx->DR;
+ 820              		.loc 1 814 0
+ 821 0000 8089     		ldrh	r0, [r0, #12]
+ 822              	.LVL79:
+ 815:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 823              		.loc 1 815 0
+ 824 0002 80B2     		uxth	r0, r0
+ 825 0004 7047     		bx	lr
+ 826              		.cfi_endproc
+ 827              	.LFE125:
+ 829 0006 00BF     		.section	.text.SPI_I2S_SendData,"ax",%progbits
+ 830              		.align	2
+ 831              		.global	SPI_I2S_SendData
+ 832              		.thumb
+ 833              		.thumb_func
+ 835              	SPI_I2S_SendData:
+ 836              	.LFB126:
+ 816:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 817:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 818:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Transmits a Data through the SPIx/I2Sx peripheral.
+ 819:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: To select the SPIx/I2Sx peripheral, where x can be: 1, 2, 3, 4, 5 or 6 
+ 820:.//FWLIB/src/stm32f4xx_spi.c ****   *         in SPI mode or 2 or 3 in I2S mode or I2Sxext for I2S full duplex mode.     
+ 821:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  Data: Data to be transmitted.
+ 822:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 823:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 824:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_I2S_SendData(SPI_TypeDef* SPIx, uint16_t Data)
+ 825:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 837              		.loc 1 825 0
+ 838              		.cfi_startproc
+ 839              		@ args = 0, pretend = 0, frame = 0
+ 840              		@ frame_needed = 0, uses_anonymous_args = 0
+ 841              		@ link register save eliminated.
+ 842              	.LVL80:
+ 826:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 827:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH_EXT(SPIx));
+ 828:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 829:.//FWLIB/src/stm32f4xx_spi.c ****   /* Write in the DR register the data to be sent */
+ 830:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->DR = Data;
+ 843              		.loc 1 830 0
+ 844 0000 8181     		strh	r1, [r0, #12]	@ movhi
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 30
+
+
+ 845 0002 7047     		bx	lr
+ 846              		.cfi_endproc
+ 847              	.LFE126:
+ 849              		.section	.text.SPI_CalculateCRC,"ax",%progbits
+ 850              		.align	2
+ 851              		.global	SPI_CalculateCRC
+ 852              		.thumb
+ 853              		.thumb_func
+ 855              	SPI_CalculateCRC:
+ 856              	.LFB127:
+ 831:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 832:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 833:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 834:.//FWLIB/src/stm32f4xx_spi.c ****   * @}
+ 835:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 836:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 837:.//FWLIB/src/stm32f4xx_spi.c **** /** @defgroup SPI_Group3 Hardware CRC Calculation functions
+ 838:.//FWLIB/src/stm32f4xx_spi.c ****  *  @brief   Hardware CRC Calculation functions
+ 839:.//FWLIB/src/stm32f4xx_spi.c ****  *
+ 840:.//FWLIB/src/stm32f4xx_spi.c **** @verbatim   
+ 841:.//FWLIB/src/stm32f4xx_spi.c ****  ===============================================================================
+ 842:.//FWLIB/src/stm32f4xx_spi.c ****                  ##### Hardware CRC Calculation functions #####
+ 843:.//FWLIB/src/stm32f4xx_spi.c ****  ===============================================================================  
+ 844:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 845:.//FWLIB/src/stm32f4xx_spi.c ****  [..] This section provides a set of functions allowing to manage the SPI CRC hardware 
+ 846:.//FWLIB/src/stm32f4xx_spi.c ****       calculation
+ 847:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 848:.//FWLIB/src/stm32f4xx_spi.c ****  [..] SPI communication using CRC is possible through the following procedure:
+ 849:.//FWLIB/src/stm32f4xx_spi.c ****    (#) Program the Data direction, Polarity, Phase, First Data, Baud Rate Prescaler, 
+ 850:.//FWLIB/src/stm32f4xx_spi.c ****        Slave Management, Peripheral Mode and CRC Polynomial values using the SPI_Init()
+ 851:.//FWLIB/src/stm32f4xx_spi.c ****        function.
+ 852:.//FWLIB/src/stm32f4xx_spi.c ****    (#) Enable the CRC calculation using the SPI_CalculateCRC() function.
+ 853:.//FWLIB/src/stm32f4xx_spi.c ****    (#) Enable the SPI using the SPI_Cmd() function
+ 854:.//FWLIB/src/stm32f4xx_spi.c ****    (#) Before writing the last data to the TX buffer, set the CRCNext bit using the 
+ 855:.//FWLIB/src/stm32f4xx_spi.c ****        SPI_TransmitCRC() function to indicate that after transmission of the last 
+ 856:.//FWLIB/src/stm32f4xx_spi.c ****        data, the CRC should be transmitted.
+ 857:.//FWLIB/src/stm32f4xx_spi.c ****    (#) After transmitting the last data, the SPI transmits the CRC. The SPI_CR1_CRCNEXT
+ 858:.//FWLIB/src/stm32f4xx_spi.c ****         bit is reset. The CRC is also received and compared against the SPI_RXCRCR 
+ 859:.//FWLIB/src/stm32f4xx_spi.c ****         value. 
+ 860:.//FWLIB/src/stm32f4xx_spi.c ****         If the value does not match, the SPI_FLAG_CRCERR flag is set and an interrupt
+ 861:.//FWLIB/src/stm32f4xx_spi.c ****         can be generated when the SPI_I2S_IT_ERR interrupt is enabled.
+ 862:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 863:.//FWLIB/src/stm32f4xx_spi.c ****  [..]
+ 864:.//FWLIB/src/stm32f4xx_spi.c ****    (@) It is advised not to read the calculated CRC values during the communication.
+ 865:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 866:.//FWLIB/src/stm32f4xx_spi.c ****    (@) When the SPI is in slave mode, be careful to enable CRC calculation only 
+ 867:.//FWLIB/src/stm32f4xx_spi.c ****        when the clock is stable, that is, when the clock is in the steady state. 
+ 868:.//FWLIB/src/stm32f4xx_spi.c ****        If not, a wrong CRC calculation may be done. In fact, the CRC is sensitive 
+ 869:.//FWLIB/src/stm32f4xx_spi.c ****        to the SCK slave input clock as soon as CRCEN is set, and this, whatever 
+ 870:.//FWLIB/src/stm32f4xx_spi.c ****        the value of the SPE bit.
+ 871:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 872:.//FWLIB/src/stm32f4xx_spi.c ****    (@) With high bitrate frequencies, be careful when transmitting the CRC.
+ 873:.//FWLIB/src/stm32f4xx_spi.c ****        As the number of used CPU cycles has to be as low as possible in the CRC 
+ 874:.//FWLIB/src/stm32f4xx_spi.c ****        transfer phase, it is forbidden to call software functions in the CRC 
+ 875:.//FWLIB/src/stm32f4xx_spi.c ****        transmission sequence to avoid errors in the last data and CRC reception. 
+ 876:.//FWLIB/src/stm32f4xx_spi.c ****        In fact, CRCNEXT bit has to be written before the end of the transmission/reception 
+ 877:.//FWLIB/src/stm32f4xx_spi.c ****        of the last data.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 31
+
+
+ 878:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 879:.//FWLIB/src/stm32f4xx_spi.c ****    (@) For high bit rate frequencies, it is advised to use the DMA mode to avoid the
+ 880:.//FWLIB/src/stm32f4xx_spi.c ****        degradation of the SPI speed performance due to CPU accesses impacting the 
+ 881:.//FWLIB/src/stm32f4xx_spi.c ****        SPI bandwidth.
+ 882:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 883:.//FWLIB/src/stm32f4xx_spi.c ****    (@) When the STM32F4xx is configured as slave and the NSS hardware mode is 
+ 884:.//FWLIB/src/stm32f4xx_spi.c ****        used, the NSS pin needs to be kept low between the data phase and the CRC 
+ 885:.//FWLIB/src/stm32f4xx_spi.c ****        phase.
+ 886:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 887:.//FWLIB/src/stm32f4xx_spi.c ****    (@) When the SPI is configured in slave mode with the CRC feature enabled, CRC
+ 888:.//FWLIB/src/stm32f4xx_spi.c ****        calculation takes place even if a high level is applied on the NSS pin. 
+ 889:.//FWLIB/src/stm32f4xx_spi.c ****        This may happen for example in case of a multi-slave environment where the 
+ 890:.//FWLIB/src/stm32f4xx_spi.c ****        communication master addresses slaves alternately.
+ 891:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 892:.//FWLIB/src/stm32f4xx_spi.c ****    (@) Between a slave de-selection (high level on NSS) and a new slave selection 
+ 893:.//FWLIB/src/stm32f4xx_spi.c ****        (low level on NSS), the CRC value should be cleared on both master and slave
+ 894:.//FWLIB/src/stm32f4xx_spi.c ****        sides in order to resynchronize the master and slave for their respective 
+ 895:.//FWLIB/src/stm32f4xx_spi.c ****        CRC calculation.
+ 896:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 897:.//FWLIB/src/stm32f4xx_spi.c ****    (@) To clear the CRC, follow the procedure below:
+ 898:.//FWLIB/src/stm32f4xx_spi.c ****        (#@) Disable SPI using the SPI_Cmd() function
+ 899:.//FWLIB/src/stm32f4xx_spi.c ****        (#@) Disable the CRC calculation using the SPI_CalculateCRC() function.
+ 900:.//FWLIB/src/stm32f4xx_spi.c ****        (#@) Enable the CRC calculation using the SPI_CalculateCRC() function.
+ 901:.//FWLIB/src/stm32f4xx_spi.c ****        (#@) Enable SPI using the SPI_Cmd() function.
+ 902:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 903:.//FWLIB/src/stm32f4xx_spi.c **** @endverbatim
+ 904:.//FWLIB/src/stm32f4xx_spi.c ****   * @{
+ 905:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 906:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 907:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 908:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Enables or disables the CRC value calculation of the transferred bytes.
+ 909:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be 1, 2, 3, 4, 5 or 6 to select the SPI peripheral.
+ 910:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  NewState: new state of the SPIx CRC value calculation.
+ 911:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 912:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 913:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 914:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_CalculateCRC(SPI_TypeDef* SPIx, FunctionalState NewState)
+ 915:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 857              		.loc 1 915 0
+ 858              		.cfi_startproc
+ 859              		@ args = 0, pretend = 0, frame = 0
+ 860              		@ frame_needed = 0, uses_anonymous_args = 0
+ 861              		@ link register save eliminated.
+ 862              	.LVL81:
+ 916:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 917:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH(SPIx));
+ 918:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 919:.//FWLIB/src/stm32f4xx_spi.c ****   if (NewState != DISABLE)
+ 863              		.loc 1 919 0
+ 864 0000 29B1     		cbz	r1, .L57
+ 920:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 921:.//FWLIB/src/stm32f4xx_spi.c ****     /* Enable the selected SPI CRC calculation */
+ 922:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR1 |= SPI_CR1_CRCEN;
+ 865              		.loc 1 922 0
+ 866 0002 0388     		ldrh	r3, [r0]
+ 867 0004 9BB2     		uxth	r3, r3
+ 868 0006 43F40053 		orr	r3, r3, #8192
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 32
+
+
+ 869 000a 0380     		strh	r3, [r0]	@ movhi
+ 870 000c 7047     		bx	lr
+ 871              	.L57:
+ 923:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 924:.//FWLIB/src/stm32f4xx_spi.c ****   else
+ 925:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 926:.//FWLIB/src/stm32f4xx_spi.c ****     /* Disable the selected SPI CRC calculation */
+ 927:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR1 &= (uint16_t)~((uint16_t)SPI_CR1_CRCEN);
+ 872              		.loc 1 927 0
+ 873 000e 0388     		ldrh	r3, [r0]
+ 874 0010 9BB2     		uxth	r3, r3
+ 875 0012 23F40053 		bic	r3, r3, #8192
+ 876 0016 9BB2     		uxth	r3, r3
+ 877 0018 0380     		strh	r3, [r0]	@ movhi
+ 878 001a 7047     		bx	lr
+ 879              		.cfi_endproc
+ 880              	.LFE127:
+ 882              		.section	.text.SPI_TransmitCRC,"ax",%progbits
+ 883              		.align	2
+ 884              		.global	SPI_TransmitCRC
+ 885              		.thumb
+ 886              		.thumb_func
+ 888              	SPI_TransmitCRC:
+ 889              	.LFB128:
+ 928:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 929:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 930:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 931:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 932:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Transmit the SPIx CRC value.
+ 933:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be 1, 2, 3, 4, 5 or 6 to select the SPI peripheral.
+ 934:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+ 935:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 936:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_TransmitCRC(SPI_TypeDef* SPIx)
+ 937:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 890              		.loc 1 937 0
+ 891              		.cfi_startproc
+ 892              		@ args = 0, pretend = 0, frame = 0
+ 893              		@ frame_needed = 0, uses_anonymous_args = 0
+ 894              		@ link register save eliminated.
+ 895              	.LVL82:
+ 938:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 939:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH(SPIx));
+ 940:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 941:.//FWLIB/src/stm32f4xx_spi.c ****   /* Enable the selected SPI CRC transmission */
+ 942:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->CR1 |= SPI_CR1_CRCNEXT;
+ 896              		.loc 1 942 0
+ 897 0000 0388     		ldrh	r3, [r0]
+ 898 0002 9BB2     		uxth	r3, r3
+ 899 0004 43F48053 		orr	r3, r3, #4096
+ 900 0008 0380     		strh	r3, [r0]	@ movhi
+ 901 000a 7047     		bx	lr
+ 902              		.cfi_endproc
+ 903              	.LFE128:
+ 905              		.section	.text.SPI_GetCRC,"ax",%progbits
+ 906              		.align	2
+ 907              		.global	SPI_GetCRC
+ 908              		.thumb
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 33
+
+
+ 909              		.thumb_func
+ 911              	SPI_GetCRC:
+ 912              	.LFB129:
+ 943:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 944:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 945:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 946:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Returns the transmit or the receive CRC register value for the specified SPI.
+ 947:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be 1, 2, 3, 4, 5 or 6 to select the SPI peripheral.
+ 948:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPI_CRC: specifies the CRC register to be read.
+ 949:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be one of the following values:
+ 950:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_CRC_Tx: Selects Tx CRC register
+ 951:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_CRC_Rx: Selects Rx CRC register
+ 952:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval The selected CRC register value..
+ 953:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 954:.//FWLIB/src/stm32f4xx_spi.c **** uint16_t SPI_GetCRC(SPI_TypeDef* SPIx, uint8_t SPI_CRC)
+ 955:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 913              		.loc 1 955 0
+ 914              		.cfi_startproc
+ 915              		@ args = 0, pretend = 0, frame = 0
+ 916              		@ frame_needed = 0, uses_anonymous_args = 0
+ 917              		@ link register save eliminated.
+ 918              	.LVL83:
+ 956:.//FWLIB/src/stm32f4xx_spi.c ****   uint16_t crcreg = 0;
+ 957:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 958:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH(SPIx));
+ 959:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_CRC(SPI_CRC));
+ 960:.//FWLIB/src/stm32f4xx_spi.c ****   if (SPI_CRC != SPI_CRC_Rx)
+ 919              		.loc 1 960 0
+ 920 0000 0129     		cmp	r1, #1
+ 921 0002 02D0     		beq	.L61
+ 961:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 962:.//FWLIB/src/stm32f4xx_spi.c ****     /* Get the Tx CRC register */
+ 963:.//FWLIB/src/stm32f4xx_spi.c ****     crcreg = SPIx->TXCRCR;
+ 922              		.loc 1 963 0
+ 923 0004 008B     		ldrh	r0, [r0, #24]
+ 924              	.LVL84:
+ 925 0006 80B2     		uxth	r0, r0
+ 926              	.LVL85:
+ 927 0008 7047     		bx	lr
+ 928              	.LVL86:
+ 929              	.L61:
+ 964:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 965:.//FWLIB/src/stm32f4xx_spi.c ****   else
+ 966:.//FWLIB/src/stm32f4xx_spi.c ****   {
+ 967:.//FWLIB/src/stm32f4xx_spi.c ****     /* Get the Rx CRC register */
+ 968:.//FWLIB/src/stm32f4xx_spi.c ****     crcreg = SPIx->RXCRCR;
+ 930              		.loc 1 968 0
+ 931 000a 808A     		ldrh	r0, [r0, #20]
+ 932              	.LVL87:
+ 933 000c 80B2     		uxth	r0, r0
+ 934              	.LVL88:
+ 969:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 970:.//FWLIB/src/stm32f4xx_spi.c ****   /* Return the selected CRC register */
+ 971:.//FWLIB/src/stm32f4xx_spi.c ****   return crcreg;
+ 972:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 935              		.loc 1 972 0
+ 936 000e 7047     		bx	lr
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 34
+
+
+ 937              		.cfi_endproc
+ 938              	.LFE129:
+ 940              		.section	.text.SPI_GetCRCPolynomial,"ax",%progbits
+ 941              		.align	2
+ 942              		.global	SPI_GetCRCPolynomial
+ 943              		.thumb
+ 944              		.thumb_func
+ 946              	SPI_GetCRCPolynomial:
+ 947              	.LFB130:
+ 973:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 974:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 975:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Returns the CRC Polynomial register value for the specified SPI.
+ 976:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: where x can be 1, 2, 3, 4, 5 or 6 to select the SPI peripheral.
+ 977:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval The CRC Polynomial register value.
+ 978:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 979:.//FWLIB/src/stm32f4xx_spi.c **** uint16_t SPI_GetCRCPolynomial(SPI_TypeDef* SPIx)
+ 980:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 948              		.loc 1 980 0
+ 949              		.cfi_startproc
+ 950              		@ args = 0, pretend = 0, frame = 0
+ 951              		@ frame_needed = 0, uses_anonymous_args = 0
+ 952              		@ link register save eliminated.
+ 953              	.LVL89:
+ 981:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+ 982:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH(SPIx));
+ 983:.//FWLIB/src/stm32f4xx_spi.c ****   
+ 984:.//FWLIB/src/stm32f4xx_spi.c ****   /* Return the CRC polynomial register */
+ 985:.//FWLIB/src/stm32f4xx_spi.c ****   return SPIx->CRCPR;
+ 954              		.loc 1 985 0
+ 955 0000 008A     		ldrh	r0, [r0, #16]
+ 956              	.LVL90:
+ 986:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 957              		.loc 1 986 0
+ 958 0002 80B2     		uxth	r0, r0
+ 959 0004 7047     		bx	lr
+ 960              		.cfi_endproc
+ 961              	.LFE130:
+ 963 0006 00BF     		.section	.text.SPI_I2S_DMACmd,"ax",%progbits
+ 964              		.align	2
+ 965              		.global	SPI_I2S_DMACmd
+ 966              		.thumb
+ 967              		.thumb_func
+ 969              	SPI_I2S_DMACmd:
+ 970              	.LFB131:
+ 987:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 988:.//FWLIB/src/stm32f4xx_spi.c **** /**
+ 989:.//FWLIB/src/stm32f4xx_spi.c ****   * @}
+ 990:.//FWLIB/src/stm32f4xx_spi.c ****   */
+ 991:.//FWLIB/src/stm32f4xx_spi.c **** 
+ 992:.//FWLIB/src/stm32f4xx_spi.c **** /** @defgroup SPI_Group4 DMA transfers management functions
+ 993:.//FWLIB/src/stm32f4xx_spi.c ****  *  @brief   DMA transfers management functions
+ 994:.//FWLIB/src/stm32f4xx_spi.c ****   *
+ 995:.//FWLIB/src/stm32f4xx_spi.c **** @verbatim   
+ 996:.//FWLIB/src/stm32f4xx_spi.c ****  ===============================================================================
+ 997:.//FWLIB/src/stm32f4xx_spi.c ****                    ##### DMA transfers management functions #####
+ 998:.//FWLIB/src/stm32f4xx_spi.c ****  ===============================================================================  
+ 999:.//FWLIB/src/stm32f4xx_spi.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 35
+
+
+1000:.//FWLIB/src/stm32f4xx_spi.c **** @endverbatim
+1001:.//FWLIB/src/stm32f4xx_spi.c ****   * @{
+1002:.//FWLIB/src/stm32f4xx_spi.c ****   */
+1003:.//FWLIB/src/stm32f4xx_spi.c **** 
+1004:.//FWLIB/src/stm32f4xx_spi.c **** /**
+1005:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Enables or disables the SPIx/I2Sx DMA interface.
+1006:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: To select the SPIx/I2Sx peripheral, where x can be: 1, 2, 3, 4, 5 or 6 
+1007:.//FWLIB/src/stm32f4xx_spi.c ****   *         in SPI mode or 2 or 3 in I2S mode or I2Sxext for I2S full duplex mode. 
+1008:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPI_I2S_DMAReq: specifies the SPI DMA transfer request to be enabled or disabled. 
+1009:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be any combination of the following values:
+1010:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_DMAReq_Tx: Tx buffer DMA transfer request
+1011:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_DMAReq_Rx: Rx buffer DMA transfer request
+1012:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  NewState: new state of the selected SPI DMA transfer request.
+1013:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be: ENABLE or DISABLE.
+1014:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+1015:.//FWLIB/src/stm32f4xx_spi.c ****   */
+1016:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_I2S_DMACmd(SPI_TypeDef* SPIx, uint16_t SPI_I2S_DMAReq, FunctionalState NewState)
+1017:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 971              		.loc 1 1017 0
+ 972              		.cfi_startproc
+ 973              		@ args = 0, pretend = 0, frame = 0
+ 974              		@ frame_needed = 0, uses_anonymous_args = 0
+ 975              		@ link register save eliminated.
+ 976              	.LVL91:
+1018:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+1019:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH_EXT(SPIx));
+1020:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+1021:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_I2S_DMAREQ(SPI_I2S_DMAReq));
+1022:.//FWLIB/src/stm32f4xx_spi.c **** 
+1023:.//FWLIB/src/stm32f4xx_spi.c ****   if (NewState != DISABLE)
+ 977              		.loc 1 1023 0
+ 978 0000 22B1     		cbz	r2, .L65
+1024:.//FWLIB/src/stm32f4xx_spi.c ****   {
+1025:.//FWLIB/src/stm32f4xx_spi.c ****     /* Enable the selected SPI DMA requests */
+1026:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR2 |= SPI_I2S_DMAReq;
+ 979              		.loc 1 1026 0
+ 980 0002 8388     		ldrh	r3, [r0, #4]
+ 981 0004 9BB2     		uxth	r3, r3
+ 982 0006 1943     		orrs	r1, r1, r3
+ 983              	.LVL92:
+ 984 0008 8180     		strh	r1, [r0, #4]	@ movhi
+ 985 000a 7047     		bx	lr
+ 986              	.LVL93:
+ 987              	.L65:
+1027:.//FWLIB/src/stm32f4xx_spi.c ****   }
+1028:.//FWLIB/src/stm32f4xx_spi.c ****   else
+1029:.//FWLIB/src/stm32f4xx_spi.c ****   {
+1030:.//FWLIB/src/stm32f4xx_spi.c ****     /* Disable the selected SPI DMA requests */
+1031:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR2 &= (uint16_t)~SPI_I2S_DMAReq;
+ 988              		.loc 1 1031 0
+ 989 000c 8388     		ldrh	r3, [r0, #4]
+ 990 000e C943     		mvns	r1, r1
+ 991              	.LVL94:
+ 992 0010 89B2     		uxth	r1, r1
+ 993 0012 1940     		ands	r1, r1, r3
+ 994 0014 8180     		strh	r1, [r0, #4]	@ movhi
+ 995 0016 7047     		bx	lr
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 36
+
+
+ 996              		.cfi_endproc
+ 997              	.LFE131:
+ 999              		.section	.text.SPI_I2S_ITConfig,"ax",%progbits
+ 1000              		.align	2
+ 1001              		.global	SPI_I2S_ITConfig
+ 1002              		.thumb
+ 1003              		.thumb_func
+ 1005              	SPI_I2S_ITConfig:
+ 1006              	.LFB132:
+1032:.//FWLIB/src/stm32f4xx_spi.c ****   }
+1033:.//FWLIB/src/stm32f4xx_spi.c **** }
+1034:.//FWLIB/src/stm32f4xx_spi.c **** 
+1035:.//FWLIB/src/stm32f4xx_spi.c **** /**
+1036:.//FWLIB/src/stm32f4xx_spi.c ****   * @}
+1037:.//FWLIB/src/stm32f4xx_spi.c ****   */
+1038:.//FWLIB/src/stm32f4xx_spi.c **** 
+1039:.//FWLIB/src/stm32f4xx_spi.c **** /** @defgroup SPI_Group5 Interrupts and flags management functions
+1040:.//FWLIB/src/stm32f4xx_spi.c ****  *  @brief   Interrupts and flags management functions
+1041:.//FWLIB/src/stm32f4xx_spi.c ****   *
+1042:.//FWLIB/src/stm32f4xx_spi.c **** @verbatim   
+1043:.//FWLIB/src/stm32f4xx_spi.c ****  ===============================================================================
+1044:.//FWLIB/src/stm32f4xx_spi.c ****             ##### Interrupts and flags management functions #####
+1045:.//FWLIB/src/stm32f4xx_spi.c ****  ===============================================================================  
+1046:.//FWLIB/src/stm32f4xx_spi.c ****  
+1047:.//FWLIB/src/stm32f4xx_spi.c ****  [..] This section provides a set of functions allowing to configure the SPI Interrupts 
+1048:.//FWLIB/src/stm32f4xx_spi.c ****       sources and check or clear the flags or pending bits status.
+1049:.//FWLIB/src/stm32f4xx_spi.c ****       The user should identify which mode will be used in his application to manage 
+1050:.//FWLIB/src/stm32f4xx_spi.c ****       the communication: Polling mode, Interrupt mode or DMA mode. 
+1051:.//FWLIB/src/stm32f4xx_spi.c ****     
+1052:.//FWLIB/src/stm32f4xx_spi.c ****  *** Polling Mode ***
+1053:.//FWLIB/src/stm32f4xx_spi.c ****  ====================
+1054:.//FWLIB/src/stm32f4xx_spi.c **** [..] In Polling Mode, the SPI/I2S communication can be managed by 9 flags:
+1055:.//FWLIB/src/stm32f4xx_spi.c ****   (#) SPI_I2S_FLAG_TXE : to indicate the status of the transmit buffer register
+1056:.//FWLIB/src/stm32f4xx_spi.c ****   (#) SPI_I2S_FLAG_RXNE : to indicate the status of the receive buffer register
+1057:.//FWLIB/src/stm32f4xx_spi.c ****   (#) SPI_I2S_FLAG_BSY : to indicate the state of the communication layer of the SPI.
+1058:.//FWLIB/src/stm32f4xx_spi.c ****   (#) SPI_FLAG_CRCERR : to indicate if a CRC Calculation error occur              
+1059:.//FWLIB/src/stm32f4xx_spi.c ****   (#) SPI_FLAG_MODF : to indicate if a Mode Fault error occur
+1060:.//FWLIB/src/stm32f4xx_spi.c ****   (#) SPI_I2S_FLAG_OVR : to indicate if an Overrun error occur
+1061:.//FWLIB/src/stm32f4xx_spi.c ****   (#) I2S_FLAG_TIFRFE: to indicate a Frame Format error occurs.
+1062:.//FWLIB/src/stm32f4xx_spi.c ****   (#) I2S_FLAG_UDR: to indicate an Underrun error occurs.
+1063:.//FWLIB/src/stm32f4xx_spi.c ****   (#) I2S_FLAG_CHSIDE: to indicate Channel Side.
+1064:.//FWLIB/src/stm32f4xx_spi.c **** 
+1065:.//FWLIB/src/stm32f4xx_spi.c ****   (@) Do not use the BSY flag to handle each data transmission or reception. It is
+1066:.//FWLIB/src/stm32f4xx_spi.c ****       better to use the TXE and RXNE flags instead.
+1067:.//FWLIB/src/stm32f4xx_spi.c **** 
+1068:.//FWLIB/src/stm32f4xx_spi.c ****  [..] In this Mode it is advised to use the following functions:
+1069:.//FWLIB/src/stm32f4xx_spi.c ****    (+) FlagStatus SPI_I2S_GetFlagStatus(SPI_TypeDef* SPIx, uint16_t SPI_I2S_FLAG);
+1070:.//FWLIB/src/stm32f4xx_spi.c ****    (+) void SPI_I2S_ClearFlag(SPI_TypeDef* SPIx, uint16_t SPI_I2S_FLAG);
+1071:.//FWLIB/src/stm32f4xx_spi.c **** 
+1072:.//FWLIB/src/stm32f4xx_spi.c ****  *** Interrupt Mode ***
+1073:.//FWLIB/src/stm32f4xx_spi.c ****  ======================
+1074:.//FWLIB/src/stm32f4xx_spi.c ****  [..] In Interrupt Mode, the SPI communication can be managed by 3 interrupt sources
+1075:.//FWLIB/src/stm32f4xx_spi.c ****       and 7 pending bits: 
+1076:.//FWLIB/src/stm32f4xx_spi.c ****    (+) Pending Bits:
+1077:.//FWLIB/src/stm32f4xx_spi.c ****        (##) SPI_I2S_IT_TXE : to indicate the status of the transmit buffer register
+1078:.//FWLIB/src/stm32f4xx_spi.c ****        (##) SPI_I2S_IT_RXNE : to indicate the status of the receive buffer register
+1079:.//FWLIB/src/stm32f4xx_spi.c ****        (##) SPI_IT_CRCERR : to indicate if a CRC Calculation error occur (available in SPI mode onl
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 37
+
+
+1080:.//FWLIB/src/stm32f4xx_spi.c ****        (##) SPI_IT_MODF : to indicate if a Mode Fault error occur (available in SPI mode only)
+1081:.//FWLIB/src/stm32f4xx_spi.c ****        (##) SPI_I2S_IT_OVR : to indicate if an Overrun error occur
+1082:.//FWLIB/src/stm32f4xx_spi.c ****        (##) I2S_IT_UDR : to indicate an Underrun Error occurs (available in I2S mode only).
+1083:.//FWLIB/src/stm32f4xx_spi.c ****        (##) I2S_FLAG_TIFRFE : to indicate a Frame Format error occurs (available in TI mode only).
+1084:.//FWLIB/src/stm32f4xx_spi.c **** 
+1085:.//FWLIB/src/stm32f4xx_spi.c ****    (+) Interrupt Source:
+1086:.//FWLIB/src/stm32f4xx_spi.c ****        (##) SPI_I2S_IT_TXE: specifies the interrupt source for the Tx buffer empty 
+1087:.//FWLIB/src/stm32f4xx_spi.c ****             interrupt.  
+1088:.//FWLIB/src/stm32f4xx_spi.c ****        (##) SPI_I2S_IT_RXNE : specifies the interrupt source for the Rx buffer not 
+1089:.//FWLIB/src/stm32f4xx_spi.c ****             empty interrupt.
+1090:.//FWLIB/src/stm32f4xx_spi.c ****        (##) SPI_I2S_IT_ERR : specifies the interrupt source for the errors interrupt.
+1091:.//FWLIB/src/stm32f4xx_spi.c **** 
+1092:.//FWLIB/src/stm32f4xx_spi.c ****  [..] In this Mode it is advised to use the following functions:
+1093:.//FWLIB/src/stm32f4xx_spi.c ****    (+) void SPI_I2S_ITConfig(SPI_TypeDef* SPIx, uint8_t SPI_I2S_IT, FunctionalState NewState);
+1094:.//FWLIB/src/stm32f4xx_spi.c ****    (+) ITStatus SPI_I2S_GetITStatus(SPI_TypeDef* SPIx, uint8_t SPI_I2S_IT);
+1095:.//FWLIB/src/stm32f4xx_spi.c ****    (+) void SPI_I2S_ClearITPendingBit(SPI_TypeDef* SPIx, uint8_t SPI_I2S_IT);
+1096:.//FWLIB/src/stm32f4xx_spi.c **** 
+1097:.//FWLIB/src/stm32f4xx_spi.c ****  *** DMA Mode ***
+1098:.//FWLIB/src/stm32f4xx_spi.c ****  ================
+1099:.//FWLIB/src/stm32f4xx_spi.c ****  [..] In DMA Mode, the SPI communication can be managed by 2 DMA Channel requests:
+1100:.//FWLIB/src/stm32f4xx_spi.c ****    (#) SPI_I2S_DMAReq_Tx: specifies the Tx buffer DMA transfer request
+1101:.//FWLIB/src/stm32f4xx_spi.c ****    (#) SPI_I2S_DMAReq_Rx: specifies the Rx buffer DMA transfer request
+1102:.//FWLIB/src/stm32f4xx_spi.c **** 
+1103:.//FWLIB/src/stm32f4xx_spi.c ****  [..] In this Mode it is advised to use the following function:
+1104:.//FWLIB/src/stm32f4xx_spi.c ****    (+) void SPI_I2S_DMACmd(SPI_TypeDef* SPIx, uint16_t SPI_I2S_DMAReq, FunctionalState 
+1105:.//FWLIB/src/stm32f4xx_spi.c ****        NewState);
+1106:.//FWLIB/src/stm32f4xx_spi.c **** 
+1107:.//FWLIB/src/stm32f4xx_spi.c **** @endverbatim
+1108:.//FWLIB/src/stm32f4xx_spi.c ****   * @{
+1109:.//FWLIB/src/stm32f4xx_spi.c ****   */
+1110:.//FWLIB/src/stm32f4xx_spi.c **** 
+1111:.//FWLIB/src/stm32f4xx_spi.c **** /**
+1112:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Enables or disables the specified SPI/I2S interrupts.
+1113:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: To select the SPIx/I2Sx peripheral, where x can be: 1, 2, 3, 4, 5 or 6 
+1114:.//FWLIB/src/stm32f4xx_spi.c ****   *         in SPI mode or 2 or 3 in I2S mode or I2Sxext for I2S full duplex mode. 
+1115:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPI_I2S_IT: specifies the SPI interrupt source to be enabled or disabled. 
+1116:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be one of the following values:
+1117:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_IT_TXE: Tx buffer empty interrupt mask
+1118:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_IT_RXNE: Rx buffer not empty interrupt mask
+1119:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_IT_ERR: Error interrupt mask
+1120:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  NewState: new state of the specified SPI interrupt.
+1121:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be: ENABLE or DISABLE.
+1122:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+1123:.//FWLIB/src/stm32f4xx_spi.c ****   */
+1124:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_I2S_ITConfig(SPI_TypeDef* SPIx, uint8_t SPI_I2S_IT, FunctionalState NewState)
+1125:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 1007              		.loc 1 1125 0
+ 1008              		.cfi_startproc
+ 1009              		@ args = 0, pretend = 0, frame = 0
+ 1010              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1011              		@ link register save eliminated.
+ 1012              	.LVL95:
+1126:.//FWLIB/src/stm32f4xx_spi.c ****   uint16_t itpos = 0, itmask = 0 ;
+1127:.//FWLIB/src/stm32f4xx_spi.c ****   
+1128:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+1129:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH_EXT(SPIx));
+1130:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 38
+
+
+1131:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_I2S_CONFIG_IT(SPI_I2S_IT));
+1132:.//FWLIB/src/stm32f4xx_spi.c **** 
+1133:.//FWLIB/src/stm32f4xx_spi.c ****   /* Get the SPI IT index */
+1134:.//FWLIB/src/stm32f4xx_spi.c ****   itpos = SPI_I2S_IT >> 4;
+ 1013              		.loc 1 1134 0
+ 1014 0000 0909     		lsrs	r1, r1, #4
+ 1015              	.LVL96:
+1135:.//FWLIB/src/stm32f4xx_spi.c **** 
+1136:.//FWLIB/src/stm32f4xx_spi.c ****   /* Set the IT mask */
+1137:.//FWLIB/src/stm32f4xx_spi.c ****   itmask = (uint16_t)1 << (uint16_t)itpos;
+ 1016              		.loc 1 1137 0
+ 1017 0002 0123     		movs	r3, #1
+ 1018 0004 03FA01F1 		lsl	r1, r3, r1
+ 1019              	.LVL97:
+ 1020 0008 89B2     		uxth	r1, r1
+ 1021              	.LVL98:
+1138:.//FWLIB/src/stm32f4xx_spi.c **** 
+1139:.//FWLIB/src/stm32f4xx_spi.c ****   if (NewState != DISABLE)
+ 1022              		.loc 1 1139 0
+ 1023 000a 22B1     		cbz	r2, .L68
+1140:.//FWLIB/src/stm32f4xx_spi.c ****   {
+1141:.//FWLIB/src/stm32f4xx_spi.c ****     /* Enable the selected SPI interrupt */
+1142:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR2 |= itmask;
+ 1024              		.loc 1 1142 0
+ 1025 000c 8388     		ldrh	r3, [r0, #4]
+ 1026 000e 9BB2     		uxth	r3, r3
+ 1027 0010 1943     		orrs	r1, r1, r3
+ 1028              	.LVL99:
+ 1029 0012 8180     		strh	r1, [r0, #4]	@ movhi
+ 1030 0014 7047     		bx	lr
+ 1031              	.LVL100:
+ 1032              	.L68:
+1143:.//FWLIB/src/stm32f4xx_spi.c ****   }
+1144:.//FWLIB/src/stm32f4xx_spi.c ****   else
+1145:.//FWLIB/src/stm32f4xx_spi.c ****   {
+1146:.//FWLIB/src/stm32f4xx_spi.c ****     /* Disable the selected SPI interrupt */
+1147:.//FWLIB/src/stm32f4xx_spi.c ****     SPIx->CR2 &= (uint16_t)~itmask;
+ 1033              		.loc 1 1147 0
+ 1034 0016 8388     		ldrh	r3, [r0, #4]
+ 1035 0018 C943     		mvns	r1, r1
+ 1036              	.LVL101:
+ 1037 001a 89B2     		uxth	r1, r1
+ 1038              	.LVL102:
+ 1039 001c 1940     		ands	r1, r1, r3
+ 1040 001e 8180     		strh	r1, [r0, #4]	@ movhi
+ 1041 0020 7047     		bx	lr
+ 1042              		.cfi_endproc
+ 1043              	.LFE132:
+ 1045 0022 00BF     		.section	.text.SPI_I2S_GetFlagStatus,"ax",%progbits
+ 1046              		.align	2
+ 1047              		.global	SPI_I2S_GetFlagStatus
+ 1048              		.thumb
+ 1049              		.thumb_func
+ 1051              	SPI_I2S_GetFlagStatus:
+ 1052              	.LFB133:
+1148:.//FWLIB/src/stm32f4xx_spi.c ****   }
+1149:.//FWLIB/src/stm32f4xx_spi.c **** }
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 39
+
+
+1150:.//FWLIB/src/stm32f4xx_spi.c **** 
+1151:.//FWLIB/src/stm32f4xx_spi.c **** /**
+1152:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Checks whether the specified SPIx/I2Sx flag is set or not.
+1153:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: To select the SPIx/I2Sx peripheral, where x can be: 1, 2, 3, 4, 5 or 6 
+1154:.//FWLIB/src/stm32f4xx_spi.c ****   *         in SPI mode or 2 or 3 in I2S mode or I2Sxext for I2S full duplex mode. 
+1155:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPI_I2S_FLAG: specifies the SPI flag to check. 
+1156:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be one of the following values:
+1157:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_FLAG_TXE: Transmit buffer empty flag.
+1158:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_FLAG_RXNE: Receive buffer not empty flag.
+1159:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_FLAG_BSY: Busy flag.
+1160:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_FLAG_OVR: Overrun flag.
+1161:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_FLAG_MODF: Mode Fault flag.
+1162:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_FLAG_CRCERR: CRC Error flag.
+1163:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_FLAG_TIFRFE: Format Error.
+1164:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg I2S_FLAG_UDR: Underrun Error flag.
+1165:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg I2S_FLAG_CHSIDE: Channel Side flag.  
+1166:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval The new state of SPI_I2S_FLAG (SET or RESET).
+1167:.//FWLIB/src/stm32f4xx_spi.c ****   */
+1168:.//FWLIB/src/stm32f4xx_spi.c **** FlagStatus SPI_I2S_GetFlagStatus(SPI_TypeDef* SPIx, uint16_t SPI_I2S_FLAG)
+1169:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 1053              		.loc 1 1169 0
+ 1054              		.cfi_startproc
+ 1055              		@ args = 0, pretend = 0, frame = 0
+ 1056              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1057              		@ link register save eliminated.
+ 1058              	.LVL103:
+1170:.//FWLIB/src/stm32f4xx_spi.c ****   FlagStatus bitstatus = RESET;
+1171:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+1172:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH_EXT(SPIx));
+1173:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_I2S_GET_FLAG(SPI_I2S_FLAG));
+1174:.//FWLIB/src/stm32f4xx_spi.c ****   
+1175:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the status of the specified SPI flag */
+1176:.//FWLIB/src/stm32f4xx_spi.c ****   if ((SPIx->SR & SPI_I2S_FLAG) != (uint16_t)RESET)
+ 1059              		.loc 1 1176 0
+ 1060 0000 0389     		ldrh	r3, [r0, #8]
+ 1061 0002 1942     		tst	r1, r3
+ 1062 0004 01D0     		beq	.L72
+1177:.//FWLIB/src/stm32f4xx_spi.c ****   {
+1178:.//FWLIB/src/stm32f4xx_spi.c ****     /* SPI_I2S_FLAG is set */
+1179:.//FWLIB/src/stm32f4xx_spi.c ****     bitstatus = SET;
+ 1063              		.loc 1 1179 0
+ 1064 0006 0120     		movs	r0, #1
+ 1065              	.LVL104:
+ 1066 0008 7047     		bx	lr
+ 1067              	.LVL105:
+ 1068              	.L72:
+1180:.//FWLIB/src/stm32f4xx_spi.c ****   }
+1181:.//FWLIB/src/stm32f4xx_spi.c ****   else
+1182:.//FWLIB/src/stm32f4xx_spi.c ****   {
+1183:.//FWLIB/src/stm32f4xx_spi.c ****     /* SPI_I2S_FLAG is reset */
+1184:.//FWLIB/src/stm32f4xx_spi.c ****     bitstatus = RESET;
+ 1069              		.loc 1 1184 0
+ 1070 000a 0020     		movs	r0, #0
+ 1071              	.LVL106:
+1185:.//FWLIB/src/stm32f4xx_spi.c ****   }
+1186:.//FWLIB/src/stm32f4xx_spi.c ****   /* Return the SPI_I2S_FLAG status */
+1187:.//FWLIB/src/stm32f4xx_spi.c ****   return  bitstatus;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 40
+
+
+1188:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 1072              		.loc 1 1188 0
+ 1073 000c 7047     		bx	lr
+ 1074              		.cfi_endproc
+ 1075              	.LFE133:
+ 1077 000e 00BF     		.section	.text.SPI_I2S_ClearFlag,"ax",%progbits
+ 1078              		.align	2
+ 1079              		.global	SPI_I2S_ClearFlag
+ 1080              		.thumb
+ 1081              		.thumb_func
+ 1083              	SPI_I2S_ClearFlag:
+ 1084              	.LFB134:
+1189:.//FWLIB/src/stm32f4xx_spi.c **** 
+1190:.//FWLIB/src/stm32f4xx_spi.c **** /**
+1191:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Clears the SPIx CRC Error (CRCERR) flag.
+1192:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: To select the SPIx/I2Sx peripheral, where x can be: 1, 2, 3, 4, 5 or 6 
+1193:.//FWLIB/src/stm32f4xx_spi.c ****   *         in SPI mode or 2 or 3 in I2S mode or I2Sxext for I2S full duplex mode. 
+1194:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPI_I2S_FLAG: specifies the SPI flag to clear. 
+1195:.//FWLIB/src/stm32f4xx_spi.c ****   *          This function clears only CRCERR flag.
+1196:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_FLAG_CRCERR: CRC Error flag.  
+1197:.//FWLIB/src/stm32f4xx_spi.c ****   *  
+1198:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   OVR (OverRun error) flag is cleared by software sequence: a read 
+1199:.//FWLIB/src/stm32f4xx_spi.c ****   *          operation to SPI_DR register (SPI_I2S_ReceiveData()) followed by a read 
+1200:.//FWLIB/src/stm32f4xx_spi.c ****   *          operation to SPI_SR register (SPI_I2S_GetFlagStatus()).
+1201:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   UDR (UnderRun error) flag is cleared by a read operation to 
+1202:.//FWLIB/src/stm32f4xx_spi.c ****   *          SPI_SR register (SPI_I2S_GetFlagStatus()).   
+1203:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   MODF (Mode Fault) flag is cleared by software sequence: a read/write 
+1204:.//FWLIB/src/stm32f4xx_spi.c ****   *          operation to SPI_SR register (SPI_I2S_GetFlagStatus()) followed by a 
+1205:.//FWLIB/src/stm32f4xx_spi.c ****   *          write operation to SPI_CR1 register (SPI_Cmd() to enable the SPI).
+1206:.//FWLIB/src/stm32f4xx_spi.c ****   *  
+1207:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+1208:.//FWLIB/src/stm32f4xx_spi.c ****   */
+1209:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_I2S_ClearFlag(SPI_TypeDef* SPIx, uint16_t SPI_I2S_FLAG)
+1210:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 1085              		.loc 1 1210 0
+ 1086              		.cfi_startproc
+ 1087              		@ args = 0, pretend = 0, frame = 0
+ 1088              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1089              		@ link register save eliminated.
+ 1090              	.LVL107:
+1211:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+1212:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH_EXT(SPIx));
+1213:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_I2S_CLEAR_FLAG(SPI_I2S_FLAG));
+1214:.//FWLIB/src/stm32f4xx_spi.c ****     
+1215:.//FWLIB/src/stm32f4xx_spi.c ****   /* Clear the selected SPI CRC Error (CRCERR) flag */
+1216:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->SR = (uint16_t)~SPI_I2S_FLAG;
+ 1091              		.loc 1 1216 0
+ 1092 0000 C943     		mvns	r1, r1
+ 1093              	.LVL108:
+ 1094 0002 89B2     		uxth	r1, r1
+ 1095 0004 0181     		strh	r1, [r0, #8]	@ movhi
+ 1096 0006 7047     		bx	lr
+ 1097              		.cfi_endproc
+ 1098              	.LFE134:
+ 1100              		.section	.text.SPI_I2S_GetITStatus,"ax",%progbits
+ 1101              		.align	2
+ 1102              		.global	SPI_I2S_GetITStatus
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 41
+
+
+ 1103              		.thumb
+ 1104              		.thumb_func
+ 1106              	SPI_I2S_GetITStatus:
+ 1107              	.LFB135:
+1217:.//FWLIB/src/stm32f4xx_spi.c **** }
+1218:.//FWLIB/src/stm32f4xx_spi.c **** 
+1219:.//FWLIB/src/stm32f4xx_spi.c **** /**
+1220:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Checks whether the specified SPIx/I2Sx interrupt has occurred or not.
+1221:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: To select the SPIx/I2Sx peripheral, where x can be: 1, 2, 3, 4, 5 or 6 
+1222:.//FWLIB/src/stm32f4xx_spi.c ****   *         in SPI mode or 2 or 3 in I2S mode or I2Sxext for I2S full duplex mode.  
+1223:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPI_I2S_IT: specifies the SPI interrupt source to check. 
+1224:.//FWLIB/src/stm32f4xx_spi.c ****   *          This parameter can be one of the following values:
+1225:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_IT_TXE: Transmit buffer empty interrupt.
+1226:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_IT_RXNE: Receive buffer not empty interrupt.
+1227:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_IT_OVR: Overrun interrupt.
+1228:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_IT_MODF: Mode Fault interrupt.
+1229:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_IT_CRCERR: CRC Error interrupt.
+1230:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg I2S_IT_UDR: Underrun interrupt.  
+1231:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_I2S_IT_TIFRFE: Format Error interrupt.  
+1232:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval The new state of SPI_I2S_IT (SET or RESET).
+1233:.//FWLIB/src/stm32f4xx_spi.c ****   */
+1234:.//FWLIB/src/stm32f4xx_spi.c **** ITStatus SPI_I2S_GetITStatus(SPI_TypeDef* SPIx, uint8_t SPI_I2S_IT)
+1235:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 1108              		.loc 1 1235 0
+ 1109              		.cfi_startproc
+ 1110              		@ args = 0, pretend = 0, frame = 0
+ 1111              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1112              		@ link register save eliminated.
+ 1113              	.LVL109:
+ 1114 0000 10B4     		push	{r4}
+ 1115              	.LCFI5:
+ 1116              		.cfi_def_cfa_offset 4
+ 1117              		.cfi_offset 4, -4
+ 1118              	.LVL110:
+1236:.//FWLIB/src/stm32f4xx_spi.c ****   ITStatus bitstatus = RESET;
+1237:.//FWLIB/src/stm32f4xx_spi.c ****   uint16_t itpos = 0, itmask = 0, enablestatus = 0;
+1238:.//FWLIB/src/stm32f4xx_spi.c **** 
+1239:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+1240:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH_EXT(SPIx));
+1241:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_I2S_GET_IT(SPI_I2S_IT));
+1242:.//FWLIB/src/stm32f4xx_spi.c **** 
+1243:.//FWLIB/src/stm32f4xx_spi.c ****   /* Get the SPI_I2S_IT index */
+1244:.//FWLIB/src/stm32f4xx_spi.c ****   itpos = 0x01 << (SPI_I2S_IT & 0x0F);
+ 1119              		.loc 1 1244 0
+ 1120 0002 01F00F04 		and	r4, r1, #15
+ 1121 0006 0122     		movs	r2, #1
+ 1122 0008 02FA04F4 		lsl	r4, r2, r4
+ 1123              	.LVL111:
+1245:.//FWLIB/src/stm32f4xx_spi.c **** 
+1246:.//FWLIB/src/stm32f4xx_spi.c ****   /* Get the SPI_I2S_IT IT mask */
+1247:.//FWLIB/src/stm32f4xx_spi.c ****   itmask = SPI_I2S_IT >> 4;
+ 1124              		.loc 1 1247 0
+ 1125 000c 0B09     		lsrs	r3, r1, #4
+ 1126              	.LVL112:
+1248:.//FWLIB/src/stm32f4xx_spi.c **** 
+1249:.//FWLIB/src/stm32f4xx_spi.c ****   /* Set the IT mask */
+1250:.//FWLIB/src/stm32f4xx_spi.c ****   itmask = 0x01 << itmask;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 42
+
+
+ 1127              		.loc 1 1250 0
+ 1128 000e 9A40     		lsls	r2, r2, r3
+ 1129              	.LVL113:
+1251:.//FWLIB/src/stm32f4xx_spi.c **** 
+1252:.//FWLIB/src/stm32f4xx_spi.c ****   /* Get the SPI_I2S_IT enable bit status */
+1253:.//FWLIB/src/stm32f4xx_spi.c ****   enablestatus = (SPIx->CR2 & itmask) ;
+ 1130              		.loc 1 1253 0
+ 1131 0010 8388     		ldrh	r3, [r0, #4]
+ 1132 0012 9BB2     		uxth	r3, r3
+ 1133 0014 1340     		ands	r3, r3, r2
+ 1134              	.LVL114:
+1254:.//FWLIB/src/stm32f4xx_spi.c **** 
+1255:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the status of the specified SPI interrupt */
+1256:.//FWLIB/src/stm32f4xx_spi.c ****   if (((SPIx->SR & itpos) != (uint16_t)RESET) && enablestatus)
+ 1135              		.loc 1 1256 0
+ 1136 0016 0289     		ldrh	r2, [r0, #8]
+ 1137              	.LVL115:
+ 1138 0018 92B2     		uxth	r2, r2
+ 1139 001a 1442     		tst	r4, r2
+ 1140 001c 02D0     		beq	.L76
+ 1141              		.loc 1 1256 0 is_stmt 0 discriminator 1
+ 1142 001e 1BB9     		cbnz	r3, .L77
+1257:.//FWLIB/src/stm32f4xx_spi.c ****   {
+1258:.//FWLIB/src/stm32f4xx_spi.c ****     /* SPI_I2S_IT is set */
+1259:.//FWLIB/src/stm32f4xx_spi.c ****     bitstatus = SET;
+1260:.//FWLIB/src/stm32f4xx_spi.c ****   }
+1261:.//FWLIB/src/stm32f4xx_spi.c ****   else
+1262:.//FWLIB/src/stm32f4xx_spi.c ****   {
+1263:.//FWLIB/src/stm32f4xx_spi.c ****     /* SPI_I2S_IT is reset */
+1264:.//FWLIB/src/stm32f4xx_spi.c ****     bitstatus = RESET;
+ 1143              		.loc 1 1264 0 is_stmt 1
+ 1144 0020 0020     		movs	r0, #0
+ 1145              	.LVL116:
+ 1146 0022 02E0     		b	.L75
+ 1147              	.LVL117:
+ 1148              	.L76:
+ 1149 0024 0020     		movs	r0, #0
+ 1150              	.LVL118:
+ 1151 0026 00E0     		b	.L75
+ 1152              	.LVL119:
+ 1153              	.L77:
+1259:.//FWLIB/src/stm32f4xx_spi.c ****   }
+ 1154              		.loc 1 1259 0
+ 1155 0028 0120     		movs	r0, #1
+ 1156              	.LVL120:
+ 1157              	.L75:
+1265:.//FWLIB/src/stm32f4xx_spi.c ****   }
+1266:.//FWLIB/src/stm32f4xx_spi.c ****   /* Return the SPI_I2S_IT status */
+1267:.//FWLIB/src/stm32f4xx_spi.c ****   return bitstatus;
+1268:.//FWLIB/src/stm32f4xx_spi.c **** }
+ 1158              		.loc 1 1268 0
+ 1159 002a 5DF8044B 		ldr	r4, [sp], #4
+ 1160              	.LCFI6:
+ 1161              		.cfi_restore 4
+ 1162              		.cfi_def_cfa_offset 0
+ 1163              	.LVL121:
+ 1164 002e 7047     		bx	lr
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 43
+
+
+ 1165              		.cfi_endproc
+ 1166              	.LFE135:
+ 1168              		.section	.text.SPI_I2S_ClearITPendingBit,"ax",%progbits
+ 1169              		.align	2
+ 1170              		.global	SPI_I2S_ClearITPendingBit
+ 1171              		.thumb
+ 1172              		.thumb_func
+ 1174              	SPI_I2S_ClearITPendingBit:
+ 1175              	.LFB136:
+1269:.//FWLIB/src/stm32f4xx_spi.c **** 
+1270:.//FWLIB/src/stm32f4xx_spi.c **** /**
+1271:.//FWLIB/src/stm32f4xx_spi.c ****   * @brief  Clears the SPIx CRC Error (CRCERR) interrupt pending bit.
+1272:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPIx: To select the SPIx/I2Sx peripheral, where x can be: 1, 2, 3, 4, 5 or 6 
+1273:.//FWLIB/src/stm32f4xx_spi.c ****   *         in SPI mode or 2 or 3 in I2S mode or I2Sxext for I2S full duplex mode.  
+1274:.//FWLIB/src/stm32f4xx_spi.c ****   * @param  SPI_I2S_IT: specifies the SPI interrupt pending bit to clear.
+1275:.//FWLIB/src/stm32f4xx_spi.c ****   *         This function clears only CRCERR interrupt pending bit.   
+1276:.//FWLIB/src/stm32f4xx_spi.c ****   *            @arg SPI_IT_CRCERR: CRC Error interrupt.
+1277:.//FWLIB/src/stm32f4xx_spi.c ****   *   
+1278:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   OVR (OverRun Error) interrupt pending bit is cleared by software 
+1279:.//FWLIB/src/stm32f4xx_spi.c ****   *          sequence: a read operation to SPI_DR register (SPI_I2S_ReceiveData()) 
+1280:.//FWLIB/src/stm32f4xx_spi.c ****   *          followed by a read operation to SPI_SR register (SPI_I2S_GetITStatus()).
+1281:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   UDR (UnderRun Error) interrupt pending bit is cleared by a read 
+1282:.//FWLIB/src/stm32f4xx_spi.c ****   *          operation to SPI_SR register (SPI_I2S_GetITStatus()).   
+1283:.//FWLIB/src/stm32f4xx_spi.c ****   * @note   MODF (Mode Fault) interrupt pending bit is cleared by software sequence:
+1284:.//FWLIB/src/stm32f4xx_spi.c ****   *          a read/write operation to SPI_SR register (SPI_I2S_GetITStatus()) 
+1285:.//FWLIB/src/stm32f4xx_spi.c ****   *          followed by a write operation to SPI_CR1 register (SPI_Cmd() to enable 
+1286:.//FWLIB/src/stm32f4xx_spi.c ****   *          the SPI).
+1287:.//FWLIB/src/stm32f4xx_spi.c ****   * @retval None
+1288:.//FWLIB/src/stm32f4xx_spi.c ****   */
+1289:.//FWLIB/src/stm32f4xx_spi.c **** void SPI_I2S_ClearITPendingBit(SPI_TypeDef* SPIx, uint8_t SPI_I2S_IT)
+1290:.//FWLIB/src/stm32f4xx_spi.c **** {
+ 1176              		.loc 1 1290 0
+ 1177              		.cfi_startproc
+ 1178              		@ args = 0, pretend = 0, frame = 0
+ 1179              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1180              		@ link register save eliminated.
+ 1181              	.LVL122:
+1291:.//FWLIB/src/stm32f4xx_spi.c ****   uint16_t itpos = 0;
+1292:.//FWLIB/src/stm32f4xx_spi.c ****   /* Check the parameters */
+1293:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_ALL_PERIPH_EXT(SPIx));
+1294:.//FWLIB/src/stm32f4xx_spi.c ****   assert_param(IS_SPI_I2S_CLEAR_IT(SPI_I2S_IT));
+1295:.//FWLIB/src/stm32f4xx_spi.c **** 
+1296:.//FWLIB/src/stm32f4xx_spi.c ****   /* Get the SPI_I2S IT index */
+1297:.//FWLIB/src/stm32f4xx_spi.c ****   itpos = 0x01 << (SPI_I2S_IT & 0x0F);
+ 1182              		.loc 1 1297 0
+ 1183 0000 01F00F01 		and	r1, r1, #15
+ 1184              	.LVL123:
+ 1185 0004 0123     		movs	r3, #1
+ 1186 0006 8B40     		lsls	r3, r3, r1
+ 1187 0008 9BB2     		uxth	r3, r3
+ 1188              	.LVL124:
+1298:.//FWLIB/src/stm32f4xx_spi.c **** 
+1299:.//FWLIB/src/stm32f4xx_spi.c ****   /* Clear the selected SPI CRC Error (CRCERR) interrupt pending bit */
+1300:.//FWLIB/src/stm32f4xx_spi.c ****   SPIx->SR = (uint16_t)~itpos;
+ 1189              		.loc 1 1300 0
+ 1190 000a DB43     		mvns	r3, r3
+ 1191              	.LVL125:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 44
+
+
+ 1192 000c 9BB2     		uxth	r3, r3
+ 1193              	.LVL126:
+ 1194 000e 0381     		strh	r3, [r0, #8]	@ movhi
+ 1195 0010 7047     		bx	lr
+ 1196              		.cfi_endproc
+ 1197              	.LFE136:
+ 1199 0012 00BF     		.text
+ 1200              	.Letext0:
+ 1201              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 1202              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 1203              		.file 4 "USER/stm32f4xx.h"
+ 1204              		.file 5 "FWLIB/inc/stm32f4xx_spi.h"
+ 1205              		.file 6 "FWLIB/inc/stm32f4xx_rcc.h"
+ 1206              		.file 7 "CORE/core_cm4.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 45
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_spi.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:22     .text.SPI_I2S_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:27     .text.SPI_I2S_DeInit:0000000000000000 SPI_I2S_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:150    .text.SPI_I2S_DeInit:00000000000000ac $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:160    .text.SPI_Init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:165    .text.SPI_Init:0000000000000000 SPI_Init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:228    .text.I2S_Init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:233    .text.I2S_Init:0000000000000000 I2S_Init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:420    .text.I2S_Init:00000000000000fc $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:428    .text.SPI_StructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:433    .text.SPI_StructInit:0000000000000000 SPI_StructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:466    .text.I2S_StructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:471    .text.I2S_StructInit:0000000000000000 I2S_StructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:498    .text.SPI_Cmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:503    .text.SPI_Cmd:0000000000000000 SPI_Cmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:531    .text.I2S_Cmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:536    .text.I2S_Cmd:0000000000000000 I2S_Cmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:564    .text.SPI_DataSizeConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:569    .text.SPI_DataSizeConfig:0000000000000000 SPI_DataSizeConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:594    .text.SPI_BiDirectionalLineConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:599    .text.SPI_BiDirectionalLineConfig:0000000000000000 SPI_BiDirectionalLineConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:628    .text.SPI_NSSInternalSoftwareConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:633    .text.SPI_NSSInternalSoftwareConfig:0000000000000000 SPI_NSSInternalSoftwareConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:663    .text.SPI_SSOutputCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:668    .text.SPI_SSOutputCmd:0000000000000000 SPI_SSOutputCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:696    .text.SPI_TIModeCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:701    .text.SPI_TIModeCmd:0000000000000000 SPI_TIModeCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:729    .text.I2S_FullDuplexConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:734    .text.I2S_FullDuplexConfig:0000000000000000 I2S_FullDuplexConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:807    .text.SPI_I2S_ReceiveData:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:812    .text.SPI_I2S_ReceiveData:0000000000000000 SPI_I2S_ReceiveData
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:830    .text.SPI_I2S_SendData:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:835    .text.SPI_I2S_SendData:0000000000000000 SPI_I2S_SendData
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:850    .text.SPI_CalculateCRC:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:855    .text.SPI_CalculateCRC:0000000000000000 SPI_CalculateCRC
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:883    .text.SPI_TransmitCRC:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:888    .text.SPI_TransmitCRC:0000000000000000 SPI_TransmitCRC
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:906    .text.SPI_GetCRC:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:911    .text.SPI_GetCRC:0000000000000000 SPI_GetCRC
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:941    .text.SPI_GetCRCPolynomial:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:946    .text.SPI_GetCRCPolynomial:0000000000000000 SPI_GetCRCPolynomial
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:964    .text.SPI_I2S_DMACmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:969    .text.SPI_I2S_DMACmd:0000000000000000 SPI_I2S_DMACmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:1000   .text.SPI_I2S_ITConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:1005   .text.SPI_I2S_ITConfig:0000000000000000 SPI_I2S_ITConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:1046   .text.SPI_I2S_GetFlagStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:1051   .text.SPI_I2S_GetFlagStatus:0000000000000000 SPI_I2S_GetFlagStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:1078   .text.SPI_I2S_ClearFlag:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:1083   .text.SPI_I2S_ClearFlag:0000000000000000 SPI_I2S_ClearFlag
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:1101   .text.SPI_I2S_GetITStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:1106   .text.SPI_I2S_GetITStatus:0000000000000000 SPI_I2S_GetITStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:1169   .text.SPI_I2S_ClearITPendingBit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s:1174   .text.SPI_I2S_ClearITPendingBit:0000000000000000 SPI_I2S_ClearITPendingBit
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccoQumJT.s 			page 46
+
+
+RCC_APB2PeriphResetCmd
+RCC_APB1PeriphResetCmd

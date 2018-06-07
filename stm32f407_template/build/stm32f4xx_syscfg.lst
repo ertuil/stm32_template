@@ -1,0 +1,517 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"stm32f4xx_syscfg.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.SYSCFG_DeInit,"ax",%progbits
+  22              		.align	2
+  23              		.global	SYSCFG_DeInit
+  24              		.thumb
+  25              		.thumb_func
+  27              	SYSCFG_DeInit:
+  28              	.LFB112:
+  29              		.file 1 ".//FWLIB/src/stm32f4xx_syscfg.c"
+   1:.//FWLIB/src/stm32f4xx_syscfg.c **** /**
+   2:.//FWLIB/src/stm32f4xx_syscfg.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @file    stm32f4xx_syscfg.c
+   4:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @version V1.4.0
+   6:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @date    04-August-2014
+   7:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @brief   This file provides firmware functions to manage the SYSCFG peripheral.
+   8:.//FWLIB/src/stm32f4xx_syscfg.c ****   *
+   9:.//FWLIB/src/stm32f4xx_syscfg.c ****  @verbatim
+  10:.//FWLIB/src/stm32f4xx_syscfg.c ****     
+  11:.//FWLIB/src/stm32f4xx_syscfg.c ****  ===============================================================================
+  12:.//FWLIB/src/stm32f4xx_syscfg.c ****                      ##### How to use this driver #####
+  13:.//FWLIB/src/stm32f4xx_syscfg.c ****  ===============================================================================
+  14:.//FWLIB/src/stm32f4xx_syscfg.c ****     [..] This driver provides functions for:
+  15:.//FWLIB/src/stm32f4xx_syscfg.c ****             
+  16:.//FWLIB/src/stm32f4xx_syscfg.c ****        (#) Remapping the memory accessible in the code area using SYSCFG_MemoryRemapConfig()
+  17:.//FWLIB/src/stm32f4xx_syscfg.c ****             
+  18:.//FWLIB/src/stm32f4xx_syscfg.c ****        (#) Swapping the internal flash Bank1 and Bank2 this features is only visible for 
+  19:.//FWLIB/src/stm32f4xx_syscfg.c ****            STM32F42xxx/43xxx devices Devices. 
+  20:.//FWLIB/src/stm32f4xx_syscfg.c ****                 
+  21:.//FWLIB/src/stm32f4xx_syscfg.c ****        (#) Manage the EXTI lines connection to the GPIOs using SYSCFG_EXTILineConfig()
+  22:.//FWLIB/src/stm32f4xx_syscfg.c ****               
+  23:.//FWLIB/src/stm32f4xx_syscfg.c ****        (#) Select the ETHERNET media interface (RMII/RII) using SYSCFG_ETH_MediaInterfaceConfig()
+  24:.//FWLIB/src/stm32f4xx_syscfg.c ****   
+  25:.//FWLIB/src/stm32f4xx_syscfg.c ****        -@- SYSCFG APB clock must be enabled to get write access to SYSCFG registers,
+  26:.//FWLIB/src/stm32f4xx_syscfg.c ****            using RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+  27:.//FWLIB/src/stm32f4xx_syscfg.c ****                    
+  28:.//FWLIB/src/stm32f4xx_syscfg.c ****  @endverbatim      
+  29:.//FWLIB/src/stm32f4xx_syscfg.c ****   ******************************************************************************
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s 			page 2
+
+
+  30:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @attention
+  31:.//FWLIB/src/stm32f4xx_syscfg.c ****   *
+  32:.//FWLIB/src/stm32f4xx_syscfg.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  33:.//FWLIB/src/stm32f4xx_syscfg.c ****   *
+  34:.//FWLIB/src/stm32f4xx_syscfg.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  35:.//FWLIB/src/stm32f4xx_syscfg.c ****   * You may not use this file except in compliance with the License.
+  36:.//FWLIB/src/stm32f4xx_syscfg.c ****   * You may obtain a copy of the License at:
+  37:.//FWLIB/src/stm32f4xx_syscfg.c ****   *
+  38:.//FWLIB/src/stm32f4xx_syscfg.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  39:.//FWLIB/src/stm32f4xx_syscfg.c ****   *
+  40:.//FWLIB/src/stm32f4xx_syscfg.c ****   * Unless required by applicable law or agreed to in writing, software 
+  41:.//FWLIB/src/stm32f4xx_syscfg.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  42:.//FWLIB/src/stm32f4xx_syscfg.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  43:.//FWLIB/src/stm32f4xx_syscfg.c ****   * See the License for the specific language governing permissions and
+  44:.//FWLIB/src/stm32f4xx_syscfg.c ****   * limitations under the License.
+  45:.//FWLIB/src/stm32f4xx_syscfg.c ****   *
+  46:.//FWLIB/src/stm32f4xx_syscfg.c ****   ******************************************************************************
+  47:.//FWLIB/src/stm32f4xx_syscfg.c ****   */
+  48:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+  49:.//FWLIB/src/stm32f4xx_syscfg.c **** /* Includes ------------------------------------------------------------------*/
+  50:.//FWLIB/src/stm32f4xx_syscfg.c **** #include "stm32f4xx_syscfg.h"
+  51:.//FWLIB/src/stm32f4xx_syscfg.c **** #include "stm32f4xx_rcc.h"
+  52:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+  53:.//FWLIB/src/stm32f4xx_syscfg.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+  54:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @{
+  55:.//FWLIB/src/stm32f4xx_syscfg.c ****   */
+  56:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+  57:.//FWLIB/src/stm32f4xx_syscfg.c **** /** @defgroup SYSCFG 
+  58:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @brief SYSCFG driver modules
+  59:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @{
+  60:.//FWLIB/src/stm32f4xx_syscfg.c ****   */ 
+  61:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+  62:.//FWLIB/src/stm32f4xx_syscfg.c **** /* Private typedef -----------------------------------------------------------*/
+  63:.//FWLIB/src/stm32f4xx_syscfg.c **** /* Private define ------------------------------------------------------------*/
+  64:.//FWLIB/src/stm32f4xx_syscfg.c **** /* ------------ RCC registers bit address in the alias region ----------- */
+  65:.//FWLIB/src/stm32f4xx_syscfg.c **** #define SYSCFG_OFFSET             (SYSCFG_BASE - PERIPH_BASE)
+  66:.//FWLIB/src/stm32f4xx_syscfg.c **** /* ---  MEMRMP Register ---*/ 
+  67:.//FWLIB/src/stm32f4xx_syscfg.c **** /* Alias word address of UFB_MODE bit */ 
+  68:.//FWLIB/src/stm32f4xx_syscfg.c **** #define MEMRMP_OFFSET             SYSCFG_OFFSET 
+  69:.//FWLIB/src/stm32f4xx_syscfg.c **** #define UFB_MODE_BitNumber        ((uint8_t)0x8) 
+  70:.//FWLIB/src/stm32f4xx_syscfg.c **** #define UFB_MODE_BB               (PERIPH_BB_BASE + (MEMRMP_OFFSET * 32) + (UFB_MODE_BitNumber * 4)
+  71:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+  72:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+  73:.//FWLIB/src/stm32f4xx_syscfg.c **** /* ---  PMC Register ---*/ 
+  74:.//FWLIB/src/stm32f4xx_syscfg.c **** /* Alias word address of MII_RMII_SEL bit */ 
+  75:.//FWLIB/src/stm32f4xx_syscfg.c **** #define PMC_OFFSET                (SYSCFG_OFFSET + 0x04) 
+  76:.//FWLIB/src/stm32f4xx_syscfg.c **** #define MII_RMII_SEL_BitNumber    ((uint8_t)0x17) 
+  77:.//FWLIB/src/stm32f4xx_syscfg.c **** #define PMC_MII_RMII_SEL_BB       (PERIPH_BB_BASE + (PMC_OFFSET * 32) + (MII_RMII_SEL_BitNumber * 4
+  78:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+  79:.//FWLIB/src/stm32f4xx_syscfg.c **** /* ---  CMPCR Register ---*/ 
+  80:.//FWLIB/src/stm32f4xx_syscfg.c **** /* Alias word address of CMP_PD bit */ 
+  81:.//FWLIB/src/stm32f4xx_syscfg.c **** #define CMPCR_OFFSET              (SYSCFG_OFFSET + 0x20) 
+  82:.//FWLIB/src/stm32f4xx_syscfg.c **** #define CMP_PD_BitNumber          ((uint8_t)0x00) 
+  83:.//FWLIB/src/stm32f4xx_syscfg.c **** #define CMPCR_CMP_PD_BB           (PERIPH_BB_BASE + (CMPCR_OFFSET * 32) + (CMP_PD_BitNumber * 4)) 
+  84:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+  85:.//FWLIB/src/stm32f4xx_syscfg.c **** /* Private macro -------------------------------------------------------------*/
+  86:.//FWLIB/src/stm32f4xx_syscfg.c **** /* Private variables ---------------------------------------------------------*/
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s 			page 3
+
+
+  87:.//FWLIB/src/stm32f4xx_syscfg.c **** /* Private function prototypes -----------------------------------------------*/
+  88:.//FWLIB/src/stm32f4xx_syscfg.c **** /* Private functions ---------------------------------------------------------*/
+  89:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+  90:.//FWLIB/src/stm32f4xx_syscfg.c **** /** @defgroup SYSCFG_Private_Functions
+  91:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @{
+  92:.//FWLIB/src/stm32f4xx_syscfg.c ****   */ 
+  93:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+  94:.//FWLIB/src/stm32f4xx_syscfg.c **** /**
+  95:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @brief  Deinitializes the Alternate Functions (remap and EXTI configuration)
+  96:.//FWLIB/src/stm32f4xx_syscfg.c ****   *   registers to their default reset values.
+  97:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @param  None
+  98:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @retval None
+  99:.//FWLIB/src/stm32f4xx_syscfg.c ****   */
+ 100:.//FWLIB/src/stm32f4xx_syscfg.c **** void SYSCFG_DeInit(void)
+ 101:.//FWLIB/src/stm32f4xx_syscfg.c **** {
+  30              		.loc 1 101 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+ 102:.//FWLIB/src/stm32f4xx_syscfg.c ****    RCC_APB2PeriphResetCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+  39              		.loc 1 102 0
+  40 0002 0121     		movs	r1, #1
+  41 0004 4FF48040 		mov	r0, #16384
+  42 0008 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  43              	.LVL0:
+ 103:.//FWLIB/src/stm32f4xx_syscfg.c ****    RCC_APB2PeriphResetCmd(RCC_APB2Periph_SYSCFG, DISABLE);
+  44              		.loc 1 103 0
+  45 000c 0021     		movs	r1, #0
+  46 000e 4FF48040 		mov	r0, #16384
+  47 0012 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  48              	.LVL1:
+  49 0016 08BD     		pop	{r3, pc}
+  50              		.cfi_endproc
+  51              	.LFE112:
+  53              		.section	.text.SYSCFG_MemoryRemapConfig,"ax",%progbits
+  54              		.align	2
+  55              		.global	SYSCFG_MemoryRemapConfig
+  56              		.thumb
+  57              		.thumb_func
+  59              	SYSCFG_MemoryRemapConfig:
+  60              	.LFB113:
+ 104:.//FWLIB/src/stm32f4xx_syscfg.c **** }
+ 105:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+ 106:.//FWLIB/src/stm32f4xx_syscfg.c **** /**
+ 107:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @brief  Changes the mapping of the specified pin.
+ 108:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @param  SYSCFG_Memory: selects the memory remapping.
+ 109:.//FWLIB/src/stm32f4xx_syscfg.c ****   *         This parameter can be one of the following values:
+ 110:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            @arg SYSCFG_MemoryRemap_Flash:       Main Flash memory mapped at 0x00000000  
+ 111:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            @arg SYSCFG_MemoryRemap_SystemFlash: System Flash memory mapped at 0x00000000
+ 112:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            @arg SYSCFG_MemoryRemap_FSMC:        FSMC (Bank1 (NOR/PSRAM 1 and 2) mapped at 0x000
+ 113:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            @arg SYSCFG_MemoryRemap_FMC:         FMC (Bank1 (NOR/PSRAM 1 and 2) mapped at 0x0000
+ 114:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            @arg SYSCFG_MemoryRemap_SRAM:        Embedded SRAM (112kB) mapped at 0x00000000
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s 			page 4
+
+
+ 115:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            @arg SYSCFG_MemoryRemap_SDRAM:       FMC (External SDRAM)  mapped at 0x00000000 for 
+ 116:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @retval None
+ 117:.//FWLIB/src/stm32f4xx_syscfg.c ****   */
+ 118:.//FWLIB/src/stm32f4xx_syscfg.c **** void SYSCFG_MemoryRemapConfig(uint8_t SYSCFG_MemoryRemap)
+ 119:.//FWLIB/src/stm32f4xx_syscfg.c **** {
+  61              		.loc 1 119 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66              	.LVL2:
+ 120:.//FWLIB/src/stm32f4xx_syscfg.c ****   /* Check the parameters */
+ 121:.//FWLIB/src/stm32f4xx_syscfg.c ****   assert_param(IS_SYSCFG_MEMORY_REMAP_CONFING(SYSCFG_MemoryRemap));
+ 122:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+ 123:.//FWLIB/src/stm32f4xx_syscfg.c ****   SYSCFG->MEMRMP = SYSCFG_MemoryRemap;
+  67              		.loc 1 123 0
+  68 0000 014B     		ldr	r3, .L4
+  69 0002 1860     		str	r0, [r3]
+  70 0004 7047     		bx	lr
+  71              	.L5:
+  72 0006 00BF     		.align	2
+  73              	.L4:
+  74 0008 00380140 		.word	1073821696
+  75              		.cfi_endproc
+  76              	.LFE113:
+  78              		.section	.text.SYSCFG_MemorySwappingBank,"ax",%progbits
+  79              		.align	2
+  80              		.global	SYSCFG_MemorySwappingBank
+  81              		.thumb
+  82              		.thumb_func
+  84              	SYSCFG_MemorySwappingBank:
+  85              	.LFB114:
+ 124:.//FWLIB/src/stm32f4xx_syscfg.c **** }
+ 125:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+ 126:.//FWLIB/src/stm32f4xx_syscfg.c **** /**
+ 127:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @brief  Enables or disables the Interal FLASH Bank Swapping.
+ 128:.//FWLIB/src/stm32f4xx_syscfg.c ****   *   
+ 129:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @note   This function can be used only for STM32F42xxx/43xxx devices. 
+ 130:.//FWLIB/src/stm32f4xx_syscfg.c ****   *
+ 131:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @param  NewState: new state of Interal FLASH Bank swapping.
+ 132:.//FWLIB/src/stm32f4xx_syscfg.c ****   *          This parameter can be one of the following values:
+ 133:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            @arg ENABLE: Flash Bank2 mapped at 0x08000000 (and aliased @0x00000000) 
+ 134:.//FWLIB/src/stm32f4xx_syscfg.c ****   *                         and Flash Bank1 mapped at 0x08100000 (and aliased at 0x00100000)   
+ 135:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            @arg DISABLE:(the default state) Flash Bank1 mapped at 0x08000000 (and aliased @0x00
+ 136:.//FWLIB/src/stm32f4xx_syscfg.c ****                             and Flash Bank2 mapped at 0x08100000 (and aliased at 0x00100000)  
+ 137:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @retval None
+ 138:.//FWLIB/src/stm32f4xx_syscfg.c ****   */
+ 139:.//FWLIB/src/stm32f4xx_syscfg.c **** void SYSCFG_MemorySwappingBank(FunctionalState NewState)
+ 140:.//FWLIB/src/stm32f4xx_syscfg.c **** {
+  86              		.loc 1 140 0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              		@ link register save eliminated.
+  91              	.LVL3:
+ 141:.//FWLIB/src/stm32f4xx_syscfg.c ****   /* Check the parameters */
+ 142:.//FWLIB/src/stm32f4xx_syscfg.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s 			page 5
+
+
+ 143:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+ 144:.//FWLIB/src/stm32f4xx_syscfg.c ****   *(__IO uint32_t *) UFB_MODE_BB = (uint32_t)NewState;
+  92              		.loc 1 144 0
+  93 0000 014B     		ldr	r3, .L7
+  94 0002 1860     		str	r0, [r3]
+  95 0004 7047     		bx	lr
+  96              	.L8:
+  97 0006 00BF     		.align	2
+  98              	.L7:
+  99 0008 20002742 		.word	1109852192
+ 100              		.cfi_endproc
+ 101              	.LFE114:
+ 103              		.section	.text.SYSCFG_EXTILineConfig,"ax",%progbits
+ 104              		.align	2
+ 105              		.global	SYSCFG_EXTILineConfig
+ 106              		.thumb
+ 107              		.thumb_func
+ 109              	SYSCFG_EXTILineConfig:
+ 110              	.LFB115:
+ 145:.//FWLIB/src/stm32f4xx_syscfg.c **** }
+ 146:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+ 147:.//FWLIB/src/stm32f4xx_syscfg.c **** /**
+ 148:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @brief  Selects the GPIO pin used as EXTI Line.
+ 149:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @param  EXTI_PortSourceGPIOx : selects the GPIO port to be used as source for
+ 150:.//FWLIB/src/stm32f4xx_syscfg.c ****   *          EXTI lines where x can be (A..K) for STM32F42xxx/43xxx devices, (A..I) 
+ 151:.//FWLIB/src/stm32f4xx_syscfg.c ****   *          for STM32F405xx/407xx and STM32F415xx/417xx devices or (A, B, C, D and H)
+ 152:.//FWLIB/src/stm32f4xx_syscfg.c ****   *          for STM32401xx devices.  
+ 153:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            
+ 154:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @param  EXTI_PinSourcex: specifies the EXTI line to be configured.
+ 155:.//FWLIB/src/stm32f4xx_syscfg.c ****   *           This parameter can be EXTI_PinSourcex where x can be (0..15, except
+ 156:.//FWLIB/src/stm32f4xx_syscfg.c ****   *           for EXTI_PortSourceGPIOI x can be (0..11) for STM32F405xx/407xx
+ 157:.//FWLIB/src/stm32f4xx_syscfg.c ****   *           and STM32F405xx/407xx devices and for EXTI_PortSourceGPIOK x can   
+ 158:.//FWLIB/src/stm32f4xx_syscfg.c ****   *           be (0..7) for STM32F42xxx/43xxx devices. 
+ 159:.//FWLIB/src/stm32f4xx_syscfg.c ****   *             
+ 160:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @retval None
+ 161:.//FWLIB/src/stm32f4xx_syscfg.c ****   */
+ 162:.//FWLIB/src/stm32f4xx_syscfg.c **** void SYSCFG_EXTILineConfig(uint8_t EXTI_PortSourceGPIOx, uint8_t EXTI_PinSourcex)
+ 163:.//FWLIB/src/stm32f4xx_syscfg.c **** {
+ 111              		.loc 1 163 0
+ 112              		.cfi_startproc
+ 113              		@ args = 0, pretend = 0, frame = 0
+ 114              		@ frame_needed = 0, uses_anonymous_args = 0
+ 115              		@ link register save eliminated.
+ 116              	.LVL4:
+ 117 0000 30B4     		push	{r4, r5}
+ 118              	.LCFI1:
+ 119              		.cfi_def_cfa_offset 8
+ 120              		.cfi_offset 4, -8
+ 121              		.cfi_offset 5, -4
+ 122              	.LVL5:
+ 164:.//FWLIB/src/stm32f4xx_syscfg.c ****   uint32_t tmp = 0x00;
+ 165:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+ 166:.//FWLIB/src/stm32f4xx_syscfg.c ****   /* Check the parameters */
+ 167:.//FWLIB/src/stm32f4xx_syscfg.c ****   assert_param(IS_EXTI_PORT_SOURCE(EXTI_PortSourceGPIOx));
+ 168:.//FWLIB/src/stm32f4xx_syscfg.c ****   assert_param(IS_EXTI_PIN_SOURCE(EXTI_PinSourcex));
+ 169:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+ 170:.//FWLIB/src/stm32f4xx_syscfg.c ****   tmp = ((uint32_t)0x0F) << (0x04 * (EXTI_PinSourcex & (uint8_t)0x03));
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s 			page 6
+
+
+ 123              		.loc 1 170 0
+ 124 0002 01F00303 		and	r3, r1, #3
+ 125 0006 9B00     		lsls	r3, r3, #2
+ 126 0008 0F24     		movs	r4, #15
+ 127 000a 04FA03F5 		lsl	r5, r4, r3
+ 128              	.LVL6:
+ 171:.//FWLIB/src/stm32f4xx_syscfg.c ****   SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] &= ~tmp;
+ 129              		.loc 1 171 0
+ 130 000e 8908     		lsrs	r1, r1, #2
+ 131              	.LVL7:
+ 132 0010 074A     		ldr	r2, .L11
+ 133 0012 0231     		adds	r1, r1, #2
+ 134 0014 52F82140 		ldr	r4, [r2, r1, lsl #2]
+ 135 0018 24EA0504 		bic	r4, r4, r5
+ 136 001c 42F82140 		str	r4, [r2, r1, lsl #2]
+ 172:.//FWLIB/src/stm32f4xx_syscfg.c ****   SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] |= (((uint32_t)EXTI_PortSourceGPIOx) << (0x04 * (EXTI_Pin
+ 137              		.loc 1 172 0
+ 138 0020 52F82140 		ldr	r4, [r2, r1, lsl #2]
+ 139 0024 9840     		lsls	r0, r0, r3
+ 140              	.LVL8:
+ 141 0026 2043     		orrs	r0, r0, r4
+ 142 0028 42F82100 		str	r0, [r2, r1, lsl #2]
+ 173:.//FWLIB/src/stm32f4xx_syscfg.c **** }
+ 143              		.loc 1 173 0
+ 144 002c 30BC     		pop	{r4, r5}
+ 145              	.LCFI2:
+ 146              		.cfi_restore 5
+ 147              		.cfi_restore 4
+ 148              		.cfi_def_cfa_offset 0
+ 149              	.LVL9:
+ 150 002e 7047     		bx	lr
+ 151              	.L12:
+ 152              		.align	2
+ 153              	.L11:
+ 154 0030 00380140 		.word	1073821696
+ 155              		.cfi_endproc
+ 156              	.LFE115:
+ 158              		.section	.text.SYSCFG_ETH_MediaInterfaceConfig,"ax",%progbits
+ 159              		.align	2
+ 160              		.global	SYSCFG_ETH_MediaInterfaceConfig
+ 161              		.thumb
+ 162              		.thumb_func
+ 164              	SYSCFG_ETH_MediaInterfaceConfig:
+ 165              	.LFB116:
+ 174:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+ 175:.//FWLIB/src/stm32f4xx_syscfg.c **** /**
+ 176:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @brief  Selects the ETHERNET media interface 
+ 177:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @param  SYSCFG_ETH_MediaInterface: specifies the Media Interface mode. 
+ 178:.//FWLIB/src/stm32f4xx_syscfg.c ****   *          This parameter can be one of the following values: 
+ 179:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            @arg SYSCFG_ETH_MediaInterface_MII: MII mode selected
+ 180:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            @arg SYSCFG_ETH_MediaInterface_RMII: RMII mode selected 
+ 181:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @retval None 
+ 182:.//FWLIB/src/stm32f4xx_syscfg.c ****   */
+ 183:.//FWLIB/src/stm32f4xx_syscfg.c **** void SYSCFG_ETH_MediaInterfaceConfig(uint32_t SYSCFG_ETH_MediaInterface) 
+ 184:.//FWLIB/src/stm32f4xx_syscfg.c **** { 
+ 166              		.loc 1 184 0
+ 167              		.cfi_startproc
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s 			page 7
+
+
+ 168              		@ args = 0, pretend = 0, frame = 0
+ 169              		@ frame_needed = 0, uses_anonymous_args = 0
+ 170              		@ link register save eliminated.
+ 171              	.LVL10:
+ 185:.//FWLIB/src/stm32f4xx_syscfg.c ****   assert_param(IS_SYSCFG_ETH_MEDIA_INTERFACE(SYSCFG_ETH_MediaInterface)); 
+ 186:.//FWLIB/src/stm32f4xx_syscfg.c ****   /* Configure MII_RMII selection bit */ 
+ 187:.//FWLIB/src/stm32f4xx_syscfg.c ****   *(__IO uint32_t *) PMC_MII_RMII_SEL_BB = SYSCFG_ETH_MediaInterface; 
+ 172              		.loc 1 187 0
+ 173 0000 014B     		ldr	r3, .L14
+ 174 0002 1860     		str	r0, [r3]
+ 175 0004 7047     		bx	lr
+ 176              	.L15:
+ 177 0006 00BF     		.align	2
+ 178              	.L14:
+ 179 0008 DC002742 		.word	1109852380
+ 180              		.cfi_endproc
+ 181              	.LFE116:
+ 183              		.section	.text.SYSCFG_CompensationCellCmd,"ax",%progbits
+ 184              		.align	2
+ 185              		.global	SYSCFG_CompensationCellCmd
+ 186              		.thumb
+ 187              		.thumb_func
+ 189              	SYSCFG_CompensationCellCmd:
+ 190              	.LFB117:
+ 188:.//FWLIB/src/stm32f4xx_syscfg.c **** }
+ 189:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+ 190:.//FWLIB/src/stm32f4xx_syscfg.c **** /**
+ 191:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @brief  Enables or disables the I/O Compensation Cell.
+ 192:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @note   The I/O compensation cell can be used only when the device supply
+ 193:.//FWLIB/src/stm32f4xx_syscfg.c ****   *         voltage ranges from 2.4 to 3.6 V.  
+ 194:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @param  NewState: new state of the I/O Compensation Cell.
+ 195:.//FWLIB/src/stm32f4xx_syscfg.c ****   *          This parameter can be one of the following values:
+ 196:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            @arg ENABLE: I/O compensation cell enabled  
+ 197:.//FWLIB/src/stm32f4xx_syscfg.c ****   *            @arg DISABLE: I/O compensation cell power-down mode  
+ 198:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @retval None
+ 199:.//FWLIB/src/stm32f4xx_syscfg.c ****   */
+ 200:.//FWLIB/src/stm32f4xx_syscfg.c **** void SYSCFG_CompensationCellCmd(FunctionalState NewState)
+ 201:.//FWLIB/src/stm32f4xx_syscfg.c **** {
+ 191              		.loc 1 201 0
+ 192              		.cfi_startproc
+ 193              		@ args = 0, pretend = 0, frame = 0
+ 194              		@ frame_needed = 0, uses_anonymous_args = 0
+ 195              		@ link register save eliminated.
+ 196              	.LVL11:
+ 202:.//FWLIB/src/stm32f4xx_syscfg.c ****   /* Check the parameters */
+ 203:.//FWLIB/src/stm32f4xx_syscfg.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 204:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+ 205:.//FWLIB/src/stm32f4xx_syscfg.c ****   *(__IO uint32_t *) CMPCR_CMP_PD_BB = (uint32_t)NewState;
+ 197              		.loc 1 205 0
+ 198 0000 014B     		ldr	r3, .L17
+ 199 0002 1860     		str	r0, [r3]
+ 200 0004 7047     		bx	lr
+ 201              	.L18:
+ 202 0006 00BF     		.align	2
+ 203              	.L17:
+ 204 0008 00042742 		.word	1109853184
+ 205              		.cfi_endproc
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s 			page 8
+
+
+ 206              	.LFE117:
+ 208              		.section	.text.SYSCFG_GetCompensationCellStatus,"ax",%progbits
+ 209              		.align	2
+ 210              		.global	SYSCFG_GetCompensationCellStatus
+ 211              		.thumb
+ 212              		.thumb_func
+ 214              	SYSCFG_GetCompensationCellStatus:
+ 215              	.LFB118:
+ 206:.//FWLIB/src/stm32f4xx_syscfg.c **** }
+ 207:.//FWLIB/src/stm32f4xx_syscfg.c **** 
+ 208:.//FWLIB/src/stm32f4xx_syscfg.c **** /**
+ 209:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @brief  Checks whether the I/O Compensation Cell ready flag is set or not.
+ 210:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @param  None
+ 211:.//FWLIB/src/stm32f4xx_syscfg.c ****   * @retval The new state of the I/O Compensation Cell ready flag (SET or RESET)
+ 212:.//FWLIB/src/stm32f4xx_syscfg.c ****   */
+ 213:.//FWLIB/src/stm32f4xx_syscfg.c **** FlagStatus SYSCFG_GetCompensationCellStatus(void)
+ 214:.//FWLIB/src/stm32f4xx_syscfg.c **** {
+ 216              		.loc 1 214 0
+ 217              		.cfi_startproc
+ 218              		@ args = 0, pretend = 0, frame = 0
+ 219              		@ frame_needed = 0, uses_anonymous_args = 0
+ 220              		@ link register save eliminated.
+ 221              	.LVL12:
+ 215:.//FWLIB/src/stm32f4xx_syscfg.c ****   FlagStatus bitstatus = RESET;
+ 216:.//FWLIB/src/stm32f4xx_syscfg.c ****     
+ 217:.//FWLIB/src/stm32f4xx_syscfg.c ****   if ((SYSCFG->CMPCR & SYSCFG_CMPCR_READY ) != (uint32_t)RESET)
+ 222              		.loc 1 217 0
+ 223 0000 044B     		ldr	r3, .L22
+ 224 0002 1B6A     		ldr	r3, [r3, #32]
+ 225 0004 13F4807F 		tst	r3, #256
+ 226 0008 01D0     		beq	.L21
+ 218:.//FWLIB/src/stm32f4xx_syscfg.c ****   {
+ 219:.//FWLIB/src/stm32f4xx_syscfg.c ****     bitstatus = SET;
+ 227              		.loc 1 219 0
+ 228 000a 0120     		movs	r0, #1
+ 229 000c 7047     		bx	lr
+ 230              	.L21:
+ 220:.//FWLIB/src/stm32f4xx_syscfg.c ****   }
+ 221:.//FWLIB/src/stm32f4xx_syscfg.c ****   else
+ 222:.//FWLIB/src/stm32f4xx_syscfg.c ****   {
+ 223:.//FWLIB/src/stm32f4xx_syscfg.c ****     bitstatus = RESET;
+ 231              		.loc 1 223 0
+ 232 000e 0020     		movs	r0, #0
+ 233              	.LVL13:
+ 224:.//FWLIB/src/stm32f4xx_syscfg.c ****   }
+ 225:.//FWLIB/src/stm32f4xx_syscfg.c ****   return bitstatus;
+ 226:.//FWLIB/src/stm32f4xx_syscfg.c **** }
+ 234              		.loc 1 226 0
+ 235 0010 7047     		bx	lr
+ 236              	.L23:
+ 237 0012 00BF     		.align	2
+ 238              	.L22:
+ 239 0014 00380140 		.word	1073821696
+ 240              		.cfi_endproc
+ 241              	.LFE118:
+ 243              		.text
+ 244              	.Letext0:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s 			page 9
+
+
+ 245              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 246              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 247              		.file 4 "USER/stm32f4xx.h"
+ 248              		.file 5 "CORE/core_cm4.h"
+ 249              		.file 6 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_syscfg.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:22     .text.SYSCFG_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:27     .text.SYSCFG_DeInit:0000000000000000 SYSCFG_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:54     .text.SYSCFG_MemoryRemapConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:59     .text.SYSCFG_MemoryRemapConfig:0000000000000000 SYSCFG_MemoryRemapConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:74     .text.SYSCFG_MemoryRemapConfig:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:79     .text.SYSCFG_MemorySwappingBank:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:84     .text.SYSCFG_MemorySwappingBank:0000000000000000 SYSCFG_MemorySwappingBank
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:99     .text.SYSCFG_MemorySwappingBank:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:104    .text.SYSCFG_EXTILineConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:109    .text.SYSCFG_EXTILineConfig:0000000000000000 SYSCFG_EXTILineConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:154    .text.SYSCFG_EXTILineConfig:0000000000000030 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:159    .text.SYSCFG_ETH_MediaInterfaceConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:164    .text.SYSCFG_ETH_MediaInterfaceConfig:0000000000000000 SYSCFG_ETH_MediaInterfaceConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:179    .text.SYSCFG_ETH_MediaInterfaceConfig:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:184    .text.SYSCFG_CompensationCellCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:189    .text.SYSCFG_CompensationCellCmd:0000000000000000 SYSCFG_CompensationCellCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:204    .text.SYSCFG_CompensationCellCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:209    .text.SYSCFG_GetCompensationCellStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:214    .text.SYSCFG_GetCompensationCellStatus:0000000000000000 SYSCFG_GetCompensationCellStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccFLvCnz.s:239    .text.SYSCFG_GetCompensationCellStatus:0000000000000014 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphResetCmd

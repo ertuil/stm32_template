@@ -1,0 +1,521 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"usart.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text._sys_exit,"ax",%progbits
+  22              		.align	2
+  23              		.global	_sys_exit
+  24              		.thumb
+  25              		.thumb_func
+  27              	_sys_exit:
+  28              	.LFB113:
+  29              		.file 1 ".//SYSTEM/usart.c"
+   1:.//SYSTEM/usart.c **** #include "sys.h"
+   2:.//SYSTEM/usart.c **** #include "usart.h"	
+   3:.//SYSTEM/usart.c **** ////////////////////////////////////////////////////////////////////////////////// 	 
+   4:.//SYSTEM/usart.c **** //如果使用ucos,则包括下面的头文件即可.
+   5:.//SYSTEM/usart.c **** #if SYSTEM_SUPPORT_UCOS
+   6:.//SYSTEM/usart.c **** #include "includes.h"					//ucos 使用	  
+   7:.//SYSTEM/usart.c **** #endif
+   8:.//SYSTEM/usart.c **** //////////////////////////////////////////////////////////////////////////////////	 
+   9:.//SYSTEM/usart.c **** //本程序只供学习使用，未经作者许可，不得用于其它任何用途
+  10:.//SYSTEM/usart.c **** //ALIENTEK STM32F4探索者开发板
+  11:.//SYSTEM/usart.c **** //串口1初始化		   
+  12:.//SYSTEM/usart.c **** //正点原子@ALIENTEK
+  13:.//SYSTEM/usart.c **** //技术论坛:www.openedv.com
+  14:.//SYSTEM/usart.c **** //修改日期:2014/6/10
+  15:.//SYSTEM/usart.c **** //版本：V1.5
+  16:.//SYSTEM/usart.c **** //版权所有，盗版必究。
+  17:.//SYSTEM/usart.c **** //Copyright(C) 广州市星翼电子科技有限公司 2009-2019
+  18:.//SYSTEM/usart.c **** //All rights reserved
+  19:.//SYSTEM/usart.c **** //********************************************************************************
+  20:.//SYSTEM/usart.c **** //V1.3修改说明 
+  21:.//SYSTEM/usart.c **** //支持适应不同频率下的串口波特率设置.
+  22:.//SYSTEM/usart.c **** //加入了对printf的支持
+  23:.//SYSTEM/usart.c **** //增加了串口接收命令功能.
+  24:.//SYSTEM/usart.c **** //修正了printf第一个字符丢失的bug
+  25:.//SYSTEM/usart.c **** //V1.4修改说明
+  26:.//SYSTEM/usart.c **** //1,修改串口初始化IO的bug
+  27:.//SYSTEM/usart.c **** //2,修改了USART_RX_STA,使得串口最大接收字节数为2的14次方
+  28:.//SYSTEM/usart.c **** //3,增加了USART_REC_LEN,用于定义串口最大允许接收的字节数(不大于2的14次方)
+  29:.//SYSTEM/usart.c **** //4,修改了EN_USART1_RX的使能方式
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s 			page 2
+
+
+  30:.//SYSTEM/usart.c **** //V1.5修改说明
+  31:.//SYSTEM/usart.c **** //1,增加了对UCOSII的支持
+  32:.//SYSTEM/usart.c **** ////////////////////////////////////////////////////////////////////////////////// 	  
+  33:.//SYSTEM/usart.c ****  
+  34:.//SYSTEM/usart.c **** 
+  35:.//SYSTEM/usart.c **** //////////////////////////////////////////////////////////////////
+  36:.//SYSTEM/usart.c **** //加入以下代码,支持printf函数,而不需要选择use MicroLIB	  
+  37:.//SYSTEM/usart.c **** #if 1
+  38:.//SYSTEM/usart.c **** #pragma import(__use_no_semihosting)             
+  39:.//SYSTEM/usart.c **** //标准库需要的支持函数                 
+  40:.//SYSTEM/usart.c **** struct __FILE 
+  41:.//SYSTEM/usart.c **** { 
+  42:.//SYSTEM/usart.c **** 	int handle; 
+  43:.//SYSTEM/usart.c **** }; 
+  44:.//SYSTEM/usart.c **** 
+  45:.//SYSTEM/usart.c **** FILE __stdout;       
+  46:.//SYSTEM/usart.c **** //定义_sys_exit()以避免使用半主机模式    
+  47:.//SYSTEM/usart.c **** _sys_exit(int x) 
+  48:.//SYSTEM/usart.c **** { 
+  30              		.loc 1 48 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              	.LVL0:
+  36              	.LVL1:
+  49:.//SYSTEM/usart.c **** 	x = x; 
+  50:.//SYSTEM/usart.c **** } 
+  37              		.loc 1 50 0
+  38 0000 7047     		bx	lr
+  39              		.cfi_endproc
+  40              	.LFE113:
+  42 0002 00BF     		.section	.text.fputc,"ax",%progbits
+  43              		.align	2
+  44              		.global	fputc
+  45              		.thumb
+  46              		.thumb_func
+  48              	fputc:
+  49              	.LFB114:
+  51:.//SYSTEM/usart.c **** //重定义fputc函数 
+  52:.//SYSTEM/usart.c **** int fputc(int ch, FILE *f)
+  53:.//SYSTEM/usart.c **** { 	
+  50              		.loc 1 53 0
+  51              		.cfi_startproc
+  52              		@ args = 0, pretend = 0, frame = 0
+  53              		@ frame_needed = 0, uses_anonymous_args = 0
+  54              		@ link register save eliminated.
+  55              	.LVL2:
+  56              	.L3:
+  54:.//SYSTEM/usart.c **** 	while((USART1->SR&0X40)==0);//循环发送,直到发送完毕   
+  57              		.loc 1 54 0 discriminator 1
+  58 0000 054B     		ldr	r3, .L4
+  59 0002 1B88     		ldrh	r3, [r3]
+  60 0004 03F04003 		and	r3, r3, #64
+  61 0008 9BB2     		uxth	r3, r3
+  62 000a 002B     		cmp	r3, #0
+  63 000c F8D0     		beq	.L3
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s 			page 3
+
+
+  55:.//SYSTEM/usart.c **** 	USART1->DR = (u8) ch;      
+  64              		.loc 1 55 0
+  65 000e C2B2     		uxtb	r2, r0
+  66 0010 014B     		ldr	r3, .L4
+  67 0012 9A80     		strh	r2, [r3, #4]	@ movhi
+  56:.//SYSTEM/usart.c **** 	return ch;
+  57:.//SYSTEM/usart.c **** }
+  68              		.loc 1 57 0
+  69 0014 7047     		bx	lr
+  70              	.L5:
+  71 0016 00BF     		.align	2
+  72              	.L4:
+  73 0018 00100140 		.word	1073811456
+  74              		.cfi_endproc
+  75              	.LFE114:
+  77              		.section	.text.uart_init,"ax",%progbits
+  78              		.align	2
+  79              		.global	uart_init
+  80              		.thumb
+  81              		.thumb_func
+  83              	uart_init:
+  84              	.LFB115:
+  58:.//SYSTEM/usart.c **** #endif
+  59:.//SYSTEM/usart.c ****  
+  60:.//SYSTEM/usart.c **** #if EN_USART1_RX   //如果使能了接收
+  61:.//SYSTEM/usart.c **** //串口1中断服务程序
+  62:.//SYSTEM/usart.c **** //注意,读取USARTx->SR能避免莫名其妙的错误   	
+  63:.//SYSTEM/usart.c **** u8 USART_RX_BUF[USART_REC_LEN];     //接收缓冲,最大USART_REC_LEN个字节.
+  64:.//SYSTEM/usart.c **** //接收状态
+  65:.//SYSTEM/usart.c **** //bit15，	接收完成标志
+  66:.//SYSTEM/usart.c **** //bit14，	接收到0x0d
+  67:.//SYSTEM/usart.c **** //bit13~0，	接收到的有效字节数目
+  68:.//SYSTEM/usart.c **** u16 USART_RX_STA=0;       //接收状态标记	
+  69:.//SYSTEM/usart.c **** 
+  70:.//SYSTEM/usart.c **** //初始化IO 串口1 
+  71:.//SYSTEM/usart.c **** //bound:波特率
+  72:.//SYSTEM/usart.c **** void uart_init(u32 bound){
+  85              		.loc 1 72 0
+  86              		.cfi_startproc
+  87              		@ args = 0, pretend = 0, frame = 32
+  88              		@ frame_needed = 0, uses_anonymous_args = 0
+  89              	.LVL3:
+  90 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  91              	.LCFI0:
+  92              		.cfi_def_cfa_offset 20
+  93              		.cfi_offset 4, -20
+  94              		.cfi_offset 5, -16
+  95              		.cfi_offset 6, -12
+  96              		.cfi_offset 7, -8
+  97              		.cfi_offset 14, -4
+  98 0002 89B0     		sub	sp, sp, #36
+  99              	.LCFI1:
+ 100              		.cfi_def_cfa_offset 56
+ 101 0004 0746     		mov	r7, r0
+  73:.//SYSTEM/usart.c ****    //GPIO端口设置
+  74:.//SYSTEM/usart.c ****   GPIO_InitTypeDef GPIO_InitStructure;
+  75:.//SYSTEM/usart.c **** 	USART_InitTypeDef USART_InitStructure;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s 			page 4
+
+
+  76:.//SYSTEM/usart.c **** 	NVIC_InitTypeDef NVIC_InitStructure;
+  77:.//SYSTEM/usart.c **** 	
+  78:.//SYSTEM/usart.c **** 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,ENABLE); //使能GPIOA时钟
+ 102              		.loc 1 78 0
+ 103 0006 0121     		movs	r1, #1
+ 104 0008 0846     		mov	r0, r1
+ 105              	.LVL4:
+ 106 000a FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+ 107              	.LVL5:
+  79:.//SYSTEM/usart.c **** 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1,ENABLE);//使能USART1时钟
+ 108              		.loc 1 79 0
+ 109 000e 0121     		movs	r1, #1
+ 110 0010 1020     		movs	r0, #16
+ 111 0012 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 112              	.LVL6:
+  80:.//SYSTEM/usart.c ****  
+  81:.//SYSTEM/usart.c **** 	//串口1对应引脚复用映射
+  82:.//SYSTEM/usart.c **** 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource9,GPIO_AF_USART1); //GPIOA9复用为USART1
+ 113              		.loc 1 82 0
+ 114 0016 274E     		ldr	r6, .L8
+ 115 0018 0722     		movs	r2, #7
+ 116 001a 0921     		movs	r1, #9
+ 117 001c 3046     		mov	r0, r6
+ 118 001e FFF7FEFF 		bl	GPIO_PinAFConfig
+ 119              	.LVL7:
+  83:.//SYSTEM/usart.c **** 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource10,GPIO_AF_USART1); //GPIOA10复用为USART1
+ 120              		.loc 1 83 0
+ 121 0022 0722     		movs	r2, #7
+ 122 0024 0A21     		movs	r1, #10
+ 123 0026 3046     		mov	r0, r6
+ 124 0028 FFF7FEFF 		bl	GPIO_PinAFConfig
+ 125              	.LVL8:
+  84:.//SYSTEM/usart.c **** 	
+  85:.//SYSTEM/usart.c **** 	//USART1端口配置
+  86:.//SYSTEM/usart.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10; //GPIOA9与GPIOA10
+ 126              		.loc 1 86 0
+ 127 002c 4FF4C063 		mov	r3, #1536
+ 128 0030 0693     		str	r3, [sp, #24]
+  87:.//SYSTEM/usart.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//复用功能
+ 129              		.loc 1 87 0
+ 130 0032 0223     		movs	r3, #2
+ 131 0034 8DF81C30 		strb	r3, [sp, #28]
+  88:.//SYSTEM/usart.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	//速度50MHz
+ 132              		.loc 1 88 0
+ 133 0038 8DF81D30 		strb	r3, [sp, #29]
+  89:.//SYSTEM/usart.c **** 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; //推挽复用输出
+ 134              		.loc 1 89 0
+ 135 003c 0024     		movs	r4, #0
+ 136 003e 8DF81E40 		strb	r4, [sp, #30]
+  90:.//SYSTEM/usart.c **** 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP; //上拉
+ 137              		.loc 1 90 0
+ 138 0042 0125     		movs	r5, #1
+ 139 0044 8DF81F50 		strb	r5, [sp, #31]
+  91:.//SYSTEM/usart.c **** 	GPIO_Init(GPIOA,&GPIO_InitStructure); //初始化PA9，PA10
+ 140              		.loc 1 91 0
+ 141 0048 06A9     		add	r1, sp, #24
+ 142 004a 3046     		mov	r0, r6
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s 			page 5
+
+
+ 143 004c FFF7FEFF 		bl	GPIO_Init
+ 144              	.LVL9:
+  92:.//SYSTEM/usart.c **** 
+  93:.//SYSTEM/usart.c ****    //USART1 初始化设置
+  94:.//SYSTEM/usart.c **** 	USART_InitStructure.USART_BaudRate = bound;//波特率设置
+ 145              		.loc 1 94 0
+ 146 0050 0297     		str	r7, [sp, #8]
+  95:.//SYSTEM/usart.c **** 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//字长为8位数据格式
+ 147              		.loc 1 95 0
+ 148 0052 ADF80C40 		strh	r4, [sp, #12]	@ movhi
+  96:.//SYSTEM/usart.c **** 	USART_InitStructure.USART_StopBits = USART_StopBits_1;//一个停止位
+ 149              		.loc 1 96 0
+ 150 0056 ADF80E40 		strh	r4, [sp, #14]	@ movhi
+  97:.//SYSTEM/usart.c **** 	USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
+ 151              		.loc 1 97 0
+ 152 005a ADF81040 		strh	r4, [sp, #16]	@ movhi
+  98:.//SYSTEM/usart.c **** 	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据�
+ 153              		.loc 1 98 0
+ 154 005e ADF81440 		strh	r4, [sp, #20]	@ movhi
+  99:.//SYSTEM/usart.c **** 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//收发模式
+ 155              		.loc 1 99 0
+ 156 0062 0C23     		movs	r3, #12
+ 157 0064 ADF81230 		strh	r3, [sp, #18]	@ movhi
+ 100:.//SYSTEM/usart.c ****   USART_Init(USART1, &USART_InitStructure); //初始化串口1
+ 158              		.loc 1 100 0
+ 159 0068 04F18044 		add	r4, r4, #1073741824
+ 160 006c 04F58834 		add	r4, r4, #69632
+ 161 0070 02A9     		add	r1, sp, #8
+ 162 0072 2046     		mov	r0, r4
+ 163 0074 FFF7FEFF 		bl	USART_Init
+ 164              	.LVL10:
+ 101:.//SYSTEM/usart.c **** 	
+ 102:.//SYSTEM/usart.c ****   USART_Cmd(USART1, ENABLE);  //使能串口1 
+ 165              		.loc 1 102 0
+ 166 0078 2946     		mov	r1, r5
+ 167 007a 2046     		mov	r0, r4
+ 168 007c FFF7FEFF 		bl	USART_Cmd
+ 169              	.LVL11:
+ 103:.//SYSTEM/usart.c **** 	
+ 104:.//SYSTEM/usart.c **** 	USART_ClearFlag(USART1, USART_FLAG_TC);
+ 170              		.loc 1 104 0
+ 171 0080 4021     		movs	r1, #64
+ 172 0082 2046     		mov	r0, r4
+ 173 0084 FFF7FEFF 		bl	USART_ClearFlag
+ 174              	.LVL12:
+ 105:.//SYSTEM/usart.c **** 	
+ 106:.//SYSTEM/usart.c **** #if EN_USART1_RX	
+ 107:.//SYSTEM/usart.c **** 	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);//开启相关中断
+ 175              		.loc 1 107 0
+ 176 0088 2A46     		mov	r2, r5
+ 177 008a 40F22551 		movw	r1, #1317
+ 178 008e 2046     		mov	r0, r4
+ 179 0090 FFF7FEFF 		bl	USART_ITConfig
+ 180              	.LVL13:
+ 108:.//SYSTEM/usart.c **** 
+ 109:.//SYSTEM/usart.c **** 	//Usart1 NVIC 配置
+ 110:.//SYSTEM/usart.c ****   NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;//串口1中断通道
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s 			page 6
+
+
+ 181              		.loc 1 110 0
+ 182 0094 2523     		movs	r3, #37
+ 183 0096 8DF80430 		strb	r3, [sp, #4]
+ 111:.//SYSTEM/usart.c **** 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=3;//抢占优先级3
+ 184              		.loc 1 111 0
+ 185 009a 0323     		movs	r3, #3
+ 186 009c 8DF80530 		strb	r3, [sp, #5]
+ 112:.//SYSTEM/usart.c **** 	NVIC_InitStructure.NVIC_IRQChannelSubPriority =3;		//子优先级3
+ 187              		.loc 1 112 0
+ 188 00a0 8DF80630 		strb	r3, [sp, #6]
+ 113:.//SYSTEM/usart.c **** 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
+ 189              		.loc 1 113 0
+ 190 00a4 8DF80750 		strb	r5, [sp, #7]
+ 114:.//SYSTEM/usart.c **** 	NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器、
+ 191              		.loc 1 114 0
+ 192 00a8 01A8     		add	r0, sp, #4
+ 193 00aa FFF7FEFF 		bl	NVIC_Init
+ 194              	.LVL14:
+ 115:.//SYSTEM/usart.c **** 
+ 116:.//SYSTEM/usart.c **** #endif
+ 117:.//SYSTEM/usart.c **** 	
+ 118:.//SYSTEM/usart.c **** }
+ 195              		.loc 1 118 0
+ 196 00ae 09B0     		add	sp, sp, #36
+ 197              	.LCFI2:
+ 198              		.cfi_def_cfa_offset 20
+ 199              		@ sp needed
+ 200 00b0 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 201              	.LVL15:
+ 202              	.L9:
+ 203 00b2 00BF     		.align	2
+ 204              	.L8:
+ 205 00b4 00000240 		.word	1073872896
+ 206              		.cfi_endproc
+ 207              	.LFE115:
+ 209              		.section	.text.USART1_IRQHandler,"ax",%progbits
+ 210              		.align	2
+ 211              		.global	USART1_IRQHandler
+ 212              		.thumb
+ 213              		.thumb_func
+ 215              	USART1_IRQHandler:
+ 216              	.LFB116:
+ 119:.//SYSTEM/usart.c **** 
+ 120:.//SYSTEM/usart.c **** 
+ 121:.//SYSTEM/usart.c **** void USART1_IRQHandler(void)                	//串口1中断服务程序
+ 122:.//SYSTEM/usart.c **** {
+ 217              		.loc 1 122 0
+ 218              		.cfi_startproc
+ 219              		@ args = 0, pretend = 0, frame = 0
+ 220              		@ frame_needed = 0, uses_anonymous_args = 0
+ 221 0000 08B5     		push	{r3, lr}
+ 222              	.LCFI3:
+ 223              		.cfi_def_cfa_offset 8
+ 224              		.cfi_offset 3, -8
+ 225              		.cfi_offset 14, -4
+ 123:.//SYSTEM/usart.c **** 	u8 Res;
+ 124:.//SYSTEM/usart.c **** #ifdef OS_TICKS_PER_SEC	 	//如果时钟节拍数定义了,说明要使用ucosII了.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s 			page 7
+
+
+ 125:.//SYSTEM/usart.c **** 	OSIntEnter();    
+ 126:.//SYSTEM/usart.c **** #endif
+ 127:.//SYSTEM/usart.c **** 	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)  //接收中断(接收到的数据必须是0
+ 226              		.loc 1 127 0
+ 227 0002 40F22551 		movw	r1, #1317
+ 228 0006 1A48     		ldr	r0, .L16
+ 229 0008 FFF7FEFF 		bl	USART_GetITStatus
+ 230              	.LVL16:
+ 231 000c 0028     		cmp	r0, #0
+ 232 000e 2DD0     		beq	.L10
+ 128:.//SYSTEM/usart.c **** 	{
+ 129:.//SYSTEM/usart.c **** 		Res =USART_ReceiveData(USART1);//(USART1->DR);	//读取接收到的数据
+ 233              		.loc 1 129 0
+ 234 0010 1748     		ldr	r0, .L16
+ 235 0012 FFF7FEFF 		bl	USART_ReceiveData
+ 236              	.LVL17:
+ 237 0016 C0B2     		uxtb	r0, r0
+ 238              	.LVL18:
+ 130:.//SYSTEM/usart.c **** 		
+ 131:.//SYSTEM/usart.c **** 		if((USART_RX_STA&0x8000)==0)//接收未完成
+ 239              		.loc 1 131 0
+ 240 0018 164B     		ldr	r3, .L16+4
+ 241 001a 1B88     		ldrh	r3, [r3]
+ 242 001c 13F4004F 		tst	r3, #32768
+ 243 0020 24D1     		bne	.L10
+ 132:.//SYSTEM/usart.c **** 		{
+ 133:.//SYSTEM/usart.c **** 			if(USART_RX_STA&0x4000)//接收到了0x0d
+ 244              		.loc 1 133 0
+ 245 0022 03F48042 		and	r2, r3, #16384
+ 246 0026 92B2     		uxth	r2, r2
+ 247 0028 62B1     		cbz	r2, .L12
+ 134:.//SYSTEM/usart.c **** 			{
+ 135:.//SYSTEM/usart.c **** 				if(Res!=0x0a)USART_RX_STA=0;//接收错误,重新开始
+ 248              		.loc 1 135 0
+ 249 002a 0A28     		cmp	r0, #10
+ 250 002c 03D0     		beq	.L13
+ 251              		.loc 1 135 0 is_stmt 0 discriminator 1
+ 252 002e 0022     		movs	r2, #0
+ 253 0030 104B     		ldr	r3, .L16+4
+ 254 0032 1A80     		strh	r2, [r3]	@ movhi
+ 255 0034 08BD     		pop	{r3, pc}
+ 256              	.L13:
+ 136:.//SYSTEM/usart.c **** 				else USART_RX_STA|=0x8000;	//接收完成了 
+ 257              		.loc 1 136 0 is_stmt 1
+ 258 0036 6FEA4343 		mvn	r3, r3, lsl #17
+ 259 003a 6FEA5343 		mvn	r3, r3, lsr #17
+ 260 003e 0D4A     		ldr	r2, .L16+4
+ 261 0040 1380     		strh	r3, [r2]	@ movhi
+ 262 0042 08BD     		pop	{r3, pc}
+ 263              	.L12:
+ 137:.//SYSTEM/usart.c **** 			}
+ 138:.//SYSTEM/usart.c **** 			else //还没收到0X0D
+ 139:.//SYSTEM/usart.c **** 			{	
+ 140:.//SYSTEM/usart.c **** 				if(Res==0x0d)USART_RX_STA|=0x4000;
+ 264              		.loc 1 140 0
+ 265 0044 0D28     		cmp	r0, #13
+ 266 0046 04D1     		bne	.L14
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s 			page 8
+
+
+ 267              		.loc 1 140 0 is_stmt 0 discriminator 1
+ 268 0048 43F48043 		orr	r3, r3, #16384
+ 269 004c 094A     		ldr	r2, .L16+4
+ 270 004e 1380     		strh	r3, [r2]	@ movhi
+ 271 0050 08BD     		pop	{r3, pc}
+ 272              	.L14:
+ 141:.//SYSTEM/usart.c **** 				else
+ 142:.//SYSTEM/usart.c **** 				{
+ 143:.//SYSTEM/usart.c **** 					USART_RX_BUF[USART_RX_STA&0X3FFF]=Res ;
+ 273              		.loc 1 143 0 is_stmt 1
+ 274 0052 C3F30D02 		ubfx	r2, r3, #0, #14
+ 275 0056 0849     		ldr	r1, .L16+8
+ 276 0058 8854     		strb	r0, [r1, r2]
+ 144:.//SYSTEM/usart.c **** 					USART_RX_STA++;
+ 277              		.loc 1 144 0
+ 278 005a 0133     		adds	r3, r3, #1
+ 279 005c 9BB2     		uxth	r3, r3
+ 280 005e 054A     		ldr	r2, .L16+4
+ 281 0060 1380     		strh	r3, [r2]	@ movhi
+ 145:.//SYSTEM/usart.c **** 					if(USART_RX_STA>(USART_REC_LEN-1))USART_RX_STA=0;//接收数据错误,重新开始接收	  
+ 282              		.loc 1 145 0
+ 283 0062 C72B     		cmp	r3, #199
+ 284 0064 02D9     		bls	.L10
+ 285              		.loc 1 145 0 is_stmt 0 discriminator 1
+ 286 0066 0022     		movs	r2, #0
+ 287 0068 024B     		ldr	r3, .L16+4
+ 288 006a 1A80     		strh	r2, [r3]	@ movhi
+ 289              	.LVL19:
+ 290              	.L10:
+ 291 006c 08BD     		pop	{r3, pc}
+ 292              	.L17:
+ 293 006e 00BF     		.align	2
+ 294              	.L16:
+ 295 0070 00100140 		.word	1073811456
+ 296 0074 00000000 		.word	.LANCHOR0
+ 297 0078 00000000 		.word	USART_RX_BUF
+ 298              		.cfi_endproc
+ 299              	.LFE116:
+ 301              		.global	USART_RX_STA
+ 302              		.comm	USART_RX_BUF,200,4
+ 303              		.comm	__stdout,104,4
+ 304              		.section	.bss.USART_RX_STA,"aw",%nobits
+ 305              		.align	1
+ 306              		.set	.LANCHOR0,. + 0
+ 309              	USART_RX_STA:
+ 310 0000 0000     		.space	2
+ 311              		.text
+ 312              	.Letext0:
+ 313              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 314              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 315              		.file 4 "USER/stm32f4xx.h"
+ 316              		.file 5 "FWLIB/inc/stm32f4xx_gpio.h"
+ 317              		.file 6 "FWLIB/inc/stm32f4xx_usart.h"
+ 318              		.file 7 "FWLIB/inc/misc.h"
+ 319              		.file 8 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/lock.h"
+ 320              		.file 9 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_types.h"
+ 321              		.file 10 "/Users/ertuil/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/5.4.1/include/stddef.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s 			page 9
+
+
+ 322              		.file 11 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/reent.h"
+ 323              		.file 12 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/stdio.h"
+ 324              		.file 13 "CORE/core_cm4.h"
+ 325              		.file 14 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 usart.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:22     .text._sys_exit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:27     .text._sys_exit:0000000000000000 _sys_exit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:43     .text.fputc:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:48     .text.fputc:0000000000000000 fputc
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:73     .text.fputc:0000000000000018 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:78     .text.uart_init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:83     .text.uart_init:0000000000000000 uart_init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:205    .text.uart_init:00000000000000b4 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:210    .text.USART1_IRQHandler:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:215    .text.USART1_IRQHandler:0000000000000000 USART1_IRQHandler
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:295    .text.USART1_IRQHandler:0000000000000070 $d
+                            *COM*:00000000000000c8 USART_RX_BUF
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:309    .bss.USART_RX_STA:0000000000000000 USART_RX_STA
+                            *COM*:0000000000000068 __stdout
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cclhRHto.s:305    .bss.USART_RX_STA:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_AHB1PeriphClockCmd
+RCC_APB2PeriphClockCmd
+GPIO_PinAFConfig
+GPIO_Init
+USART_Init
+USART_Cmd
+USART_ClearFlag
+USART_ITConfig
+NVIC_Init
+USART_GetITStatus
+USART_ReceiveData

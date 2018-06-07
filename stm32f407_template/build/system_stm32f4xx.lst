@@ -1,0 +1,1252 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"system_stm32f4xx.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.SetSysClock,"ax",%progbits
+  22              		.align	2
+  23              		.thumb
+  24              		.thumb_func
+  26              	SetSysClock:
+  27              	.LFB114:
+  28              		.file 1 ".//USER/system_stm32f4xx.c"
+   1:.//USER/system_stm32f4xx.c **** /**
+   2:.//USER/system_stm32f4xx.c ****   ******************************************************************************
+   3:.//USER/system_stm32f4xx.c ****   * @file    system_stm32f4xx.c
+   4:.//USER/system_stm32f4xx.c ****   * @author  MCD Application Team
+   5:.//USER/system_stm32f4xx.c ****   * @version V1.4.0
+   6:.//USER/system_stm32f4xx.c ****   * @date    04-August-2014
+   7:.//USER/system_stm32f4xx.c ****   * @brief   CMSIS Cortex-M4 Device Peripheral Access Layer System Source File.
+   8:.//USER/system_stm32f4xx.c ****   *          This file contains the system clock configuration for STM32F4xx devices.
+   9:.//USER/system_stm32f4xx.c ****   *             
+  10:.//USER/system_stm32f4xx.c ****   * 1.  This file provides two functions and one global variable to be called from 
+  11:.//USER/system_stm32f4xx.c ****   *     user application:
+  12:.//USER/system_stm32f4xx.c ****   *      - SystemInit(): Setups the system clock (System clock source, PLL Multiplier
+  13:.//USER/system_stm32f4xx.c ****   *                      and Divider factors, AHB/APBx prescalers and Flash settings),
+  14:.//USER/system_stm32f4xx.c ****   *                      depending on the configuration made in the clock xls tool. 
+  15:.//USER/system_stm32f4xx.c ****   *                      This function is called at startup just after reset and 
+  16:.//USER/system_stm32f4xx.c ****   *                      before branch to main program. This call is made inside
+  17:.//USER/system_stm32f4xx.c ****   *                      the "startup_stm32f4xx.s" file.
+  18:.//USER/system_stm32f4xx.c ****   *
+  19:.//USER/system_stm32f4xx.c ****   *      - SystemCoreClock variable: Contains the core clock (HCLK), it can be used
+  20:.//USER/system_stm32f4xx.c ****   *                                  by the user application to setup the SysTick 
+  21:.//USER/system_stm32f4xx.c ****   *                                  timer or configure other parameters.
+  22:.//USER/system_stm32f4xx.c ****   *                                     
+  23:.//USER/system_stm32f4xx.c ****   *      - SystemCoreClockUpdate(): Updates the variable SystemCoreClock and must
+  24:.//USER/system_stm32f4xx.c ****   *                                 be called whenever the core clock is changed
+  25:.//USER/system_stm32f4xx.c ****   *                                 during program execution.
+  26:.//USER/system_stm32f4xx.c ****   *
+  27:.//USER/system_stm32f4xx.c ****   * 2. After each device reset the HSI (16 MHz) is used as system clock source.
+  28:.//USER/system_stm32f4xx.c ****   *    Then SystemInit() function is called, in "startup_stm32f4xx.s" file, to
+  29:.//USER/system_stm32f4xx.c ****   *    configure the system clock before to branch to main program.
+  30:.//USER/system_stm32f4xx.c ****   *
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 2
+
+
+  31:.//USER/system_stm32f4xx.c ****   * 3. If the system clock source selected by user fails to startup, the SystemInit()
+  32:.//USER/system_stm32f4xx.c ****   *    function will do nothing and HSI still used as system clock source. User can 
+  33:.//USER/system_stm32f4xx.c ****   *    add some code to deal with this issue inside the SetSysClock() function.
+  34:.//USER/system_stm32f4xx.c ****   *
+  35:.//USER/system_stm32f4xx.c ****   * 4. The default value of HSE crystal is set to 25MHz, refer to "HSE_VALUE" define
+  36:.//USER/system_stm32f4xx.c ****   *    in "stm32f4xx.h" file. When HSE is used as system clock source, directly or
+  37:.//USER/system_stm32f4xx.c ****   *    through PLL, and you are using different crystal you have to adapt the HSE
+  38:.//USER/system_stm32f4xx.c ****   *    value to your own configuration.
+  39:.//USER/system_stm32f4xx.c ****   *
+  40:.//USER/system_stm32f4xx.c ****   * 5. This file configures the system clock as follows:
+  41:.//USER/system_stm32f4xx.c ****   *=============================================================================
+  42:.//USER/system_stm32f4xx.c ****   *=============================================================================
+  43:.//USER/system_stm32f4xx.c ****   *                    Supported STM32F40xxx/41xxx devices
+  44:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  45:.//USER/system_stm32f4xx.c ****   *        System Clock source                    | PLL (HSE)
+  46:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  47:.//USER/system_stm32f4xx.c ****   *        SYSCLK(Hz)                             | 168000000
+  48:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  49:.//USER/system_stm32f4xx.c ****   *        HCLK(Hz)                               | 168000000
+  50:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  51:.//USER/system_stm32f4xx.c ****   *        AHB Prescaler                          | 1
+  52:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  53:.//USER/system_stm32f4xx.c ****   *        APB1 Prescaler                         | 4
+  54:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  55:.//USER/system_stm32f4xx.c ****   *        APB2 Prescaler                         | 2
+  56:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  57:.//USER/system_stm32f4xx.c ****   *        HSE Frequency(Hz)                      | 25000000
+  58:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  59:.//USER/system_stm32f4xx.c ****   *        PLL_M                                  | 25
+  60:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  61:.//USER/system_stm32f4xx.c ****   *        PLL_N                                  | 336
+  62:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  63:.//USER/system_stm32f4xx.c ****   *        PLL_P                                  | 2
+  64:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  65:.//USER/system_stm32f4xx.c ****   *        PLL_Q                                  | 7
+  66:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  67:.//USER/system_stm32f4xx.c ****   *        PLLI2S_N                               | NA
+  68:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  69:.//USER/system_stm32f4xx.c ****   *        PLLI2S_R                               | NA
+  70:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  71:.//USER/system_stm32f4xx.c ****   *        I2S input clock                        | NA
+  72:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  73:.//USER/system_stm32f4xx.c ****   *        VDD(V)                                 | 3.3
+  74:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  75:.//USER/system_stm32f4xx.c ****   *        Main regulator output voltage          | Scale1 mode
+  76:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  77:.//USER/system_stm32f4xx.c ****   *        Flash Latency(WS)                      | 5
+  78:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  79:.//USER/system_stm32f4xx.c ****   *        Prefetch Buffer                        | ON
+  80:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  81:.//USER/system_stm32f4xx.c ****   *        Instruction cache                      | ON
+  82:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  83:.//USER/system_stm32f4xx.c ****   *        Data cache                             | ON
+  84:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  85:.//USER/system_stm32f4xx.c ****   *        Require 48MHz for USB OTG FS,          | Disabled
+  86:.//USER/system_stm32f4xx.c ****   *        SDIO and RNG clock                     |
+  87:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 3
+
+
+  88:.//USER/system_stm32f4xx.c ****   *=============================================================================
+  89:.//USER/system_stm32f4xx.c ****   *=============================================================================
+  90:.//USER/system_stm32f4xx.c ****   *                    Supported STM32F42xxx/43xxx devices
+  91:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  92:.//USER/system_stm32f4xx.c ****   *        System Clock source                    | PLL (HSE)
+  93:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  94:.//USER/system_stm32f4xx.c ****   *        SYSCLK(Hz)                             | 180000000
+  95:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  96:.//USER/system_stm32f4xx.c ****   *        HCLK(Hz)                               | 180000000
+  97:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+  98:.//USER/system_stm32f4xx.c ****   *        AHB Prescaler                          | 1
+  99:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 100:.//USER/system_stm32f4xx.c ****   *        APB1 Prescaler                         | 4
+ 101:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 102:.//USER/system_stm32f4xx.c ****   *        APB2 Prescaler                         | 2
+ 103:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 104:.//USER/system_stm32f4xx.c ****   *        HSE Frequency(Hz)                      | 25000000
+ 105:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 106:.//USER/system_stm32f4xx.c ****   *        PLL_M                                  | 25
+ 107:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 108:.//USER/system_stm32f4xx.c ****   *        PLL_N                                  | 360
+ 109:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 110:.//USER/system_stm32f4xx.c ****   *        PLL_P                                  | 2
+ 111:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 112:.//USER/system_stm32f4xx.c ****   *        PLL_Q                                  | 7
+ 113:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 114:.//USER/system_stm32f4xx.c ****   *        PLLI2S_N                               | NA
+ 115:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 116:.//USER/system_stm32f4xx.c ****   *        PLLI2S_R                               | NA
+ 117:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 118:.//USER/system_stm32f4xx.c ****   *        I2S input clock                        | NA
+ 119:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 120:.//USER/system_stm32f4xx.c ****   *        VDD(V)                                 | 3.3
+ 121:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 122:.//USER/system_stm32f4xx.c ****   *        Main regulator output voltage          | Scale1 mode
+ 123:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 124:.//USER/system_stm32f4xx.c ****   *        Flash Latency(WS)                      | 5
+ 125:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 126:.//USER/system_stm32f4xx.c ****   *        Prefetch Buffer                        | ON
+ 127:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 128:.//USER/system_stm32f4xx.c ****   *        Instruction cache                      | ON
+ 129:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 130:.//USER/system_stm32f4xx.c ****   *        Data cache                             | ON
+ 131:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 132:.//USER/system_stm32f4xx.c ****   *        Require 48MHz for USB OTG FS,          | Disabled
+ 133:.//USER/system_stm32f4xx.c ****   *        SDIO and RNG clock                     |
+ 134:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 135:.//USER/system_stm32f4xx.c ****   *=============================================================================
+ 136:.//USER/system_stm32f4xx.c ****   *=============================================================================
+ 137:.//USER/system_stm32f4xx.c ****   *                         Supported STM32F401xx devices
+ 138:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 139:.//USER/system_stm32f4xx.c ****   *        System Clock source                    | PLL (HSE)
+ 140:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 141:.//USER/system_stm32f4xx.c ****   *        SYSCLK(Hz)                             | 84000000
+ 142:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 143:.//USER/system_stm32f4xx.c ****   *        HCLK(Hz)                               | 84000000
+ 144:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 4
+
+
+ 145:.//USER/system_stm32f4xx.c ****   *        AHB Prescaler                          | 1
+ 146:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 147:.//USER/system_stm32f4xx.c ****   *        APB1 Prescaler                         | 2
+ 148:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 149:.//USER/system_stm32f4xx.c ****   *        APB2 Prescaler                         | 1
+ 150:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 151:.//USER/system_stm32f4xx.c ****   *        HSE Frequency(Hz)                      | 25000000
+ 152:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 153:.//USER/system_stm32f4xx.c ****   *        PLL_M                                  | 25
+ 154:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 155:.//USER/system_stm32f4xx.c ****   *        PLL_N                                  | 336
+ 156:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 157:.//USER/system_stm32f4xx.c ****   *        PLL_P                                  | 4
+ 158:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 159:.//USER/system_stm32f4xx.c ****   *        PLL_Q                                  | 7
+ 160:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 161:.//USER/system_stm32f4xx.c ****   *        PLLI2S_N                               | NA
+ 162:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 163:.//USER/system_stm32f4xx.c ****   *        PLLI2S_R                               | NA
+ 164:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 165:.//USER/system_stm32f4xx.c ****   *        I2S input clock                        | NA
+ 166:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 167:.//USER/system_stm32f4xx.c ****   *        VDD(V)                                 | 3.3
+ 168:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 169:.//USER/system_stm32f4xx.c ****   *        Main regulator output voltage          | Scale1 mode
+ 170:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 171:.//USER/system_stm32f4xx.c ****   *        Flash Latency(WS)                      | 2
+ 172:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 173:.//USER/system_stm32f4xx.c ****   *        Prefetch Buffer                        | ON
+ 174:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 175:.//USER/system_stm32f4xx.c ****   *        Instruction cache                      | ON
+ 176:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 177:.//USER/system_stm32f4xx.c ****   *        Data cache                             | ON
+ 178:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 179:.//USER/system_stm32f4xx.c ****   *        Require 48MHz for USB OTG FS,          | Disabled
+ 180:.//USER/system_stm32f4xx.c ****   *        SDIO and RNG clock                     |
+ 181:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 182:.//USER/system_stm32f4xx.c ****   *=============================================================================
+ 183:.//USER/system_stm32f4xx.c ****   *=============================================================================
+ 184:.//USER/system_stm32f4xx.c ****   *                         Supported STM32F411xx devices
+ 185:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 186:.//USER/system_stm32f4xx.c ****   *        System Clock source                    | PLL (HSI)
+ 187:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 188:.//USER/system_stm32f4xx.c ****   *        SYSCLK(Hz)                             | 100000000
+ 189:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 190:.//USER/system_stm32f4xx.c ****   *        HCLK(Hz)                               | 100000000
+ 191:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 192:.//USER/system_stm32f4xx.c ****   *        AHB Prescaler                          | 1
+ 193:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 194:.//USER/system_stm32f4xx.c ****   *        APB1 Prescaler                         | 2
+ 195:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 196:.//USER/system_stm32f4xx.c ****   *        APB2 Prescaler                         | 1
+ 197:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 198:.//USER/system_stm32f4xx.c ****   *        HSI Frequency(Hz)                      | 16000000
+ 199:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 200:.//USER/system_stm32f4xx.c ****   *        PLL_M                                  | 16
+ 201:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 5
+
+
+ 202:.//USER/system_stm32f4xx.c ****   *        PLL_N                                  | 400
+ 203:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 204:.//USER/system_stm32f4xx.c ****   *        PLL_P                                  | 4
+ 205:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 206:.//USER/system_stm32f4xx.c ****   *        PLL_Q                                  | 7
+ 207:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 208:.//USER/system_stm32f4xx.c ****   *        PLLI2S_N                               | NA
+ 209:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 210:.//USER/system_stm32f4xx.c ****   *        PLLI2S_R                               | NA
+ 211:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 212:.//USER/system_stm32f4xx.c ****   *        I2S input clock                        | NA
+ 213:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 214:.//USER/system_stm32f4xx.c ****   *        VDD(V)                                 | 3.3
+ 215:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 216:.//USER/system_stm32f4xx.c ****   *        Main regulator output voltage          | Scale1 mode
+ 217:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 218:.//USER/system_stm32f4xx.c ****   *        Flash Latency(WS)                      | 3
+ 219:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 220:.//USER/system_stm32f4xx.c ****   *        Prefetch Buffer                        | ON
+ 221:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 222:.//USER/system_stm32f4xx.c ****   *        Instruction cache                      | ON
+ 223:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 224:.//USER/system_stm32f4xx.c ****   *        Data cache                             | ON
+ 225:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 226:.//USER/system_stm32f4xx.c ****   *        Require 48MHz for USB OTG FS,          | Disabled
+ 227:.//USER/system_stm32f4xx.c ****   *        SDIO and RNG clock                     |
+ 228:.//USER/system_stm32f4xx.c ****   *-----------------------------------------------------------------------------
+ 229:.//USER/system_stm32f4xx.c ****   *=============================================================================
+ 230:.//USER/system_stm32f4xx.c ****   ******************************************************************************
+ 231:.//USER/system_stm32f4xx.c ****   * @attention
+ 232:.//USER/system_stm32f4xx.c ****   *
+ 233:.//USER/system_stm32f4xx.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+ 234:.//USER/system_stm32f4xx.c ****   *
+ 235:.//USER/system_stm32f4xx.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+ 236:.//USER/system_stm32f4xx.c ****   * You may not use this file except in compliance with the License.
+ 237:.//USER/system_stm32f4xx.c ****   * You may obtain a copy of the License at:
+ 238:.//USER/system_stm32f4xx.c ****   *
+ 239:.//USER/system_stm32f4xx.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+ 240:.//USER/system_stm32f4xx.c ****   *
+ 241:.//USER/system_stm32f4xx.c ****   * Unless required by applicable law or agreed to in writing, software 
+ 242:.//USER/system_stm32f4xx.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+ 243:.//USER/system_stm32f4xx.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ 244:.//USER/system_stm32f4xx.c ****   * See the License for the specific language governing permissions and
+ 245:.//USER/system_stm32f4xx.c ****   * limitations under the License.
+ 246:.//USER/system_stm32f4xx.c ****   *
+ 247:.//USER/system_stm32f4xx.c ****   ******************************************************************************
+ 248:.//USER/system_stm32f4xx.c ****   */
+ 249:.//USER/system_stm32f4xx.c **** 
+ 250:.//USER/system_stm32f4xx.c **** /** @addtogroup CMSIS
+ 251:.//USER/system_stm32f4xx.c ****   * @{
+ 252:.//USER/system_stm32f4xx.c ****   */
+ 253:.//USER/system_stm32f4xx.c **** 
+ 254:.//USER/system_stm32f4xx.c **** /** @addtogroup stm32f4xx_system
+ 255:.//USER/system_stm32f4xx.c ****   * @{
+ 256:.//USER/system_stm32f4xx.c ****   */  
+ 257:.//USER/system_stm32f4xx.c ****   
+ 258:.//USER/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_Includes
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 6
+
+
+ 259:.//USER/system_stm32f4xx.c ****   * @{
+ 260:.//USER/system_stm32f4xx.c ****   */
+ 261:.//USER/system_stm32f4xx.c **** 
+ 262:.//USER/system_stm32f4xx.c **** #include "stm32f4xx.h"
+ 263:.//USER/system_stm32f4xx.c **** 
+ 264:.//USER/system_stm32f4xx.c **** /**
+ 265:.//USER/system_stm32f4xx.c ****   * @}
+ 266:.//USER/system_stm32f4xx.c ****   */
+ 267:.//USER/system_stm32f4xx.c **** 
+ 268:.//USER/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_TypesDefinitions
+ 269:.//USER/system_stm32f4xx.c ****   * @{
+ 270:.//USER/system_stm32f4xx.c ****   */
+ 271:.//USER/system_stm32f4xx.c **** 
+ 272:.//USER/system_stm32f4xx.c **** /**
+ 273:.//USER/system_stm32f4xx.c ****   * @}
+ 274:.//USER/system_stm32f4xx.c ****   */
+ 275:.//USER/system_stm32f4xx.c **** 
+ 276:.//USER/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_Defines
+ 277:.//USER/system_stm32f4xx.c ****   * @{
+ 278:.//USER/system_stm32f4xx.c ****   */
+ 279:.//USER/system_stm32f4xx.c **** 
+ 280:.//USER/system_stm32f4xx.c **** /************************* Miscellaneous Configuration ************************/
+ 281:.//USER/system_stm32f4xx.c **** /*!< Uncomment the following line if you need to use external SRAM or SDRAM mounted
+ 282:.//USER/system_stm32f4xx.c ****      on STM324xG_EVAL/STM324x7I_EVAL/STM324x9I_EVAL boards as data memory  */     
+ 283:.//USER/system_stm32f4xx.c **** #if defined (STM32F40_41xxx) || defined (STM32F427_437xx) || defined (STM32F429_439xx)
+ 284:.//USER/system_stm32f4xx.c **** /* #define DATA_IN_ExtSRAM */
+ 285:.//USER/system_stm32f4xx.c **** #endif /* STM32F40_41xxx || STM32F427_437x || STM32F429_439xx */
+ 286:.//USER/system_stm32f4xx.c **** 
+ 287:.//USER/system_stm32f4xx.c **** #if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+ 288:.//USER/system_stm32f4xx.c **** /* #define DATA_IN_ExtSDRAM */
+ 289:.//USER/system_stm32f4xx.c **** #endif /* STM32F427_437x || STM32F429_439xx */ 
+ 290:.//USER/system_stm32f4xx.c **** 
+ 291:.//USER/system_stm32f4xx.c **** #if defined (STM32F411xE)    
+ 292:.//USER/system_stm32f4xx.c **** /*!< Uncomment the following line if you need to clock the STM32F411xE by HSE Bypass
+ 293:.//USER/system_stm32f4xx.c ****      through STLINK MCO pin of STM32F103 microcontroller. The frequency cannot be changed
+ 294:.//USER/system_stm32f4xx.c ****      and is fixed at 8 MHz. 
+ 295:.//USER/system_stm32f4xx.c ****      Hardware configuration needed for Nucleo Board:
+ 296:.//USER/system_stm32f4xx.c ****      ?SB54, SB55 OFF
+ 297:.//USER/system_stm32f4xx.c ****      ?R35 removed
+ 298:.//USER/system_stm32f4xx.c ****      ?SB16, SB50 ON */
+ 299:.//USER/system_stm32f4xx.c **** /* #define USE_HSE_BYPASS */
+ 300:.//USER/system_stm32f4xx.c **** 
+ 301:.//USER/system_stm32f4xx.c **** #if defined (USE_HSE_BYPASS)     
+ 302:.//USER/system_stm32f4xx.c **** #define HSE_BYPASS_INPUT_FREQUENCY   8000000
+ 303:.//USER/system_stm32f4xx.c **** #endif /* USE_HSE_BYPASS */    
+ 304:.//USER/system_stm32f4xx.c **** #endif /* STM32F411xE */
+ 305:.//USER/system_stm32f4xx.c ****     
+ 306:.//USER/system_stm32f4xx.c **** /*!< Uncomment the following line if you need to relocate your vector Table in
+ 307:.//USER/system_stm32f4xx.c ****      Internal SRAM. */
+ 308:.//USER/system_stm32f4xx.c **** /* #define VECT_TAB_SRAM */
+ 309:.//USER/system_stm32f4xx.c **** #define VECT_TAB_OFFSET  0x00 /*!< Vector Table base offset field. 
+ 310:.//USER/system_stm32f4xx.c ****                                    This value must be a multiple of 0x200. */
+ 311:.//USER/system_stm32f4xx.c **** /******************************************************************************/
+ 312:.//USER/system_stm32f4xx.c **** 
+ 313:.//USER/system_stm32f4xx.c **** /************************* PLL Parameters *************************************/
+ 314:.//USER/system_stm32f4xx.c **** #if defined (STM32F40_41xxx) || defined (STM32F427_437xx) || defined (STM32F429_439xx) || defined (
+ 315:.//USER/system_stm32f4xx.c **** /* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLL_M) * PLL_N */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 7
+
+
+ 316:.//USER/system_stm32f4xx.c **** #define PLL_M      8
+ 317:.//USER/system_stm32f4xx.c **** #else /* STM32F411xE */
+ 318:.//USER/system_stm32f4xx.c **** #if defined (USE_HSE_BYPASS)
+ 319:.//USER/system_stm32f4xx.c **** #define PLL_M      8    
+ 320:.//USER/system_stm32f4xx.c **** #else /* STM32F411xE */   
+ 321:.//USER/system_stm32f4xx.c **** #define PLL_M      16
+ 322:.//USER/system_stm32f4xx.c **** #endif /* USE_HSE_BYPASS */
+ 323:.//USER/system_stm32f4xx.c **** #endif /* STM32F40_41xxx || STM32F427_437xx || STM32F429_439xx || STM32F401xx */  
+ 324:.//USER/system_stm32f4xx.c **** 
+ 325:.//USER/system_stm32f4xx.c **** /* USB OTG FS, SDIO and RNG Clock =  PLL_VCO / PLLQ */
+ 326:.//USER/system_stm32f4xx.c **** #define PLL_Q      7
+ 327:.//USER/system_stm32f4xx.c **** 
+ 328:.//USER/system_stm32f4xx.c **** #if defined (STM32F40_41xxx)
+ 329:.//USER/system_stm32f4xx.c **** #define PLL_N      336
+ 330:.//USER/system_stm32f4xx.c **** /* SYSCLK = PLL_VCO / PLL_P */
+ 331:.//USER/system_stm32f4xx.c **** #define PLL_P      2
+ 332:.//USER/system_stm32f4xx.c **** #endif /* STM32F40_41xxx */
+ 333:.//USER/system_stm32f4xx.c **** 
+ 334:.//USER/system_stm32f4xx.c **** #if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+ 335:.//USER/system_stm32f4xx.c **** #define PLL_N      360
+ 336:.//USER/system_stm32f4xx.c **** /* SYSCLK = PLL_VCO / PLL_P */
+ 337:.//USER/system_stm32f4xx.c **** #define PLL_P      2
+ 338:.//USER/system_stm32f4xx.c **** #endif /* STM32F427_437x || STM32F429_439xx */
+ 339:.//USER/system_stm32f4xx.c **** 
+ 340:.//USER/system_stm32f4xx.c **** #if defined (STM32F401xx)
+ 341:.//USER/system_stm32f4xx.c **** #define PLL_N      336
+ 342:.//USER/system_stm32f4xx.c **** /* SYSCLK = PLL_VCO / PLL_P */
+ 343:.//USER/system_stm32f4xx.c **** #define PLL_P      4
+ 344:.//USER/system_stm32f4xx.c **** #endif /* STM32F401xx */
+ 345:.//USER/system_stm32f4xx.c **** 
+ 346:.//USER/system_stm32f4xx.c **** #if defined (STM32F411xE)
+ 347:.//USER/system_stm32f4xx.c **** #define PLL_N      400
+ 348:.//USER/system_stm32f4xx.c **** /* SYSCLK = PLL_VCO / PLL_P */
+ 349:.//USER/system_stm32f4xx.c **** #define PLL_P      4   
+ 350:.//USER/system_stm32f4xx.c **** #endif /* STM32F411xx */
+ 351:.//USER/system_stm32f4xx.c **** 
+ 352:.//USER/system_stm32f4xx.c **** /******************************************************************************/
+ 353:.//USER/system_stm32f4xx.c **** 
+ 354:.//USER/system_stm32f4xx.c **** /**
+ 355:.//USER/system_stm32f4xx.c ****   * @}
+ 356:.//USER/system_stm32f4xx.c ****   */
+ 357:.//USER/system_stm32f4xx.c **** 
+ 358:.//USER/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_Macros
+ 359:.//USER/system_stm32f4xx.c ****   * @{
+ 360:.//USER/system_stm32f4xx.c ****   */
+ 361:.//USER/system_stm32f4xx.c **** 
+ 362:.//USER/system_stm32f4xx.c **** /**
+ 363:.//USER/system_stm32f4xx.c ****   * @}
+ 364:.//USER/system_stm32f4xx.c ****   */
+ 365:.//USER/system_stm32f4xx.c **** 
+ 366:.//USER/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_Variables
+ 367:.//USER/system_stm32f4xx.c ****   * @{
+ 368:.//USER/system_stm32f4xx.c ****   */
+ 369:.//USER/system_stm32f4xx.c **** 
+ 370:.//USER/system_stm32f4xx.c **** #if defined (STM32F40_41xxx)
+ 371:.//USER/system_stm32f4xx.c ****   uint32_t SystemCoreClock = 168000000;
+ 372:.//USER/system_stm32f4xx.c **** #endif /* STM32F40_41xxx */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 8
+
+
+ 373:.//USER/system_stm32f4xx.c **** 
+ 374:.//USER/system_stm32f4xx.c **** #if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+ 375:.//USER/system_stm32f4xx.c ****   uint32_t SystemCoreClock = 180000000;
+ 376:.//USER/system_stm32f4xx.c **** #endif /* STM32F427_437x || STM32F429_439xx */
+ 377:.//USER/system_stm32f4xx.c **** 
+ 378:.//USER/system_stm32f4xx.c **** #if defined (STM32F401xx)
+ 379:.//USER/system_stm32f4xx.c ****   uint32_t SystemCoreClock = 84000000;
+ 380:.//USER/system_stm32f4xx.c **** #endif /* STM32F401xx */
+ 381:.//USER/system_stm32f4xx.c **** 
+ 382:.//USER/system_stm32f4xx.c **** #if defined (STM32F411xE)
+ 383:.//USER/system_stm32f4xx.c ****   uint32_t SystemCoreClock = 100000000;
+ 384:.//USER/system_stm32f4xx.c **** #endif /* STM32F401xx */
+ 385:.//USER/system_stm32f4xx.c **** 
+ 386:.//USER/system_stm32f4xx.c **** __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+ 387:.//USER/system_stm32f4xx.c **** 
+ 388:.//USER/system_stm32f4xx.c **** /**
+ 389:.//USER/system_stm32f4xx.c ****   * @}
+ 390:.//USER/system_stm32f4xx.c ****   */
+ 391:.//USER/system_stm32f4xx.c **** 
+ 392:.//USER/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_FunctionPrototypes
+ 393:.//USER/system_stm32f4xx.c ****   * @{
+ 394:.//USER/system_stm32f4xx.c ****   */
+ 395:.//USER/system_stm32f4xx.c **** 
+ 396:.//USER/system_stm32f4xx.c **** static void SetSysClock(void);
+ 397:.//USER/system_stm32f4xx.c **** 
+ 398:.//USER/system_stm32f4xx.c **** #if defined (DATA_IN_ExtSRAM) || defined (DATA_IN_ExtSDRAM)
+ 399:.//USER/system_stm32f4xx.c **** static void SystemInit_ExtMemCtl(void); 
+ 400:.//USER/system_stm32f4xx.c **** #endif /* DATA_IN_ExtSRAM || DATA_IN_ExtSDRAM */
+ 401:.//USER/system_stm32f4xx.c **** 
+ 402:.//USER/system_stm32f4xx.c **** /**
+ 403:.//USER/system_stm32f4xx.c ****   * @}
+ 404:.//USER/system_stm32f4xx.c ****   */
+ 405:.//USER/system_stm32f4xx.c **** 
+ 406:.//USER/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_Functions
+ 407:.//USER/system_stm32f4xx.c ****   * @{
+ 408:.//USER/system_stm32f4xx.c ****   */
+ 409:.//USER/system_stm32f4xx.c **** 
+ 410:.//USER/system_stm32f4xx.c **** /**
+ 411:.//USER/system_stm32f4xx.c ****   * @brief  Setup the microcontroller system
+ 412:.//USER/system_stm32f4xx.c ****   *         Initialize the Embedded Flash Interface, the PLL and update the 
+ 413:.//USER/system_stm32f4xx.c ****   *         SystemFrequency variable.
+ 414:.//USER/system_stm32f4xx.c ****   * @param  None
+ 415:.//USER/system_stm32f4xx.c ****   * @retval None
+ 416:.//USER/system_stm32f4xx.c ****   */
+ 417:.//USER/system_stm32f4xx.c **** void SystemInit(void)
+ 418:.//USER/system_stm32f4xx.c **** {
+ 419:.//USER/system_stm32f4xx.c ****   /* FPU settings ------------------------------------------------------------*/
+ 420:.//USER/system_stm32f4xx.c ****   #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
+ 421:.//USER/system_stm32f4xx.c ****     SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */
+ 422:.//USER/system_stm32f4xx.c ****   #endif
+ 423:.//USER/system_stm32f4xx.c ****   /* Reset the RCC clock configuration to the default reset state ------------*/
+ 424:.//USER/system_stm32f4xx.c ****   /* Set HSION bit */
+ 425:.//USER/system_stm32f4xx.c ****   RCC->CR |= (uint32_t)0x00000001;
+ 426:.//USER/system_stm32f4xx.c **** 
+ 427:.//USER/system_stm32f4xx.c ****   /* Reset CFGR register */
+ 428:.//USER/system_stm32f4xx.c ****   RCC->CFGR = 0x00000000;
+ 429:.//USER/system_stm32f4xx.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 9
+
+
+ 430:.//USER/system_stm32f4xx.c ****   /* Reset HSEON, CSSON and PLLON bits */
+ 431:.//USER/system_stm32f4xx.c ****   RCC->CR &= (uint32_t)0xFEF6FFFF;
+ 432:.//USER/system_stm32f4xx.c **** 
+ 433:.//USER/system_stm32f4xx.c ****   /* Reset PLLCFGR register */
+ 434:.//USER/system_stm32f4xx.c ****   RCC->PLLCFGR = 0x24003010;
+ 435:.//USER/system_stm32f4xx.c **** 
+ 436:.//USER/system_stm32f4xx.c ****   /* Reset HSEBYP bit */
+ 437:.//USER/system_stm32f4xx.c ****   RCC->CR &= (uint32_t)0xFFFBFFFF;
+ 438:.//USER/system_stm32f4xx.c **** 
+ 439:.//USER/system_stm32f4xx.c ****   /* Disable all interrupts */
+ 440:.//USER/system_stm32f4xx.c ****   RCC->CIR = 0x00000000;
+ 441:.//USER/system_stm32f4xx.c **** 
+ 442:.//USER/system_stm32f4xx.c **** #if defined (DATA_IN_ExtSRAM) || defined (DATA_IN_ExtSDRAM)
+ 443:.//USER/system_stm32f4xx.c ****   SystemInit_ExtMemCtl(); 
+ 444:.//USER/system_stm32f4xx.c **** #endif /* DATA_IN_ExtSRAM || DATA_IN_ExtSDRAM */
+ 445:.//USER/system_stm32f4xx.c ****          
+ 446:.//USER/system_stm32f4xx.c ****   /* Configure the System clock source, PLL Multiplier and Divider factors, 
+ 447:.//USER/system_stm32f4xx.c ****      AHB/APBx prescalers and Flash settings ----------------------------------*/
+ 448:.//USER/system_stm32f4xx.c ****   SetSysClock();
+ 449:.//USER/system_stm32f4xx.c **** 
+ 450:.//USER/system_stm32f4xx.c ****   /* Configure the Vector Table location add offset address ------------------*/
+ 451:.//USER/system_stm32f4xx.c **** #ifdef VECT_TAB_SRAM
+ 452:.//USER/system_stm32f4xx.c ****   SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM */
+ 453:.//USER/system_stm32f4xx.c **** #else
+ 454:.//USER/system_stm32f4xx.c ****   SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal FLASH */
+ 455:.//USER/system_stm32f4xx.c **** #endif
+ 456:.//USER/system_stm32f4xx.c **** }
+ 457:.//USER/system_stm32f4xx.c **** 
+ 458:.//USER/system_stm32f4xx.c **** /**
+ 459:.//USER/system_stm32f4xx.c ****    * @brief  Update SystemCoreClock variable according to Clock Register Values.
+ 460:.//USER/system_stm32f4xx.c ****   *         The SystemCoreClock variable contains the core clock (HCLK), it can
+ 461:.//USER/system_stm32f4xx.c ****   *         be used by the user application to setup the SysTick timer or configure
+ 462:.//USER/system_stm32f4xx.c ****   *         other parameters.
+ 463:.//USER/system_stm32f4xx.c ****   *           
+ 464:.//USER/system_stm32f4xx.c ****   * @note   Each time the core clock (HCLK) changes, this function must be called
+ 465:.//USER/system_stm32f4xx.c ****   *         to update SystemCoreClock variable value. Otherwise, any configuration
+ 466:.//USER/system_stm32f4xx.c ****   *         based on this variable will be incorrect.         
+ 467:.//USER/system_stm32f4xx.c ****   *     
+ 468:.//USER/system_stm32f4xx.c ****   * @note   - The system frequency computed by this function is not the real 
+ 469:.//USER/system_stm32f4xx.c ****   *           frequency in the chip. It is calculated based on the predefined 
+ 470:.//USER/system_stm32f4xx.c ****   *           constant and the selected clock source:
+ 471:.//USER/system_stm32f4xx.c ****   *             
+ 472:.//USER/system_stm32f4xx.c ****   *           - If SYSCLK source is HSI, SystemCoreClock will contain the HSI_VALUE(*)
+ 473:.//USER/system_stm32f4xx.c ****   *                                              
+ 474:.//USER/system_stm32f4xx.c ****   *           - If SYSCLK source is HSE, SystemCoreClock will contain the HSE_VALUE(**)
+ 475:.//USER/system_stm32f4xx.c ****   *                          
+ 476:.//USER/system_stm32f4xx.c ****   *           - If SYSCLK source is PLL, SystemCoreClock will contain the HSE_VALUE(**) 
+ 477:.//USER/system_stm32f4xx.c ****   *             or HSI_VALUE(*) multiplied/divided by the PLL factors.
+ 478:.//USER/system_stm32f4xx.c ****   *         
+ 479:.//USER/system_stm32f4xx.c ****   *         (*) HSI_VALUE is a constant defined in stm32f4xx.h file (default value
+ 480:.//USER/system_stm32f4xx.c ****   *             16 MHz) but the real value may vary depending on the variations
+ 481:.//USER/system_stm32f4xx.c ****   *             in voltage and temperature.   
+ 482:.//USER/system_stm32f4xx.c ****   *    
+ 483:.//USER/system_stm32f4xx.c ****   *         (**) HSE_VALUE is a constant defined in stm32f4xx.h file (default value
+ 484:.//USER/system_stm32f4xx.c ****   *              25 MHz), user has to ensure that HSE_VALUE is same as the real
+ 485:.//USER/system_stm32f4xx.c ****   *              frequency of the crystal used. Otherwise, this function may
+ 486:.//USER/system_stm32f4xx.c ****   *              have wrong result.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 10
+
+
+ 487:.//USER/system_stm32f4xx.c ****   *                
+ 488:.//USER/system_stm32f4xx.c ****   *         - The result of this function could be not correct when using fractional
+ 489:.//USER/system_stm32f4xx.c ****   *           value for HSE crystal.
+ 490:.//USER/system_stm32f4xx.c ****   *     
+ 491:.//USER/system_stm32f4xx.c ****   * @param  None
+ 492:.//USER/system_stm32f4xx.c ****   * @retval None
+ 493:.//USER/system_stm32f4xx.c ****   */
+ 494:.//USER/system_stm32f4xx.c **** void SystemCoreClockUpdate(void)
+ 495:.//USER/system_stm32f4xx.c **** {
+ 496:.//USER/system_stm32f4xx.c ****   uint32_t tmp = 0, pllvco = 0, pllp = 2, pllsource = 0, pllm = 2;
+ 497:.//USER/system_stm32f4xx.c ****   
+ 498:.//USER/system_stm32f4xx.c ****   /* Get SYSCLK source -------------------------------------------------------*/
+ 499:.//USER/system_stm32f4xx.c ****   tmp = RCC->CFGR & RCC_CFGR_SWS;
+ 500:.//USER/system_stm32f4xx.c **** 
+ 501:.//USER/system_stm32f4xx.c ****   switch (tmp)
+ 502:.//USER/system_stm32f4xx.c ****   {
+ 503:.//USER/system_stm32f4xx.c ****     case 0x00:  /* HSI used as system clock source */
+ 504:.//USER/system_stm32f4xx.c ****       SystemCoreClock = HSI_VALUE;
+ 505:.//USER/system_stm32f4xx.c ****       break;
+ 506:.//USER/system_stm32f4xx.c ****     case 0x04:  /* HSE used as system clock source */
+ 507:.//USER/system_stm32f4xx.c ****       SystemCoreClock = HSE_VALUE;
+ 508:.//USER/system_stm32f4xx.c ****       break;
+ 509:.//USER/system_stm32f4xx.c ****     case 0x08:  /* PLL used as system clock source */
+ 510:.//USER/system_stm32f4xx.c ****        /* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLL_M) * PLL_N
+ 511:.//USER/system_stm32f4xx.c ****          SYSCLK = PLL_VCO / PLL_P
+ 512:.//USER/system_stm32f4xx.c ****          */    
+ 513:.//USER/system_stm32f4xx.c ****       pllsource = (RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) >> 22;
+ 514:.//USER/system_stm32f4xx.c ****       pllm = RCC->PLLCFGR & RCC_PLLCFGR_PLLM;
+ 515:.//USER/system_stm32f4xx.c ****       
+ 516:.//USER/system_stm32f4xx.c **** #if defined (STM32F40_41xxx) || defined (STM32F427_437xx) || defined (STM32F429_439xx) || defined (
+ 517:.//USER/system_stm32f4xx.c ****       if (pllsource != 0)
+ 518:.//USER/system_stm32f4xx.c ****       {
+ 519:.//USER/system_stm32f4xx.c ****         /* HSE used as PLL clock source */
+ 520:.//USER/system_stm32f4xx.c ****         pllvco = (HSE_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
+ 521:.//USER/system_stm32f4xx.c ****       }
+ 522:.//USER/system_stm32f4xx.c ****       else
+ 523:.//USER/system_stm32f4xx.c ****       {
+ 524:.//USER/system_stm32f4xx.c ****         /* HSI used as PLL clock source */
+ 525:.//USER/system_stm32f4xx.c ****         pllvco = (HSI_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);      
+ 526:.//USER/system_stm32f4xx.c ****       }
+ 527:.//USER/system_stm32f4xx.c **** #elif defined (STM32F411xE)
+ 528:.//USER/system_stm32f4xx.c **** #if defined (USE_HSE_BYPASS)
+ 529:.//USER/system_stm32f4xx.c ****       if (pllsource != 0)
+ 530:.//USER/system_stm32f4xx.c ****       {
+ 531:.//USER/system_stm32f4xx.c ****         /* HSE used as PLL clock source */
+ 532:.//USER/system_stm32f4xx.c ****         pllvco = (HSE_BYPASS_INPUT_FREQUENCY / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
+ 533:.//USER/system_stm32f4xx.c ****       }  
+ 534:.//USER/system_stm32f4xx.c **** #else  
+ 535:.//USER/system_stm32f4xx.c ****       if (pllsource == 0)
+ 536:.//USER/system_stm32f4xx.c ****       {
+ 537:.//USER/system_stm32f4xx.c ****         /* HSI used as PLL clock source */
+ 538:.//USER/system_stm32f4xx.c ****         pllvco = (HSI_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
+ 539:.//USER/system_stm32f4xx.c ****       }  
+ 540:.//USER/system_stm32f4xx.c **** #endif /* USE_HSE_BYPASS */  
+ 541:.//USER/system_stm32f4xx.c **** #endif /* STM32F40_41xxx || STM32F427_437xx || STM32F429_439xx || STM32F401xx */  
+ 542:.//USER/system_stm32f4xx.c ****       pllp = (((RCC->PLLCFGR & RCC_PLLCFGR_PLLP) >>16) + 1 ) *2;
+ 543:.//USER/system_stm32f4xx.c ****       SystemCoreClock = pllvco/pllp;      
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 11
+
+
+ 544:.//USER/system_stm32f4xx.c ****       break;
+ 545:.//USER/system_stm32f4xx.c ****     default:
+ 546:.//USER/system_stm32f4xx.c ****       SystemCoreClock = HSI_VALUE;
+ 547:.//USER/system_stm32f4xx.c ****       break;
+ 548:.//USER/system_stm32f4xx.c ****   }
+ 549:.//USER/system_stm32f4xx.c ****   /* Compute HCLK frequency --------------------------------------------------*/
+ 550:.//USER/system_stm32f4xx.c ****   /* Get HCLK prescaler */
+ 551:.//USER/system_stm32f4xx.c ****   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
+ 552:.//USER/system_stm32f4xx.c ****   /* HCLK frequency */
+ 553:.//USER/system_stm32f4xx.c ****   SystemCoreClock >>= tmp;
+ 554:.//USER/system_stm32f4xx.c **** }
+ 555:.//USER/system_stm32f4xx.c **** 
+ 556:.//USER/system_stm32f4xx.c **** /**
+ 557:.//USER/system_stm32f4xx.c ****   * @brief  Configures the System clock source, PLL Multiplier and Divider factors, 
+ 558:.//USER/system_stm32f4xx.c ****   *         AHB/APBx prescalers and Flash settings
+ 559:.//USER/system_stm32f4xx.c ****   * @Note   This function should be called only once the RCC clock configuration  
+ 560:.//USER/system_stm32f4xx.c ****   *         is reset to the default reset state (done in SystemInit() function).   
+ 561:.//USER/system_stm32f4xx.c ****   * @param  None
+ 562:.//USER/system_stm32f4xx.c ****   * @retval None
+ 563:.//USER/system_stm32f4xx.c ****   */
+ 564:.//USER/system_stm32f4xx.c **** static void SetSysClock(void)
+ 565:.//USER/system_stm32f4xx.c **** {
+  29              		.loc 1 565 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 82B0     		sub	sp, sp, #8
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+ 566:.//USER/system_stm32f4xx.c **** #if defined (STM32F40_41xxx) || defined (STM32F427_437xx) || defined (STM32F429_439xx) || defined (
+ 567:.//USER/system_stm32f4xx.c **** /******************************************************************************/
+ 568:.//USER/system_stm32f4xx.c **** /*            PLL (clocked by HSE) used as System clock source                */
+ 569:.//USER/system_stm32f4xx.c **** /******************************************************************************/
+ 570:.//USER/system_stm32f4xx.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+  37              		.loc 1 570 0
+  38 0002 0023     		movs	r3, #0
+  39 0004 0193     		str	r3, [sp, #4]
+  40 0006 0093     		str	r3, [sp]
+ 571:.//USER/system_stm32f4xx.c ****   
+ 572:.//USER/system_stm32f4xx.c ****   /* Enable HSE */
+ 573:.//USER/system_stm32f4xx.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+  41              		.loc 1 573 0
+  42 0008 2A4A     		ldr	r2, .L10
+  43 000a 1368     		ldr	r3, [r2]
+  44 000c 43F48033 		orr	r3, r3, #65536
+  45 0010 1360     		str	r3, [r2]
+  46              	.L3:
+ 574:.//USER/system_stm32f4xx.c ****  
+ 575:.//USER/system_stm32f4xx.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 576:.//USER/system_stm32f4xx.c ****   do
+ 577:.//USER/system_stm32f4xx.c ****   {
+ 578:.//USER/system_stm32f4xx.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+  47              		.loc 1 578 0 discriminator 2
+  48 0012 284B     		ldr	r3, .L10
+  49 0014 1B68     		ldr	r3, [r3]
+  50 0016 03F40033 		and	r3, r3, #131072
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 12
+
+
+  51 001a 0093     		str	r3, [sp]
+ 579:.//USER/system_stm32f4xx.c ****     StartUpCounter++;
+  52              		.loc 1 579 0 discriminator 2
+  53 001c 019B     		ldr	r3, [sp, #4]
+  54 001e 0133     		adds	r3, r3, #1
+  55 0020 0193     		str	r3, [sp, #4]
+ 580:.//USER/system_stm32f4xx.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+  56              		.loc 1 580 0 discriminator 2
+  57 0022 009B     		ldr	r3, [sp]
+  58 0024 1BB9     		cbnz	r3, .L2
+  59              		.loc 1 580 0 is_stmt 0 discriminator 1
+  60 0026 019B     		ldr	r3, [sp, #4]
+  61 0028 B3F5A04F 		cmp	r3, #20480
+  62 002c F1D1     		bne	.L3
+  63              	.L2:
+ 581:.//USER/system_stm32f4xx.c **** 
+ 582:.//USER/system_stm32f4xx.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+  64              		.loc 1 582 0 is_stmt 1
+  65 002e 214B     		ldr	r3, .L10
+  66 0030 1B68     		ldr	r3, [r3]
+  67 0032 13F4003F 		tst	r3, #131072
+  68 0036 02D0     		beq	.L4
+ 583:.//USER/system_stm32f4xx.c ****   {
+ 584:.//USER/system_stm32f4xx.c ****     HSEStatus = (uint32_t)0x01;
+  69              		.loc 1 584 0
+  70 0038 0123     		movs	r3, #1
+  71 003a 0093     		str	r3, [sp]
+  72 003c 01E0     		b	.L5
+  73              	.L4:
+ 585:.//USER/system_stm32f4xx.c ****   }
+ 586:.//USER/system_stm32f4xx.c ****   else
+ 587:.//USER/system_stm32f4xx.c ****   {
+ 588:.//USER/system_stm32f4xx.c ****     HSEStatus = (uint32_t)0x00;
+  74              		.loc 1 588 0
+  75 003e 0023     		movs	r3, #0
+  76 0040 0093     		str	r3, [sp]
+  77              	.L5:
+ 589:.//USER/system_stm32f4xx.c ****   }
+ 590:.//USER/system_stm32f4xx.c **** 
+ 591:.//USER/system_stm32f4xx.c ****   if (HSEStatus == (uint32_t)0x01)
+  78              		.loc 1 591 0
+  79 0042 009B     		ldr	r3, [sp]
+  80 0044 012B     		cmp	r3, #1
+  81 0046 32D1     		bne	.L1
+ 592:.//USER/system_stm32f4xx.c ****   {
+ 593:.//USER/system_stm32f4xx.c ****     /* Select regulator voltage output Scale 1 mode */
+ 594:.//USER/system_stm32f4xx.c ****     RCC->APB1ENR |= RCC_APB1ENR_PWREN;
+  82              		.loc 1 594 0
+  83 0048 1A4B     		ldr	r3, .L10
+  84 004a 1A6C     		ldr	r2, [r3, #64]
+  85 004c 42F08052 		orr	r2, r2, #268435456
+  86 0050 1A64     		str	r2, [r3, #64]
+ 595:.//USER/system_stm32f4xx.c ****     PWR->CR |= PWR_CR_VOS;
+  87              		.loc 1 595 0
+  88 0052 1949     		ldr	r1, .L10+4
+  89 0054 0A68     		ldr	r2, [r1]
+  90 0056 42F44042 		orr	r2, r2, #49152
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 13
+
+
+  91 005a 0A60     		str	r2, [r1]
+ 596:.//USER/system_stm32f4xx.c **** 
+ 597:.//USER/system_stm32f4xx.c ****     /* HCLK = SYSCLK / 1*/
+ 598:.//USER/system_stm32f4xx.c ****     RCC->CFGR |= RCC_CFGR_HPRE_DIV1;
+  92              		.loc 1 598 0
+  93 005c 9A68     		ldr	r2, [r3, #8]
+  94 005e 9A60     		str	r2, [r3, #8]
+ 599:.//USER/system_stm32f4xx.c **** 
+ 600:.//USER/system_stm32f4xx.c **** #if defined (STM32F40_41xxx) || defined (STM32F427_437xx) || defined (STM32F429_439xx)      
+ 601:.//USER/system_stm32f4xx.c ****     /* PCLK2 = HCLK / 2*/
+ 602:.//USER/system_stm32f4xx.c ****     RCC->CFGR |= RCC_CFGR_PPRE2_DIV2;
+  95              		.loc 1 602 0
+  96 0060 9A68     		ldr	r2, [r3, #8]
+  97 0062 42F40042 		orr	r2, r2, #32768
+  98 0066 9A60     		str	r2, [r3, #8]
+ 603:.//USER/system_stm32f4xx.c ****     
+ 604:.//USER/system_stm32f4xx.c ****     /* PCLK1 = HCLK / 4*/
+ 605:.//USER/system_stm32f4xx.c ****     RCC->CFGR |= RCC_CFGR_PPRE1_DIV4;
+  99              		.loc 1 605 0
+ 100 0068 9A68     		ldr	r2, [r3, #8]
+ 101 006a 42F4A052 		orr	r2, r2, #5120
+ 102 006e 9A60     		str	r2, [r3, #8]
+ 606:.//USER/system_stm32f4xx.c **** #endif /* STM32F40_41xxx || STM32F427_437x || STM32F429_439xx */
+ 607:.//USER/system_stm32f4xx.c **** 
+ 608:.//USER/system_stm32f4xx.c **** #if defined (STM32F401xx)
+ 609:.//USER/system_stm32f4xx.c ****     /* PCLK2 = HCLK / 2*/
+ 610:.//USER/system_stm32f4xx.c ****     RCC->CFGR |= RCC_CFGR_PPRE2_DIV1;
+ 611:.//USER/system_stm32f4xx.c ****     
+ 612:.//USER/system_stm32f4xx.c ****     /* PCLK1 = HCLK / 4*/
+ 613:.//USER/system_stm32f4xx.c ****     RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;
+ 614:.//USER/system_stm32f4xx.c **** #endif /* STM32F401xx */
+ 615:.//USER/system_stm32f4xx.c ****    
+ 616:.//USER/system_stm32f4xx.c ****     /* Configure the main PLL */
+ 617:.//USER/system_stm32f4xx.c ****     RCC->PLLCFGR = PLL_M | (PLL_N << 6) | (((PLL_P >> 1) -1) << 16) |
+ 103              		.loc 1 617 0
+ 104 0070 124A     		ldr	r2, .L10+8
+ 105 0072 5A60     		str	r2, [r3, #4]
+ 618:.//USER/system_stm32f4xx.c ****                    (RCC_PLLCFGR_PLLSRC_HSE) | (PLL_Q << 24);
+ 619:.//USER/system_stm32f4xx.c **** 
+ 620:.//USER/system_stm32f4xx.c ****     /* Enable the main PLL */
+ 621:.//USER/system_stm32f4xx.c ****     RCC->CR |= RCC_CR_PLLON;
+ 106              		.loc 1 621 0
+ 107 0074 1A68     		ldr	r2, [r3]
+ 108 0076 42F08072 		orr	r2, r2, #16777216
+ 109 007a 1A60     		str	r2, [r3]
+ 110              	.L7:
+ 622:.//USER/system_stm32f4xx.c **** 
+ 623:.//USER/system_stm32f4xx.c ****     /* Wait till the main PLL is ready */
+ 624:.//USER/system_stm32f4xx.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 111              		.loc 1 624 0 discriminator 1
+ 112 007c 0D4B     		ldr	r3, .L10
+ 113 007e 1B68     		ldr	r3, [r3]
+ 114 0080 13F0007F 		tst	r3, #33554432
+ 115 0084 FAD0     		beq	.L7
+ 625:.//USER/system_stm32f4xx.c ****     {
+ 626:.//USER/system_stm32f4xx.c ****     }
+ 627:.//USER/system_stm32f4xx.c ****    
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 14
+
+
+ 628:.//USER/system_stm32f4xx.c **** #if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+ 629:.//USER/system_stm32f4xx.c ****     /* Enable the Over-drive to extend the clock frequency to 180 Mhz */
+ 630:.//USER/system_stm32f4xx.c ****     PWR->CR |= PWR_CR_ODEN;
+ 631:.//USER/system_stm32f4xx.c ****     while((PWR->CSR & PWR_CSR_ODRDY) == 0)
+ 632:.//USER/system_stm32f4xx.c ****     {
+ 633:.//USER/system_stm32f4xx.c ****     }
+ 634:.//USER/system_stm32f4xx.c ****     PWR->CR |= PWR_CR_ODSWEN;
+ 635:.//USER/system_stm32f4xx.c ****     while((PWR->CSR & PWR_CSR_ODSWRDY) == 0)
+ 636:.//USER/system_stm32f4xx.c ****     {
+ 637:.//USER/system_stm32f4xx.c ****     }      
+ 638:.//USER/system_stm32f4xx.c ****     /* Configure Flash prefetch, Instruction cache, Data cache and wait state */
+ 639:.//USER/system_stm32f4xx.c ****     FLASH->ACR = FLASH_ACR_PRFTEN | FLASH_ACR_ICEN |FLASH_ACR_DCEN |FLASH_ACR_LATENCY_5WS;
+ 640:.//USER/system_stm32f4xx.c **** #endif /* STM32F427_437x || STM32F429_439xx  */
+ 641:.//USER/system_stm32f4xx.c **** 
+ 642:.//USER/system_stm32f4xx.c **** #if defined (STM32F40_41xxx)     
+ 643:.//USER/system_stm32f4xx.c ****     /* Configure Flash prefetch, Instruction cache, Data cache and wait state */
+ 644:.//USER/system_stm32f4xx.c ****     FLASH->ACR = FLASH_ACR_PRFTEN | FLASH_ACR_ICEN |FLASH_ACR_DCEN |FLASH_ACR_LATENCY_5WS;
+ 116              		.loc 1 644 0
+ 117 0086 40F20572 		movw	r2, #1797
+ 118 008a 0D4B     		ldr	r3, .L10+12
+ 119 008c 1A60     		str	r2, [r3]
+ 645:.//USER/system_stm32f4xx.c **** #endif /* STM32F40_41xxx  */
+ 646:.//USER/system_stm32f4xx.c **** 
+ 647:.//USER/system_stm32f4xx.c **** #if defined (STM32F401xx)
+ 648:.//USER/system_stm32f4xx.c ****     /* Configure Flash prefetch, Instruction cache, Data cache and wait state */
+ 649:.//USER/system_stm32f4xx.c ****     FLASH->ACR = FLASH_ACR_PRFTEN | FLASH_ACR_ICEN |FLASH_ACR_DCEN |FLASH_ACR_LATENCY_2WS;
+ 650:.//USER/system_stm32f4xx.c **** #endif /* STM32F401xx */
+ 651:.//USER/system_stm32f4xx.c **** 
+ 652:.//USER/system_stm32f4xx.c ****     /* Select the main PLL as system clock source */
+ 653:.//USER/system_stm32f4xx.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 120              		.loc 1 653 0
+ 121 008e A3F58063 		sub	r3, r3, #1024
+ 122 0092 9A68     		ldr	r2, [r3, #8]
+ 123 0094 22F00302 		bic	r2, r2, #3
+ 124 0098 9A60     		str	r2, [r3, #8]
+ 654:.//USER/system_stm32f4xx.c ****     RCC->CFGR |= RCC_CFGR_SW_PLL;
+ 125              		.loc 1 654 0
+ 126 009a 9A68     		ldr	r2, [r3, #8]
+ 127 009c 42F00202 		orr	r2, r2, #2
+ 128 00a0 9A60     		str	r2, [r3, #8]
+ 129              	.L8:
+ 655:.//USER/system_stm32f4xx.c **** 
+ 656:.//USER/system_stm32f4xx.c ****     /* Wait till the main PLL is used as system clock source */
+ 657:.//USER/system_stm32f4xx.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS ) != RCC_CFGR_SWS_PLL);
+ 130              		.loc 1 657 0 discriminator 1
+ 131 00a2 044B     		ldr	r3, .L10
+ 132 00a4 9B68     		ldr	r3, [r3, #8]
+ 133 00a6 03F00C03 		and	r3, r3, #12
+ 134 00aa 082B     		cmp	r3, #8
+ 135 00ac F9D1     		bne	.L8
+ 136              	.L1:
+ 658:.//USER/system_stm32f4xx.c ****     {
+ 659:.//USER/system_stm32f4xx.c ****     }
+ 660:.//USER/system_stm32f4xx.c ****   }
+ 661:.//USER/system_stm32f4xx.c ****   else
+ 662:.//USER/system_stm32f4xx.c ****   { /* If HSE fails to start-up, the application will have wrong clock
+ 663:.//USER/system_stm32f4xx.c ****          configuration. User can add here some code to deal with this error */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 15
+
+
+ 664:.//USER/system_stm32f4xx.c ****   }
+ 665:.//USER/system_stm32f4xx.c **** #elif defined (STM32F411xE)
+ 666:.//USER/system_stm32f4xx.c **** #if defined (USE_HSE_BYPASS) 
+ 667:.//USER/system_stm32f4xx.c **** /******************************************************************************/
+ 668:.//USER/system_stm32f4xx.c **** /*            PLL (clocked by HSE) used as System clock source                */
+ 669:.//USER/system_stm32f4xx.c **** /******************************************************************************/
+ 670:.//USER/system_stm32f4xx.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 671:.//USER/system_stm32f4xx.c ****   
+ 672:.//USER/system_stm32f4xx.c ****   /* Enable HSE and HSE BYPASS */
+ 673:.//USER/system_stm32f4xx.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON | RCC_CR_HSEBYP);
+ 674:.//USER/system_stm32f4xx.c ****  
+ 675:.//USER/system_stm32f4xx.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 676:.//USER/system_stm32f4xx.c ****   do
+ 677:.//USER/system_stm32f4xx.c ****   {
+ 678:.//USER/system_stm32f4xx.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 679:.//USER/system_stm32f4xx.c ****     StartUpCounter++;
+ 680:.//USER/system_stm32f4xx.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 681:.//USER/system_stm32f4xx.c **** 
+ 682:.//USER/system_stm32f4xx.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 683:.//USER/system_stm32f4xx.c ****   {
+ 684:.//USER/system_stm32f4xx.c ****     HSEStatus = (uint32_t)0x01;
+ 685:.//USER/system_stm32f4xx.c ****   }
+ 686:.//USER/system_stm32f4xx.c ****   else
+ 687:.//USER/system_stm32f4xx.c ****   {
+ 688:.//USER/system_stm32f4xx.c ****     HSEStatus = (uint32_t)0x00;
+ 689:.//USER/system_stm32f4xx.c ****   }
+ 690:.//USER/system_stm32f4xx.c **** 
+ 691:.//USER/system_stm32f4xx.c ****   if (HSEStatus == (uint32_t)0x01)
+ 692:.//USER/system_stm32f4xx.c ****   {
+ 693:.//USER/system_stm32f4xx.c ****     /* Select regulator voltage output Scale 1 mode */
+ 694:.//USER/system_stm32f4xx.c ****     RCC->APB1ENR |= RCC_APB1ENR_PWREN;
+ 695:.//USER/system_stm32f4xx.c ****     PWR->CR |= PWR_CR_VOS;
+ 696:.//USER/system_stm32f4xx.c **** 
+ 697:.//USER/system_stm32f4xx.c ****     /* HCLK = SYSCLK / 1*/
+ 698:.//USER/system_stm32f4xx.c ****     RCC->CFGR |= RCC_CFGR_HPRE_DIV1;
+ 699:.//USER/system_stm32f4xx.c **** 
+ 700:.//USER/system_stm32f4xx.c ****     /* PCLK2 = HCLK / 2*/
+ 701:.//USER/system_stm32f4xx.c ****     RCC->CFGR |= RCC_CFGR_PPRE2_DIV1;
+ 702:.//USER/system_stm32f4xx.c ****     
+ 703:.//USER/system_stm32f4xx.c ****     /* PCLK1 = HCLK / 4*/
+ 704:.//USER/system_stm32f4xx.c ****     RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;
+ 705:.//USER/system_stm32f4xx.c **** 
+ 706:.//USER/system_stm32f4xx.c ****     /* Configure the main PLL */
+ 707:.//USER/system_stm32f4xx.c ****     RCC->PLLCFGR = PLL_M | (PLL_N << 6) | (((PLL_P >> 1) -1) << 16) |
+ 708:.//USER/system_stm32f4xx.c ****                    (RCC_PLLCFGR_PLLSRC_HSE) | (PLL_Q << 24);
+ 709:.//USER/system_stm32f4xx.c ****     
+ 710:.//USER/system_stm32f4xx.c ****     /* Enable the main PLL */
+ 711:.//USER/system_stm32f4xx.c ****     RCC->CR |= RCC_CR_PLLON;
+ 712:.//USER/system_stm32f4xx.c **** 
+ 713:.//USER/system_stm32f4xx.c ****     /* Wait till the main PLL is ready */
+ 714:.//USER/system_stm32f4xx.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 715:.//USER/system_stm32f4xx.c ****     {
+ 716:.//USER/system_stm32f4xx.c ****     }
+ 717:.//USER/system_stm32f4xx.c **** 
+ 718:.//USER/system_stm32f4xx.c ****     /* Configure Flash prefetch, Instruction cache, Data cache and wait state */
+ 719:.//USER/system_stm32f4xx.c ****     FLASH->ACR = FLASH_ACR_PRFTEN | FLASH_ACR_ICEN |FLASH_ACR_DCEN |FLASH_ACR_LATENCY_2WS;
+ 720:.//USER/system_stm32f4xx.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 16
+
+
+ 721:.//USER/system_stm32f4xx.c ****     /* Select the main PLL as system clock source */
+ 722:.//USER/system_stm32f4xx.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 723:.//USER/system_stm32f4xx.c ****     RCC->CFGR |= RCC_CFGR_SW_PLL;
+ 724:.//USER/system_stm32f4xx.c **** 
+ 725:.//USER/system_stm32f4xx.c ****     /* Wait till the main PLL is used as system clock source */
+ 726:.//USER/system_stm32f4xx.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS ) != RCC_CFGR_SWS_PLL);
+ 727:.//USER/system_stm32f4xx.c ****     {
+ 728:.//USER/system_stm32f4xx.c ****     }
+ 729:.//USER/system_stm32f4xx.c ****   }
+ 730:.//USER/system_stm32f4xx.c ****   else
+ 731:.//USER/system_stm32f4xx.c ****   { /* If HSE fails to start-up, the application will have wrong clock
+ 732:.//USER/system_stm32f4xx.c ****          configuration. User can add here some code to deal with this error */
+ 733:.//USER/system_stm32f4xx.c ****   }
+ 734:.//USER/system_stm32f4xx.c **** #else /* HSI will be used as PLL clock source */
+ 735:.//USER/system_stm32f4xx.c ****   /* Select regulator voltage output Scale 1 mode */
+ 736:.//USER/system_stm32f4xx.c ****   RCC->APB1ENR |= RCC_APB1ENR_PWREN;
+ 737:.//USER/system_stm32f4xx.c ****   PWR->CR |= PWR_CR_VOS;
+ 738:.//USER/system_stm32f4xx.c ****   
+ 739:.//USER/system_stm32f4xx.c ****   /* HCLK = SYSCLK / 1*/
+ 740:.//USER/system_stm32f4xx.c ****   RCC->CFGR |= RCC_CFGR_HPRE_DIV1;
+ 741:.//USER/system_stm32f4xx.c ****   
+ 742:.//USER/system_stm32f4xx.c ****   /* PCLK2 = HCLK / 2*/
+ 743:.//USER/system_stm32f4xx.c ****   RCC->CFGR |= RCC_CFGR_PPRE2_DIV1;
+ 744:.//USER/system_stm32f4xx.c ****   
+ 745:.//USER/system_stm32f4xx.c ****   /* PCLK1 = HCLK / 4*/
+ 746:.//USER/system_stm32f4xx.c ****   RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;
+ 747:.//USER/system_stm32f4xx.c ****   
+ 748:.//USER/system_stm32f4xx.c ****   /* Configure the main PLL */
+ 749:.//USER/system_stm32f4xx.c ****   RCC->PLLCFGR = PLL_M | (PLL_N << 6) | (((PLL_P >> 1) -1) << 16) | (PLL_Q << 24); 
+ 750:.//USER/system_stm32f4xx.c ****   
+ 751:.//USER/system_stm32f4xx.c ****   /* Enable the main PLL */
+ 752:.//USER/system_stm32f4xx.c ****   RCC->CR |= RCC_CR_PLLON;
+ 753:.//USER/system_stm32f4xx.c ****   
+ 754:.//USER/system_stm32f4xx.c ****   /* Wait till the main PLL is ready */
+ 755:.//USER/system_stm32f4xx.c ****   while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 756:.//USER/system_stm32f4xx.c ****   {
+ 757:.//USER/system_stm32f4xx.c ****   }
+ 758:.//USER/system_stm32f4xx.c ****   
+ 759:.//USER/system_stm32f4xx.c ****   /* Configure Flash prefetch, Instruction cache, Data cache and wait state */
+ 760:.//USER/system_stm32f4xx.c ****   FLASH->ACR = FLASH_ACR_PRFTEN | FLASH_ACR_ICEN |FLASH_ACR_DCEN |FLASH_ACR_LATENCY_2WS;
+ 761:.//USER/system_stm32f4xx.c ****   
+ 762:.//USER/system_stm32f4xx.c ****   /* Select the main PLL as system clock source */
+ 763:.//USER/system_stm32f4xx.c ****   RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 764:.//USER/system_stm32f4xx.c ****   RCC->CFGR |= RCC_CFGR_SW_PLL;
+ 765:.//USER/system_stm32f4xx.c ****   
+ 766:.//USER/system_stm32f4xx.c ****   /* Wait till the main PLL is used as system clock source */
+ 767:.//USER/system_stm32f4xx.c ****   while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS ) != RCC_CFGR_SWS_PLL);
+ 768:.//USER/system_stm32f4xx.c ****   {
+ 769:.//USER/system_stm32f4xx.c ****   }
+ 770:.//USER/system_stm32f4xx.c **** #endif /* USE_HSE_BYPASS */  
+ 771:.//USER/system_stm32f4xx.c **** #endif /* STM32F40_41xxx || STM32F427_437xx || STM32F429_439xx || STM32F401xx */  
+ 772:.//USER/system_stm32f4xx.c **** }
+ 137              		.loc 1 772 0
+ 138 00ae 02B0     		add	sp, sp, #8
+ 139              	.LCFI1:
+ 140              		.cfi_def_cfa_offset 0
+ 141              		@ sp needed
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 17
+
+
+ 142 00b0 7047     		bx	lr
+ 143              	.L11:
+ 144 00b2 00BF     		.align	2
+ 145              	.L10:
+ 146 00b4 00380240 		.word	1073887232
+ 147 00b8 00700040 		.word	1073770496
+ 148 00bc 08544007 		.word	121656328
+ 149 00c0 003C0240 		.word	1073888256
+ 150              		.cfi_endproc
+ 151              	.LFE114:
+ 153              		.section	.text.SystemInit,"ax",%progbits
+ 154              		.align	2
+ 155              		.global	SystemInit
+ 156              		.thumb
+ 157              		.thumb_func
+ 159              	SystemInit:
+ 160              	.LFB112:
+ 418:.//USER/system_stm32f4xx.c ****   /* FPU settings ------------------------------------------------------------*/
+ 161              		.loc 1 418 0
+ 162              		.cfi_startproc
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 0, uses_anonymous_args = 0
+ 165 0000 10B5     		push	{r4, lr}
+ 166              	.LCFI2:
+ 167              		.cfi_def_cfa_offset 8
+ 168              		.cfi_offset 4, -8
+ 169              		.cfi_offset 14, -4
+ 421:.//USER/system_stm32f4xx.c ****   #endif
+ 170              		.loc 1 421 0
+ 171 0002 104C     		ldr	r4, .L14
+ 172 0004 D4F88830 		ldr	r3, [r4, #136]
+ 173 0008 43F47003 		orr	r3, r3, #15728640
+ 174 000c C4F88830 		str	r3, [r4, #136]
+ 425:.//USER/system_stm32f4xx.c **** 
+ 175              		.loc 1 425 0
+ 176 0010 0D4B     		ldr	r3, .L14+4
+ 177 0012 1A68     		ldr	r2, [r3]
+ 178 0014 42F00102 		orr	r2, r2, #1
+ 179 0018 1A60     		str	r2, [r3]
+ 428:.//USER/system_stm32f4xx.c **** 
+ 180              		.loc 1 428 0
+ 181 001a 0021     		movs	r1, #0
+ 182 001c 9960     		str	r1, [r3, #8]
+ 431:.//USER/system_stm32f4xx.c **** 
+ 183              		.loc 1 431 0
+ 184 001e 1A68     		ldr	r2, [r3]
+ 185 0020 22F08472 		bic	r2, r2, #17301504
+ 186 0024 22F48032 		bic	r2, r2, #65536
+ 187 0028 1A60     		str	r2, [r3]
+ 434:.//USER/system_stm32f4xx.c **** 
+ 188              		.loc 1 434 0
+ 189 002a 084A     		ldr	r2, .L14+8
+ 190 002c 5A60     		str	r2, [r3, #4]
+ 437:.//USER/system_stm32f4xx.c **** 
+ 191              		.loc 1 437 0
+ 192 002e 1A68     		ldr	r2, [r3]
+ 193 0030 22F48022 		bic	r2, r2, #262144
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 18
+
+
+ 194 0034 1A60     		str	r2, [r3]
+ 440:.//USER/system_stm32f4xx.c **** 
+ 195              		.loc 1 440 0
+ 196 0036 D960     		str	r1, [r3, #12]
+ 448:.//USER/system_stm32f4xx.c **** 
+ 197              		.loc 1 448 0
+ 198 0038 FFF7FEFF 		bl	SetSysClock
+ 199              	.LVL0:
+ 454:.//USER/system_stm32f4xx.c **** #endif
+ 200              		.loc 1 454 0
+ 201 003c 4FF00063 		mov	r3, #134217728
+ 202 0040 A360     		str	r3, [r4, #8]
+ 203 0042 10BD     		pop	{r4, pc}
+ 204              	.L15:
+ 205              		.align	2
+ 206              	.L14:
+ 207 0044 00ED00E0 		.word	-536810240
+ 208 0048 00380240 		.word	1073887232
+ 209 004c 10300024 		.word	603992080
+ 210              		.cfi_endproc
+ 211              	.LFE112:
+ 213              		.section	.text.SystemCoreClockUpdate,"ax",%progbits
+ 214              		.align	2
+ 215              		.global	SystemCoreClockUpdate
+ 216              		.thumb
+ 217              		.thumb_func
+ 219              	SystemCoreClockUpdate:
+ 220              	.LFB113:
+ 495:.//USER/system_stm32f4xx.c ****   uint32_t tmp = 0, pllvco = 0, pllp = 2, pllsource = 0, pllm = 2;
+ 221              		.loc 1 495 0
+ 222              		.cfi_startproc
+ 223              		@ args = 0, pretend = 0, frame = 0
+ 224              		@ frame_needed = 0, uses_anonymous_args = 0
+ 225              		@ link register save eliminated.
+ 226              	.LVL1:
+ 499:.//USER/system_stm32f4xx.c **** 
+ 227              		.loc 1 499 0
+ 228 0000 234B     		ldr	r3, .L25
+ 229 0002 9B68     		ldr	r3, [r3, #8]
+ 230 0004 03F00C03 		and	r3, r3, #12
+ 231              	.LVL2:
+ 501:.//USER/system_stm32f4xx.c ****   {
+ 232              		.loc 1 501 0
+ 233 0008 042B     		cmp	r3, #4
+ 234 000a 07D0     		beq	.L18
+ 235 000c 082B     		cmp	r3, #8
+ 236 000e 09D0     		beq	.L19
+ 237 0010 002B     		cmp	r3, #0
+ 238 0012 2DD1     		bne	.L24
+ 504:.//USER/system_stm32f4xx.c ****       break;
+ 239              		.loc 1 504 0
+ 240 0014 1F4A     		ldr	r2, .L25+4
+ 241 0016 204B     		ldr	r3, .L25+8
+ 242              	.LVL3:
+ 243 0018 1A60     		str	r2, [r3]
+ 505:.//USER/system_stm32f4xx.c ****     case 0x04:  /* HSE used as system clock source */
+ 244              		.loc 1 505 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 19
+
+
+ 245 001a 2CE0     		b	.L21
+ 246              	.LVL4:
+ 247              	.L18:
+ 507:.//USER/system_stm32f4xx.c ****       break;
+ 248              		.loc 1 507 0
+ 249 001c 1F4A     		ldr	r2, .L25+12
+ 250 001e 1E4B     		ldr	r3, .L25+8
+ 251              	.LVL5:
+ 252 0020 1A60     		str	r2, [r3]
+ 508:.//USER/system_stm32f4xx.c ****     case 0x08:  /* PLL used as system clock source */
+ 253              		.loc 1 508 0
+ 254 0022 28E0     		b	.L21
+ 255              	.LVL6:
+ 256              	.L19:
+ 513:.//USER/system_stm32f4xx.c ****       pllm = RCC->PLLCFGR & RCC_PLLCFGR_PLLM;
+ 257              		.loc 1 513 0
+ 258 0024 1A4B     		ldr	r3, .L25
+ 259              	.LVL7:
+ 260 0026 5A68     		ldr	r2, [r3, #4]
+ 261              	.LVL8:
+ 514:.//USER/system_stm32f4xx.c ****       
+ 262              		.loc 1 514 0
+ 263 0028 5B68     		ldr	r3, [r3, #4]
+ 264 002a 03F03F03 		and	r3, r3, #63
+ 265              	.LVL9:
+ 517:.//USER/system_stm32f4xx.c ****       {
+ 266              		.loc 1 517 0
+ 267 002e 12F4800F 		tst	r2, #4194304
+ 268 0032 09D0     		beq	.L22
+ 520:.//USER/system_stm32f4xx.c ****       }
+ 269              		.loc 1 520 0
+ 270 0034 194A     		ldr	r2, .L25+12
+ 271              	.LVL10:
+ 272 0036 B2FBF3F2 		udiv	r2, r2, r3
+ 273 003a 154B     		ldr	r3, .L25
+ 274              	.LVL11:
+ 275 003c 5B68     		ldr	r3, [r3, #4]
+ 276 003e C3F38813 		ubfx	r3, r3, #6, #9
+ 277 0042 03FB02F2 		mul	r2, r3, r2
+ 278              	.LVL12:
+ 279 0046 08E0     		b	.L23
+ 280              	.LVL13:
+ 281              	.L22:
+ 525:.//USER/system_stm32f4xx.c ****       }
+ 282              		.loc 1 525 0
+ 283 0048 124A     		ldr	r2, .L25+4
+ 284              	.LVL14:
+ 285 004a B2FBF3F3 		udiv	r3, r2, r3
+ 286              	.LVL15:
+ 287 004e 104A     		ldr	r2, .L25
+ 288 0050 5168     		ldr	r1, [r2, #4]
+ 289 0052 C1F38811 		ubfx	r1, r1, #6, #9
+ 290 0056 01FB03F2 		mul	r2, r1, r3
+ 291              	.LVL16:
+ 292              	.L23:
+ 542:.//USER/system_stm32f4xx.c ****       SystemCoreClock = pllvco/pllp;      
+ 293              		.loc 1 542 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 20
+
+
+ 294 005a 0D4B     		ldr	r3, .L25
+ 295 005c 5B68     		ldr	r3, [r3, #4]
+ 296 005e C3F30143 		ubfx	r3, r3, #16, #2
+ 297 0062 0133     		adds	r3, r3, #1
+ 298 0064 5B00     		lsls	r3, r3, #1
+ 299              	.LVL17:
+ 543:.//USER/system_stm32f4xx.c ****       break;
+ 300              		.loc 1 543 0
+ 301 0066 B2FBF3F3 		udiv	r3, r2, r3
+ 302              	.LVL18:
+ 303 006a 0B4A     		ldr	r2, .L25+8
+ 304              	.LVL19:
+ 305 006c 1360     		str	r3, [r2]
+ 544:.//USER/system_stm32f4xx.c ****     default:
+ 306              		.loc 1 544 0
+ 307 006e 02E0     		b	.L21
+ 308              	.LVL20:
+ 309              	.L24:
+ 546:.//USER/system_stm32f4xx.c ****       break;
+ 310              		.loc 1 546 0
+ 311 0070 084A     		ldr	r2, .L25+4
+ 312 0072 094B     		ldr	r3, .L25+8
+ 313              	.LVL21:
+ 314 0074 1A60     		str	r2, [r3]
+ 315              	.LVL22:
+ 316              	.L21:
+ 551:.//USER/system_stm32f4xx.c ****   /* HCLK frequency */
+ 317              		.loc 1 551 0
+ 318 0076 064B     		ldr	r3, .L25
+ 319 0078 9B68     		ldr	r3, [r3, #8]
+ 320 007a C3F30313 		ubfx	r3, r3, #4, #4
+ 321 007e 084A     		ldr	r2, .L25+16
+ 322 0080 D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 323 0082 DAB2     		uxtb	r2, r3
+ 324              	.LVL23:
+ 553:.//USER/system_stm32f4xx.c **** }
+ 325              		.loc 1 553 0
+ 326 0084 0449     		ldr	r1, .L25+8
+ 327 0086 0B68     		ldr	r3, [r1]
+ 328 0088 D340     		lsrs	r3, r3, r2
+ 329 008a 0B60     		str	r3, [r1]
+ 330 008c 7047     		bx	lr
+ 331              	.L26:
+ 332 008e 00BF     		.align	2
+ 333              	.L25:
+ 334 0090 00380240 		.word	1073887232
+ 335 0094 0024F400 		.word	16000000
+ 336 0098 00000000 		.word	.LANCHOR0
+ 337 009c 00127A00 		.word	8000000
+ 338 00a0 00000000 		.word	.LANCHOR1
+ 339              		.cfi_endproc
+ 340              	.LFE113:
+ 342              		.global	AHBPrescTable
+ 343              		.global	SystemCoreClock
+ 344              		.section	.data.AHBPrescTable,"aw",%progbits
+ 345              		.align	2
+ 346              		.set	.LANCHOR1,. + 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 21
+
+
+ 349              	AHBPrescTable:
+ 350 0000 00       		.byte	0
+ 351 0001 00       		.byte	0
+ 352 0002 00       		.byte	0
+ 353 0003 00       		.byte	0
+ 354 0004 00       		.byte	0
+ 355 0005 00       		.byte	0
+ 356 0006 00       		.byte	0
+ 357 0007 00       		.byte	0
+ 358 0008 01       		.byte	1
+ 359 0009 02       		.byte	2
+ 360 000a 03       		.byte	3
+ 361 000b 04       		.byte	4
+ 362 000c 06       		.byte	6
+ 363 000d 07       		.byte	7
+ 364 000e 08       		.byte	8
+ 365 000f 09       		.byte	9
+ 366              		.section	.data.SystemCoreClock,"aw",%progbits
+ 367              		.align	2
+ 368              		.set	.LANCHOR0,. + 0
+ 371              	SystemCoreClock:
+ 372 0000 007A030A 		.word	168000000
+ 373              		.text
+ 374              	.Letext0:
+ 375              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 376              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 377              		.file 4 "CORE/core_cm4.h"
+ 378              		.file 5 ".//USER/stm32f4xx.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s 			page 22
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 system_stm32f4xx.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:22     .text.SetSysClock:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:26     .text.SetSysClock:0000000000000000 SetSysClock
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:146    .text.SetSysClock:00000000000000b4 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:154    .text.SystemInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:159    .text.SystemInit:0000000000000000 SystemInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:207    .text.SystemInit:0000000000000044 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:214    .text.SystemCoreClockUpdate:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:219    .text.SystemCoreClockUpdate:0000000000000000 SystemCoreClockUpdate
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:334    .text.SystemCoreClockUpdate:0000000000000090 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:349    .data.AHBPrescTable:0000000000000000 AHBPrescTable
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:371    .data.SystemCoreClock:0000000000000000 SystemCoreClock
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:345    .data.AHBPrescTable:0000000000000000 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccKpdI49.s:367    .data.SystemCoreClock:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

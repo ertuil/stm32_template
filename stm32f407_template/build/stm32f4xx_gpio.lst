@@ -1,0 +1,1400 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"stm32f4xx_gpio.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.GPIO_DeInit,"ax",%progbits
+  22              		.align	2
+  23              		.global	GPIO_DeInit
+  24              		.thumb
+  25              		.thumb_func
+  27              	GPIO_DeInit:
+  28              	.LFB112:
+  29              		.file 1 ".//FWLIB/src/stm32f4xx_gpio.c"
+   1:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+   2:.//FWLIB/src/stm32f4xx_gpio.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f4xx_gpio.c ****   * @file    stm32f4xx_gpio.c
+   4:.//FWLIB/src/stm32f4xx_gpio.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f4xx_gpio.c ****   * @version V1.4.0
+   6:.//FWLIB/src/stm32f4xx_gpio.c ****   * @date    04-August-2014
+   7:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:.//FWLIB/src/stm32f4xx_gpio.c ****   *          functionalities of the GPIO peripheral:           
+   9:.//FWLIB/src/stm32f4xx_gpio.c ****   *           + Initialization and Configuration
+  10:.//FWLIB/src/stm32f4xx_gpio.c ****   *           + GPIO Read and Write
+  11:.//FWLIB/src/stm32f4xx_gpio.c ****   *           + GPIO Alternate functions configuration
+  12:.//FWLIB/src/stm32f4xx_gpio.c ****   * 
+  13:.//FWLIB/src/stm32f4xx_gpio.c **** @verbatim  
+  14:.//FWLIB/src/stm32f4xx_gpio.c ****  ===============================================================================
+  15:.//FWLIB/src/stm32f4xx_gpio.c ****                       ##### How to use this driver #####
+  16:.//FWLIB/src/stm32f4xx_gpio.c ****  ===============================================================================       
+  17:.//FWLIB/src/stm32f4xx_gpio.c ****  [..]             
+  18:.//FWLIB/src/stm32f4xx_gpio.c ****    (#) Enable the GPIO AHB clock using the following function
+  19:.//FWLIB/src/stm32f4xx_gpio.c ****        RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOx, ENABLE);
+  20:.//FWLIB/src/stm32f4xx_gpio.c ****                
+  21:.//FWLIB/src/stm32f4xx_gpio.c ****    (#) Configure the GPIO pin(s) using GPIO_Init()
+  22:.//FWLIB/src/stm32f4xx_gpio.c ****        Four possible configuration are available for each pin:
+  23:.//FWLIB/src/stm32f4xx_gpio.c ****        (++) Input: Floating, Pull-up, Pull-down.
+  24:.//FWLIB/src/stm32f4xx_gpio.c ****        (++) Output: Push-Pull (Pull-up, Pull-down or no Pull)
+  25:.//FWLIB/src/stm32f4xx_gpio.c ****             Open Drain (Pull-up, Pull-down or no Pull). In output mode, the speed 
+  26:.//FWLIB/src/stm32f4xx_gpio.c ****             is configurable: 2 MHz, 25 MHz, 50 MHz or 100 MHz.
+  27:.//FWLIB/src/stm32f4xx_gpio.c ****        (++) Alternate Function: Push-Pull (Pull-up, Pull-down or no Pull) Open 
+  28:.//FWLIB/src/stm32f4xx_gpio.c ****             Drain (Pull-up, Pull-down or no Pull).
+  29:.//FWLIB/src/stm32f4xx_gpio.c ****        (++) Analog: required mode when a pin is to be used as ADC channel or DAC 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 2
+
+
+  30:.//FWLIB/src/stm32f4xx_gpio.c ****             output.
+  31:.//FWLIB/src/stm32f4xx_gpio.c ****    
+  32:.//FWLIB/src/stm32f4xx_gpio.c ****    (#) Peripherals alternate function:
+  33:.//FWLIB/src/stm32f4xx_gpio.c ****        (++) For ADC and DAC, configure the desired pin in analog mode using 
+  34:.//FWLIB/src/stm32f4xx_gpio.c ****             GPIO_InitStruct->GPIO_Mode = GPIO_Mode_AN;
+  35:.//FWLIB/src/stm32f4xx_gpio.c ****             (+++) For other peripherals (TIM, USART...):
+  36:.//FWLIB/src/stm32f4xx_gpio.c ****             (+++) Connect the pin to the desired peripherals' Alternate 
+  37:.//FWLIB/src/stm32f4xx_gpio.c ****                      Function (AF) using GPIO_PinAFConfig() function
+  38:.//FWLIB/src/stm32f4xx_gpio.c ****             (+++) Configure the desired pin in alternate function mode using
+  39:.//FWLIB/src/stm32f4xx_gpio.c ****                      GPIO_InitStruct->GPIO_Mode = GPIO_Mode_AF
+  40:.//FWLIB/src/stm32f4xx_gpio.c ****             (+++) Select the type, pull-up/pull-down and output speed via 
+  41:.//FWLIB/src/stm32f4xx_gpio.c ****                      GPIO_PuPd, GPIO_OType and GPIO_Speed members
+  42:.//FWLIB/src/stm32f4xx_gpio.c ****             (+++) Call GPIO_Init() function
+  43:.//FWLIB/src/stm32f4xx_gpio.c ****           
+  44:.//FWLIB/src/stm32f4xx_gpio.c ****    (#) To get the level of a pin configured in input mode use GPIO_ReadInputDataBit()
+  45:.//FWLIB/src/stm32f4xx_gpio.c ****             
+  46:.//FWLIB/src/stm32f4xx_gpio.c ****    (#) To set/reset the level of a pin configured in output mode use 
+  47:.//FWLIB/src/stm32f4xx_gpio.c ****        GPIO_SetBits()/GPIO_ResetBits()
+  48:.//FWLIB/src/stm32f4xx_gpio.c ****                  
+  49:.//FWLIB/src/stm32f4xx_gpio.c ****    (#) During and just after reset, the alternate functions are not 
+  50:.//FWLIB/src/stm32f4xx_gpio.c ****        active and the GPIO pins are configured in input floating mode (except JTAG
+  51:.//FWLIB/src/stm32f4xx_gpio.c ****        pins).
+  52:.//FWLIB/src/stm32f4xx_gpio.c ****   
+  53:.//FWLIB/src/stm32f4xx_gpio.c ****    (#) The LSE oscillator pins OSC32_IN and OSC32_OUT can be used as general purpose 
+  54:.//FWLIB/src/stm32f4xx_gpio.c ****        (PC14 and PC15, respectively) when the LSE oscillator is off. The LSE has 
+  55:.//FWLIB/src/stm32f4xx_gpio.c ****        priority over the GPIO function.
+  56:.//FWLIB/src/stm32f4xx_gpio.c ****   
+  57:.//FWLIB/src/stm32f4xx_gpio.c ****    (#) The HSE oscillator pins OSC_IN/OSC_OUT can be used as 
+  58:.//FWLIB/src/stm32f4xx_gpio.c ****        general purpose PH0 and PH1, respectively, when the HSE oscillator is off. 
+  59:.//FWLIB/src/stm32f4xx_gpio.c ****        The HSE has priority over the GPIO function.
+  60:.//FWLIB/src/stm32f4xx_gpio.c ****                
+  61:.//FWLIB/src/stm32f4xx_gpio.c **** @endverbatim        
+  62:.//FWLIB/src/stm32f4xx_gpio.c ****   *
+  63:.//FWLIB/src/stm32f4xx_gpio.c ****   ******************************************************************************
+  64:.//FWLIB/src/stm32f4xx_gpio.c ****   * @attention
+  65:.//FWLIB/src/stm32f4xx_gpio.c ****   *
+  66:.//FWLIB/src/stm32f4xx_gpio.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  67:.//FWLIB/src/stm32f4xx_gpio.c ****   *
+  68:.//FWLIB/src/stm32f4xx_gpio.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  69:.//FWLIB/src/stm32f4xx_gpio.c ****   * You may not use this file except in compliance with the License.
+  70:.//FWLIB/src/stm32f4xx_gpio.c ****   * You may obtain a copy of the License at:
+  71:.//FWLIB/src/stm32f4xx_gpio.c ****   *
+  72:.//FWLIB/src/stm32f4xx_gpio.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  73:.//FWLIB/src/stm32f4xx_gpio.c ****   *
+  74:.//FWLIB/src/stm32f4xx_gpio.c ****   * Unless required by applicable law or agreed to in writing, software 
+  75:.//FWLIB/src/stm32f4xx_gpio.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  76:.//FWLIB/src/stm32f4xx_gpio.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  77:.//FWLIB/src/stm32f4xx_gpio.c ****   * See the License for the specific language governing permissions and
+  78:.//FWLIB/src/stm32f4xx_gpio.c ****   * limitations under the License.
+  79:.//FWLIB/src/stm32f4xx_gpio.c ****   *
+  80:.//FWLIB/src/stm32f4xx_gpio.c ****   ******************************************************************************
+  81:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+  82:.//FWLIB/src/stm32f4xx_gpio.c **** 
+  83:.//FWLIB/src/stm32f4xx_gpio.c **** /* Includes ------------------------------------------------------------------*/
+  84:.//FWLIB/src/stm32f4xx_gpio.c **** #include "stm32f4xx_gpio.h"
+  85:.//FWLIB/src/stm32f4xx_gpio.c **** #include "stm32f4xx_rcc.h"
+  86:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 3
+
+
+  87:.//FWLIB/src/stm32f4xx_gpio.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+  88:.//FWLIB/src/stm32f4xx_gpio.c ****   * @{
+  89:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+  90:.//FWLIB/src/stm32f4xx_gpio.c **** 
+  91:.//FWLIB/src/stm32f4xx_gpio.c **** /** @defgroup GPIO 
+  92:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief GPIO driver modules
+  93:.//FWLIB/src/stm32f4xx_gpio.c ****   * @{
+  94:.//FWLIB/src/stm32f4xx_gpio.c ****   */ 
+  95:.//FWLIB/src/stm32f4xx_gpio.c **** 
+  96:.//FWLIB/src/stm32f4xx_gpio.c **** /* Private typedef -----------------------------------------------------------*/
+  97:.//FWLIB/src/stm32f4xx_gpio.c **** /* Private define ------------------------------------------------------------*/
+  98:.//FWLIB/src/stm32f4xx_gpio.c **** /* Private macro -------------------------------------------------------------*/
+  99:.//FWLIB/src/stm32f4xx_gpio.c **** /* Private variables ---------------------------------------------------------*/
+ 100:.//FWLIB/src/stm32f4xx_gpio.c **** /* Private function prototypes -----------------------------------------------*/
+ 101:.//FWLIB/src/stm32f4xx_gpio.c **** /* Private functions ---------------------------------------------------------*/
+ 102:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 103:.//FWLIB/src/stm32f4xx_gpio.c **** /** @defgroup GPIO_Private_Functions
+ 104:.//FWLIB/src/stm32f4xx_gpio.c ****   * @{
+ 105:.//FWLIB/src/stm32f4xx_gpio.c ****   */ 
+ 106:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 107:.//FWLIB/src/stm32f4xx_gpio.c **** /** @defgroup GPIO_Group1 Initialization and Configuration
+ 108:.//FWLIB/src/stm32f4xx_gpio.c ****  *  @brief   Initialization and Configuration
+ 109:.//FWLIB/src/stm32f4xx_gpio.c ****  *
+ 110:.//FWLIB/src/stm32f4xx_gpio.c **** @verbatim   
+ 111:.//FWLIB/src/stm32f4xx_gpio.c ****  ===============================================================================
+ 112:.//FWLIB/src/stm32f4xx_gpio.c ****                  ##### Initialization and Configuration #####
+ 113:.//FWLIB/src/stm32f4xx_gpio.c ****  ===============================================================================  
+ 114:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 115:.//FWLIB/src/stm32f4xx_gpio.c **** @endverbatim
+ 116:.//FWLIB/src/stm32f4xx_gpio.c ****   * @{
+ 117:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 118:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 119:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 120:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  De-initializes the GPIOx peripheral registers to their default reset values.
+ 121:.//FWLIB/src/stm32f4xx_gpio.c ****   * @note   By default, The GPIO pins are configured in input floating mode (except JTAG pins).
+ 122:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 123:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 124:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 125:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval None
+ 126:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 127:.//FWLIB/src/stm32f4xx_gpio.c **** void GPIO_DeInit(GPIO_TypeDef* GPIOx)
+ 128:.//FWLIB/src/stm32f4xx_gpio.c **** {
+  30              		.loc 1 128 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              	.LVL0:
+  35 0000 08B5     		push	{r3, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 3, -8
+  39              		.cfi_offset 14, -4
+ 129:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 130:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 131:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 132:.//FWLIB/src/stm32f4xx_gpio.c ****   if (GPIOx == GPIOA)
+  40              		.loc 1 132 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 4
+
+
+  41 0002 454B     		ldr	r3, .L14
+  42 0004 9842     		cmp	r0, r3
+  43 0006 08D1     		bne	.L2
+ 133:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 134:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+  44              		.loc 1 134 0
+  45 0008 0121     		movs	r1, #1
+  46 000a 0846     		mov	r0, r1
+  47              	.LVL1:
+  48 000c FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+  49              	.LVL2:
+ 135:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOA, DISABLE);
+  50              		.loc 1 135 0
+  51 0010 0021     		movs	r1, #0
+  52 0012 0120     		movs	r0, #1
+  53 0014 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+  54              	.LVL3:
+  55 0018 08BD     		pop	{r3, pc}
+  56              	.LVL4:
+  57              	.L2:
+ 136:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 137:.//FWLIB/src/stm32f4xx_gpio.c ****   else if (GPIOx == GPIOB)
+  58              		.loc 1 137 0
+  59 001a 404B     		ldr	r3, .L14+4
+  60 001c 9842     		cmp	r0, r3
+  61 001e 08D1     		bne	.L4
+ 138:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 139:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+  62              		.loc 1 139 0
+  63 0020 0121     		movs	r1, #1
+  64 0022 0220     		movs	r0, #2
+  65              	.LVL5:
+  66 0024 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+  67              	.LVL6:
+ 140:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOB, DISABLE);
+  68              		.loc 1 140 0
+  69 0028 0021     		movs	r1, #0
+  70 002a 0220     		movs	r0, #2
+  71 002c FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+  72              	.LVL7:
+  73 0030 08BD     		pop	{r3, pc}
+  74              	.LVL8:
+  75              	.L4:
+ 141:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 142:.//FWLIB/src/stm32f4xx_gpio.c ****   else if (GPIOx == GPIOC)
+  76              		.loc 1 142 0
+  77 0032 3B4B     		ldr	r3, .L14+8
+  78 0034 9842     		cmp	r0, r3
+  79 0036 08D1     		bne	.L5
+ 143:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 144:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOC, ENABLE);
+  80              		.loc 1 144 0
+  81 0038 0121     		movs	r1, #1
+  82 003a 0420     		movs	r0, #4
+  83              	.LVL9:
+  84 003c FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+  85              	.LVL10:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 5
+
+
+ 145:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOC, DISABLE);
+  86              		.loc 1 145 0
+  87 0040 0021     		movs	r1, #0
+  88 0042 0420     		movs	r0, #4
+  89 0044 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+  90              	.LVL11:
+  91 0048 08BD     		pop	{r3, pc}
+  92              	.LVL12:
+  93              	.L5:
+ 146:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 147:.//FWLIB/src/stm32f4xx_gpio.c ****   else if (GPIOx == GPIOD)
+  94              		.loc 1 147 0
+  95 004a 364B     		ldr	r3, .L14+12
+  96 004c 9842     		cmp	r0, r3
+  97 004e 08D1     		bne	.L6
+ 148:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 149:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+  98              		.loc 1 149 0
+  99 0050 0121     		movs	r1, #1
+ 100 0052 0820     		movs	r0, #8
+ 101              	.LVL13:
+ 102 0054 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 103              	.LVL14:
+ 150:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOD, DISABLE);
+ 104              		.loc 1 150 0
+ 105 0058 0021     		movs	r1, #0
+ 106 005a 0820     		movs	r0, #8
+ 107 005c FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 108              	.LVL15:
+ 109 0060 08BD     		pop	{r3, pc}
+ 110              	.LVL16:
+ 111              	.L6:
+ 151:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 152:.//FWLIB/src/stm32f4xx_gpio.c ****   else if (GPIOx == GPIOE)
+ 112              		.loc 1 152 0
+ 113 0062 314B     		ldr	r3, .L14+16
+ 114 0064 9842     		cmp	r0, r3
+ 115 0066 08D1     		bne	.L7
+ 153:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 154:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOE, ENABLE);
+ 116              		.loc 1 154 0
+ 117 0068 0121     		movs	r1, #1
+ 118 006a 1020     		movs	r0, #16
+ 119              	.LVL17:
+ 120 006c FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 121              	.LVL18:
+ 155:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOE, DISABLE);
+ 122              		.loc 1 155 0
+ 123 0070 0021     		movs	r1, #0
+ 124 0072 1020     		movs	r0, #16
+ 125 0074 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 126              	.LVL19:
+ 127 0078 08BD     		pop	{r3, pc}
+ 128              	.LVL20:
+ 129              	.L7:
+ 156:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 157:.//FWLIB/src/stm32f4xx_gpio.c ****   else if (GPIOx == GPIOF)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 6
+
+
+ 130              		.loc 1 157 0
+ 131 007a 2C4B     		ldr	r3, .L14+20
+ 132 007c 9842     		cmp	r0, r3
+ 133 007e 08D1     		bne	.L8
+ 158:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 159:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOF, ENABLE);
+ 134              		.loc 1 159 0
+ 135 0080 0121     		movs	r1, #1
+ 136 0082 2020     		movs	r0, #32
+ 137              	.LVL21:
+ 138 0084 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 139              	.LVL22:
+ 160:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOF, DISABLE);
+ 140              		.loc 1 160 0
+ 141 0088 0021     		movs	r1, #0
+ 142 008a 2020     		movs	r0, #32
+ 143 008c FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 144              	.LVL23:
+ 145 0090 08BD     		pop	{r3, pc}
+ 146              	.LVL24:
+ 147              	.L8:
+ 161:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 162:.//FWLIB/src/stm32f4xx_gpio.c ****   else if (GPIOx == GPIOG)
+ 148              		.loc 1 162 0
+ 149 0092 274B     		ldr	r3, .L14+24
+ 150 0094 9842     		cmp	r0, r3
+ 151 0096 08D1     		bne	.L9
+ 163:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 164:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOG, ENABLE);
+ 152              		.loc 1 164 0
+ 153 0098 0121     		movs	r1, #1
+ 154 009a 4020     		movs	r0, #64
+ 155              	.LVL25:
+ 156 009c FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 157              	.LVL26:
+ 165:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOG, DISABLE);
+ 158              		.loc 1 165 0
+ 159 00a0 0021     		movs	r1, #0
+ 160 00a2 4020     		movs	r0, #64
+ 161 00a4 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 162              	.LVL27:
+ 163 00a8 08BD     		pop	{r3, pc}
+ 164              	.LVL28:
+ 165              	.L9:
+ 166:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 167:.//FWLIB/src/stm32f4xx_gpio.c ****   else if (GPIOx == GPIOH)
+ 166              		.loc 1 167 0
+ 167 00aa 224B     		ldr	r3, .L14+28
+ 168 00ac 9842     		cmp	r0, r3
+ 169 00ae 08D1     		bne	.L10
+ 168:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 169:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOH, ENABLE);
+ 170              		.loc 1 169 0
+ 171 00b0 0121     		movs	r1, #1
+ 172 00b2 8020     		movs	r0, #128
+ 173              	.LVL29:
+ 174 00b4 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 7
+
+
+ 175              	.LVL30:
+ 170:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOH, DISABLE);
+ 176              		.loc 1 170 0
+ 177 00b8 0021     		movs	r1, #0
+ 178 00ba 8020     		movs	r0, #128
+ 179 00bc FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 180              	.LVL31:
+ 181 00c0 08BD     		pop	{r3, pc}
+ 182              	.LVL32:
+ 183              	.L10:
+ 171:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 172:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 173:.//FWLIB/src/stm32f4xx_gpio.c ****   else if (GPIOx == GPIOI)
+ 184              		.loc 1 173 0
+ 185 00c2 1D4B     		ldr	r3, .L14+32
+ 186 00c4 9842     		cmp	r0, r3
+ 187 00c6 0AD1     		bne	.L11
+ 174:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 175:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOI, ENABLE);
+ 188              		.loc 1 175 0
+ 189 00c8 0121     		movs	r1, #1
+ 190 00ca 4FF48070 		mov	r0, #256
+ 191              	.LVL33:
+ 192 00ce FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 193              	.LVL34:
+ 176:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOI, DISABLE);
+ 194              		.loc 1 176 0
+ 195 00d2 0021     		movs	r1, #0
+ 196 00d4 4FF48070 		mov	r0, #256
+ 197 00d8 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 198              	.LVL35:
+ 199 00dc 08BD     		pop	{r3, pc}
+ 200              	.LVL36:
+ 201              	.L11:
+ 177:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 178:.//FWLIB/src/stm32f4xx_gpio.c ****   else if (GPIOx == GPIOJ)
+ 202              		.loc 1 178 0
+ 203 00de 174B     		ldr	r3, .L14+36
+ 204 00e0 9842     		cmp	r0, r3
+ 205 00e2 0AD1     		bne	.L12
+ 179:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 180:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOJ, ENABLE);
+ 206              		.loc 1 180 0
+ 207 00e4 0121     		movs	r1, #1
+ 208 00e6 4FF40070 		mov	r0, #512
+ 209              	.LVL37:
+ 210 00ea FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 211              	.LVL38:
+ 181:.//FWLIB/src/stm32f4xx_gpio.c ****     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOJ, DISABLE);
+ 212              		.loc 1 181 0
+ 213 00ee 0021     		movs	r1, #0
+ 214 00f0 4FF40070 		mov	r0, #512
+ 215 00f4 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 216              	.LVL39:
+ 217 00f8 08BD     		pop	{r3, pc}
+ 218              	.LVL40:
+ 219              	.L12:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 8
+
+
+ 182:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 183:.//FWLIB/src/stm32f4xx_gpio.c ****   else
+ 184:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 185:.//FWLIB/src/stm32f4xx_gpio.c ****     if (GPIOx == GPIOK)
+ 220              		.loc 1 185 0
+ 221 00fa 114B     		ldr	r3, .L14+40
+ 222 00fc 9842     		cmp	r0, r3
+ 223 00fe 09D1     		bne	.L1
+ 186:.//FWLIB/src/stm32f4xx_gpio.c ****     {
+ 187:.//FWLIB/src/stm32f4xx_gpio.c ****       RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOK, ENABLE);
+ 224              		.loc 1 187 0
+ 225 0100 0121     		movs	r1, #1
+ 226 0102 4FF48060 		mov	r0, #1024
+ 227              	.LVL41:
+ 228 0106 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 229              	.LVL42:
+ 188:.//FWLIB/src/stm32f4xx_gpio.c ****       RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOK, DISABLE);
+ 230              		.loc 1 188 0
+ 231 010a 0021     		movs	r1, #0
+ 232 010c 4FF48060 		mov	r0, #1024
+ 233 0110 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+ 234              	.LVL43:
+ 235              	.L1:
+ 236 0114 08BD     		pop	{r3, pc}
+ 237              	.L15:
+ 238 0116 00BF     		.align	2
+ 239              	.L14:
+ 240 0118 00000240 		.word	1073872896
+ 241 011c 00040240 		.word	1073873920
+ 242 0120 00080240 		.word	1073874944
+ 243 0124 000C0240 		.word	1073875968
+ 244 0128 00100240 		.word	1073876992
+ 245 012c 00140240 		.word	1073878016
+ 246 0130 00180240 		.word	1073879040
+ 247 0134 001C0240 		.word	1073880064
+ 248 0138 00200240 		.word	1073881088
+ 249 013c 00240240 		.word	1073882112
+ 250 0140 00280240 		.word	1073883136
+ 251              		.cfi_endproc
+ 252              	.LFE112:
+ 254              		.section	.text.GPIO_Init,"ax",%progbits
+ 255              		.align	2
+ 256              		.global	GPIO_Init
+ 257              		.thumb
+ 258              		.thumb_func
+ 260              	GPIO_Init:
+ 261              	.LFB113:
+ 189:.//FWLIB/src/stm32f4xx_gpio.c ****     }
+ 190:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 191:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 192:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 193:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 194:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Initializes the GPIOx peripheral according to the specified parameters in the GPIO_Init
+ 195:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 196:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 197:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 198:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIO_InitStruct: pointer to a GPIO_InitTypeDef structure that contains
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 9
+
+
+ 199:.//FWLIB/src/stm32f4xx_gpio.c ****   *         the configuration information for the specified GPIO peripheral.
+ 200:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval None
+ 201:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 202:.//FWLIB/src/stm32f4xx_gpio.c **** void GPIO_Init(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)
+ 203:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 262              		.loc 1 203 0
+ 263              		.cfi_startproc
+ 264              		@ args = 0, pretend = 0, frame = 0
+ 265              		@ frame_needed = 0, uses_anonymous_args = 0
+ 266              		@ link register save eliminated.
+ 267              	.LVL44:
+ 268 0000 70B4     		push	{r4, r5, r6}
+ 269              	.LCFI1:
+ 270              		.cfi_def_cfa_offset 12
+ 271              		.cfi_offset 4, -12
+ 272              		.cfi_offset 5, -8
+ 273              		.cfi_offset 6, -4
+ 274              	.LVL45:
+ 204:.//FWLIB/src/stm32f4xx_gpio.c ****   uint32_t pinpos = 0x00, pos = 0x00 , currentpin = 0x00;
+ 205:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 206:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 207:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 208:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_PIN(GPIO_InitStruct->GPIO_Pin));
+ 209:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_MODE(GPIO_InitStruct->GPIO_Mode));
+ 210:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_PUPD(GPIO_InitStruct->GPIO_PuPd));
+ 211:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 212:.//FWLIB/src/stm32f4xx_gpio.c ****   /* ------------------------- Configure the port pins ---------------- */
+ 213:.//FWLIB/src/stm32f4xx_gpio.c ****   /*-- GPIO Mode Configuration --*/
+ 214:.//FWLIB/src/stm32f4xx_gpio.c ****   for (pinpos = 0x00; pinpos < 0x10; pinpos++)
+ 275              		.loc 1 214 0
+ 276 0002 0023     		movs	r3, #0
+ 277 0004 3AE0     		b	.L17
+ 278              	.LVL46:
+ 279              	.L20:
+ 215:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 216:.//FWLIB/src/stm32f4xx_gpio.c ****     pos = ((uint32_t)0x01) << pinpos;
+ 280              		.loc 1 216 0
+ 281 0006 0122     		movs	r2, #1
+ 282 0008 9A40     		lsls	r2, r2, r3
+ 283              	.LVL47:
+ 217:.//FWLIB/src/stm32f4xx_gpio.c ****     /* Get the port pins position */
+ 218:.//FWLIB/src/stm32f4xx_gpio.c ****     currentpin = (GPIO_InitStruct->GPIO_Pin) & pos;
+ 284              		.loc 1 218 0
+ 285 000a 0C68     		ldr	r4, [r1]
+ 286              	.LVL48:
+ 219:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 220:.//FWLIB/src/stm32f4xx_gpio.c ****     if (currentpin == pos)
+ 287              		.loc 1 220 0
+ 288 000c A243     		bics	r2, r2, r4
+ 289              	.LVL49:
+ 290 000e 34D1     		bne	.L18
+ 221:.//FWLIB/src/stm32f4xx_gpio.c ****     {
+ 222:.//FWLIB/src/stm32f4xx_gpio.c ****       GPIOx->MODER  &= ~(GPIO_MODER_MODER0 << (pinpos * 2));
+ 291              		.loc 1 222 0
+ 292 0010 0468     		ldr	r4, [r0]
+ 293              	.LVL50:
+ 294 0012 5D00     		lsls	r5, r3, #1
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 10
+
+
+ 295 0014 0322     		movs	r2, #3
+ 296 0016 AA40     		lsls	r2, r2, r5
+ 297 0018 D243     		mvns	r2, r2
+ 298 001a 1440     		ands	r4, r4, r2
+ 299 001c 0460     		str	r4, [r0]
+ 300              	.LVL51:
+ 223:.//FWLIB/src/stm32f4xx_gpio.c ****       GPIOx->MODER |= (((uint32_t)GPIO_InitStruct->GPIO_Mode) << (pinpos * 2));
+ 301              		.loc 1 223 0
+ 302 001e 0668     		ldr	r6, [r0]
+ 303 0020 0C79     		ldrb	r4, [r1, #4]	@ zero_extendqisi2
+ 304 0022 AC40     		lsls	r4, r4, r5
+ 305 0024 3443     		orrs	r4, r4, r6
+ 306 0026 0460     		str	r4, [r0]
+ 224:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 225:.//FWLIB/src/stm32f4xx_gpio.c ****       if ((GPIO_InitStruct->GPIO_Mode == GPIO_Mode_OUT) || (GPIO_InitStruct->GPIO_Mode == GPIO_Mode
+ 307              		.loc 1 225 0
+ 308 0028 0C79     		ldrb	r4, [r1, #4]	@ zero_extendqisi2
+ 309 002a 013C     		subs	r4, r4, #1
+ 310 002c E4B2     		uxtb	r4, r4
+ 311 002e 012C     		cmp	r4, #1
+ 312 0030 15D8     		bhi	.L19
+ 226:.//FWLIB/src/stm32f4xx_gpio.c ****       {
+ 227:.//FWLIB/src/stm32f4xx_gpio.c ****         /* Check Speed mode parameters */
+ 228:.//FWLIB/src/stm32f4xx_gpio.c ****         assert_param(IS_GPIO_SPEED(GPIO_InitStruct->GPIO_Speed));
+ 229:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 230:.//FWLIB/src/stm32f4xx_gpio.c ****         /* Speed mode configuration */
+ 231:.//FWLIB/src/stm32f4xx_gpio.c ****         GPIOx->OSPEEDR &= ~(GPIO_OSPEEDER_OSPEEDR0 << (pinpos * 2));
+ 313              		.loc 1 231 0
+ 314 0032 8468     		ldr	r4, [r0, #8]
+ 315 0034 2240     		ands	r2, r2, r4
+ 316 0036 8260     		str	r2, [r0, #8]
+ 232:.//FWLIB/src/stm32f4xx_gpio.c ****         GPIOx->OSPEEDR |= ((uint32_t)(GPIO_InitStruct->GPIO_Speed) << (pinpos * 2));
+ 317              		.loc 1 232 0
+ 318 0038 8468     		ldr	r4, [r0, #8]
+ 319 003a 4A79     		ldrb	r2, [r1, #5]	@ zero_extendqisi2
+ 320 003c AA40     		lsls	r2, r2, r5
+ 321 003e 2243     		orrs	r2, r2, r4
+ 322 0040 8260     		str	r2, [r0, #8]
+ 233:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 234:.//FWLIB/src/stm32f4xx_gpio.c ****         /* Check Output mode parameters */
+ 235:.//FWLIB/src/stm32f4xx_gpio.c ****         assert_param(IS_GPIO_OTYPE(GPIO_InitStruct->GPIO_OType));
+ 236:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 237:.//FWLIB/src/stm32f4xx_gpio.c ****         /* Output mode configuration*/
+ 238:.//FWLIB/src/stm32f4xx_gpio.c ****         GPIOx->OTYPER  &= ~((GPIO_OTYPER_OT_0) << ((uint16_t)pinpos)) ;
+ 323              		.loc 1 238 0
+ 324 0042 4668     		ldr	r6, [r0, #4]
+ 325 0044 9AB2     		uxth	r2, r3
+ 326 0046 0124     		movs	r4, #1
+ 327              	.LVL52:
+ 328 0048 9440     		lsls	r4, r4, r2
+ 329              	.LVL53:
+ 330 004a 26EA0404 		bic	r4, r6, r4
+ 331 004e 4460     		str	r4, [r0, #4]
+ 239:.//FWLIB/src/stm32f4xx_gpio.c ****         GPIOx->OTYPER |= (uint16_t)(((uint16_t)GPIO_InitStruct->GPIO_OType) << ((uint16_t)pinpos));
+ 332              		.loc 1 239 0
+ 333 0050 4668     		ldr	r6, [r0, #4]
+ 334 0052 8C79     		ldrb	r4, [r1, #6]	@ zero_extendqisi2
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 11
+
+
+ 335 0054 04FA02F2 		lsl	r2, r4, r2
+ 336 0058 92B2     		uxth	r2, r2
+ 337 005a 3243     		orrs	r2, r2, r6
+ 338 005c 4260     		str	r2, [r0, #4]
+ 339              	.L19:
+ 240:.//FWLIB/src/stm32f4xx_gpio.c ****       }
+ 241:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 242:.//FWLIB/src/stm32f4xx_gpio.c ****       /* Pull-up Pull down resistor configuration*/
+ 243:.//FWLIB/src/stm32f4xx_gpio.c ****       GPIOx->PUPDR &= ~(GPIO_PUPDR_PUPDR0 << ((uint16_t)pinpos * 2));
+ 340              		.loc 1 243 0
+ 341 005e C468     		ldr	r4, [r0, #12]
+ 342 0060 9AB2     		uxth	r2, r3
+ 343 0062 5600     		lsls	r6, r2, #1
+ 344 0064 0322     		movs	r2, #3
+ 345 0066 B240     		lsls	r2, r2, r6
+ 346 0068 24EA0202 		bic	r2, r4, r2
+ 347 006c C260     		str	r2, [r0, #12]
+ 244:.//FWLIB/src/stm32f4xx_gpio.c ****       GPIOx->PUPDR |= (((uint32_t)GPIO_InitStruct->GPIO_PuPd) << (pinpos * 2));
+ 348              		.loc 1 244 0
+ 349 006e C668     		ldr	r6, [r0, #12]
+ 350 0070 CC79     		ldrb	r4, [r1, #7]	@ zero_extendqisi2
+ 351 0072 04FA05F2 		lsl	r2, r4, r5
+ 352 0076 3243     		orrs	r2, r2, r6
+ 353 0078 C260     		str	r2, [r0, #12]
+ 354              	.L18:
+ 214:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 355              		.loc 1 214 0 discriminator 2
+ 356 007a 0133     		adds	r3, r3, #1
+ 357              	.LVL54:
+ 358              	.L17:
+ 214:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 359              		.loc 1 214 0 is_stmt 0 discriminator 1
+ 360 007c 0F2B     		cmp	r3, #15
+ 361 007e C2D9     		bls	.L20
+ 245:.//FWLIB/src/stm32f4xx_gpio.c ****     }
+ 246:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 247:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 362              		.loc 1 247 0 is_stmt 1
+ 363 0080 70BC     		pop	{r4, r5, r6}
+ 364              	.LCFI2:
+ 365              		.cfi_restore 6
+ 366              		.cfi_restore 5
+ 367              		.cfi_restore 4
+ 368              		.cfi_def_cfa_offset 0
+ 369 0082 7047     		bx	lr
+ 370              		.cfi_endproc
+ 371              	.LFE113:
+ 373              		.section	.text.GPIO_StructInit,"ax",%progbits
+ 374              		.align	2
+ 375              		.global	GPIO_StructInit
+ 376              		.thumb
+ 377              		.thumb_func
+ 379              	GPIO_StructInit:
+ 380              	.LFB114:
+ 248:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 249:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 250:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Fills each GPIO_InitStruct member with its default value.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 12
+
+
+ 251:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIO_InitStruct : pointer to a GPIO_InitTypeDef structure which will be initialized.
+ 252:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval None
+ 253:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 254:.//FWLIB/src/stm32f4xx_gpio.c **** void GPIO_StructInit(GPIO_InitTypeDef* GPIO_InitStruct)
+ 255:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 381              		.loc 1 255 0
+ 382              		.cfi_startproc
+ 383              		@ args = 0, pretend = 0, frame = 0
+ 384              		@ frame_needed = 0, uses_anonymous_args = 0
+ 385              		@ link register save eliminated.
+ 386              	.LVL55:
+ 256:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Reset GPIO init structure parameters values */
+ 257:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIO_InitStruct->GPIO_Pin  = GPIO_Pin_All;
+ 387              		.loc 1 257 0
+ 388 0000 4FF6FF73 		movw	r3, #65535
+ 389 0004 0360     		str	r3, [r0]
+ 258:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIO_InitStruct->GPIO_Mode = GPIO_Mode_IN;
+ 390              		.loc 1 258 0
+ 391 0006 0023     		movs	r3, #0
+ 392 0008 0371     		strb	r3, [r0, #4]
+ 259:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIO_InitStruct->GPIO_Speed = GPIO_Speed_2MHz;
+ 393              		.loc 1 259 0
+ 394 000a 4371     		strb	r3, [r0, #5]
+ 260:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIO_InitStruct->GPIO_OType = GPIO_OType_PP;
+ 395              		.loc 1 260 0
+ 396 000c 8371     		strb	r3, [r0, #6]
+ 261:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIO_InitStruct->GPIO_PuPd = GPIO_PuPd_NOPULL;
+ 397              		.loc 1 261 0
+ 398 000e C371     		strb	r3, [r0, #7]
+ 399 0010 7047     		bx	lr
+ 400              		.cfi_endproc
+ 401              	.LFE114:
+ 403 0012 00BF     		.section	.text.GPIO_PinLockConfig,"ax",%progbits
+ 404              		.align	2
+ 405              		.global	GPIO_PinLockConfig
+ 406              		.thumb
+ 407              		.thumb_func
+ 409              	GPIO_PinLockConfig:
+ 410              	.LFB115:
+ 262:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 263:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 264:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 265:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Locks GPIO Pins configuration registers.
+ 266:.//FWLIB/src/stm32f4xx_gpio.c ****   * @note   The locked registers are GPIOx_MODER, GPIOx_OTYPER, GPIOx_OSPEEDR,
+ 267:.//FWLIB/src/stm32f4xx_gpio.c ****   *         GPIOx_PUPDR, GPIOx_AFRL and GPIOx_AFRH.
+ 268:.//FWLIB/src/stm32f4xx_gpio.c ****   * @note   The configuration of the locked GPIO pins can no longer be modified
+ 269:.//FWLIB/src/stm32f4xx_gpio.c ****   *         until the next reset.
+ 270:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 271:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 272:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 273:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIO_Pin: specifies the port bit to be locked.
+ 274:.//FWLIB/src/stm32f4xx_gpio.c ****   *          This parameter can be any combination of GPIO_Pin_x where x can be (0..15).
+ 275:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval None
+ 276:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 277:.//FWLIB/src/stm32f4xx_gpio.c **** void GPIO_PinLockConfig(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+ 278:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 411              		.loc 1 278 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 13
+
+
+ 412              		.cfi_startproc
+ 413              		@ args = 0, pretend = 0, frame = 8
+ 414              		@ frame_needed = 0, uses_anonymous_args = 0
+ 415              		@ link register save eliminated.
+ 416              	.LVL56:
+ 417 0000 82B0     		sub	sp, sp, #8
+ 418              	.LCFI3:
+ 419              		.cfi_def_cfa_offset 8
+ 279:.//FWLIB/src/stm32f4xx_gpio.c ****   __IO uint32_t tmp = 0x00010000;
+ 420              		.loc 1 279 0
+ 421 0002 4FF48033 		mov	r3, #65536
+ 422 0006 0193     		str	r3, [sp, #4]
+ 280:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 281:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 282:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 283:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_PIN(GPIO_Pin));
+ 284:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 285:.//FWLIB/src/stm32f4xx_gpio.c ****   tmp |= GPIO_Pin;
+ 423              		.loc 1 285 0
+ 424 0008 019B     		ldr	r3, [sp, #4]
+ 425 000a 0B43     		orrs	r3, r3, r1
+ 426 000c 0193     		str	r3, [sp, #4]
+ 286:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Set LCKK bit */
+ 287:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIOx->LCKR = tmp;
+ 427              		.loc 1 287 0
+ 428 000e 019B     		ldr	r3, [sp, #4]
+ 429 0010 C361     		str	r3, [r0, #28]
+ 288:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Reset LCKK bit */
+ 289:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIOx->LCKR =  GPIO_Pin;
+ 430              		.loc 1 289 0
+ 431 0012 C161     		str	r1, [r0, #28]
+ 290:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Set LCKK bit */
+ 291:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIOx->LCKR = tmp;
+ 432              		.loc 1 291 0
+ 433 0014 019B     		ldr	r3, [sp, #4]
+ 434 0016 C361     		str	r3, [r0, #28]
+ 292:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Read LCKK bit*/
+ 293:.//FWLIB/src/stm32f4xx_gpio.c ****   tmp = GPIOx->LCKR;
+ 435              		.loc 1 293 0
+ 436 0018 C369     		ldr	r3, [r0, #28]
+ 437 001a 0193     		str	r3, [sp, #4]
+ 294:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Read LCKK bit*/
+ 295:.//FWLIB/src/stm32f4xx_gpio.c ****   tmp = GPIOx->LCKR;
+ 438              		.loc 1 295 0
+ 439 001c C369     		ldr	r3, [r0, #28]
+ 440 001e 0193     		str	r3, [sp, #4]
+ 296:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 441              		.loc 1 296 0
+ 442 0020 02B0     		add	sp, sp, #8
+ 443              	.LCFI4:
+ 444              		.cfi_def_cfa_offset 0
+ 445              		@ sp needed
+ 446 0022 7047     		bx	lr
+ 447              		.cfi_endproc
+ 448              	.LFE115:
+ 450              		.section	.text.GPIO_ReadInputDataBit,"ax",%progbits
+ 451              		.align	2
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 14
+
+
+ 452              		.global	GPIO_ReadInputDataBit
+ 453              		.thumb
+ 454              		.thumb_func
+ 456              	GPIO_ReadInputDataBit:
+ 457              	.LFB116:
+ 297:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 298:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 299:.//FWLIB/src/stm32f4xx_gpio.c ****   * @}
+ 300:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 301:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 302:.//FWLIB/src/stm32f4xx_gpio.c **** /** @defgroup GPIO_Group2 GPIO Read and Write
+ 303:.//FWLIB/src/stm32f4xx_gpio.c ****  *  @brief   GPIO Read and Write
+ 304:.//FWLIB/src/stm32f4xx_gpio.c ****  *
+ 305:.//FWLIB/src/stm32f4xx_gpio.c **** @verbatim   
+ 306:.//FWLIB/src/stm32f4xx_gpio.c ****  ===============================================================================
+ 307:.//FWLIB/src/stm32f4xx_gpio.c ****                          ##### GPIO Read and Write #####
+ 308:.//FWLIB/src/stm32f4xx_gpio.c ****  ===============================================================================  
+ 309:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 310:.//FWLIB/src/stm32f4xx_gpio.c **** @endverbatim
+ 311:.//FWLIB/src/stm32f4xx_gpio.c ****   * @{
+ 312:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 313:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 314:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 315:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Reads the specified input port pin.
+ 316:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 317:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 318:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 319:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIO_Pin: specifies the port bit to read.
+ 320:.//FWLIB/src/stm32f4xx_gpio.c ****   *         This parameter can be GPIO_Pin_x where x can be (0..15).
+ 321:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval The input port pin value.
+ 322:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 323:.//FWLIB/src/stm32f4xx_gpio.c **** uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+ 324:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 458              		.loc 1 324 0
+ 459              		.cfi_startproc
+ 460              		@ args = 0, pretend = 0, frame = 0
+ 461              		@ frame_needed = 0, uses_anonymous_args = 0
+ 462              		@ link register save eliminated.
+ 463              	.LVL57:
+ 325:.//FWLIB/src/stm32f4xx_gpio.c ****   uint8_t bitstatus = 0x00;
+ 326:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 327:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 328:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 329:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GET_GPIO_PIN(GPIO_Pin));
+ 330:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 331:.//FWLIB/src/stm32f4xx_gpio.c ****   if ((GPIOx->IDR & GPIO_Pin) != (uint32_t)Bit_RESET)
+ 464              		.loc 1 331 0
+ 465 0000 0369     		ldr	r3, [r0, #16]
+ 466 0002 1942     		tst	r1, r3
+ 467 0004 01D0     		beq	.L27
+ 332:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 333:.//FWLIB/src/stm32f4xx_gpio.c ****     bitstatus = (uint8_t)Bit_SET;
+ 468              		.loc 1 333 0
+ 469 0006 0120     		movs	r0, #1
+ 470              	.LVL58:
+ 471 0008 7047     		bx	lr
+ 472              	.LVL59:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 15
+
+
+ 473              	.L27:
+ 334:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 335:.//FWLIB/src/stm32f4xx_gpio.c ****   else
+ 336:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 337:.//FWLIB/src/stm32f4xx_gpio.c ****     bitstatus = (uint8_t)Bit_RESET;
+ 474              		.loc 1 337 0
+ 475 000a 0020     		movs	r0, #0
+ 476              	.LVL60:
+ 338:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 339:.//FWLIB/src/stm32f4xx_gpio.c ****   return bitstatus;
+ 340:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 477              		.loc 1 340 0
+ 478 000c 7047     		bx	lr
+ 479              		.cfi_endproc
+ 480              	.LFE116:
+ 482 000e 00BF     		.section	.text.GPIO_ReadInputData,"ax",%progbits
+ 483              		.align	2
+ 484              		.global	GPIO_ReadInputData
+ 485              		.thumb
+ 486              		.thumb_func
+ 488              	GPIO_ReadInputData:
+ 489              	.LFB117:
+ 341:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 342:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 343:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Reads the specified GPIO input data port.
+ 344:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 345:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 346:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 347:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval GPIO input data port value.
+ 348:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 349:.//FWLIB/src/stm32f4xx_gpio.c **** uint16_t GPIO_ReadInputData(GPIO_TypeDef* GPIOx)
+ 350:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 490              		.loc 1 350 0
+ 491              		.cfi_startproc
+ 492              		@ args = 0, pretend = 0, frame = 0
+ 493              		@ frame_needed = 0, uses_anonymous_args = 0
+ 494              		@ link register save eliminated.
+ 495              	.LVL61:
+ 351:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 352:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 353:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 354:.//FWLIB/src/stm32f4xx_gpio.c ****   return ((uint16_t)GPIOx->IDR);
+ 496              		.loc 1 354 0
+ 497 0000 0069     		ldr	r0, [r0, #16]
+ 498              	.LVL62:
+ 355:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 499              		.loc 1 355 0
+ 500 0002 80B2     		uxth	r0, r0
+ 501 0004 7047     		bx	lr
+ 502              		.cfi_endproc
+ 503              	.LFE117:
+ 505 0006 00BF     		.section	.text.GPIO_ReadOutputDataBit,"ax",%progbits
+ 506              		.align	2
+ 507              		.global	GPIO_ReadOutputDataBit
+ 508              		.thumb
+ 509              		.thumb_func
+ 511              	GPIO_ReadOutputDataBit:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 16
+
+
+ 512              	.LFB118:
+ 356:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 357:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 358:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Reads the specified output data port bit.
+ 359:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 360:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 361:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 362:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIO_Pin: specifies the port bit to read.
+ 363:.//FWLIB/src/stm32f4xx_gpio.c ****   *          This parameter can be GPIO_Pin_x where x can be (0..15).
+ 364:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval The output port pin value.
+ 365:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 366:.//FWLIB/src/stm32f4xx_gpio.c **** uint8_t GPIO_ReadOutputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+ 367:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 513              		.loc 1 367 0
+ 514              		.cfi_startproc
+ 515              		@ args = 0, pretend = 0, frame = 0
+ 516              		@ frame_needed = 0, uses_anonymous_args = 0
+ 517              		@ link register save eliminated.
+ 518              	.LVL63:
+ 368:.//FWLIB/src/stm32f4xx_gpio.c ****   uint8_t bitstatus = 0x00;
+ 369:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 370:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 371:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 372:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GET_GPIO_PIN(GPIO_Pin));
+ 373:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 374:.//FWLIB/src/stm32f4xx_gpio.c ****   if (((GPIOx->ODR) & GPIO_Pin) != (uint32_t)Bit_RESET)
+ 519              		.loc 1 374 0
+ 520 0000 4369     		ldr	r3, [r0, #20]
+ 521 0002 1942     		tst	r1, r3
+ 522 0004 01D0     		beq	.L31
+ 375:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 376:.//FWLIB/src/stm32f4xx_gpio.c ****     bitstatus = (uint8_t)Bit_SET;
+ 523              		.loc 1 376 0
+ 524 0006 0120     		movs	r0, #1
+ 525              	.LVL64:
+ 526 0008 7047     		bx	lr
+ 527              	.LVL65:
+ 528              	.L31:
+ 377:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 378:.//FWLIB/src/stm32f4xx_gpio.c ****   else
+ 379:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 380:.//FWLIB/src/stm32f4xx_gpio.c ****     bitstatus = (uint8_t)Bit_RESET;
+ 529              		.loc 1 380 0
+ 530 000a 0020     		movs	r0, #0
+ 531              	.LVL66:
+ 381:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 382:.//FWLIB/src/stm32f4xx_gpio.c ****   return bitstatus;
+ 383:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 532              		.loc 1 383 0
+ 533 000c 7047     		bx	lr
+ 534              		.cfi_endproc
+ 535              	.LFE118:
+ 537 000e 00BF     		.section	.text.GPIO_ReadOutputData,"ax",%progbits
+ 538              		.align	2
+ 539              		.global	GPIO_ReadOutputData
+ 540              		.thumb
+ 541              		.thumb_func
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 17
+
+
+ 543              	GPIO_ReadOutputData:
+ 544              	.LFB119:
+ 384:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 385:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 386:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Reads the specified GPIO output data port.
+ 387:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 388:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 389:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 390:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval GPIO output data port value.
+ 391:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 392:.//FWLIB/src/stm32f4xx_gpio.c **** uint16_t GPIO_ReadOutputData(GPIO_TypeDef* GPIOx)
+ 393:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 545              		.loc 1 393 0
+ 546              		.cfi_startproc
+ 547              		@ args = 0, pretend = 0, frame = 0
+ 548              		@ frame_needed = 0, uses_anonymous_args = 0
+ 549              		@ link register save eliminated.
+ 550              	.LVL67:
+ 394:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 395:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 396:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 397:.//FWLIB/src/stm32f4xx_gpio.c ****   return ((uint16_t)GPIOx->ODR);
+ 551              		.loc 1 397 0
+ 552 0000 4069     		ldr	r0, [r0, #20]
+ 553              	.LVL68:
+ 398:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 554              		.loc 1 398 0
+ 555 0002 80B2     		uxth	r0, r0
+ 556 0004 7047     		bx	lr
+ 557              		.cfi_endproc
+ 558              	.LFE119:
+ 560 0006 00BF     		.section	.text.GPIO_SetBits,"ax",%progbits
+ 561              		.align	2
+ 562              		.global	GPIO_SetBits
+ 563              		.thumb
+ 564              		.thumb_func
+ 566              	GPIO_SetBits:
+ 567              	.LFB120:
+ 399:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 400:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 401:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Sets the selected data port bits.
+ 402:.//FWLIB/src/stm32f4xx_gpio.c ****   * @note   This functions uses GPIOx_BSRR register to allow atomic read/modify 
+ 403:.//FWLIB/src/stm32f4xx_gpio.c ****   *         accesses. In this way, there is no risk of an IRQ occurring between
+ 404:.//FWLIB/src/stm32f4xx_gpio.c ****   *         the read and the modify access.
+ 405:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 406:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 407:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 408:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIO_Pin: specifies the port bits to be written.
+ 409:.//FWLIB/src/stm32f4xx_gpio.c ****   *          This parameter can be any combination of GPIO_Pin_x where x can be (0..15).
+ 410:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval None
+ 411:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 412:.//FWLIB/src/stm32f4xx_gpio.c **** void GPIO_SetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+ 413:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 568              		.loc 1 413 0
+ 569              		.cfi_startproc
+ 570              		@ args = 0, pretend = 0, frame = 0
+ 571              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 18
+
+
+ 572              		@ link register save eliminated.
+ 573              	.LVL69:
+ 414:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 415:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 416:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_PIN(GPIO_Pin));
+ 417:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 418:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIOx->BSRRL = GPIO_Pin;
+ 574              		.loc 1 418 0
+ 575 0000 0183     		strh	r1, [r0, #24]	@ movhi
+ 576 0002 7047     		bx	lr
+ 577              		.cfi_endproc
+ 578              	.LFE120:
+ 580              		.section	.text.GPIO_ResetBits,"ax",%progbits
+ 581              		.align	2
+ 582              		.global	GPIO_ResetBits
+ 583              		.thumb
+ 584              		.thumb_func
+ 586              	GPIO_ResetBits:
+ 587              	.LFB121:
+ 419:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 420:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 421:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 422:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Clears the selected data port bits.
+ 423:.//FWLIB/src/stm32f4xx_gpio.c ****   * @note   This functions uses GPIOx_BSRR register to allow atomic read/modify 
+ 424:.//FWLIB/src/stm32f4xx_gpio.c ****   *         accesses. In this way, there is no risk of an IRQ occurring between
+ 425:.//FWLIB/src/stm32f4xx_gpio.c ****   *         the read and the modify access.
+ 426:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 427:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 428:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 429:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIO_Pin: specifies the port bits to be written.
+ 430:.//FWLIB/src/stm32f4xx_gpio.c ****   *          This parameter can be any combination of GPIO_Pin_x where x can be (0..15).
+ 431:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval None
+ 432:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 433:.//FWLIB/src/stm32f4xx_gpio.c **** void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+ 434:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 588              		.loc 1 434 0
+ 589              		.cfi_startproc
+ 590              		@ args = 0, pretend = 0, frame = 0
+ 591              		@ frame_needed = 0, uses_anonymous_args = 0
+ 592              		@ link register save eliminated.
+ 593              	.LVL70:
+ 435:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 436:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 437:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_PIN(GPIO_Pin));
+ 438:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 439:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIOx->BSRRH = GPIO_Pin;
+ 594              		.loc 1 439 0
+ 595 0000 4183     		strh	r1, [r0, #26]	@ movhi
+ 596 0002 7047     		bx	lr
+ 597              		.cfi_endproc
+ 598              	.LFE121:
+ 600              		.section	.text.GPIO_WriteBit,"ax",%progbits
+ 601              		.align	2
+ 602              		.global	GPIO_WriteBit
+ 603              		.thumb
+ 604              		.thumb_func
+ 606              	GPIO_WriteBit:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 19
+
+
+ 607              	.LFB122:
+ 440:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 441:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 442:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 443:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Sets or clears the selected data port bit.
+ 444:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 445:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 446:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 447:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIO_Pin: specifies the port bit to be written.
+ 448:.//FWLIB/src/stm32f4xx_gpio.c ****   *          This parameter can be one of GPIO_Pin_x where x can be (0..15).
+ 449:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  BitVal: specifies the value to be written to the selected bit.
+ 450:.//FWLIB/src/stm32f4xx_gpio.c ****   *          This parameter can be one of the BitAction enum values:
+ 451:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg Bit_RESET: to clear the port pin
+ 452:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg Bit_SET: to set the port pin
+ 453:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval None
+ 454:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 455:.//FWLIB/src/stm32f4xx_gpio.c **** void GPIO_WriteBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, BitAction BitVal)
+ 456:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 608              		.loc 1 456 0
+ 609              		.cfi_startproc
+ 610              		@ args = 0, pretend = 0, frame = 0
+ 611              		@ frame_needed = 0, uses_anonymous_args = 0
+ 612              		@ link register save eliminated.
+ 613              	.LVL71:
+ 457:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 458:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 459:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GET_GPIO_PIN(GPIO_Pin));
+ 460:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_BIT_ACTION(BitVal));
+ 461:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 462:.//FWLIB/src/stm32f4xx_gpio.c ****   if (BitVal != Bit_RESET)
+ 614              		.loc 1 462 0
+ 615 0000 0AB1     		cbz	r2, .L36
+ 463:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 464:.//FWLIB/src/stm32f4xx_gpio.c ****     GPIOx->BSRRL = GPIO_Pin;
+ 616              		.loc 1 464 0
+ 617 0002 0183     		strh	r1, [r0, #24]	@ movhi
+ 618 0004 7047     		bx	lr
+ 619              	.L36:
+ 465:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 466:.//FWLIB/src/stm32f4xx_gpio.c ****   else
+ 467:.//FWLIB/src/stm32f4xx_gpio.c ****   {
+ 468:.//FWLIB/src/stm32f4xx_gpio.c ****     GPIOx->BSRRH = GPIO_Pin ;
+ 620              		.loc 1 468 0
+ 621 0006 4183     		strh	r1, [r0, #26]	@ movhi
+ 622 0008 7047     		bx	lr
+ 623              		.cfi_endproc
+ 624              	.LFE122:
+ 626 000a 00BF     		.section	.text.GPIO_Write,"ax",%progbits
+ 627              		.align	2
+ 628              		.global	GPIO_Write
+ 629              		.thumb
+ 630              		.thumb_func
+ 632              	GPIO_Write:
+ 633              	.LFB123:
+ 469:.//FWLIB/src/stm32f4xx_gpio.c ****   }
+ 470:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 471:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 20
+
+
+ 472:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 473:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Writes data to the specified GPIO data port.
+ 474:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 475:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 476:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 477:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  PortVal: specifies the value to be written to the port output data register.
+ 478:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval None
+ 479:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 480:.//FWLIB/src/stm32f4xx_gpio.c **** void GPIO_Write(GPIO_TypeDef* GPIOx, uint16_t PortVal)
+ 481:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 634              		.loc 1 481 0
+ 635              		.cfi_startproc
+ 636              		@ args = 0, pretend = 0, frame = 0
+ 637              		@ frame_needed = 0, uses_anonymous_args = 0
+ 638              		@ link register save eliminated.
+ 639              	.LVL72:
+ 482:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 483:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 484:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 485:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIOx->ODR = PortVal;
+ 640              		.loc 1 485 0
+ 641 0000 4161     		str	r1, [r0, #20]
+ 642 0002 7047     		bx	lr
+ 643              		.cfi_endproc
+ 644              	.LFE123:
+ 646              		.section	.text.GPIO_ToggleBits,"ax",%progbits
+ 647              		.align	2
+ 648              		.global	GPIO_ToggleBits
+ 649              		.thumb
+ 650              		.thumb_func
+ 652              	GPIO_ToggleBits:
+ 653              	.LFB124:
+ 486:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 487:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 488:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 489:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Toggles the specified GPIO pins..
+ 490:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 491:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 492:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 493:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIO_Pin: Specifies the pins to be toggled.
+ 494:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval None
+ 495:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 496:.//FWLIB/src/stm32f4xx_gpio.c **** void GPIO_ToggleBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+ 497:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 654              		.loc 1 497 0
+ 655              		.cfi_startproc
+ 656              		@ args = 0, pretend = 0, frame = 0
+ 657              		@ frame_needed = 0, uses_anonymous_args = 0
+ 658              		@ link register save eliminated.
+ 659              	.LVL73:
+ 498:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 499:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 500:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 501:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIOx->ODR ^= GPIO_Pin;
+ 660              		.loc 1 501 0
+ 661 0000 4369     		ldr	r3, [r0, #20]
+ 662 0002 5940     		eors	r1, r1, r3
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 21
+
+
+ 663              	.LVL74:
+ 664 0004 4161     		str	r1, [r0, #20]
+ 665 0006 7047     		bx	lr
+ 666              		.cfi_endproc
+ 667              	.LFE124:
+ 669              		.section	.text.GPIO_PinAFConfig,"ax",%progbits
+ 670              		.align	2
+ 671              		.global	GPIO_PinAFConfig
+ 672              		.thumb
+ 673              		.thumb_func
+ 675              	GPIO_PinAFConfig:
+ 676              	.LFB125:
+ 502:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 503:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 504:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 505:.//FWLIB/src/stm32f4xx_gpio.c ****   * @}
+ 506:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 507:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 508:.//FWLIB/src/stm32f4xx_gpio.c **** /** @defgroup GPIO_Group3 GPIO Alternate functions configuration function
+ 509:.//FWLIB/src/stm32f4xx_gpio.c ****  *  @brief   GPIO Alternate functions configuration function
+ 510:.//FWLIB/src/stm32f4xx_gpio.c ****  *
+ 511:.//FWLIB/src/stm32f4xx_gpio.c **** @verbatim   
+ 512:.//FWLIB/src/stm32f4xx_gpio.c ****  ===============================================================================
+ 513:.//FWLIB/src/stm32f4xx_gpio.c ****            ##### GPIO Alternate functions configuration function #####
+ 514:.//FWLIB/src/stm32f4xx_gpio.c ****  ===============================================================================  
+ 515:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 516:.//FWLIB/src/stm32f4xx_gpio.c **** @endverbatim
+ 517:.//FWLIB/src/stm32f4xx_gpio.c ****   * @{
+ 518:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 519:.//FWLIB/src/stm32f4xx_gpio.c **** 
+ 520:.//FWLIB/src/stm32f4xx_gpio.c **** /**
+ 521:.//FWLIB/src/stm32f4xx_gpio.c ****   * @brief  Changes the mapping of the specified pin.
+ 522:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIOx: where x can be (A..K) to select the GPIO peripheral for STM32F405xx/407xx and ST
+ 523:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A..I) to select the GPIO peripheral for STM32F42xxx/43xxx device
+ 524:.//FWLIB/src/stm32f4xx_gpio.c ****   *                      x can be (A, B, C, D and H) to select the GPIO peripheral for STM32F401xx 
+ 525:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIO_PinSource: specifies the pin for the Alternate function.
+ 526:.//FWLIB/src/stm32f4xx_gpio.c ****   *         This parameter can be GPIO_PinSourcex where x can be (0..15).
+ 527:.//FWLIB/src/stm32f4xx_gpio.c ****   * @param  GPIO_AFSelection: selects the pin to used as Alternate function.
+ 528:.//FWLIB/src/stm32f4xx_gpio.c ****   *          This parameter can be one of the following values:
+ 529:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_RTC_50Hz: Connect RTC_50Hz pin to AF0 (default after reset) 
+ 530:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_MCO: Connect MCO pin (MCO1 and MCO2) to AF0 (default after reset) 
+ 531:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TAMPER: Connect TAMPER pins (TAMPER_1 and TAMPER_2) to AF0 (default aft
+ 532:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_SWJ: Connect SWJ pins (SWD and JTAG)to AF0 (default after reset) 
+ 533:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TRACE: Connect TRACE pins to AF0 (default after reset)
+ 534:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TIM1: Connect TIM1 pins to AF1
+ 535:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TIM2: Connect TIM2 pins to AF1
+ 536:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TIM3: Connect TIM3 pins to AF2
+ 537:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TIM4: Connect TIM4 pins to AF2
+ 538:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TIM5: Connect TIM5 pins to AF2
+ 539:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TIM8: Connect TIM8 pins to AF3
+ 540:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TIM9: Connect TIM9 pins to AF3
+ 541:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TIM10: Connect TIM10 pins to AF3
+ 542:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TIM11: Connect TIM11 pins to AF3
+ 543:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_I2C1: Connect I2C1 pins to AF4
+ 544:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_I2C2: Connect I2C2 pins to AF4
+ 545:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_I2C3: Connect I2C3 pins to AF4
+ 546:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_SPI1: Connect SPI1 pins to AF5
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 22
+
+
+ 547:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_SPI2: Connect SPI2/I2S2 pins to AF5
+ 548:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_SPI4: Connect SPI4 pins to AF5 
+ 549:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_SPI5: Connect SPI5 pins to AF5 
+ 550:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_SPI6: Connect SPI6 pins to AF5
+ 551:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_SAI1: Connect SAI1 pins to AF6 for STM32F42xxx/43xxx devices.       
+ 552:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_SPI3: Connect SPI3/I2S3 pins to AF6
+ 553:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_I2S3ext: Connect I2S3ext pins to AF7
+ 554:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_USART1: Connect USART1 pins to AF7
+ 555:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_USART2: Connect USART2 pins to AF7
+ 556:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_USART3: Connect USART3 pins to AF7
+ 557:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_UART4: Connect UART4 pins to AF8
+ 558:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_UART5: Connect UART5 pins to AF8
+ 559:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_USART6: Connect USART6 pins to AF8
+ 560:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_UART7: Connect UART7 pins to AF8
+ 561:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_UART8: Connect UART8 pins to AF8
+ 562:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_CAN1: Connect CAN1 pins to AF9
+ 563:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_CAN2: Connect CAN2 pins to AF9
+ 564:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TIM12: Connect TIM12 pins to AF9
+ 565:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TIM13: Connect TIM13 pins to AF9
+ 566:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_TIM14: Connect TIM14 pins to AF9
+ 567:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_OTG_FS: Connect OTG_FS pins to AF10
+ 568:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_OTG_HS: Connect OTG_HS pins to AF10
+ 569:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_ETH: Connect ETHERNET pins to AF11
+ 570:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_FSMC: Connect FSMC pins to AF12 
+ 571:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_FMC: Connect FMC pins to AF12 for STM32F42xxx/43xxx devices.   
+ 572:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_OTG_HS_FS: Connect OTG HS (configured in FS) pins to AF12
+ 573:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_SDIO: Connect SDIO pins to AF12
+ 574:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_DCMI: Connect DCMI pins to AF13
+ 575:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_LTDC: Connect LTDC pins to AF14 for STM32F429xx/439xx devices. 
+ 576:.//FWLIB/src/stm32f4xx_gpio.c ****   *            @arg GPIO_AF_EVENTOUT: Connect EVENTOUT pins to AF15
+ 577:.//FWLIB/src/stm32f4xx_gpio.c ****   * @retval None
+ 578:.//FWLIB/src/stm32f4xx_gpio.c ****   */
+ 579:.//FWLIB/src/stm32f4xx_gpio.c **** void GPIO_PinAFConfig(GPIO_TypeDef* GPIOx, uint16_t GPIO_PinSource, uint8_t GPIO_AF)
+ 580:.//FWLIB/src/stm32f4xx_gpio.c **** {
+ 677              		.loc 1 580 0
+ 678              		.cfi_startproc
+ 679              		@ args = 0, pretend = 0, frame = 0
+ 680              		@ frame_needed = 0, uses_anonymous_args = 0
+ 681              		@ link register save eliminated.
+ 682              	.LVL75:
+ 683 0000 30B4     		push	{r4, r5}
+ 684              	.LCFI5:
+ 685              		.cfi_def_cfa_offset 8
+ 686              		.cfi_offset 4, -8
+ 687              		.cfi_offset 5, -4
+ 688              	.LVL76:
+ 581:.//FWLIB/src/stm32f4xx_gpio.c ****   uint32_t temp = 0x00;
+ 582:.//FWLIB/src/stm32f4xx_gpio.c ****   uint32_t temp_2 = 0x00;
+ 583:.//FWLIB/src/stm32f4xx_gpio.c ****   
+ 584:.//FWLIB/src/stm32f4xx_gpio.c ****   /* Check the parameters */
+ 585:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+ 586:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_PIN_SOURCE(GPIO_PinSource));
+ 587:.//FWLIB/src/stm32f4xx_gpio.c ****   assert_param(IS_GPIO_AF(GPIO_AF));
+ 588:.//FWLIB/src/stm32f4xx_gpio.c ****   
+ 589:.//FWLIB/src/stm32f4xx_gpio.c ****   temp = ((uint32_t)(GPIO_AF) << ((uint32_t)((uint32_t)GPIO_PinSource & (uint32_t)0x07) * 4)) ;
+ 689              		.loc 1 589 0
+ 690 0002 01F00703 		and	r3, r1, #7
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 23
+
+
+ 691 0006 9B00     		lsls	r3, r3, #2
+ 692 0008 9A40     		lsls	r2, r2, r3
+ 693              	.LVL77:
+ 590:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIOx->AFR[GPIO_PinSource >> 0x03] &= ~((uint32_t)0xF << ((uint32_t)((uint32_t)GPIO_PinSource & (
+ 694              		.loc 1 590 0
+ 695 000a C908     		lsrs	r1, r1, #3
+ 696              	.LVL78:
+ 697 000c 0831     		adds	r1, r1, #8
+ 698 000e 50F82140 		ldr	r4, [r0, r1, lsl #2]
+ 699 0012 0F25     		movs	r5, #15
+ 700 0014 05FA03F3 		lsl	r3, r5, r3
+ 701 0018 24EA0303 		bic	r3, r4, r3
+ 702 001c 40F82130 		str	r3, [r0, r1, lsl #2]
+ 591:.//FWLIB/src/stm32f4xx_gpio.c ****   temp_2 = GPIOx->AFR[GPIO_PinSource >> 0x03] | temp;
+ 703              		.loc 1 591 0
+ 704 0020 50F82130 		ldr	r3, [r0, r1, lsl #2]
+ 705 0024 1A43     		orrs	r2, r2, r3
+ 706              	.LVL79:
+ 592:.//FWLIB/src/stm32f4xx_gpio.c ****   GPIOx->AFR[GPIO_PinSource >> 0x03] = temp_2;
+ 707              		.loc 1 592 0
+ 708 0026 40F82120 		str	r2, [r0, r1, lsl #2]
+ 593:.//FWLIB/src/stm32f4xx_gpio.c **** }
+ 709              		.loc 1 593 0
+ 710 002a 30BC     		pop	{r4, r5}
+ 711              	.LCFI6:
+ 712              		.cfi_restore 5
+ 713              		.cfi_restore 4
+ 714              		.cfi_def_cfa_offset 0
+ 715 002c 7047     		bx	lr
+ 716              		.cfi_endproc
+ 717              	.LFE125:
+ 719 002e 00BF     		.text
+ 720              	.Letext0:
+ 721              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 722              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 723              		.file 4 "USER/stm32f4xx.h"
+ 724              		.file 5 "FWLIB/inc/stm32f4xx_gpio.h"
+ 725              		.file 6 "CORE/core_cm4.h"
+ 726              		.file 7 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s 			page 24
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_gpio.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:22     .text.GPIO_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:27     .text.GPIO_DeInit:0000000000000000 GPIO_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:240    .text.GPIO_DeInit:0000000000000118 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:255    .text.GPIO_Init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:260    .text.GPIO_Init:0000000000000000 GPIO_Init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:374    .text.GPIO_StructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:379    .text.GPIO_StructInit:0000000000000000 GPIO_StructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:404    .text.GPIO_PinLockConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:409    .text.GPIO_PinLockConfig:0000000000000000 GPIO_PinLockConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:451    .text.GPIO_ReadInputDataBit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:456    .text.GPIO_ReadInputDataBit:0000000000000000 GPIO_ReadInputDataBit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:483    .text.GPIO_ReadInputData:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:488    .text.GPIO_ReadInputData:0000000000000000 GPIO_ReadInputData
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:506    .text.GPIO_ReadOutputDataBit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:511    .text.GPIO_ReadOutputDataBit:0000000000000000 GPIO_ReadOutputDataBit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:538    .text.GPIO_ReadOutputData:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:543    .text.GPIO_ReadOutputData:0000000000000000 GPIO_ReadOutputData
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:561    .text.GPIO_SetBits:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:566    .text.GPIO_SetBits:0000000000000000 GPIO_SetBits
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:581    .text.GPIO_ResetBits:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:586    .text.GPIO_ResetBits:0000000000000000 GPIO_ResetBits
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:601    .text.GPIO_WriteBit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:606    .text.GPIO_WriteBit:0000000000000000 GPIO_WriteBit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:627    .text.GPIO_Write:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:632    .text.GPIO_Write:0000000000000000 GPIO_Write
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:647    .text.GPIO_ToggleBits:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:652    .text.GPIO_ToggleBits:0000000000000000 GPIO_ToggleBits
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:670    .text.GPIO_PinAFConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccxv3e3Z.s:675    .text.GPIO_PinAFConfig:0000000000000000 GPIO_PinAFConfig
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_AHB1PeriphResetCmd

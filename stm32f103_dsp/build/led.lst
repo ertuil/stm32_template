@@ -1,0 +1,272 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"led.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.LED_Init,"ax",%progbits
+  20              		.align	2
+  21              		.global	LED_Init
+  22              		.thumb
+  23              		.thumb_func
+  25              	LED_Init:
+  26              	.LFB29:
+  27              		.file 1 ".//HARDWARE/led.c"
+   1:.//HARDWARE/led.c **** #include "led.h"
+   2:.//HARDWARE/led.c **** 
+   3:.//HARDWARE/led.c **** //LED的IO口初始化程序
+   4:.//HARDWARE/led.c **** void LED_Init(void)
+   5:.//HARDWARE/led.c **** {
+  28              		.loc 1 5 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 00B5     		push	{lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 83B0     		sub	sp, sp, #12
+  37              	.LCFI1:
+  38              		.cfi_def_cfa_offset 16
+   6:.//HARDWARE/led.c ****  
+   7:.//HARDWARE/led.c ****  GPIO_InitTypeDef  GPIO_InitStructure;
+   8:.//HARDWARE/led.c ****  	
+   9:.//HARDWARE/led.c ****  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);	 //使能PB,PE端口时钟
+  39              		.loc 1 9 0
+  40 0004 0121     		movs	r1, #1
+  41 0006 1020     		movs	r0, #16
+  42 0008 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  43              	.LVL0:
+  10:.//HARDWARE/led.c **** 	
+  11:.//HARDWARE/led.c ****  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14|GPIO_Pin_15;				 //LED0-->PC.14 LED1-->PC.15 端口配置
+  44              		.loc 1 11 0
+  45 000c 4FF44043 		mov	r3, #49152
+  46 0010 ADF80430 		strh	r3, [sp, #4]	@ movhi
+  12:.//HARDWARE/led.c ****  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //推挽输出
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s 			page 2
+
+
+  47              		.loc 1 12 0
+  48 0014 1023     		movs	r3, #16
+  49 0016 8DF80730 		strb	r3, [sp, #7]
+  13:.//HARDWARE/led.c ****  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		 //IO口速度为50MHz
+  50              		.loc 1 13 0
+  51 001a 0323     		movs	r3, #3
+  52 001c 8DF80630 		strb	r3, [sp, #6]
+  14:.//HARDWARE/led.c ****  GPIO_Init(GPIOC, &GPIO_InitStructure);					 //根据设定参数初始化GPIOB.5
+  53              		.loc 1 14 0
+  54 0020 01A9     		add	r1, sp, #4
+  55 0022 0348     		ldr	r0, .L3
+  56 0024 FFF7FEFF 		bl	GPIO_Init
+  57              	.LVL1:
+  15:.//HARDWARE/led.c **** }
+  58              		.loc 1 15 0
+  59 0028 03B0     		add	sp, sp, #12
+  60              	.LCFI2:
+  61              		.cfi_def_cfa_offset 4
+  62              		@ sp needed
+  63 002a 5DF804FB 		ldr	pc, [sp], #4
+  64              	.L4:
+  65 002e 00BF     		.align	2
+  66              	.L3:
+  67 0030 00100140 		.word	1073811456
+  68              		.cfi_endproc
+  69              	.LFE29:
+  71              		.section	.text.LED1_ON,"ax",%progbits
+  72              		.align	2
+  73              		.global	LED1_ON
+  74              		.thumb
+  75              		.thumb_func
+  77              	LED1_ON:
+  78              	.LFB30:
+  16:.//HARDWARE/led.c ****  
+  17:.//HARDWARE/led.c **** 
+  18:.//HARDWARE/led.c **** //点亮LED1
+  19:.//HARDWARE/led.c **** void LED1_ON(void)
+  20:.//HARDWARE/led.c **** {
+  79              		.loc 1 20 0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 0
+  82              		@ frame_needed = 0, uses_anonymous_args = 0
+  83 0000 08B5     		push	{r3, lr}
+  84              	.LCFI3:
+  85              		.cfi_def_cfa_offset 8
+  86              		.cfi_offset 3, -8
+  87              		.cfi_offset 14, -4
+  21:.//HARDWARE/led.c **** 	GPIO_SetBits(GPIOC,GPIO_Pin_14);//PC14置高电平
+  88              		.loc 1 21 0
+  89 0002 4FF48041 		mov	r1, #16384
+  90 0006 0248     		ldr	r0, .L7
+  91 0008 FFF7FEFF 		bl	GPIO_SetBits
+  92              	.LVL2:
+  93 000c 08BD     		pop	{r3, pc}
+  94              	.L8:
+  95 000e 00BF     		.align	2
+  96              	.L7:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s 			page 3
+
+
+  97 0010 00100140 		.word	1073811456
+  98              		.cfi_endproc
+  99              	.LFE30:
+ 101              		.section	.text.LED1_OFF,"ax",%progbits
+ 102              		.align	2
+ 103              		.global	LED1_OFF
+ 104              		.thumb
+ 105              		.thumb_func
+ 107              	LED1_OFF:
+ 108              	.LFB31:
+  22:.//HARDWARE/led.c **** }
+  23:.//HARDWARE/led.c **** 
+  24:.//HARDWARE/led.c **** 
+  25:.//HARDWARE/led.c **** //熄灭LED1
+  26:.//HARDWARE/led.c **** void LED1_OFF(void)
+  27:.//HARDWARE/led.c **** {
+ 109              		.loc 1 27 0
+ 110              		.cfi_startproc
+ 111              		@ args = 0, pretend = 0, frame = 0
+ 112              		@ frame_needed = 0, uses_anonymous_args = 0
+ 113 0000 08B5     		push	{r3, lr}
+ 114              	.LCFI4:
+ 115              		.cfi_def_cfa_offset 8
+ 116              		.cfi_offset 3, -8
+ 117              		.cfi_offset 14, -4
+  28:.//HARDWARE/led.c **** 	GPIO_ResetBits(GPIOC,GPIO_Pin_14);//PC14置低电平
+ 118              		.loc 1 28 0
+ 119 0002 4FF48041 		mov	r1, #16384
+ 120 0006 0248     		ldr	r0, .L11
+ 121 0008 FFF7FEFF 		bl	GPIO_ResetBits
+ 122              	.LVL3:
+ 123 000c 08BD     		pop	{r3, pc}
+ 124              	.L12:
+ 125 000e 00BF     		.align	2
+ 126              	.L11:
+ 127 0010 00100140 		.word	1073811456
+ 128              		.cfi_endproc
+ 129              	.LFE31:
+ 131              		.section	.text.LED2_ON,"ax",%progbits
+ 132              		.align	2
+ 133              		.global	LED2_ON
+ 134              		.thumb
+ 135              		.thumb_func
+ 137              	LED2_ON:
+ 138              	.LFB32:
+  29:.//HARDWARE/led.c **** }
+  30:.//HARDWARE/led.c **** 
+  31:.//HARDWARE/led.c **** 
+  32:.//HARDWARE/led.c **** //点亮LED2
+  33:.//HARDWARE/led.c **** void LED2_ON(void)
+  34:.//HARDWARE/led.c **** {
+ 139              		.loc 1 34 0
+ 140              		.cfi_startproc
+ 141              		@ args = 0, pretend = 0, frame = 0
+ 142              		@ frame_needed = 0, uses_anonymous_args = 0
+ 143 0000 08B5     		push	{r3, lr}
+ 144              	.LCFI5:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s 			page 4
+
+
+ 145              		.cfi_def_cfa_offset 8
+ 146              		.cfi_offset 3, -8
+ 147              		.cfi_offset 14, -4
+  35:.//HARDWARE/led.c **** 	GPIO_SetBits(GPIOC,GPIO_Pin_15);//PC15置高电平
+ 148              		.loc 1 35 0
+ 149 0002 4FF40041 		mov	r1, #32768
+ 150 0006 0248     		ldr	r0, .L15
+ 151 0008 FFF7FEFF 		bl	GPIO_SetBits
+ 152              	.LVL4:
+ 153 000c 08BD     		pop	{r3, pc}
+ 154              	.L16:
+ 155 000e 00BF     		.align	2
+ 156              	.L15:
+ 157 0010 00100140 		.word	1073811456
+ 158              		.cfi_endproc
+ 159              	.LFE32:
+ 161              		.section	.text.LED2_OFF,"ax",%progbits
+ 162              		.align	2
+ 163              		.global	LED2_OFF
+ 164              		.thumb
+ 165              		.thumb_func
+ 167              	LED2_OFF:
+ 168              	.LFB33:
+  36:.//HARDWARE/led.c **** }
+  37:.//HARDWARE/led.c **** 
+  38:.//HARDWARE/led.c **** 
+  39:.//HARDWARE/led.c **** //熄灭LED2
+  40:.//HARDWARE/led.c **** void LED2_OFF(void)
+  41:.//HARDWARE/led.c **** {
+ 169              		.loc 1 41 0
+ 170              		.cfi_startproc
+ 171              		@ args = 0, pretend = 0, frame = 0
+ 172              		@ frame_needed = 0, uses_anonymous_args = 0
+ 173 0000 08B5     		push	{r3, lr}
+ 174              	.LCFI6:
+ 175              		.cfi_def_cfa_offset 8
+ 176              		.cfi_offset 3, -8
+ 177              		.cfi_offset 14, -4
+  42:.//HARDWARE/led.c **** 	GPIO_ResetBits(GPIOC,GPIO_Pin_15);//PC15置低电平
+ 178              		.loc 1 42 0
+ 179 0002 4FF40041 		mov	r1, #32768
+ 180 0006 0248     		ldr	r0, .L19
+ 181 0008 FFF7FEFF 		bl	GPIO_ResetBits
+ 182              	.LVL5:
+ 183 000c 08BD     		pop	{r3, pc}
+ 184              	.L20:
+ 185 000e 00BF     		.align	2
+ 186              	.L19:
+ 187 0010 00100140 		.word	1073811456
+ 188              		.cfi_endproc
+ 189              	.LFE33:
+ 191              		.text
+ 192              	.Letext0:
+ 193              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 194              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 195              		.file 4 "USER/stm32f10x.h"
+ 196              		.file 5 "FWLIB/inc/stm32f10x_gpio.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s 			page 5
+
+
+ 197              		.file 6 "FWLIB/inc/stm32f10x_rcc.h"
+ 198              		.file 7 "CORE/core_cm3.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 led.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:20     .text.LED_Init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:25     .text.LED_Init:0000000000000000 LED_Init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:67     .text.LED_Init:0000000000000030 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:72     .text.LED1_ON:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:77     .text.LED1_ON:0000000000000000 LED1_ON
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:97     .text.LED1_ON:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:102    .text.LED1_OFF:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:107    .text.LED1_OFF:0000000000000000 LED1_OFF
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:127    .text.LED1_OFF:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:132    .text.LED2_ON:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:137    .text.LED2_ON:0000000000000000 LED2_ON
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:157    .text.LED2_ON:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:162    .text.LED2_OFF:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:167    .text.LED2_OFF:0000000000000000 LED2_OFF
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccwybzYn.s:187    .text.LED2_OFF:0000000000000010 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphClockCmd
+GPIO_Init
+GPIO_SetBits
+GPIO_ResetBits

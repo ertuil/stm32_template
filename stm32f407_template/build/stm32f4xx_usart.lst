@@ -1,0 +1,2970 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"stm32f4xx_usart.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.USART_DeInit,"ax",%progbits
+  22              		.align	2
+  23              		.global	USART_DeInit
+  24              		.thumb
+  25              		.thumb_func
+  27              	USART_DeInit:
+  28              	.LFB112:
+  29              		.file 1 ".//FWLIB/src/stm32f4xx_usart.c"
+   1:.//FWLIB/src/stm32f4xx_usart.c **** /**
+   2:.//FWLIB/src/stm32f4xx_usart.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f4xx_usart.c ****   * @file    stm32f4xx_usart.c
+   4:.//FWLIB/src/stm32f4xx_usart.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f4xx_usart.c ****   * @version V1.4.0
+   6:.//FWLIB/src/stm32f4xx_usart.c ****   * @date    04-August-2014
+   7:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:.//FWLIB/src/stm32f4xx_usart.c ****   *          functionalities of the Universal synchronous asynchronous receiver
+   9:.//FWLIB/src/stm32f4xx_usart.c ****   *          transmitter (USART):           
+  10:.//FWLIB/src/stm32f4xx_usart.c ****   *           + Initialization and Configuration
+  11:.//FWLIB/src/stm32f4xx_usart.c ****   *           + Data transfers
+  12:.//FWLIB/src/stm32f4xx_usart.c ****   *           + Multi-Processor Communication
+  13:.//FWLIB/src/stm32f4xx_usart.c ****   *           + LIN mode
+  14:.//FWLIB/src/stm32f4xx_usart.c ****   *           + Half-duplex mode
+  15:.//FWLIB/src/stm32f4xx_usart.c ****   *           + Smartcard mode
+  16:.//FWLIB/src/stm32f4xx_usart.c ****   *           + IrDA mode
+  17:.//FWLIB/src/stm32f4xx_usart.c ****   *           + DMA transfers management
+  18:.//FWLIB/src/stm32f4xx_usart.c ****   *           + Interrupts and flags management 
+  19:.//FWLIB/src/stm32f4xx_usart.c ****   *           
+  20:.//FWLIB/src/stm32f4xx_usart.c ****   @verbatim       
+  21:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================
+  22:.//FWLIB/src/stm32f4xx_usart.c ****                         ##### How to use this driver #####
+  23:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================
+  24:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+  25:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable peripheral clock using the following functions
+  26:.//FWLIB/src/stm32f4xx_usart.c ****           RCC_APB2PeriphClockCmd(RCC_APB2Periph_USARTx, ENABLE) for USART1 and USART6 
+  27:.//FWLIB/src/stm32f4xx_usart.c ****           RCC_APB1PeriphClockCmd(RCC_APB1Periph_USARTx, ENABLE) for USART2, USART3, 
+  28:.//FWLIB/src/stm32f4xx_usart.c ****           UART4 or UART5.
+  29:.//FWLIB/src/stm32f4xx_usart.c ****   
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 2
+
+
+  30:.//FWLIB/src/stm32f4xx_usart.c ****       (#) According to the USART mode, enable the GPIO clocks using 
+  31:.//FWLIB/src/stm32f4xx_usart.c ****           RCC_AHB1PeriphClockCmd() function. (The I/O can be TX, RX, CTS, 
+  32:.//FWLIB/src/stm32f4xx_usart.c ****           or/and SCLK). 
+  33:.//FWLIB/src/stm32f4xx_usart.c ****   
+  34:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Peripheral's alternate function: 
+  35:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Connect the pin to the desired peripherals' Alternate 
+  36:.//FWLIB/src/stm32f4xx_usart.c ****             Function (AF) using GPIO_PinAFConfig() function
+  37:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Configure the desired pin in alternate function by:
+  38:.//FWLIB/src/stm32f4xx_usart.c ****             GPIO_InitStruct->GPIO_Mode = GPIO_Mode_AF
+  39:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Select the type, pull-up/pull-down and output speed via 
+  40:.//FWLIB/src/stm32f4xx_usart.c ****             GPIO_PuPd, GPIO_OType and GPIO_Speed members
+  41:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Call GPIO_Init() function
+  42:.//FWLIB/src/stm32f4xx_usart.c ****           
+  43:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Program the Baud Rate, Word Length , Stop Bit, Parity, Hardware 
+  44:.//FWLIB/src/stm32f4xx_usart.c ****           flow control and Mode(Receiver/Transmitter) using the USART_Init()
+  45:.//FWLIB/src/stm32f4xx_usart.c ****           function.
+  46:.//FWLIB/src/stm32f4xx_usart.c ****   
+  47:.//FWLIB/src/stm32f4xx_usart.c ****       (#) For synchronous mode, enable the clock and program the polarity,
+  48:.//FWLIB/src/stm32f4xx_usart.c ****           phase and last bit using the USART_ClockInit() function.
+  49:.//FWLIB/src/stm32f4xx_usart.c ****   
+  50:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable the NVIC and the corresponding interrupt using the function 
+  51:.//FWLIB/src/stm32f4xx_usart.c ****          USART_ITConfig() if you need to use interrupt mode. 
+  52:.//FWLIB/src/stm32f4xx_usart.c ****   
+  53:.//FWLIB/src/stm32f4xx_usart.c ****       (#) When using the DMA mode 
+  54:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Configure the DMA using DMA_Init() function
+  55:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Active the needed channel Request using USART_DMACmd() function
+  56:.//FWLIB/src/stm32f4xx_usart.c ****    
+  57:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable the USART using the USART_Cmd() function.
+  58:.//FWLIB/src/stm32f4xx_usart.c ****    
+  59:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable the DMA using the DMA_Cmd() function, when using DMA mode. 
+  60:.//FWLIB/src/stm32f4xx_usart.c ****     
+  61:.//FWLIB/src/stm32f4xx_usart.c ****       -@- Refer to Multi-Processor, LIN, half-duplex, Smartcard, IrDA sub-sections
+  62:.//FWLIB/src/stm32f4xx_usart.c ****           for more details
+  63:.//FWLIB/src/stm32f4xx_usart.c ****     
+  64:.//FWLIB/src/stm32f4xx_usart.c ****     [..]        
+  65:.//FWLIB/src/stm32f4xx_usart.c ****     In order to reach higher communication baudrates, it is possible to
+  66:.//FWLIB/src/stm32f4xx_usart.c ****     enable the oversampling by 8 mode using the function USART_OverSampling8Cmd().
+  67:.//FWLIB/src/stm32f4xx_usart.c ****     This function should be called after enabling the USART clock (RCC_APBxPeriphClockCmd())
+  68:.//FWLIB/src/stm32f4xx_usart.c ****     and before calling the function USART_Init().
+  69:.//FWLIB/src/stm32f4xx_usart.c ****             
+  70:.//FWLIB/src/stm32f4xx_usart.c ****     @endverbatim        
+  71:.//FWLIB/src/stm32f4xx_usart.c ****   ******************************************************************************
+  72:.//FWLIB/src/stm32f4xx_usart.c ****   * @attention
+  73:.//FWLIB/src/stm32f4xx_usart.c ****   *
+  74:.//FWLIB/src/stm32f4xx_usart.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  75:.//FWLIB/src/stm32f4xx_usart.c ****   *
+  76:.//FWLIB/src/stm32f4xx_usart.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  77:.//FWLIB/src/stm32f4xx_usart.c ****   * You may not use this file except in compliance with the License.
+  78:.//FWLIB/src/stm32f4xx_usart.c ****   * You may obtain a copy of the License at:
+  79:.//FWLIB/src/stm32f4xx_usart.c ****   *
+  80:.//FWLIB/src/stm32f4xx_usart.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  81:.//FWLIB/src/stm32f4xx_usart.c ****   *
+  82:.//FWLIB/src/stm32f4xx_usart.c ****   * Unless required by applicable law or agreed to in writing, software 
+  83:.//FWLIB/src/stm32f4xx_usart.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  84:.//FWLIB/src/stm32f4xx_usart.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  85:.//FWLIB/src/stm32f4xx_usart.c ****   * See the License for the specific language governing permissions and
+  86:.//FWLIB/src/stm32f4xx_usart.c ****   * limitations under the License.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 3
+
+
+  87:.//FWLIB/src/stm32f4xx_usart.c ****   *
+  88:.//FWLIB/src/stm32f4xx_usart.c ****   ******************************************************************************  
+  89:.//FWLIB/src/stm32f4xx_usart.c ****   */ 
+  90:.//FWLIB/src/stm32f4xx_usart.c **** 
+  91:.//FWLIB/src/stm32f4xx_usart.c **** /* Includes ------------------------------------------------------------------*/
+  92:.//FWLIB/src/stm32f4xx_usart.c **** #include "stm32f4xx_usart.h"
+  93:.//FWLIB/src/stm32f4xx_usart.c **** #include "stm32f4xx_rcc.h"
+  94:.//FWLIB/src/stm32f4xx_usart.c **** 
+  95:.//FWLIB/src/stm32f4xx_usart.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+  96:.//FWLIB/src/stm32f4xx_usart.c ****   * @{
+  97:.//FWLIB/src/stm32f4xx_usart.c ****   */
+  98:.//FWLIB/src/stm32f4xx_usart.c **** 
+  99:.//FWLIB/src/stm32f4xx_usart.c **** /** @defgroup USART 
+ 100:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief USART driver modules
+ 101:.//FWLIB/src/stm32f4xx_usart.c ****   * @{
+ 102:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 103:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 104:.//FWLIB/src/stm32f4xx_usart.c **** /* Private typedef -----------------------------------------------------------*/
+ 105:.//FWLIB/src/stm32f4xx_usart.c **** /* Private define ------------------------------------------------------------*/
+ 106:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 107:.//FWLIB/src/stm32f4xx_usart.c **** /*!< USART CR1 register clear Mask ((~(uint16_t)0xE9F3)) */
+ 108:.//FWLIB/src/stm32f4xx_usart.c **** #define CR1_CLEAR_MASK            ((uint16_t)(USART_CR1_M | USART_CR1_PCE | \
+ 109:.//FWLIB/src/stm32f4xx_usart.c ****                                               USART_CR1_PS | USART_CR1_TE | \
+ 110:.//FWLIB/src/stm32f4xx_usart.c ****                                               USART_CR1_RE))
+ 111:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 112:.//FWLIB/src/stm32f4xx_usart.c **** /*!< USART CR2 register clock bits clear Mask ((~(uint16_t)0xF0FF)) */
+ 113:.//FWLIB/src/stm32f4xx_usart.c **** #define CR2_CLOCK_CLEAR_MASK      ((uint16_t)(USART_CR2_CLKEN | USART_CR2_CPOL | \
+ 114:.//FWLIB/src/stm32f4xx_usart.c ****                                               USART_CR2_CPHA | USART_CR2_LBCL))
+ 115:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 116:.//FWLIB/src/stm32f4xx_usart.c **** /*!< USART CR3 register clear Mask ((~(uint16_t)0xFCFF)) */
+ 117:.//FWLIB/src/stm32f4xx_usart.c **** #define CR3_CLEAR_MASK            ((uint16_t)(USART_CR3_RTSE | USART_CR3_CTSE))
+ 118:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 119:.//FWLIB/src/stm32f4xx_usart.c **** /*!< USART Interrupts mask */
+ 120:.//FWLIB/src/stm32f4xx_usart.c **** #define IT_MASK                   ((uint16_t)0x001F)
+ 121:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 122:.//FWLIB/src/stm32f4xx_usart.c **** /* Private macro -------------------------------------------------------------*/
+ 123:.//FWLIB/src/stm32f4xx_usart.c **** /* Private variables ---------------------------------------------------------*/
+ 124:.//FWLIB/src/stm32f4xx_usart.c **** /* Private function prototypes -----------------------------------------------*/
+ 125:.//FWLIB/src/stm32f4xx_usart.c **** /* Private functions ---------------------------------------------------------*/
+ 126:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 127:.//FWLIB/src/stm32f4xx_usart.c **** /** @defgroup USART_Private_Functions
+ 128:.//FWLIB/src/stm32f4xx_usart.c ****   * @{
+ 129:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 130:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 131:.//FWLIB/src/stm32f4xx_usart.c **** /** @defgroup USART_Group1 Initialization and Configuration functions
+ 132:.//FWLIB/src/stm32f4xx_usart.c ****  *  @brief   Initialization and Configuration functions 
+ 133:.//FWLIB/src/stm32f4xx_usart.c ****  *
+ 134:.//FWLIB/src/stm32f4xx_usart.c **** @verbatim   
+ 135:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================
+ 136:.//FWLIB/src/stm32f4xx_usart.c ****             ##### Initialization and Configuration functions #####
+ 137:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================  
+ 138:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 139:.//FWLIB/src/stm32f4xx_usart.c ****     This subsection provides a set of functions allowing to initialize the USART 
+ 140:.//FWLIB/src/stm32f4xx_usart.c ****     in asynchronous and in synchronous modes.
+ 141:.//FWLIB/src/stm32f4xx_usart.c ****       (+) For the asynchronous mode only these parameters can be configured: 
+ 142:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Baud Rate
+ 143:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Word Length 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 4
+
+
+ 144:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Stop Bit
+ 145:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Parity: If the parity is enabled, then the MSB bit of the data written
+ 146:.//FWLIB/src/stm32f4xx_usart.c ****              in the data register is transmitted but is changed by the parity bit.
+ 147:.//FWLIB/src/stm32f4xx_usart.c ****              Depending on the frame length defined by the M bit (8-bits or 9-bits),
+ 148:.//FWLIB/src/stm32f4xx_usart.c ****              the possible USART frame formats are as listed in the following table:
+ 149:.//FWLIB/src/stm32f4xx_usart.c ****    +-------------------------------------------------------------+     
+ 150:.//FWLIB/src/stm32f4xx_usart.c ****    |   M bit |  PCE bit  |            USART frame                |
+ 151:.//FWLIB/src/stm32f4xx_usart.c ****    |---------------------|---------------------------------------|             
+ 152:.//FWLIB/src/stm32f4xx_usart.c ****    |    0    |    0      |    | SB | 8 bit data | STB |          |
+ 153:.//FWLIB/src/stm32f4xx_usart.c ****    |---------|-----------|---------------------------------------|  
+ 154:.//FWLIB/src/stm32f4xx_usart.c ****    |    0    |    1      |    | SB | 7 bit data | PB | STB |     |
+ 155:.//FWLIB/src/stm32f4xx_usart.c ****    |---------|-----------|---------------------------------------|  
+ 156:.//FWLIB/src/stm32f4xx_usart.c ****    |    1    |    0      |    | SB | 9 bit data | STB |          |
+ 157:.//FWLIB/src/stm32f4xx_usart.c ****    |---------|-----------|---------------------------------------|  
+ 158:.//FWLIB/src/stm32f4xx_usart.c ****    |    1    |    1      |    | SB | 8 bit data | PB | STB |     |
+ 159:.//FWLIB/src/stm32f4xx_usart.c ****    +-------------------------------------------------------------+            
+ 160:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Hardware flow control
+ 161:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Receiver/transmitter modes
+ 162:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 163:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 164:.//FWLIB/src/stm32f4xx_usart.c ****     The USART_Init() function follows the USART  asynchronous configuration 
+ 165:.//FWLIB/src/stm32f4xx_usart.c ****     procedure (details for the procedure are available in reference manual (RM0090)).
+ 166:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 167:.//FWLIB/src/stm32f4xx_usart.c ****      (+) For the synchronous mode in addition to the asynchronous mode parameters these 
+ 168:.//FWLIB/src/stm32f4xx_usart.c ****          parameters should be also configured:
+ 169:.//FWLIB/src/stm32f4xx_usart.c ****         (++) USART Clock Enabled
+ 170:.//FWLIB/src/stm32f4xx_usart.c ****         (++) USART polarity
+ 171:.//FWLIB/src/stm32f4xx_usart.c ****         (++) USART phase
+ 172:.//FWLIB/src/stm32f4xx_usart.c ****         (++) USART LastBit
+ 173:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 174:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 175:.//FWLIB/src/stm32f4xx_usart.c ****     These parameters can be configured using the USART_ClockInit() function.
+ 176:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 177:.//FWLIB/src/stm32f4xx_usart.c **** @endverbatim
+ 178:.//FWLIB/src/stm32f4xx_usart.c ****   * @{
+ 179:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 180:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 181:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 182:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Deinitializes the USARTx peripheral registers to their default reset values.
+ 183:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 184:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 185:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 186:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 187:.//FWLIB/src/stm32f4xx_usart.c **** void USART_DeInit(USART_TypeDef* USARTx)
+ 188:.//FWLIB/src/stm32f4xx_usart.c **** {
+  30              		.loc 1 188 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              	.LVL0:
+  35 0000 08B5     		push	{r3, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 3, -8
+  39              		.cfi_offset 14, -4
+ 189:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 190:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 5
+
+
+ 191:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 192:.//FWLIB/src/stm32f4xx_usart.c ****   if (USARTx == USART1)
+  40              		.loc 1 192 0
+  41 0002 364B     		ldr	r3, .L11
+  42 0004 9842     		cmp	r0, r3
+  43 0006 08D1     		bne	.L2
+ 193:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 194:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB2PeriphResetCmd(RCC_APB2Periph_USART1, ENABLE);
+  44              		.loc 1 194 0
+  45 0008 0121     		movs	r1, #1
+  46 000a 1020     		movs	r0, #16
+  47              	.LVL1:
+  48 000c FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  49              	.LVL2:
+ 195:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB2PeriphResetCmd(RCC_APB2Periph_USART1, DISABLE);
+  50              		.loc 1 195 0
+  51 0010 0021     		movs	r1, #0
+  52 0012 1020     		movs	r0, #16
+  53 0014 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  54              	.LVL3:
+  55 0018 08BD     		pop	{r3, pc}
+  56              	.LVL4:
+  57              	.L2:
+ 196:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 197:.//FWLIB/src/stm32f4xx_usart.c ****   else if (USARTx == USART2)
+  58              		.loc 1 197 0
+  59 001a 314B     		ldr	r3, .L11+4
+  60 001c 9842     		cmp	r0, r3
+  61 001e 0AD1     		bne	.L4
+ 198:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 199:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_USART2, ENABLE);
+  62              		.loc 1 199 0
+  63 0020 0121     		movs	r1, #1
+  64 0022 4FF40030 		mov	r0, #131072
+  65              	.LVL5:
+  66 0026 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  67              	.LVL6:
+ 200:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_USART2, DISABLE);
+  68              		.loc 1 200 0
+  69 002a 0021     		movs	r1, #0
+  70 002c 4FF40030 		mov	r0, #131072
+  71 0030 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  72              	.LVL7:
+  73 0034 08BD     		pop	{r3, pc}
+  74              	.LVL8:
+  75              	.L4:
+ 201:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 202:.//FWLIB/src/stm32f4xx_usart.c ****   else if (USARTx == USART3)
+  76              		.loc 1 202 0
+  77 0036 2B4B     		ldr	r3, .L11+8
+  78 0038 9842     		cmp	r0, r3
+  79 003a 0AD1     		bne	.L5
+ 203:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 204:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_USART3, ENABLE);
+  80              		.loc 1 204 0
+  81 003c 0121     		movs	r1, #1
+  82 003e 4FF48020 		mov	r0, #262144
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 6
+
+
+  83              	.LVL9:
+  84 0042 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  85              	.LVL10:
+ 205:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_USART3, DISABLE);
+  86              		.loc 1 205 0
+  87 0046 0021     		movs	r1, #0
+  88 0048 4FF48020 		mov	r0, #262144
+  89 004c FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  90              	.LVL11:
+  91 0050 08BD     		pop	{r3, pc}
+  92              	.LVL12:
+  93              	.L5:
+ 206:.//FWLIB/src/stm32f4xx_usart.c ****   }    
+ 207:.//FWLIB/src/stm32f4xx_usart.c ****   else if (USARTx == UART4)
+  94              		.loc 1 207 0
+  95 0052 254B     		ldr	r3, .L11+12
+  96 0054 9842     		cmp	r0, r3
+  97 0056 0AD1     		bne	.L6
+ 208:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 209:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART4, ENABLE);
+  98              		.loc 1 209 0
+  99 0058 0121     		movs	r1, #1
+ 100 005a 4FF40020 		mov	r0, #524288
+ 101              	.LVL13:
+ 102 005e FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+ 103              	.LVL14:
+ 210:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART4, DISABLE);
+ 104              		.loc 1 210 0
+ 105 0062 0021     		movs	r1, #0
+ 106 0064 4FF40020 		mov	r0, #524288
+ 107 0068 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+ 108              	.LVL15:
+ 109 006c 08BD     		pop	{r3, pc}
+ 110              	.LVL16:
+ 111              	.L6:
+ 211:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 212:.//FWLIB/src/stm32f4xx_usart.c ****   else if (USARTx == UART5)
+ 112              		.loc 1 212 0
+ 113 006e 1F4B     		ldr	r3, .L11+16
+ 114 0070 9842     		cmp	r0, r3
+ 115 0072 0AD1     		bne	.L7
+ 213:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 214:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART5, ENABLE);
+ 116              		.loc 1 214 0
+ 117 0074 0121     		movs	r1, #1
+ 118 0076 4FF48010 		mov	r0, #1048576
+ 119              	.LVL17:
+ 120 007a FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+ 121              	.LVL18:
+ 215:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART5, DISABLE);
+ 122              		.loc 1 215 0
+ 123 007e 0021     		movs	r1, #0
+ 124 0080 4FF48010 		mov	r0, #1048576
+ 125 0084 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+ 126              	.LVL19:
+ 127 0088 08BD     		pop	{r3, pc}
+ 128              	.LVL20:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 7
+
+
+ 129              	.L7:
+ 216:.//FWLIB/src/stm32f4xx_usart.c ****   }  
+ 217:.//FWLIB/src/stm32f4xx_usart.c ****   else if (USARTx == USART6)
+ 130              		.loc 1 217 0
+ 131 008a 194B     		ldr	r3, .L11+20
+ 132 008c 9842     		cmp	r0, r3
+ 133 008e 08D1     		bne	.L8
+ 218:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 219:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB2PeriphResetCmd(RCC_APB2Periph_USART6, ENABLE);
+ 134              		.loc 1 219 0
+ 135 0090 0121     		movs	r1, #1
+ 136 0092 2020     		movs	r0, #32
+ 137              	.LVL21:
+ 138 0094 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+ 139              	.LVL22:
+ 220:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB2PeriphResetCmd(RCC_APB2Periph_USART6, DISABLE);
+ 140              		.loc 1 220 0
+ 141 0098 0021     		movs	r1, #0
+ 142 009a 2020     		movs	r0, #32
+ 143 009c FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+ 144              	.LVL23:
+ 145 00a0 08BD     		pop	{r3, pc}
+ 146              	.LVL24:
+ 147              	.L8:
+ 221:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 222:.//FWLIB/src/stm32f4xx_usart.c ****   else if (USARTx == UART7)
+ 148              		.loc 1 222 0
+ 149 00a2 144B     		ldr	r3, .L11+24
+ 150 00a4 9842     		cmp	r0, r3
+ 151 00a6 0AD1     		bne	.L9
+ 223:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 224:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART7, ENABLE);
+ 152              		.loc 1 224 0
+ 153 00a8 0121     		movs	r1, #1
+ 154 00aa 4FF08040 		mov	r0, #1073741824
+ 155              	.LVL25:
+ 156 00ae FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+ 157              	.LVL26:
+ 225:.//FWLIB/src/stm32f4xx_usart.c ****     RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART7, DISABLE);
+ 158              		.loc 1 225 0
+ 159 00b2 0021     		movs	r1, #0
+ 160 00b4 4FF08040 		mov	r0, #1073741824
+ 161 00b8 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+ 162              	.LVL27:
+ 163 00bc 08BD     		pop	{r3, pc}
+ 164              	.LVL28:
+ 165              	.L9:
+ 226:.//FWLIB/src/stm32f4xx_usart.c ****   }     
+ 227:.//FWLIB/src/stm32f4xx_usart.c ****   else
+ 228:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 229:.//FWLIB/src/stm32f4xx_usart.c ****     if (USARTx == UART8)
+ 166              		.loc 1 229 0
+ 167 00be 0E4B     		ldr	r3, .L11+28
+ 168 00c0 9842     		cmp	r0, r3
+ 169 00c2 09D1     		bne	.L1
+ 230:.//FWLIB/src/stm32f4xx_usart.c ****     { 
+ 231:.//FWLIB/src/stm32f4xx_usart.c ****       RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART8, ENABLE);
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 8
+
+
+ 170              		.loc 1 231 0
+ 171 00c4 0121     		movs	r1, #1
+ 172 00c6 4FF00040 		mov	r0, #-2147483648
+ 173              	.LVL29:
+ 174 00ca FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+ 175              	.LVL30:
+ 232:.//FWLIB/src/stm32f4xx_usart.c ****       RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART8, DISABLE);
+ 176              		.loc 1 232 0
+ 177 00ce 0021     		movs	r1, #0
+ 178 00d0 4FF00040 		mov	r0, #-2147483648
+ 179 00d4 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+ 180              	.LVL31:
+ 181              	.L1:
+ 182 00d8 08BD     		pop	{r3, pc}
+ 183              	.L12:
+ 184 00da 00BF     		.align	2
+ 185              	.L11:
+ 186 00dc 00100140 		.word	1073811456
+ 187 00e0 00440040 		.word	1073759232
+ 188 00e4 00480040 		.word	1073760256
+ 189 00e8 004C0040 		.word	1073761280
+ 190 00ec 00500040 		.word	1073762304
+ 191 00f0 00140140 		.word	1073812480
+ 192 00f4 00780040 		.word	1073772544
+ 193 00f8 007C0040 		.word	1073773568
+ 194              		.cfi_endproc
+ 195              	.LFE112:
+ 197              		.section	.text.USART_Init,"ax",%progbits
+ 198              		.align	2
+ 199              		.global	USART_Init
+ 200              		.thumb
+ 201              		.thumb_func
+ 203              	USART_Init:
+ 204              	.LFB113:
+ 233:.//FWLIB/src/stm32f4xx_usart.c ****     }
+ 234:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 235:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 236:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 237:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 238:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Initializes the USARTx peripheral according to the specified
+ 239:.//FWLIB/src/stm32f4xx_usart.c ****   *         parameters in the USART_InitStruct .
+ 240:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 241:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 242:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_InitStruct: pointer to a USART_InitTypeDef structure that contains
+ 243:.//FWLIB/src/stm32f4xx_usart.c ****   *         the configuration information for the specified USART peripheral.
+ 244:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 245:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 246:.//FWLIB/src/stm32f4xx_usart.c **** void USART_Init(USART_TypeDef* USARTx, USART_InitTypeDef* USART_InitStruct)
+ 247:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 205              		.loc 1 247 0
+ 206              		.cfi_startproc
+ 207              		@ args = 0, pretend = 0, frame = 16
+ 208              		@ frame_needed = 0, uses_anonymous_args = 0
+ 209              	.LVL32:
+ 210 0000 30B5     		push	{r4, r5, lr}
+ 211              	.LCFI1:
+ 212              		.cfi_def_cfa_offset 12
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 9
+
+
+ 213              		.cfi_offset 4, -12
+ 214              		.cfi_offset 5, -8
+ 215              		.cfi_offset 14, -4
+ 216 0002 85B0     		sub	sp, sp, #20
+ 217              	.LCFI2:
+ 218              		.cfi_def_cfa_offset 32
+ 219 0004 0446     		mov	r4, r0
+ 220 0006 0D46     		mov	r5, r1
+ 221              	.LVL33:
+ 248:.//FWLIB/src/stm32f4xx_usart.c ****   uint32_t tmpreg = 0x00, apbclock = 0x00;
+ 249:.//FWLIB/src/stm32f4xx_usart.c ****   uint32_t integerdivider = 0x00;
+ 250:.//FWLIB/src/stm32f4xx_usart.c ****   uint32_t fractionaldivider = 0x00;
+ 251:.//FWLIB/src/stm32f4xx_usart.c ****   RCC_ClocksTypeDef RCC_ClocksStatus;
+ 252:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 253:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 254:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 255:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_BAUDRATE(USART_InitStruct->USART_BaudRate));  
+ 256:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_WORD_LENGTH(USART_InitStruct->USART_WordLength));
+ 257:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_STOPBITS(USART_InitStruct->USART_StopBits));
+ 258:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_PARITY(USART_InitStruct->USART_Parity));
+ 259:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_MODE(USART_InitStruct->USART_Mode));
+ 260:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_HARDWARE_FLOW_CONTROL(USART_InitStruct->USART_HardwareFlowControl));
+ 261:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 262:.//FWLIB/src/stm32f4xx_usart.c ****   /* The hardware flow control is available only for USART1, USART2, USART3 and USART6 */
+ 263:.//FWLIB/src/stm32f4xx_usart.c ****   if (USART_InitStruct->USART_HardwareFlowControl != USART_HardwareFlowControl_None)
+ 264:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 265:.//FWLIB/src/stm32f4xx_usart.c ****     assert_param(IS_USART_1236_PERIPH(USARTx));
+ 266:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 267:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 268:.//FWLIB/src/stm32f4xx_usart.c **** /*---------------------------- USART CR2 Configuration -----------------------*/
+ 269:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg = USARTx->CR2;
+ 222              		.loc 1 269 0
+ 223 0008 038A     		ldrh	r3, [r0, #16]
+ 224 000a 9BB2     		uxth	r3, r3
+ 225              	.LVL34:
+ 270:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 271:.//FWLIB/src/stm32f4xx_usart.c ****   /* Clear STOP[13:12] bits */
+ 272:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg &= (uint32_t)~((uint32_t)USART_CR2_STOP);
+ 226              		.loc 1 272 0
+ 227 000c 23F44053 		bic	r3, r3, #12288
+ 228              	.LVL35:
+ 273:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 274:.//FWLIB/src/stm32f4xx_usart.c ****   /* Configure the USART Stop Bits, Clock, CPOL, CPHA and LastBit :
+ 275:.//FWLIB/src/stm32f4xx_usart.c ****       Set STOP[13:12] bits according to USART_StopBits value */
+ 276:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg |= (uint32_t)USART_InitStruct->USART_StopBits;
+ 229              		.loc 1 276 0
+ 230 0010 CA88     		ldrh	r2, [r1, #6]
+ 231              	.LVL36:
+ 277:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 278:.//FWLIB/src/stm32f4xx_usart.c ****   /* Write to USART CR2 */
+ 279:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR2 = (uint16_t)tmpreg;
+ 232              		.loc 1 279 0
+ 233 0012 1343     		orrs	r3, r3, r2
+ 234              	.LVL37:
+ 235 0014 0382     		strh	r3, [r0, #16]	@ movhi
+ 280:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 281:.//FWLIB/src/stm32f4xx_usart.c **** /*---------------------------- USART CR1 Configuration -----------------------*/
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 10
+
+
+ 282:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg = USARTx->CR1;
+ 236              		.loc 1 282 0
+ 237 0016 8389     		ldrh	r3, [r0, #12]
+ 238              	.LVL38:
+ 239 0018 9BB2     		uxth	r3, r3
+ 240              	.LVL39:
+ 283:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 284:.//FWLIB/src/stm32f4xx_usart.c ****   /* Clear M, PCE, PS, TE and RE bits */
+ 285:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg &= (uint32_t)~((uint32_t)CR1_CLEAR_MASK);
+ 241              		.loc 1 285 0
+ 242 001a 23F4B053 		bic	r3, r3, #5632
+ 243              	.LVL40:
+ 244 001e 23F00C01 		bic	r1, r3, #12
+ 245              	.LVL41:
+ 286:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 287:.//FWLIB/src/stm32f4xx_usart.c ****   /* Configure the USART Word Length, Parity and mode: 
+ 288:.//FWLIB/src/stm32f4xx_usart.c ****      Set the M bits according to USART_WordLength value 
+ 289:.//FWLIB/src/stm32f4xx_usart.c ****      Set PCE and PS bits according to USART_Parity value
+ 290:.//FWLIB/src/stm32f4xx_usart.c ****      Set TE and RE bits according to USART_Mode value */
+ 291:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg |= (uint32_t)USART_InitStruct->USART_WordLength | USART_InitStruct->USART_Parity |
+ 246              		.loc 1 291 0
+ 247 0022 A888     		ldrh	r0, [r5, #4]
+ 248              	.LVL42:
+ 249 0024 2A89     		ldrh	r2, [r5, #8]
+ 292:.//FWLIB/src/stm32f4xx_usart.c ****             USART_InitStruct->USART_Mode;
+ 250              		.loc 1 292 0
+ 251 0026 6B89     		ldrh	r3, [r5, #10]
+ 291:.//FWLIB/src/stm32f4xx_usart.c ****             USART_InitStruct->USART_Mode;
+ 252              		.loc 1 291 0
+ 253 0028 0243     		orrs	r2, r2, r0
+ 254 002a 1343     		orrs	r3, r3, r2
+ 255              	.LVL43:
+ 293:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 294:.//FWLIB/src/stm32f4xx_usart.c ****   /* Write to USART CR1 */
+ 295:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR1 = (uint16_t)tmpreg;
+ 256              		.loc 1 295 0
+ 257 002c 0B43     		orrs	r3, r3, r1
+ 258              	.LVL44:
+ 259 002e A381     		strh	r3, [r4, #12]	@ movhi
+ 296:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 297:.//FWLIB/src/stm32f4xx_usart.c **** /*---------------------------- USART CR3 Configuration -----------------------*/  
+ 298:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg = USARTx->CR3;
+ 260              		.loc 1 298 0
+ 261 0030 A38A     		ldrh	r3, [r4, #20]
+ 262              	.LVL45:
+ 263 0032 9BB2     		uxth	r3, r3
+ 264              	.LVL46:
+ 299:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 300:.//FWLIB/src/stm32f4xx_usart.c ****   /* Clear CTSE and RTSE bits */
+ 301:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg &= (uint32_t)~((uint32_t)CR3_CLEAR_MASK);
+ 265              		.loc 1 301 0
+ 266 0034 23F44073 		bic	r3, r3, #768
+ 267              	.LVL47:
+ 302:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 303:.//FWLIB/src/stm32f4xx_usart.c ****   /* Configure the USART HFC : 
+ 304:.//FWLIB/src/stm32f4xx_usart.c ****       Set CTSE and RTSE bits according to USART_HardwareFlowControl value */
+ 305:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg |= USART_InitStruct->USART_HardwareFlowControl;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 11
+
+
+ 268              		.loc 1 305 0
+ 269 0038 AA89     		ldrh	r2, [r5, #12]
+ 270              	.LVL48:
+ 306:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 307:.//FWLIB/src/stm32f4xx_usart.c ****   /* Write to USART CR3 */
+ 308:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR3 = (uint16_t)tmpreg;
+ 271              		.loc 1 308 0
+ 272 003a 1343     		orrs	r3, r3, r2
+ 273              	.LVL49:
+ 274 003c A382     		strh	r3, [r4, #20]	@ movhi
+ 309:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 310:.//FWLIB/src/stm32f4xx_usart.c **** /*---------------------------- USART BRR Configuration -----------------------*/
+ 311:.//FWLIB/src/stm32f4xx_usart.c ****   /* Configure the USART Baud Rate */
+ 312:.//FWLIB/src/stm32f4xx_usart.c ****   RCC_GetClocksFreq(&RCC_ClocksStatus);
+ 275              		.loc 1 312 0
+ 276 003e 6846     		mov	r0, sp
+ 277 0040 FFF7FEFF 		bl	RCC_GetClocksFreq
+ 278              	.LVL50:
+ 313:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 314:.//FWLIB/src/stm32f4xx_usart.c ****   if ((USARTx == USART1) || (USARTx == USART6))
+ 279              		.loc 1 314 0
+ 280 0044 204B     		ldr	r3, .L22
+ 281 0046 9C42     		cmp	r4, r3
+ 282 0048 03D0     		beq	.L14
+ 283              		.loc 1 314 0 is_stmt 0 discriminator 1
+ 284 004a 03F58063 		add	r3, r3, #1024
+ 285 004e 9C42     		cmp	r4, r3
+ 286 0050 01D1     		bne	.L15
+ 287              	.L14:
+ 315:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 316:.//FWLIB/src/stm32f4xx_usart.c ****     apbclock = RCC_ClocksStatus.PCLK2_Frequency;
+ 288              		.loc 1 316 0 is_stmt 1
+ 289 0052 039A     		ldr	r2, [sp, #12]
+ 290              	.LVL51:
+ 291 0054 00E0     		b	.L16
+ 292              	.LVL52:
+ 293              	.L15:
+ 317:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 318:.//FWLIB/src/stm32f4xx_usart.c ****   else
+ 319:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 320:.//FWLIB/src/stm32f4xx_usart.c ****     apbclock = RCC_ClocksStatus.PCLK1_Frequency;
+ 294              		.loc 1 320 0
+ 295 0056 029A     		ldr	r2, [sp, #8]
+ 296              	.LVL53:
+ 297              	.L16:
+ 321:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 322:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 323:.//FWLIB/src/stm32f4xx_usart.c ****   /* Determine the integer part */
+ 324:.//FWLIB/src/stm32f4xx_usart.c ****   if ((USARTx->CR1 & USART_CR1_OVER8) != 0)
+ 298              		.loc 1 324 0
+ 299 0058 A389     		ldrh	r3, [r4, #12]
+ 300 005a 13F4004F 		tst	r3, #32768
+ 301 005e 08D0     		beq	.L17
+ 325:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 326:.//FWLIB/src/stm32f4xx_usart.c ****     /* Integer part computing in case Oversampling mode is 8 Samples */
+ 327:.//FWLIB/src/stm32f4xx_usart.c ****     integerdivider = ((25 * apbclock) / (2 * (USART_InitStruct->USART_BaudRate)));    
+ 302              		.loc 1 327 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 12
+
+
+ 303 0060 02EB8202 		add	r2, r2, r2, lsl #2
+ 304              	.LVL54:
+ 305 0064 02EB8202 		add	r2, r2, r2, lsl #2
+ 306 0068 2968     		ldr	r1, [r5]
+ 307 006a 4900     		lsls	r1, r1, #1
+ 308 006c B2FBF1F1 		udiv	r1, r2, r1
+ 309              	.LVL55:
+ 310 0070 07E0     		b	.L18
+ 311              	.LVL56:
+ 312              	.L17:
+ 328:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 329:.//FWLIB/src/stm32f4xx_usart.c ****   else /* if ((USARTx->CR1 & USART_CR1_OVER8) == 0) */
+ 330:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 331:.//FWLIB/src/stm32f4xx_usart.c ****     /* Integer part computing in case Oversampling mode is 16 Samples */
+ 332:.//FWLIB/src/stm32f4xx_usart.c ****     integerdivider = ((25 * apbclock) / (4 * (USART_InitStruct->USART_BaudRate)));    
+ 313              		.loc 1 332 0
+ 314 0072 02EB8202 		add	r2, r2, r2, lsl #2
+ 315              	.LVL57:
+ 316 0076 02EB8202 		add	r2, r2, r2, lsl #2
+ 317 007a 2968     		ldr	r1, [r5]
+ 318 007c 8900     		lsls	r1, r1, #2
+ 319 007e B2FBF1F1 		udiv	r1, r2, r1
+ 320              	.LVL58:
+ 321              	.L18:
+ 333:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 334:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg = (integerdivider / 100) << 4;
+ 322              		.loc 1 334 0
+ 323 0082 124B     		ldr	r3, .L22+4
+ 324 0084 A3FB0123 		umull	r2, r3, r3, r1
+ 325 0088 5B09     		lsrs	r3, r3, #5
+ 326 008a 1B01     		lsls	r3, r3, #4
+ 327              	.LVL59:
+ 335:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 336:.//FWLIB/src/stm32f4xx_usart.c ****   /* Determine the fractional part */
+ 337:.//FWLIB/src/stm32f4xx_usart.c ****   fractionaldivider = integerdivider - (100 * (tmpreg >> 4));
+ 328              		.loc 1 337 0
+ 329 008c 1A09     		lsrs	r2, r3, #4
+ 330 008e 6420     		movs	r0, #100
+ 331 0090 00FB1212 		mls	r2, r0, r2, r1
+ 332              	.LVL60:
+ 338:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 339:.//FWLIB/src/stm32f4xx_usart.c ****   /* Implement the fractional part in the register */
+ 340:.//FWLIB/src/stm32f4xx_usart.c ****   if ((USARTx->CR1 & USART_CR1_OVER8) != 0)
+ 333              		.loc 1 340 0
+ 334 0094 A189     		ldrh	r1, [r4, #12]
+ 335              	.LVL61:
+ 336 0096 11F4004F 		tst	r1, #32768
+ 337 009a 08D0     		beq	.L19
+ 341:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 342:.//FWLIB/src/stm32f4xx_usart.c ****     tmpreg |= ((((fractionaldivider * 8) + 50) / 100)) & ((uint8_t)0x07);
+ 338              		.loc 1 342 0
+ 339 009c D200     		lsls	r2, r2, #3
+ 340              	.LVL62:
+ 341 009e 3232     		adds	r2, r2, #50
+ 342 00a0 0A49     		ldr	r1, .L22+4
+ 343 00a2 A1FB0212 		umull	r1, r2, r1, r2
+ 344 00a6 C2F34212 		ubfx	r2, r2, #5, #3
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 13
+
+
+ 345 00aa 1A43     		orrs	r2, r2, r3
+ 346              	.LVL63:
+ 347 00ac 07E0     		b	.L20
+ 348              	.LVL64:
+ 349              	.L19:
+ 343:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 344:.//FWLIB/src/stm32f4xx_usart.c ****   else /* if ((USARTx->CR1 & USART_CR1_OVER8) == 0) */
+ 345:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 346:.//FWLIB/src/stm32f4xx_usart.c ****     tmpreg |= ((((fractionaldivider * 16) + 50) / 100)) & ((uint8_t)0x0F);
+ 350              		.loc 1 346 0
+ 351 00ae 1201     		lsls	r2, r2, #4
+ 352              	.LVL65:
+ 353 00b0 3232     		adds	r2, r2, #50
+ 354 00b2 0649     		ldr	r1, .L22+4
+ 355 00b4 A1FB0212 		umull	r1, r2, r1, r2
+ 356 00b8 C2F34312 		ubfx	r2, r2, #5, #4
+ 357 00bc 1A43     		orrs	r2, r2, r3
+ 358              	.LVL66:
+ 359              	.L20:
+ 347:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 348:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 349:.//FWLIB/src/stm32f4xx_usart.c ****   /* Write to USART BRR register */
+ 350:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->BRR = (uint16_t)tmpreg;
+ 360              		.loc 1 350 0
+ 361 00be 92B2     		uxth	r2, r2
+ 362              	.LVL67:
+ 363 00c0 2281     		strh	r2, [r4, #8]	@ movhi
+ 351:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 364              		.loc 1 351 0
+ 365 00c2 05B0     		add	sp, sp, #20
+ 366              	.LCFI3:
+ 367              		.cfi_def_cfa_offset 12
+ 368              		@ sp needed
+ 369 00c4 30BD     		pop	{r4, r5, pc}
+ 370              	.LVL68:
+ 371              	.L23:
+ 372 00c6 00BF     		.align	2
+ 373              	.L22:
+ 374 00c8 00100140 		.word	1073811456
+ 375 00cc 1F85EB51 		.word	1374389535
+ 376              		.cfi_endproc
+ 377              	.LFE113:
+ 379              		.section	.text.USART_StructInit,"ax",%progbits
+ 380              		.align	2
+ 381              		.global	USART_StructInit
+ 382              		.thumb
+ 383              		.thumb_func
+ 385              	USART_StructInit:
+ 386              	.LFB114:
+ 352:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 353:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 354:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Fills each USART_InitStruct member with its default value.
+ 355:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_InitStruct: pointer to a USART_InitTypeDef structure which will
+ 356:.//FWLIB/src/stm32f4xx_usart.c ****   *         be initialized.
+ 357:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 358:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 359:.//FWLIB/src/stm32f4xx_usart.c **** void USART_StructInit(USART_InitTypeDef* USART_InitStruct)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 14
+
+
+ 360:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 387              		.loc 1 360 0
+ 388              		.cfi_startproc
+ 389              		@ args = 0, pretend = 0, frame = 0
+ 390              		@ frame_needed = 0, uses_anonymous_args = 0
+ 391              		@ link register save eliminated.
+ 392              	.LVL69:
+ 361:.//FWLIB/src/stm32f4xx_usart.c ****   /* USART_InitStruct members default value */
+ 362:.//FWLIB/src/stm32f4xx_usart.c ****   USART_InitStruct->USART_BaudRate = 9600;
+ 393              		.loc 1 362 0
+ 394 0000 4FF41653 		mov	r3, #9600
+ 395 0004 0360     		str	r3, [r0]
+ 363:.//FWLIB/src/stm32f4xx_usart.c ****   USART_InitStruct->USART_WordLength = USART_WordLength_8b;
+ 396              		.loc 1 363 0
+ 397 0006 0023     		movs	r3, #0
+ 398 0008 8380     		strh	r3, [r0, #4]	@ movhi
+ 364:.//FWLIB/src/stm32f4xx_usart.c ****   USART_InitStruct->USART_StopBits = USART_StopBits_1;
+ 399              		.loc 1 364 0
+ 400 000a C380     		strh	r3, [r0, #6]	@ movhi
+ 365:.//FWLIB/src/stm32f4xx_usart.c ****   USART_InitStruct->USART_Parity = USART_Parity_No ;
+ 401              		.loc 1 365 0
+ 402 000c 0381     		strh	r3, [r0, #8]	@ movhi
+ 366:.//FWLIB/src/stm32f4xx_usart.c ****   USART_InitStruct->USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+ 403              		.loc 1 366 0
+ 404 000e 0C22     		movs	r2, #12
+ 405 0010 4281     		strh	r2, [r0, #10]	@ movhi
+ 367:.//FWLIB/src/stm32f4xx_usart.c ****   USART_InitStruct->USART_HardwareFlowControl = USART_HardwareFlowControl_None;  
+ 406              		.loc 1 367 0
+ 407 0012 8381     		strh	r3, [r0, #12]	@ movhi
+ 408 0014 7047     		bx	lr
+ 409              		.cfi_endproc
+ 410              	.LFE114:
+ 412 0016 00BF     		.section	.text.USART_ClockInit,"ax",%progbits
+ 413              		.align	2
+ 414              		.global	USART_ClockInit
+ 415              		.thumb
+ 416              		.thumb_func
+ 418              	USART_ClockInit:
+ 419              	.LFB115:
+ 368:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 369:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 370:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 371:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Initializes the USARTx peripheral Clock according to the 
+ 372:.//FWLIB/src/stm32f4xx_usart.c ****   *         specified parameters in the USART_ClockInitStruct .
+ 373:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3 or 6 to select the USART peripheral.
+ 374:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_ClockInitStruct: pointer to a USART_ClockInitTypeDef structure that
+ 375:.//FWLIB/src/stm32f4xx_usart.c ****   *         contains the configuration information for the specified  USART peripheral.
+ 376:.//FWLIB/src/stm32f4xx_usart.c ****   * @note   The Smart Card and Synchronous modes are not available for UART4 and UART5.    
+ 377:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 378:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 379:.//FWLIB/src/stm32f4xx_usart.c **** void USART_ClockInit(USART_TypeDef* USARTx, USART_ClockInitTypeDef* USART_ClockInitStruct)
+ 380:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 420              		.loc 1 380 0
+ 421              		.cfi_startproc
+ 422              		@ args = 0, pretend = 0, frame = 0
+ 423              		@ frame_needed = 0, uses_anonymous_args = 0
+ 424              		@ link register save eliminated.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 15
+
+
+ 425              	.LVL70:
+ 426 0000 30B4     		push	{r4, r5}
+ 427              	.LCFI4:
+ 428              		.cfi_def_cfa_offset 8
+ 429              		.cfi_offset 4, -8
+ 430              		.cfi_offset 5, -4
+ 431              	.LVL71:
+ 381:.//FWLIB/src/stm32f4xx_usart.c ****   uint32_t tmpreg = 0x00;
+ 382:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 383:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_1236_PERIPH(USARTx));
+ 384:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_CLOCK(USART_ClockInitStruct->USART_Clock));
+ 385:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_CPOL(USART_ClockInitStruct->USART_CPOL));
+ 386:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_CPHA(USART_ClockInitStruct->USART_CPHA));
+ 387:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_LASTBIT(USART_ClockInitStruct->USART_LastBit));
+ 388:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 389:.//FWLIB/src/stm32f4xx_usart.c **** /*---------------------------- USART CR2 Configuration -----------------------*/
+ 390:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg = USARTx->CR2;
+ 432              		.loc 1 390 0
+ 433 0002 038A     		ldrh	r3, [r0, #16]
+ 434 0004 9BB2     		uxth	r3, r3
+ 435              	.LVL72:
+ 391:.//FWLIB/src/stm32f4xx_usart.c ****   /* Clear CLKEN, CPOL, CPHA and LBCL bits */
+ 392:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg &= (uint32_t)~((uint32_t)CR2_CLOCK_CLEAR_MASK);
+ 436              		.loc 1 392 0
+ 437 0006 23F47065 		bic	r5, r3, #3840
+ 438              	.LVL73:
+ 393:.//FWLIB/src/stm32f4xx_usart.c ****   /* Configure the USART Clock, CPOL, CPHA and LastBit ------------*/
+ 394:.//FWLIB/src/stm32f4xx_usart.c ****   /* Set CLKEN bit according to USART_Clock value */
+ 395:.//FWLIB/src/stm32f4xx_usart.c ****   /* Set CPOL bit according to USART_CPOL value */
+ 396:.//FWLIB/src/stm32f4xx_usart.c ****   /* Set CPHA bit according to USART_CPHA value */
+ 397:.//FWLIB/src/stm32f4xx_usart.c ****   /* Set LBCL bit according to USART_LastBit value */
+ 398:.//FWLIB/src/stm32f4xx_usart.c ****   tmpreg |= (uint32_t)USART_ClockInitStruct->USART_Clock | USART_ClockInitStruct->USART_CPOL | 
+ 439              		.loc 1 398 0
+ 440 000a 0A88     		ldrh	r2, [r1]
+ 441 000c 4C88     		ldrh	r4, [r1, #2]
+ 399:.//FWLIB/src/stm32f4xx_usart.c ****                  USART_ClockInitStruct->USART_CPHA | USART_ClockInitStruct->USART_LastBit;
+ 442              		.loc 1 399 0
+ 443 000e 8B88     		ldrh	r3, [r1, #4]
+ 444 0010 C988     		ldrh	r1, [r1, #6]
+ 445              	.LVL74:
+ 446 0012 2243     		orrs	r2, r2, r4
+ 447 0014 1A43     		orrs	r2, r2, r3
+ 448 0016 41EA0203 		orr	r3, r1, r2
+ 449              	.LVL75:
+ 400:.//FWLIB/src/stm32f4xx_usart.c ****   /* Write to USART CR2 */
+ 401:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR2 = (uint16_t)tmpreg;
+ 450              		.loc 1 401 0
+ 451 001a 2B43     		orrs	r3, r3, r5
+ 452              	.LVL76:
+ 453 001c 0382     		strh	r3, [r0, #16]	@ movhi
+ 402:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 454              		.loc 1 402 0
+ 455 001e 30BC     		pop	{r4, r5}
+ 456              	.LCFI5:
+ 457              		.cfi_restore 5
+ 458              		.cfi_restore 4
+ 459              		.cfi_def_cfa_offset 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 16
+
+
+ 460 0020 7047     		bx	lr
+ 461              		.cfi_endproc
+ 462              	.LFE115:
+ 464 0022 00BF     		.section	.text.USART_ClockStructInit,"ax",%progbits
+ 465              		.align	2
+ 466              		.global	USART_ClockStructInit
+ 467              		.thumb
+ 468              		.thumb_func
+ 470              	USART_ClockStructInit:
+ 471              	.LFB116:
+ 403:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 404:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 405:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Fills each USART_ClockInitStruct member with its default value.
+ 406:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_ClockInitStruct: pointer to a USART_ClockInitTypeDef structure
+ 407:.//FWLIB/src/stm32f4xx_usart.c ****   *         which will be initialized.
+ 408:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 409:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 410:.//FWLIB/src/stm32f4xx_usart.c **** void USART_ClockStructInit(USART_ClockInitTypeDef* USART_ClockInitStruct)
+ 411:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 472              		.loc 1 411 0
+ 473              		.cfi_startproc
+ 474              		@ args = 0, pretend = 0, frame = 0
+ 475              		@ frame_needed = 0, uses_anonymous_args = 0
+ 476              		@ link register save eliminated.
+ 477              	.LVL77:
+ 412:.//FWLIB/src/stm32f4xx_usart.c ****   /* USART_ClockInitStruct members default value */
+ 413:.//FWLIB/src/stm32f4xx_usart.c ****   USART_ClockInitStruct->USART_Clock = USART_Clock_Disable;
+ 478              		.loc 1 413 0
+ 479 0000 0023     		movs	r3, #0
+ 480 0002 0380     		strh	r3, [r0]	@ movhi
+ 414:.//FWLIB/src/stm32f4xx_usart.c ****   USART_ClockInitStruct->USART_CPOL = USART_CPOL_Low;
+ 481              		.loc 1 414 0
+ 482 0004 4380     		strh	r3, [r0, #2]	@ movhi
+ 415:.//FWLIB/src/stm32f4xx_usart.c ****   USART_ClockInitStruct->USART_CPHA = USART_CPHA_1Edge;
+ 483              		.loc 1 415 0
+ 484 0006 8380     		strh	r3, [r0, #4]	@ movhi
+ 416:.//FWLIB/src/stm32f4xx_usart.c ****   USART_ClockInitStruct->USART_LastBit = USART_LastBit_Disable;
+ 485              		.loc 1 416 0
+ 486 0008 C380     		strh	r3, [r0, #6]	@ movhi
+ 487 000a 7047     		bx	lr
+ 488              		.cfi_endproc
+ 489              	.LFE116:
+ 491              		.section	.text.USART_Cmd,"ax",%progbits
+ 492              		.align	2
+ 493              		.global	USART_Cmd
+ 494              		.thumb
+ 495              		.thumb_func
+ 497              	USART_Cmd:
+ 498              	.LFB117:
+ 417:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 418:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 419:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 420:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Enables or disables the specified USART peripheral.
+ 421:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 422:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 423:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  NewState: new state of the USARTx peripheral.
+ 424:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be: ENABLE or DISABLE.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 17
+
+
+ 425:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 426:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 427:.//FWLIB/src/stm32f4xx_usart.c **** void USART_Cmd(USART_TypeDef* USARTx, FunctionalState NewState)
+ 428:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 499              		.loc 1 428 0
+ 500              		.cfi_startproc
+ 501              		@ args = 0, pretend = 0, frame = 0
+ 502              		@ frame_needed = 0, uses_anonymous_args = 0
+ 503              		@ link register save eliminated.
+ 504              	.LVL78:
+ 429:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 430:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 431:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 432:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 433:.//FWLIB/src/stm32f4xx_usart.c ****   if (NewState != DISABLE)
+ 505              		.loc 1 433 0
+ 506 0000 29B1     		cbz	r1, .L29
+ 434:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 435:.//FWLIB/src/stm32f4xx_usart.c ****     /* Enable the selected USART by setting the UE bit in the CR1 register */
+ 436:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR1 |= USART_CR1_UE;
+ 507              		.loc 1 436 0
+ 508 0002 8389     		ldrh	r3, [r0, #12]
+ 509 0004 9BB2     		uxth	r3, r3
+ 510 0006 43F40053 		orr	r3, r3, #8192
+ 511 000a 8381     		strh	r3, [r0, #12]	@ movhi
+ 512 000c 7047     		bx	lr
+ 513              	.L29:
+ 437:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 438:.//FWLIB/src/stm32f4xx_usart.c ****   else
+ 439:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 440:.//FWLIB/src/stm32f4xx_usart.c ****     /* Disable the selected USART by clearing the UE bit in the CR1 register */
+ 441:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR1 &= (uint16_t)~((uint16_t)USART_CR1_UE);
+ 514              		.loc 1 441 0
+ 515 000e 8389     		ldrh	r3, [r0, #12]
+ 516 0010 9BB2     		uxth	r3, r3
+ 517 0012 23F40053 		bic	r3, r3, #8192
+ 518 0016 9BB2     		uxth	r3, r3
+ 519 0018 8381     		strh	r3, [r0, #12]	@ movhi
+ 520 001a 7047     		bx	lr
+ 521              		.cfi_endproc
+ 522              	.LFE117:
+ 524              		.section	.text.USART_SetPrescaler,"ax",%progbits
+ 525              		.align	2
+ 526              		.global	USART_SetPrescaler
+ 527              		.thumb
+ 528              		.thumb_func
+ 530              	USART_SetPrescaler:
+ 531              	.LFB118:
+ 442:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 443:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 444:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 445:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 446:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Sets the system clock prescaler.
+ 447:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 448:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 449:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_Prescaler: specifies the prescaler clock. 
+ 450:.//FWLIB/src/stm32f4xx_usart.c ****   * @note   The function is used for IrDA mode with UART4 and UART5.   
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 18
+
+
+ 451:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 452:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 453:.//FWLIB/src/stm32f4xx_usart.c **** void USART_SetPrescaler(USART_TypeDef* USARTx, uint8_t USART_Prescaler)
+ 454:.//FWLIB/src/stm32f4xx_usart.c **** { 
+ 532              		.loc 1 454 0
+ 533              		.cfi_startproc
+ 534              		@ args = 0, pretend = 0, frame = 0
+ 535              		@ frame_needed = 0, uses_anonymous_args = 0
+ 536              		@ link register save eliminated.
+ 537              	.LVL79:
+ 455:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 456:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 457:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 458:.//FWLIB/src/stm32f4xx_usart.c ****   /* Clear the USART prescaler */
+ 459:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->GTPR &= USART_GTPR_GT;
+ 538              		.loc 1 459 0
+ 539 0000 038B     		ldrh	r3, [r0, #24]
+ 540 0002 03F47F43 		and	r3, r3, #65280
+ 541 0006 0383     		strh	r3, [r0, #24]	@ movhi
+ 460:.//FWLIB/src/stm32f4xx_usart.c ****   /* Set the USART prescaler */
+ 461:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->GTPR |= USART_Prescaler;
+ 542              		.loc 1 461 0
+ 543 0008 038B     		ldrh	r3, [r0, #24]
+ 544 000a 9BB2     		uxth	r3, r3
+ 545 000c 1943     		orrs	r1, r1, r3
+ 546              	.LVL80:
+ 547 000e 0183     		strh	r1, [r0, #24]	@ movhi
+ 548 0010 7047     		bx	lr
+ 549              		.cfi_endproc
+ 550              	.LFE118:
+ 552 0012 00BF     		.section	.text.USART_OverSampling8Cmd,"ax",%progbits
+ 553              		.align	2
+ 554              		.global	USART_OverSampling8Cmd
+ 555              		.thumb
+ 556              		.thumb_func
+ 558              	USART_OverSampling8Cmd:
+ 559              	.LFB119:
+ 462:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 463:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 464:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 465:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Enables or disables the USART's 8x oversampling mode.
+ 466:.//FWLIB/src/stm32f4xx_usart.c ****   * @note   This function has to be called before calling USART_Init() function
+ 467:.//FWLIB/src/stm32f4xx_usart.c ****   *         in order to have correct baudrate Divider value.
+ 468:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 469:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 470:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  NewState: new state of the USART 8x oversampling mode.
+ 471:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 472:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 473:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 474:.//FWLIB/src/stm32f4xx_usart.c **** void USART_OverSampling8Cmd(USART_TypeDef* USARTx, FunctionalState NewState)
+ 475:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 560              		.loc 1 475 0
+ 561              		.cfi_startproc
+ 562              		@ args = 0, pretend = 0, frame = 0
+ 563              		@ frame_needed = 0, uses_anonymous_args = 0
+ 564              		@ link register save eliminated.
+ 565              	.LVL81:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 19
+
+
+ 476:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 477:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 478:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 479:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 480:.//FWLIB/src/stm32f4xx_usart.c ****   if (NewState != DISABLE)
+ 566              		.loc 1 480 0
+ 567 0000 39B1     		cbz	r1, .L33
+ 481:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 482:.//FWLIB/src/stm32f4xx_usart.c ****     /* Enable the 8x Oversampling mode by setting the OVER8 bit in the CR1 register */
+ 483:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR1 |= USART_CR1_OVER8;
+ 568              		.loc 1 483 0
+ 569 0002 8389     		ldrh	r3, [r0, #12]
+ 570 0004 6FEA4343 		mvn	r3, r3, lsl #17
+ 571 0008 6FEA5343 		mvn	r3, r3, lsr #17
+ 572 000c 9BB2     		uxth	r3, r3
+ 573 000e 8381     		strh	r3, [r0, #12]	@ movhi
+ 574 0010 7047     		bx	lr
+ 575              	.L33:
+ 484:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 485:.//FWLIB/src/stm32f4xx_usart.c ****   else
+ 486:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 487:.//FWLIB/src/stm32f4xx_usart.c ****     /* Disable the 8x Oversampling mode by clearing the OVER8 bit in the CR1 register */
+ 488:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR1 &= (uint16_t)~((uint16_t)USART_CR1_OVER8);
+ 576              		.loc 1 488 0
+ 577 0012 8389     		ldrh	r3, [r0, #12]
+ 578 0014 C3F30E03 		ubfx	r3, r3, #0, #15
+ 579 0018 8381     		strh	r3, [r0, #12]	@ movhi
+ 580 001a 7047     		bx	lr
+ 581              		.cfi_endproc
+ 582              	.LFE119:
+ 584              		.section	.text.USART_OneBitMethodCmd,"ax",%progbits
+ 585              		.align	2
+ 586              		.global	USART_OneBitMethodCmd
+ 587              		.thumb
+ 588              		.thumb_func
+ 590              	USART_OneBitMethodCmd:
+ 591              	.LFB120:
+ 489:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 490:.//FWLIB/src/stm32f4xx_usart.c **** }  
+ 491:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 492:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 493:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Enables or disables the USART's one bit sampling method.
+ 494:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 495:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 496:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  NewState: new state of the USART one bit sampling method.
+ 497:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 498:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 499:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 500:.//FWLIB/src/stm32f4xx_usart.c **** void USART_OneBitMethodCmd(USART_TypeDef* USARTx, FunctionalState NewState)
+ 501:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 592              		.loc 1 501 0
+ 593              		.cfi_startproc
+ 594              		@ args = 0, pretend = 0, frame = 0
+ 595              		@ frame_needed = 0, uses_anonymous_args = 0
+ 596              		@ link register save eliminated.
+ 597              	.LVL82:
+ 502:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 20
+
+
+ 503:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 504:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 505:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 506:.//FWLIB/src/stm32f4xx_usart.c ****   if (NewState != DISABLE)
+ 598              		.loc 1 506 0
+ 599 0000 29B1     		cbz	r1, .L36
+ 507:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 508:.//FWLIB/src/stm32f4xx_usart.c ****     /* Enable the one bit method by setting the ONEBITE bit in the CR3 register */
+ 509:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR3 |= USART_CR3_ONEBIT;
+ 600              		.loc 1 509 0
+ 601 0002 838A     		ldrh	r3, [r0, #20]
+ 602 0004 9BB2     		uxth	r3, r3
+ 603 0006 43F40063 		orr	r3, r3, #2048
+ 604 000a 8382     		strh	r3, [r0, #20]	@ movhi
+ 605 000c 7047     		bx	lr
+ 606              	.L36:
+ 510:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 511:.//FWLIB/src/stm32f4xx_usart.c ****   else
+ 512:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 513:.//FWLIB/src/stm32f4xx_usart.c ****     /* Disable the one bit method by clearing the ONEBITE bit in the CR3 register */
+ 514:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR3 &= (uint16_t)~((uint16_t)USART_CR3_ONEBIT);
+ 607              		.loc 1 514 0
+ 608 000e 838A     		ldrh	r3, [r0, #20]
+ 609 0010 9BB2     		uxth	r3, r3
+ 610 0012 23F40063 		bic	r3, r3, #2048
+ 611 0016 9BB2     		uxth	r3, r3
+ 612 0018 8382     		strh	r3, [r0, #20]	@ movhi
+ 613 001a 7047     		bx	lr
+ 614              		.cfi_endproc
+ 615              	.LFE120:
+ 617              		.section	.text.USART_SendData,"ax",%progbits
+ 618              		.align	2
+ 619              		.global	USART_SendData
+ 620              		.thumb
+ 621              		.thumb_func
+ 623              	USART_SendData:
+ 624              	.LFB121:
+ 515:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 516:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 517:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 518:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 519:.//FWLIB/src/stm32f4xx_usart.c ****   * @}
+ 520:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 521:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 522:.//FWLIB/src/stm32f4xx_usart.c **** /** @defgroup USART_Group2 Data transfers functions
+ 523:.//FWLIB/src/stm32f4xx_usart.c ****  *  @brief   Data transfers functions 
+ 524:.//FWLIB/src/stm32f4xx_usart.c ****  *
+ 525:.//FWLIB/src/stm32f4xx_usart.c **** @verbatim   
+ 526:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================
+ 527:.//FWLIB/src/stm32f4xx_usart.c ****                       ##### Data transfers functions #####
+ 528:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================  
+ 529:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 530:.//FWLIB/src/stm32f4xx_usart.c ****     This subsection provides a set of functions allowing to manage the USART data 
+ 531:.//FWLIB/src/stm32f4xx_usart.c ****     transfers.
+ 532:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 533:.//FWLIB/src/stm32f4xx_usart.c ****     During an USART reception, data shifts in least significant bit first through 
+ 534:.//FWLIB/src/stm32f4xx_usart.c ****     the RX pin. In this mode, the USART_DR register consists of a buffer (RDR) 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 21
+
+
+ 535:.//FWLIB/src/stm32f4xx_usart.c ****     between the internal bus and the received shift register.
+ 536:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 537:.//FWLIB/src/stm32f4xx_usart.c ****     When a transmission is taking place, a write instruction to the USART_DR register 
+ 538:.//FWLIB/src/stm32f4xx_usart.c ****     stores the data in the TDR register and which is copied in the shift register 
+ 539:.//FWLIB/src/stm32f4xx_usart.c ****     at the end of the current transmission.
+ 540:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 541:.//FWLIB/src/stm32f4xx_usart.c ****     The read access of the USART_DR register can be done using the USART_ReceiveData()
+ 542:.//FWLIB/src/stm32f4xx_usart.c ****     function and returns the RDR buffered value. Whereas a write access to the USART_DR 
+ 543:.//FWLIB/src/stm32f4xx_usart.c ****     can be done using USART_SendData() function and stores the written data into 
+ 544:.//FWLIB/src/stm32f4xx_usart.c ****     TDR buffer.
+ 545:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 546:.//FWLIB/src/stm32f4xx_usart.c **** @endverbatim
+ 547:.//FWLIB/src/stm32f4xx_usart.c ****   * @{
+ 548:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 549:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 550:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 551:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Transmits single data through the USARTx peripheral.
+ 552:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 553:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 554:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  Data: the data to transmit.
+ 555:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 556:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 557:.//FWLIB/src/stm32f4xx_usart.c **** void USART_SendData(USART_TypeDef* USARTx, uint16_t Data)
+ 558:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 625              		.loc 1 558 0
+ 626              		.cfi_startproc
+ 627              		@ args = 0, pretend = 0, frame = 0
+ 628              		@ frame_needed = 0, uses_anonymous_args = 0
+ 629              		@ link register save eliminated.
+ 630              	.LVL83:
+ 559:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 560:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 561:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_DATA(Data)); 
+ 562:.//FWLIB/src/stm32f4xx_usart.c ****     
+ 563:.//FWLIB/src/stm32f4xx_usart.c ****   /* Transmit Data */
+ 564:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->DR = (Data & (uint16_t)0x01FF);
+ 631              		.loc 1 564 0
+ 632 0000 C1F30801 		ubfx	r1, r1, #0, #9
+ 633              	.LVL84:
+ 634 0004 8180     		strh	r1, [r0, #4]	@ movhi
+ 635 0006 7047     		bx	lr
+ 636              		.cfi_endproc
+ 637              	.LFE121:
+ 639              		.section	.text.USART_ReceiveData,"ax",%progbits
+ 640              		.align	2
+ 641              		.global	USART_ReceiveData
+ 642              		.thumb
+ 643              		.thumb_func
+ 645              	USART_ReceiveData:
+ 646              	.LFB122:
+ 565:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 566:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 567:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 568:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Returns the most recent received data by the USARTx peripheral.
+ 569:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 570:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 571:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval The received data.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 22
+
+
+ 572:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 573:.//FWLIB/src/stm32f4xx_usart.c **** uint16_t USART_ReceiveData(USART_TypeDef* USARTx)
+ 574:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 647              		.loc 1 574 0
+ 648              		.cfi_startproc
+ 649              		@ args = 0, pretend = 0, frame = 0
+ 650              		@ frame_needed = 0, uses_anonymous_args = 0
+ 651              		@ link register save eliminated.
+ 652              	.LVL85:
+ 575:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 576:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 577:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 578:.//FWLIB/src/stm32f4xx_usart.c ****   /* Receive Data */
+ 579:.//FWLIB/src/stm32f4xx_usart.c ****   return (uint16_t)(USARTx->DR & (uint16_t)0x01FF);
+ 653              		.loc 1 579 0
+ 654 0000 8088     		ldrh	r0, [r0, #4]
+ 655              	.LVL86:
+ 580:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 656              		.loc 1 580 0
+ 657 0002 C0F30800 		ubfx	r0, r0, #0, #9
+ 658 0006 7047     		bx	lr
+ 659              		.cfi_endproc
+ 660              	.LFE122:
+ 662              		.section	.text.USART_SetAddress,"ax",%progbits
+ 663              		.align	2
+ 664              		.global	USART_SetAddress
+ 665              		.thumb
+ 666              		.thumb_func
+ 668              	USART_SetAddress:
+ 669              	.LFB123:
+ 581:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 582:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 583:.//FWLIB/src/stm32f4xx_usart.c ****   * @}
+ 584:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 585:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 586:.//FWLIB/src/stm32f4xx_usart.c **** /** @defgroup USART_Group3 MultiProcessor Communication functions
+ 587:.//FWLIB/src/stm32f4xx_usart.c ****  *  @brief   Multi-Processor Communication functions 
+ 588:.//FWLIB/src/stm32f4xx_usart.c ****  *
+ 589:.//FWLIB/src/stm32f4xx_usart.c **** @verbatim   
+ 590:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================
+ 591:.//FWLIB/src/stm32f4xx_usart.c ****               ##### Multi-Processor Communication functions #####
+ 592:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================  
+ 593:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 594:.//FWLIB/src/stm32f4xx_usart.c ****     This subsection provides a set of functions allowing to manage the USART 
+ 595:.//FWLIB/src/stm32f4xx_usart.c ****     multiprocessor communication.
+ 596:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 597:.//FWLIB/src/stm32f4xx_usart.c ****     For instance one of the USARTs can be the master, its TX output is connected 
+ 598:.//FWLIB/src/stm32f4xx_usart.c ****     to the RX input of the other USART. The others are slaves, their respective 
+ 599:.//FWLIB/src/stm32f4xx_usart.c ****     TX outputs are logically ANDed together and connected to the RX input of the 
+ 600:.//FWLIB/src/stm32f4xx_usart.c ****     master.
+ 601:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 602:.//FWLIB/src/stm32f4xx_usart.c ****     USART multiprocessor communication is possible through the following procedure:
+ 603:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Program the Baud rate, Word length = 9 bits, Stop bits, Parity, Mode 
+ 604:.//FWLIB/src/stm32f4xx_usart.c ****           transmitter or Mode receiver and hardware flow control values using 
+ 605:.//FWLIB/src/stm32f4xx_usart.c ****           the USART_Init() function.
+ 606:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Configures the USART address using the USART_SetAddress() function.
+ 607:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Configures the wake up method (USART_WakeUp_IdleLine or USART_WakeUp_AddressMark)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 23
+
+
+ 608:.//FWLIB/src/stm32f4xx_usart.c ****           using USART_WakeUpConfig() function only for the slaves.
+ 609:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable the USART using the USART_Cmd() function.
+ 610:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enter the USART slaves in mute mode using USART_ReceiverWakeUpCmd() function.
+ 611:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 612:.//FWLIB/src/stm32f4xx_usart.c ****     The USART Slave exit from mute mode when receive the wake up condition.
+ 613:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 614:.//FWLIB/src/stm32f4xx_usart.c **** @endverbatim
+ 615:.//FWLIB/src/stm32f4xx_usart.c ****   * @{
+ 616:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 617:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 618:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 619:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Sets the address of the USART node.
+ 620:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 621:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 622:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_Address: Indicates the address of the USART node.
+ 623:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 624:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 625:.//FWLIB/src/stm32f4xx_usart.c **** void USART_SetAddress(USART_TypeDef* USARTx, uint8_t USART_Address)
+ 626:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 670              		.loc 1 626 0
+ 671              		.cfi_startproc
+ 672              		@ args = 0, pretend = 0, frame = 0
+ 673              		@ frame_needed = 0, uses_anonymous_args = 0
+ 674              		@ link register save eliminated.
+ 675              	.LVL87:
+ 627:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 628:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 629:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ADDRESS(USART_Address)); 
+ 630:.//FWLIB/src/stm32f4xx_usart.c ****     
+ 631:.//FWLIB/src/stm32f4xx_usart.c ****   /* Clear the USART address */
+ 632:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR2 &= (uint16_t)~((uint16_t)USART_CR2_ADD);
+ 676              		.loc 1 632 0
+ 677 0000 038A     		ldrh	r3, [r0, #16]
+ 678 0002 9BB2     		uxth	r3, r3
+ 679 0004 23F00F03 		bic	r3, r3, #15
+ 680 0008 9BB2     		uxth	r3, r3
+ 681 000a 0382     		strh	r3, [r0, #16]	@ movhi
+ 633:.//FWLIB/src/stm32f4xx_usart.c ****   /* Set the USART address node */
+ 634:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR2 |= USART_Address;
+ 682              		.loc 1 634 0
+ 683 000c 038A     		ldrh	r3, [r0, #16]
+ 684 000e 9BB2     		uxth	r3, r3
+ 685 0010 1943     		orrs	r1, r1, r3
+ 686              	.LVL88:
+ 687 0012 0182     		strh	r1, [r0, #16]	@ movhi
+ 688 0014 7047     		bx	lr
+ 689              		.cfi_endproc
+ 690              	.LFE123:
+ 692 0016 00BF     		.section	.text.USART_ReceiverWakeUpCmd,"ax",%progbits
+ 693              		.align	2
+ 694              		.global	USART_ReceiverWakeUpCmd
+ 695              		.thumb
+ 696              		.thumb_func
+ 698              	USART_ReceiverWakeUpCmd:
+ 699              	.LFB124:
+ 635:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 636:.//FWLIB/src/stm32f4xx_usart.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 24
+
+
+ 637:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 638:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Determines if the USART is in mute mode or not.
+ 639:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 640:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 641:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  NewState: new state of the USART mute mode.
+ 642:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 643:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 644:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 645:.//FWLIB/src/stm32f4xx_usart.c **** void USART_ReceiverWakeUpCmd(USART_TypeDef* USARTx, FunctionalState NewState)
+ 646:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 700              		.loc 1 646 0
+ 701              		.cfi_startproc
+ 702              		@ args = 0, pretend = 0, frame = 0
+ 703              		@ frame_needed = 0, uses_anonymous_args = 0
+ 704              		@ link register save eliminated.
+ 705              	.LVL89:
+ 647:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 648:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 649:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState)); 
+ 650:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 651:.//FWLIB/src/stm32f4xx_usart.c ****   if (NewState != DISABLE)
+ 706              		.loc 1 651 0
+ 707 0000 29B1     		cbz	r1, .L42
+ 652:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 653:.//FWLIB/src/stm32f4xx_usart.c ****     /* Enable the USART mute mode  by setting the RWU bit in the CR1 register */
+ 654:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR1 |= USART_CR1_RWU;
+ 708              		.loc 1 654 0
+ 709 0002 8389     		ldrh	r3, [r0, #12]
+ 710 0004 9BB2     		uxth	r3, r3
+ 711 0006 43F00203 		orr	r3, r3, #2
+ 712 000a 8381     		strh	r3, [r0, #12]	@ movhi
+ 713 000c 7047     		bx	lr
+ 714              	.L42:
+ 655:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 656:.//FWLIB/src/stm32f4xx_usart.c ****   else
+ 657:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 658:.//FWLIB/src/stm32f4xx_usart.c ****     /* Disable the USART mute mode by clearing the RWU bit in the CR1 register */
+ 659:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR1 &= (uint16_t)~((uint16_t)USART_CR1_RWU);
+ 715              		.loc 1 659 0
+ 716 000e 8389     		ldrh	r3, [r0, #12]
+ 717 0010 9BB2     		uxth	r3, r3
+ 718 0012 23F00203 		bic	r3, r3, #2
+ 719 0016 9BB2     		uxth	r3, r3
+ 720 0018 8381     		strh	r3, [r0, #12]	@ movhi
+ 721 001a 7047     		bx	lr
+ 722              		.cfi_endproc
+ 723              	.LFE124:
+ 725              		.section	.text.USART_WakeUpConfig,"ax",%progbits
+ 726              		.align	2
+ 727              		.global	USART_WakeUpConfig
+ 728              		.thumb
+ 729              		.thumb_func
+ 731              	USART_WakeUpConfig:
+ 732              	.LFB125:
+ 660:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 661:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 662:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 25
+
+
+ 663:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Selects the USART WakeUp method.
+ 664:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 665:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 666:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_WakeUp: specifies the USART wakeup method.
+ 667:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be one of the following values:
+ 668:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_WakeUp_IdleLine: WakeUp by an idle line detection
+ 669:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_WakeUp_AddressMark: WakeUp by an address mark
+ 670:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 671:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 672:.//FWLIB/src/stm32f4xx_usart.c **** void USART_WakeUpConfig(USART_TypeDef* USARTx, uint16_t USART_WakeUp)
+ 673:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 733              		.loc 1 673 0
+ 734              		.cfi_startproc
+ 735              		@ args = 0, pretend = 0, frame = 0
+ 736              		@ frame_needed = 0, uses_anonymous_args = 0
+ 737              		@ link register save eliminated.
+ 738              	.LVL90:
+ 674:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 675:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 676:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_WAKEUP(USART_WakeUp));
+ 677:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 678:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR1 &= (uint16_t)~((uint16_t)USART_CR1_WAKE);
+ 739              		.loc 1 678 0
+ 740 0000 8389     		ldrh	r3, [r0, #12]
+ 741 0002 9BB2     		uxth	r3, r3
+ 742 0004 23F40063 		bic	r3, r3, #2048
+ 743 0008 9BB2     		uxth	r3, r3
+ 744 000a 8381     		strh	r3, [r0, #12]	@ movhi
+ 679:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR1 |= USART_WakeUp;
+ 745              		.loc 1 679 0
+ 746 000c 8389     		ldrh	r3, [r0, #12]
+ 747 000e 9BB2     		uxth	r3, r3
+ 748 0010 1943     		orrs	r1, r1, r3
+ 749              	.LVL91:
+ 750 0012 8181     		strh	r1, [r0, #12]	@ movhi
+ 751 0014 7047     		bx	lr
+ 752              		.cfi_endproc
+ 753              	.LFE125:
+ 755 0016 00BF     		.section	.text.USART_LINBreakDetectLengthConfig,"ax",%progbits
+ 756              		.align	2
+ 757              		.global	USART_LINBreakDetectLengthConfig
+ 758              		.thumb
+ 759              		.thumb_func
+ 761              	USART_LINBreakDetectLengthConfig:
+ 762              	.LFB126:
+ 680:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 681:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 682:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 683:.//FWLIB/src/stm32f4xx_usart.c ****   * @}
+ 684:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 685:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 686:.//FWLIB/src/stm32f4xx_usart.c **** /** @defgroup USART_Group4 LIN mode functions
+ 687:.//FWLIB/src/stm32f4xx_usart.c ****  *  @brief   LIN mode functions 
+ 688:.//FWLIB/src/stm32f4xx_usart.c ****  *
+ 689:.//FWLIB/src/stm32f4xx_usart.c **** @verbatim   
+ 690:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================
+ 691:.//FWLIB/src/stm32f4xx_usart.c ****                         ##### LIN mode functions #####
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 26
+
+
+ 692:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================  
+ 693:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 694:.//FWLIB/src/stm32f4xx_usart.c ****     This subsection provides a set of functions allowing to manage the USART LIN 
+ 695:.//FWLIB/src/stm32f4xx_usart.c ****     Mode communication.
+ 696:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 697:.//FWLIB/src/stm32f4xx_usart.c ****     In LIN mode, 8-bit data format with 1 stop bit is required in accordance with 
+ 698:.//FWLIB/src/stm32f4xx_usart.c ****     the LIN standard.
+ 699:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 700:.//FWLIB/src/stm32f4xx_usart.c ****     Only this LIN Feature is supported by the USART IP:
+ 701:.//FWLIB/src/stm32f4xx_usart.c ****       (+) LIN Master Synchronous Break send capability and LIN slave break detection
+ 702:.//FWLIB/src/stm32f4xx_usart.c ****           capability :  13-bit break generation and 10/11 bit break detection
+ 703:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 704:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 705:.//FWLIB/src/stm32f4xx_usart.c ****     USART LIN Master transmitter communication is possible through the following 
+ 706:.//FWLIB/src/stm32f4xx_usart.c ****     procedure:
+ 707:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Program the Baud rate, Word length = 8bits, Stop bits = 1bit, Parity, 
+ 708:.//FWLIB/src/stm32f4xx_usart.c ****         Mode transmitter or Mode receiver and hardware flow control values using 
+ 709:.//FWLIB/src/stm32f4xx_usart.c ****         the USART_Init() function.
+ 710:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable the USART using the USART_Cmd() function.
+ 711:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable the LIN mode using the USART_LINCmd() function.
+ 712:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Send the break character using USART_SendBreak() function.
+ 713:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 714:.//FWLIB/src/stm32f4xx_usart.c ****     USART LIN Master receiver communication is possible through the following procedure:
+ 715:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Program the Baud rate, Word length = 8bits, Stop bits = 1bit, Parity, 
+ 716:.//FWLIB/src/stm32f4xx_usart.c ****           Mode transmitter or Mode receiver and hardware flow control values using 
+ 717:.//FWLIB/src/stm32f4xx_usart.c ****           the USART_Init() function.
+ 718:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable the USART using the USART_Cmd() function.
+ 719:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Configures the break detection length using the USART_LINBreakDetectLengthConfig()
+ 720:.//FWLIB/src/stm32f4xx_usart.c ****           function.
+ 721:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable the LIN mode using the USART_LINCmd() function.
+ 722:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 723:.//FWLIB/src/stm32f4xx_usart.c ****       -@- In LIN mode, the following bits must be kept cleared:
+ 724:.//FWLIB/src/stm32f4xx_usart.c ****        (+@) CLKEN in the USART_CR2 register,
+ 725:.//FWLIB/src/stm32f4xx_usart.c ****        (+@) STOP[1:0], SCEN, HDSEL and IREN in the USART_CR3 register.
+ 726:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 727:.//FWLIB/src/stm32f4xx_usart.c **** @endverbatim
+ 728:.//FWLIB/src/stm32f4xx_usart.c ****   * @{
+ 729:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 730:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 731:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 732:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Sets the USART LIN Break detection length.
+ 733:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 734:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 735:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_LINBreakDetectLength: specifies the LIN break detection length.
+ 736:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be one of the following values:
+ 737:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_LINBreakDetectLength_10b: 10-bit break detection
+ 738:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_LINBreakDetectLength_11b: 11-bit break detection
+ 739:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 740:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 741:.//FWLIB/src/stm32f4xx_usart.c **** void USART_LINBreakDetectLengthConfig(USART_TypeDef* USARTx, uint16_t USART_LINBreakDetectLength)
+ 742:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 763              		.loc 1 742 0
+ 764              		.cfi_startproc
+ 765              		@ args = 0, pretend = 0, frame = 0
+ 766              		@ frame_needed = 0, uses_anonymous_args = 0
+ 767              		@ link register save eliminated.
+ 768              	.LVL92:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 27
+
+
+ 743:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 744:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 745:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_LIN_BREAK_DETECT_LENGTH(USART_LINBreakDetectLength));
+ 746:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 747:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR2 &= (uint16_t)~((uint16_t)USART_CR2_LBDL);
+ 769              		.loc 1 747 0
+ 770 0000 038A     		ldrh	r3, [r0, #16]
+ 771 0002 9BB2     		uxth	r3, r3
+ 772 0004 23F02003 		bic	r3, r3, #32
+ 773 0008 9BB2     		uxth	r3, r3
+ 774 000a 0382     		strh	r3, [r0, #16]	@ movhi
+ 748:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR2 |= USART_LINBreakDetectLength;  
+ 775              		.loc 1 748 0
+ 776 000c 038A     		ldrh	r3, [r0, #16]
+ 777 000e 9BB2     		uxth	r3, r3
+ 778 0010 1943     		orrs	r1, r1, r3
+ 779              	.LVL93:
+ 780 0012 0182     		strh	r1, [r0, #16]	@ movhi
+ 781 0014 7047     		bx	lr
+ 782              		.cfi_endproc
+ 783              	.LFE126:
+ 785 0016 00BF     		.section	.text.USART_LINCmd,"ax",%progbits
+ 786              		.align	2
+ 787              		.global	USART_LINCmd
+ 788              		.thumb
+ 789              		.thumb_func
+ 791              	USART_LINCmd:
+ 792              	.LFB127:
+ 749:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 750:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 751:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 752:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Enables or disables the USART's LIN mode.
+ 753:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 754:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 755:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  NewState: new state of the USART LIN mode.
+ 756:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 757:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 758:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 759:.//FWLIB/src/stm32f4xx_usart.c **** void USART_LINCmd(USART_TypeDef* USARTx, FunctionalState NewState)
+ 760:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 793              		.loc 1 760 0
+ 794              		.cfi_startproc
+ 795              		@ args = 0, pretend = 0, frame = 0
+ 796              		@ frame_needed = 0, uses_anonymous_args = 0
+ 797              		@ link register save eliminated.
+ 798              	.LVL94:
+ 761:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 762:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 763:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 764:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 765:.//FWLIB/src/stm32f4xx_usart.c ****   if (NewState != DISABLE)
+ 799              		.loc 1 765 0
+ 800 0000 29B1     		cbz	r1, .L47
+ 766:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 767:.//FWLIB/src/stm32f4xx_usart.c ****     /* Enable the LIN mode by setting the LINEN bit in the CR2 register */
+ 768:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR2 |= USART_CR2_LINEN;
+ 801              		.loc 1 768 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 28
+
+
+ 802 0002 038A     		ldrh	r3, [r0, #16]
+ 803 0004 9BB2     		uxth	r3, r3
+ 804 0006 43F48043 		orr	r3, r3, #16384
+ 805 000a 0382     		strh	r3, [r0, #16]	@ movhi
+ 806 000c 7047     		bx	lr
+ 807              	.L47:
+ 769:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 770:.//FWLIB/src/stm32f4xx_usart.c ****   else
+ 771:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 772:.//FWLIB/src/stm32f4xx_usart.c ****     /* Disable the LIN mode by clearing the LINEN bit in the CR2 register */
+ 773:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR2 &= (uint16_t)~((uint16_t)USART_CR2_LINEN);
+ 808              		.loc 1 773 0
+ 809 000e 038A     		ldrh	r3, [r0, #16]
+ 810 0010 9BB2     		uxth	r3, r3
+ 811 0012 23F48043 		bic	r3, r3, #16384
+ 812 0016 9BB2     		uxth	r3, r3
+ 813 0018 0382     		strh	r3, [r0, #16]	@ movhi
+ 814 001a 7047     		bx	lr
+ 815              		.cfi_endproc
+ 816              	.LFE127:
+ 818              		.section	.text.USART_SendBreak,"ax",%progbits
+ 819              		.align	2
+ 820              		.global	USART_SendBreak
+ 821              		.thumb
+ 822              		.thumb_func
+ 824              	USART_SendBreak:
+ 825              	.LFB128:
+ 774:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 775:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 776:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 777:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 778:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Transmits break characters.
+ 779:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 780:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 781:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 782:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 783:.//FWLIB/src/stm32f4xx_usart.c **** void USART_SendBreak(USART_TypeDef* USARTx)
+ 784:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 826              		.loc 1 784 0
+ 827              		.cfi_startproc
+ 828              		@ args = 0, pretend = 0, frame = 0
+ 829              		@ frame_needed = 0, uses_anonymous_args = 0
+ 830              		@ link register save eliminated.
+ 831              	.LVL95:
+ 785:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 786:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 787:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 788:.//FWLIB/src/stm32f4xx_usart.c ****   /* Send break characters */
+ 789:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR1 |= USART_CR1_SBK;
+ 832              		.loc 1 789 0
+ 833 0000 8389     		ldrh	r3, [r0, #12]
+ 834 0002 9BB2     		uxth	r3, r3
+ 835 0004 43F00103 		orr	r3, r3, #1
+ 836 0008 8381     		strh	r3, [r0, #12]	@ movhi
+ 837 000a 7047     		bx	lr
+ 838              		.cfi_endproc
+ 839              	.LFE128:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 29
+
+
+ 841              		.section	.text.USART_HalfDuplexCmd,"ax",%progbits
+ 842              		.align	2
+ 843              		.global	USART_HalfDuplexCmd
+ 844              		.thumb
+ 845              		.thumb_func
+ 847              	USART_HalfDuplexCmd:
+ 848              	.LFB129:
+ 790:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 791:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 792:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 793:.//FWLIB/src/stm32f4xx_usart.c ****   * @}
+ 794:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 795:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 796:.//FWLIB/src/stm32f4xx_usart.c **** /** @defgroup USART_Group5 Halfduplex mode function
+ 797:.//FWLIB/src/stm32f4xx_usart.c ****  *  @brief   Half-duplex mode function 
+ 798:.//FWLIB/src/stm32f4xx_usart.c ****  *
+ 799:.//FWLIB/src/stm32f4xx_usart.c **** @verbatim   
+ 800:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================
+ 801:.//FWLIB/src/stm32f4xx_usart.c ****                     ##### Half-duplex mode function #####
+ 802:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================  
+ 803:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 804:.//FWLIB/src/stm32f4xx_usart.c ****     This subsection provides a set of functions allowing to manage the USART 
+ 805:.//FWLIB/src/stm32f4xx_usart.c ****     Half-duplex communication.
+ 806:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 807:.//FWLIB/src/stm32f4xx_usart.c ****     The USART can be configured to follow a single-wire half-duplex protocol where 
+ 808:.//FWLIB/src/stm32f4xx_usart.c ****     the TX and RX lines are internally connected.
+ 809:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 810:.//FWLIB/src/stm32f4xx_usart.c ****     USART Half duplex communication is possible through the following procedure:
+ 811:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Program the Baud rate, Word length, Stop bits, Parity, Mode transmitter 
+ 812:.//FWLIB/src/stm32f4xx_usart.c ****           or Mode receiver and hardware flow control values using the USART_Init()
+ 813:.//FWLIB/src/stm32f4xx_usart.c ****           function.
+ 814:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Configures the USART address using the USART_SetAddress() function.
+ 815:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable the USART using the USART_Cmd() function.
+ 816:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable the half duplex mode using USART_HalfDuplexCmd() function.
+ 817:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 818:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 819:.//FWLIB/src/stm32f4xx_usart.c ****     -@- The RX pin is no longer used
+ 820:.//FWLIB/src/stm32f4xx_usart.c ****     -@- In Half-duplex mode the following bits must be kept cleared:
+ 821:.//FWLIB/src/stm32f4xx_usart.c ****       (+@) LINEN and CLKEN bits in the USART_CR2 register.
+ 822:.//FWLIB/src/stm32f4xx_usart.c ****       (+@) SCEN and IREN bits in the USART_CR3 register.
+ 823:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 824:.//FWLIB/src/stm32f4xx_usart.c **** @endverbatim
+ 825:.//FWLIB/src/stm32f4xx_usart.c ****   * @{
+ 826:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 827:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 828:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 829:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Enables or disables the USART's Half Duplex communication.
+ 830:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ 831:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 832:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  NewState: new state of the USART Communication.
+ 833:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 834:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 835:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 836:.//FWLIB/src/stm32f4xx_usart.c **** void USART_HalfDuplexCmd(USART_TypeDef* USARTx, FunctionalState NewState)
+ 837:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 849              		.loc 1 837 0
+ 850              		.cfi_startproc
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 30
+
+
+ 851              		@ args = 0, pretend = 0, frame = 0
+ 852              		@ frame_needed = 0, uses_anonymous_args = 0
+ 853              		@ link register save eliminated.
+ 854              	.LVL96:
+ 838:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 839:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+ 840:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 841:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 842:.//FWLIB/src/stm32f4xx_usart.c ****   if (NewState != DISABLE)
+ 855              		.loc 1 842 0
+ 856 0000 29B1     		cbz	r1, .L51
+ 843:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 844:.//FWLIB/src/stm32f4xx_usart.c ****     /* Enable the Half-Duplex mode by setting the HDSEL bit in the CR3 register */
+ 845:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR3 |= USART_CR3_HDSEL;
+ 857              		.loc 1 845 0
+ 858 0002 838A     		ldrh	r3, [r0, #20]
+ 859 0004 9BB2     		uxth	r3, r3
+ 860 0006 43F00803 		orr	r3, r3, #8
+ 861 000a 8382     		strh	r3, [r0, #20]	@ movhi
+ 862 000c 7047     		bx	lr
+ 863              	.L51:
+ 846:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 847:.//FWLIB/src/stm32f4xx_usart.c ****   else
+ 848:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 849:.//FWLIB/src/stm32f4xx_usart.c ****     /* Disable the Half-Duplex mode by clearing the HDSEL bit in the CR3 register */
+ 850:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR3 &= (uint16_t)~((uint16_t)USART_CR3_HDSEL);
+ 864              		.loc 1 850 0
+ 865 000e 838A     		ldrh	r3, [r0, #20]
+ 866 0010 9BB2     		uxth	r3, r3
+ 867 0012 23F00803 		bic	r3, r3, #8
+ 868 0016 9BB2     		uxth	r3, r3
+ 869 0018 8382     		strh	r3, [r0, #20]	@ movhi
+ 870 001a 7047     		bx	lr
+ 871              		.cfi_endproc
+ 872              	.LFE129:
+ 874              		.section	.text.USART_SetGuardTime,"ax",%progbits
+ 875              		.align	2
+ 876              		.global	USART_SetGuardTime
+ 877              		.thumb
+ 878              		.thumb_func
+ 880              	USART_SetGuardTime:
+ 881              	.LFB130:
+ 851:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 852:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 853:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 854:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 855:.//FWLIB/src/stm32f4xx_usart.c ****   * @}
+ 856:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 857:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 858:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 859:.//FWLIB/src/stm32f4xx_usart.c **** /** @defgroup USART_Group6 Smartcard mode functions
+ 860:.//FWLIB/src/stm32f4xx_usart.c ****  *  @brief   Smartcard mode functions 
+ 861:.//FWLIB/src/stm32f4xx_usart.c ****  *
+ 862:.//FWLIB/src/stm32f4xx_usart.c **** @verbatim   
+ 863:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================
+ 864:.//FWLIB/src/stm32f4xx_usart.c ****                               ##### Smartcard mode functions #####
+ 865:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================  
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 31
+
+
+ 866:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 867:.//FWLIB/src/stm32f4xx_usart.c ****     This subsection provides a set of functions allowing to manage the USART 
+ 868:.//FWLIB/src/stm32f4xx_usart.c ****     Smartcard communication.
+ 869:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 870:.//FWLIB/src/stm32f4xx_usart.c ****     The Smartcard interface is designed to support asynchronous protocol Smartcards as
+ 871:.//FWLIB/src/stm32f4xx_usart.c ****     defined in the ISO 7816-3 standard.
+ 872:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 873:.//FWLIB/src/stm32f4xx_usart.c ****     The USART can provide a clock to the smartcard through the SCLK output.
+ 874:.//FWLIB/src/stm32f4xx_usart.c ****     In smartcard mode, SCLK is not associated to the communication but is simply derived 
+ 875:.//FWLIB/src/stm32f4xx_usart.c ****     from the internal peripheral input clock through a 5-bit prescaler.
+ 876:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 877:.//FWLIB/src/stm32f4xx_usart.c ****     Smartcard communication is possible through the following procedure:
+ 878:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Configures the Smartcard Prescaler using the USART_SetPrescaler() function.
+ 879:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Configures the Smartcard Guard Time using the USART_SetGuardTime() function.
+ 880:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Program the USART clock using the USART_ClockInit() function as following:
+ 881:.//FWLIB/src/stm32f4xx_usart.c ****         (++) USART Clock enabled
+ 882:.//FWLIB/src/stm32f4xx_usart.c ****         (++) USART CPOL Low
+ 883:.//FWLIB/src/stm32f4xx_usart.c ****         (++) USART CPHA on first edge
+ 884:.//FWLIB/src/stm32f4xx_usart.c ****         (++) USART Last Bit Clock Enabled
+ 885:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Program the Smartcard interface using the USART_Init() function as following:
+ 886:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Word Length = 9 Bits
+ 887:.//FWLIB/src/stm32f4xx_usart.c ****         (++) 1.5 Stop Bit
+ 888:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Even parity
+ 889:.//FWLIB/src/stm32f4xx_usart.c ****         (++) BaudRate = 12096 baud
+ 890:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Hardware flow control disabled (RTS and CTS signals)
+ 891:.//FWLIB/src/stm32f4xx_usart.c ****         (++) Tx and Rx enabled
+ 892:.//FWLIB/src/stm32f4xx_usart.c ****       (#) POptionally you can enable the parity error interrupt using the USART_ITConfig()
+ 893:.//FWLIB/src/stm32f4xx_usart.c ****           function
+ 894:.//FWLIB/src/stm32f4xx_usart.c ****       (#) PEnable the USART using the USART_Cmd() function.
+ 895:.//FWLIB/src/stm32f4xx_usart.c ****       (#) PEnable the Smartcard NACK using the USART_SmartCardNACKCmd() function.
+ 896:.//FWLIB/src/stm32f4xx_usart.c ****       (#) PEnable the Smartcard interface using the USART_SmartCardCmd() function.
+ 897:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 898:.//FWLIB/src/stm32f4xx_usart.c ****     Please refer to the ISO 7816-3 specification for more details.
+ 899:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 900:.//FWLIB/src/stm32f4xx_usart.c ****       -@- It is also possible to choose 0.5 stop bit for receiving but it is recommended 
+ 901:.//FWLIB/src/stm32f4xx_usart.c ****           to use 1.5 stop bits for both transmitting and receiving to avoid switching 
+ 902:.//FWLIB/src/stm32f4xx_usart.c ****           between the two configurations.
+ 903:.//FWLIB/src/stm32f4xx_usart.c ****       -@- In smartcard mode, the following bits must be kept cleared:
+ 904:.//FWLIB/src/stm32f4xx_usart.c ****         (+@) LINEN bit in the USART_CR2 register.
+ 905:.//FWLIB/src/stm32f4xx_usart.c ****         (+@) HDSEL and IREN bits in the USART_CR3 register.
+ 906:.//FWLIB/src/stm32f4xx_usart.c ****       -@- Smartcard mode is available on USART peripherals only (not available on UART4 
+ 907:.//FWLIB/src/stm32f4xx_usart.c ****           and UART5 peripherals).
+ 908:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 909:.//FWLIB/src/stm32f4xx_usart.c **** @endverbatim
+ 910:.//FWLIB/src/stm32f4xx_usart.c ****   * @{
+ 911:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 912:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 913:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 914:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Sets the specified USART guard time.
+ 915:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3 or 6 to select the USART or 
+ 916:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 917:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_GuardTime: specifies the guard time.   
+ 918:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 919:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 920:.//FWLIB/src/stm32f4xx_usart.c **** void USART_SetGuardTime(USART_TypeDef* USARTx, uint8_t USART_GuardTime)
+ 921:.//FWLIB/src/stm32f4xx_usart.c **** {    
+ 882              		.loc 1 921 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 32
+
+
+ 883              		.cfi_startproc
+ 884              		@ args = 0, pretend = 0, frame = 0
+ 885              		@ frame_needed = 0, uses_anonymous_args = 0
+ 886              		@ link register save eliminated.
+ 887              	.LVL97:
+ 922:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 923:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_1236_PERIPH(USARTx));
+ 924:.//FWLIB/src/stm32f4xx_usart.c ****   
+ 925:.//FWLIB/src/stm32f4xx_usart.c ****   /* Clear the USART Guard time */
+ 926:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->GTPR &= USART_GTPR_PSC;
+ 888              		.loc 1 926 0
+ 889 0000 038B     		ldrh	r3, [r0, #24]
+ 890 0002 DBB2     		uxtb	r3, r3
+ 891 0004 0383     		strh	r3, [r0, #24]	@ movhi
+ 927:.//FWLIB/src/stm32f4xx_usart.c ****   /* Set the USART guard time */
+ 928:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->GTPR |= (uint16_t)((uint16_t)USART_GuardTime << 0x08);
+ 892              		.loc 1 928 0
+ 893 0006 038B     		ldrh	r3, [r0, #24]
+ 894 0008 9BB2     		uxth	r3, r3
+ 895 000a 43EA0121 		orr	r1, r3, r1, lsl #8
+ 896              	.LVL98:
+ 897 000e 0183     		strh	r1, [r0, #24]	@ movhi
+ 898 0010 7047     		bx	lr
+ 899              		.cfi_endproc
+ 900              	.LFE130:
+ 902 0012 00BF     		.section	.text.USART_SmartCardCmd,"ax",%progbits
+ 903              		.align	2
+ 904              		.global	USART_SmartCardCmd
+ 905              		.thumb
+ 906              		.thumb_func
+ 908              	USART_SmartCardCmd:
+ 909              	.LFB131:
+ 929:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 930:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 931:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 932:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Enables or disables the USART's Smart Card mode.
+ 933:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3 or 6 to select the USART or 
+ 934:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 935:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  NewState: new state of the Smart Card mode.
+ 936:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be: ENABLE or DISABLE.      
+ 937:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 938:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 939:.//FWLIB/src/stm32f4xx_usart.c **** void USART_SmartCardCmd(USART_TypeDef* USARTx, FunctionalState NewState)
+ 940:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 910              		.loc 1 940 0
+ 911              		.cfi_startproc
+ 912              		@ args = 0, pretend = 0, frame = 0
+ 913              		@ frame_needed = 0, uses_anonymous_args = 0
+ 914              		@ link register save eliminated.
+ 915              	.LVL99:
+ 941:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 942:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_1236_PERIPH(USARTx));
+ 943:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 944:.//FWLIB/src/stm32f4xx_usart.c ****   if (NewState != DISABLE)
+ 916              		.loc 1 944 0
+ 917 0000 29B1     		cbz	r1, .L55
+ 945:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 33
+
+
+ 946:.//FWLIB/src/stm32f4xx_usart.c ****     /* Enable the SC mode by setting the SCEN bit in the CR3 register */
+ 947:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR3 |= USART_CR3_SCEN;
+ 918              		.loc 1 947 0
+ 919 0002 838A     		ldrh	r3, [r0, #20]
+ 920 0004 9BB2     		uxth	r3, r3
+ 921 0006 43F02003 		orr	r3, r3, #32
+ 922 000a 8382     		strh	r3, [r0, #20]	@ movhi
+ 923 000c 7047     		bx	lr
+ 924              	.L55:
+ 948:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 949:.//FWLIB/src/stm32f4xx_usart.c ****   else
+ 950:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 951:.//FWLIB/src/stm32f4xx_usart.c ****     /* Disable the SC mode by clearing the SCEN bit in the CR3 register */
+ 952:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR3 &= (uint16_t)~((uint16_t)USART_CR3_SCEN);
+ 925              		.loc 1 952 0
+ 926 000e 838A     		ldrh	r3, [r0, #20]
+ 927 0010 9BB2     		uxth	r3, r3
+ 928 0012 23F02003 		bic	r3, r3, #32
+ 929 0016 9BB2     		uxth	r3, r3
+ 930 0018 8382     		strh	r3, [r0, #20]	@ movhi
+ 931 001a 7047     		bx	lr
+ 932              		.cfi_endproc
+ 933              	.LFE131:
+ 935              		.section	.text.USART_SmartCardNACKCmd,"ax",%progbits
+ 936              		.align	2
+ 937              		.global	USART_SmartCardNACKCmd
+ 938              		.thumb
+ 939              		.thumb_func
+ 941              	USART_SmartCardNACKCmd:
+ 942              	.LFB132:
+ 953:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 954:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 955:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 956:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 957:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Enables or disables NACK transmission.
+ 958:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3 or 6 to select the USART or 
+ 959:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+ 960:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  NewState: new state of the NACK transmission.
+ 961:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be: ENABLE or DISABLE.  
+ 962:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+ 963:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 964:.//FWLIB/src/stm32f4xx_usart.c **** void USART_SmartCardNACKCmd(USART_TypeDef* USARTx, FunctionalState NewState)
+ 965:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 943              		.loc 1 965 0
+ 944              		.cfi_startproc
+ 945              		@ args = 0, pretend = 0, frame = 0
+ 946              		@ frame_needed = 0, uses_anonymous_args = 0
+ 947              		@ link register save eliminated.
+ 948              	.LVL100:
+ 966:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+ 967:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_1236_PERIPH(USARTx)); 
+ 968:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 969:.//FWLIB/src/stm32f4xx_usart.c ****   if (NewState != DISABLE)
+ 949              		.loc 1 969 0
+ 950 0000 29B1     		cbz	r1, .L58
+ 970:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 971:.//FWLIB/src/stm32f4xx_usart.c ****     /* Enable the NACK transmission by setting the NACK bit in the CR3 register */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 34
+
+
+ 972:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR3 |= USART_CR3_NACK;
+ 951              		.loc 1 972 0
+ 952 0002 838A     		ldrh	r3, [r0, #20]
+ 953 0004 9BB2     		uxth	r3, r3
+ 954 0006 43F01003 		orr	r3, r3, #16
+ 955 000a 8382     		strh	r3, [r0, #20]	@ movhi
+ 956 000c 7047     		bx	lr
+ 957              	.L58:
+ 973:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 974:.//FWLIB/src/stm32f4xx_usart.c ****   else
+ 975:.//FWLIB/src/stm32f4xx_usart.c ****   {
+ 976:.//FWLIB/src/stm32f4xx_usart.c ****     /* Disable the NACK transmission by clearing the NACK bit in the CR3 register */
+ 977:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR3 &= (uint16_t)~((uint16_t)USART_CR3_NACK);
+ 958              		.loc 1 977 0
+ 959 000e 838A     		ldrh	r3, [r0, #20]
+ 960 0010 9BB2     		uxth	r3, r3
+ 961 0012 23F01003 		bic	r3, r3, #16
+ 962 0016 9BB2     		uxth	r3, r3
+ 963 0018 8382     		strh	r3, [r0, #20]	@ movhi
+ 964 001a 7047     		bx	lr
+ 965              		.cfi_endproc
+ 966              	.LFE132:
+ 968              		.section	.text.USART_IrDAConfig,"ax",%progbits
+ 969              		.align	2
+ 970              		.global	USART_IrDAConfig
+ 971              		.thumb
+ 972              		.thumb_func
+ 974              	USART_IrDAConfig:
+ 975              	.LFB133:
+ 978:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 979:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 980:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 981:.//FWLIB/src/stm32f4xx_usart.c **** /**
+ 982:.//FWLIB/src/stm32f4xx_usart.c ****   * @}
+ 983:.//FWLIB/src/stm32f4xx_usart.c ****   */
+ 984:.//FWLIB/src/stm32f4xx_usart.c **** 
+ 985:.//FWLIB/src/stm32f4xx_usart.c **** /** @defgroup USART_Group7 IrDA mode functions
+ 986:.//FWLIB/src/stm32f4xx_usart.c ****  *  @brief   IrDA mode functions 
+ 987:.//FWLIB/src/stm32f4xx_usart.c ****  *
+ 988:.//FWLIB/src/stm32f4xx_usart.c **** @verbatim   
+ 989:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================
+ 990:.//FWLIB/src/stm32f4xx_usart.c ****                         ##### IrDA mode functions #####
+ 991:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================  
+ 992:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 993:.//FWLIB/src/stm32f4xx_usart.c ****     This subsection provides a set of functions allowing to manage the USART 
+ 994:.//FWLIB/src/stm32f4xx_usart.c ****     IrDA communication.
+ 995:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ 996:.//FWLIB/src/stm32f4xx_usart.c ****     IrDA is a half duplex communication protocol. If the Transmitter is busy, any data
+ 997:.//FWLIB/src/stm32f4xx_usart.c ****     on the IrDA receive line will be ignored by the IrDA decoder and if the Receiver 
+ 998:.//FWLIB/src/stm32f4xx_usart.c ****     is busy, data on the TX from the USART to IrDA will not be encoded by IrDA.
+ 999:.//FWLIB/src/stm32f4xx_usart.c ****     While receiving data, transmission should be avoided as the data to be transmitted
+1000:.//FWLIB/src/stm32f4xx_usart.c ****     could be corrupted.
+1001:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+1002:.//FWLIB/src/stm32f4xx_usart.c ****     IrDA communication is possible through the following procedure:
+1003:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Program the Baud rate, Word length = 8 bits, Stop bits, Parity, Transmitter/Receiver 
+1004:.//FWLIB/src/stm32f4xx_usart.c ****           modes and hardware flow control values using the USART_Init() function.
+1005:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable the USART using the USART_Cmd() function.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 35
+
+
+1006:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Configures the IrDA pulse width by configuring the prescaler using  
+1007:.//FWLIB/src/stm32f4xx_usart.c ****           the USART_SetPrescaler() function.
+1008:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Configures the IrDA  USART_IrDAMode_LowPower or USART_IrDAMode_Normal mode
+1009:.//FWLIB/src/stm32f4xx_usart.c ****           using the USART_IrDAConfig() function.
+1010:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Enable the IrDA using the USART_IrDACmd() function.
+1011:.//FWLIB/src/stm32f4xx_usart.c **** 
+1012:.//FWLIB/src/stm32f4xx_usart.c ****       -@- A pulse of width less than two and greater than one PSC period(s) may or may
+1013:.//FWLIB/src/stm32f4xx_usart.c ****           not be rejected.
+1014:.//FWLIB/src/stm32f4xx_usart.c ****       -@- The receiver set up time should be managed by software. The IrDA physical layer
+1015:.//FWLIB/src/stm32f4xx_usart.c ****           specification specifies a minimum of 10 ms delay between transmission and 
+1016:.//FWLIB/src/stm32f4xx_usart.c ****           reception (IrDA is a half duplex protocol).
+1017:.//FWLIB/src/stm32f4xx_usart.c ****       -@- In IrDA mode, the following bits must be kept cleared:
+1018:.//FWLIB/src/stm32f4xx_usart.c ****         (+@) LINEN, STOP and CLKEN bits in the USART_CR2 register.
+1019:.//FWLIB/src/stm32f4xx_usart.c ****         (+@) SCEN and HDSEL bits in the USART_CR3 register.
+1020:.//FWLIB/src/stm32f4xx_usart.c **** 
+1021:.//FWLIB/src/stm32f4xx_usart.c **** @endverbatim
+1022:.//FWLIB/src/stm32f4xx_usart.c ****   * @{
+1023:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1024:.//FWLIB/src/stm32f4xx_usart.c **** 
+1025:.//FWLIB/src/stm32f4xx_usart.c **** /**
+1026:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Configures the USART's IrDA interface.
+1027:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+1028:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+1029:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_IrDAMode: specifies the IrDA mode.
+1030:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be one of the following values:
+1031:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IrDAMode_LowPower
+1032:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IrDAMode_Normal
+1033:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+1034:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1035:.//FWLIB/src/stm32f4xx_usart.c **** void USART_IrDAConfig(USART_TypeDef* USARTx, uint16_t USART_IrDAMode)
+1036:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 976              		.loc 1 1036 0
+ 977              		.cfi_startproc
+ 978              		@ args = 0, pretend = 0, frame = 0
+ 979              		@ frame_needed = 0, uses_anonymous_args = 0
+ 980              		@ link register save eliminated.
+ 981              	.LVL101:
+1037:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+1038:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+1039:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_IRDA_MODE(USART_IrDAMode));
+1040:.//FWLIB/src/stm32f4xx_usart.c ****     
+1041:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR3 &= (uint16_t)~((uint16_t)USART_CR3_IRLP);
+ 982              		.loc 1 1041 0
+ 983 0000 838A     		ldrh	r3, [r0, #20]
+ 984 0002 9BB2     		uxth	r3, r3
+ 985 0004 23F00403 		bic	r3, r3, #4
+ 986 0008 9BB2     		uxth	r3, r3
+ 987 000a 8382     		strh	r3, [r0, #20]	@ movhi
+1042:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->CR3 |= USART_IrDAMode;
+ 988              		.loc 1 1042 0
+ 989 000c 838A     		ldrh	r3, [r0, #20]
+ 990 000e 9BB2     		uxth	r3, r3
+ 991 0010 1943     		orrs	r1, r1, r3
+ 992              	.LVL102:
+ 993 0012 8182     		strh	r1, [r0, #20]	@ movhi
+ 994 0014 7047     		bx	lr
+ 995              		.cfi_endproc
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 36
+
+
+ 996              	.LFE133:
+ 998 0016 00BF     		.section	.text.USART_IrDACmd,"ax",%progbits
+ 999              		.align	2
+ 1000              		.global	USART_IrDACmd
+ 1001              		.thumb
+ 1002              		.thumb_func
+ 1004              	USART_IrDACmd:
+ 1005              	.LFB134:
+1043:.//FWLIB/src/stm32f4xx_usart.c **** }
+1044:.//FWLIB/src/stm32f4xx_usart.c **** 
+1045:.//FWLIB/src/stm32f4xx_usart.c **** /**
+1046:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Enables or disables the USART's IrDA interface.
+1047:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+1048:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+1049:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  NewState: new state of the IrDA mode.
+1050:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be: ENABLE or DISABLE.
+1051:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+1052:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1053:.//FWLIB/src/stm32f4xx_usart.c **** void USART_IrDACmd(USART_TypeDef* USARTx, FunctionalState NewState)
+1054:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 1006              		.loc 1 1054 0
+ 1007              		.cfi_startproc
+ 1008              		@ args = 0, pretend = 0, frame = 0
+ 1009              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1010              		@ link register save eliminated.
+ 1011              	.LVL103:
+1055:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+1056:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+1057:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+1058:.//FWLIB/src/stm32f4xx_usart.c ****     
+1059:.//FWLIB/src/stm32f4xx_usart.c ****   if (NewState != DISABLE)
+ 1012              		.loc 1 1059 0
+ 1013 0000 29B1     		cbz	r1, .L62
+1060:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1061:.//FWLIB/src/stm32f4xx_usart.c ****     /* Enable the IrDA mode by setting the IREN bit in the CR3 register */
+1062:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR3 |= USART_CR3_IREN;
+ 1014              		.loc 1 1062 0
+ 1015 0002 838A     		ldrh	r3, [r0, #20]
+ 1016 0004 9BB2     		uxth	r3, r3
+ 1017 0006 43F00203 		orr	r3, r3, #2
+ 1018 000a 8382     		strh	r3, [r0, #20]	@ movhi
+ 1019 000c 7047     		bx	lr
+ 1020              	.L62:
+1063:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1064:.//FWLIB/src/stm32f4xx_usart.c ****   else
+1065:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1066:.//FWLIB/src/stm32f4xx_usart.c ****     /* Disable the IrDA mode by clearing the IREN bit in the CR3 register */
+1067:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR3 &= (uint16_t)~((uint16_t)USART_CR3_IREN);
+ 1021              		.loc 1 1067 0
+ 1022 000e 838A     		ldrh	r3, [r0, #20]
+ 1023 0010 9BB2     		uxth	r3, r3
+ 1024 0012 23F00203 		bic	r3, r3, #2
+ 1025 0016 9BB2     		uxth	r3, r3
+ 1026 0018 8382     		strh	r3, [r0, #20]	@ movhi
+ 1027 001a 7047     		bx	lr
+ 1028              		.cfi_endproc
+ 1029              	.LFE134:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 37
+
+
+ 1031              		.section	.text.USART_DMACmd,"ax",%progbits
+ 1032              		.align	2
+ 1033              		.global	USART_DMACmd
+ 1034              		.thumb
+ 1035              		.thumb_func
+ 1037              	USART_DMACmd:
+ 1038              	.LFB135:
+1068:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1069:.//FWLIB/src/stm32f4xx_usart.c **** }
+1070:.//FWLIB/src/stm32f4xx_usart.c **** 
+1071:.//FWLIB/src/stm32f4xx_usart.c **** /**
+1072:.//FWLIB/src/stm32f4xx_usart.c ****   * @}
+1073:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1074:.//FWLIB/src/stm32f4xx_usart.c **** 
+1075:.//FWLIB/src/stm32f4xx_usart.c **** /** @defgroup USART_Group8 DMA transfers management functions
+1076:.//FWLIB/src/stm32f4xx_usart.c ****  *  @brief   DMA transfers management functions
+1077:.//FWLIB/src/stm32f4xx_usart.c ****  *
+1078:.//FWLIB/src/stm32f4xx_usart.c **** @verbatim   
+1079:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================
+1080:.//FWLIB/src/stm32f4xx_usart.c ****               ##### DMA transfers management functions #####
+1081:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================  
+1082:.//FWLIB/src/stm32f4xx_usart.c **** 
+1083:.//FWLIB/src/stm32f4xx_usart.c **** @endverbatim
+1084:.//FWLIB/src/stm32f4xx_usart.c ****   * @{
+1085:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1086:.//FWLIB/src/stm32f4xx_usart.c ****   
+1087:.//FWLIB/src/stm32f4xx_usart.c **** /**
+1088:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Enables or disables the USART's DMA interface.
+1089:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+1090:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+1091:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_DMAReq: specifies the DMA request.
+1092:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be any combination of the following values:
+1093:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_DMAReq_Tx: USART DMA transmit request
+1094:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_DMAReq_Rx: USART DMA receive request
+1095:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  NewState: new state of the DMA Request sources.
+1096:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be: ENABLE or DISABLE.   
+1097:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+1098:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1099:.//FWLIB/src/stm32f4xx_usart.c **** void USART_DMACmd(USART_TypeDef* USARTx, uint16_t USART_DMAReq, FunctionalState NewState)
+1100:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 1039              		.loc 1 1100 0
+ 1040              		.cfi_startproc
+ 1041              		@ args = 0, pretend = 0, frame = 0
+ 1042              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1043              		@ link register save eliminated.
+ 1044              	.LVL104:
+1101:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+1102:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+1103:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_DMAREQ(USART_DMAReq));  
+1104:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState)); 
+1105:.//FWLIB/src/stm32f4xx_usart.c **** 
+1106:.//FWLIB/src/stm32f4xx_usart.c ****   if (NewState != DISABLE)
+ 1045              		.loc 1 1106 0
+ 1046 0000 22B1     		cbz	r2, .L65
+1107:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1108:.//FWLIB/src/stm32f4xx_usart.c ****     /* Enable the DMA transfer for selected requests by setting the DMAT and/or
+1109:.//FWLIB/src/stm32f4xx_usart.c ****        DMAR bits in the USART CR3 register */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 38
+
+
+1110:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR3 |= USART_DMAReq;
+ 1047              		.loc 1 1110 0
+ 1048 0002 838A     		ldrh	r3, [r0, #20]
+ 1049 0004 9BB2     		uxth	r3, r3
+ 1050 0006 1943     		orrs	r1, r1, r3
+ 1051              	.LVL105:
+ 1052 0008 8182     		strh	r1, [r0, #20]	@ movhi
+ 1053 000a 7047     		bx	lr
+ 1054              	.LVL106:
+ 1055              	.L65:
+1111:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1112:.//FWLIB/src/stm32f4xx_usart.c ****   else
+1113:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1114:.//FWLIB/src/stm32f4xx_usart.c ****     /* Disable the DMA transfer for selected requests by clearing the DMAT and/or
+1115:.//FWLIB/src/stm32f4xx_usart.c ****        DMAR bits in the USART CR3 register */
+1116:.//FWLIB/src/stm32f4xx_usart.c ****     USARTx->CR3 &= (uint16_t)~USART_DMAReq;
+ 1056              		.loc 1 1116 0
+ 1057 000c 838A     		ldrh	r3, [r0, #20]
+ 1058 000e C943     		mvns	r1, r1
+ 1059              	.LVL107:
+ 1060 0010 89B2     		uxth	r1, r1
+ 1061 0012 1940     		ands	r1, r1, r3
+ 1062 0014 8182     		strh	r1, [r0, #20]	@ movhi
+ 1063 0016 7047     		bx	lr
+ 1064              		.cfi_endproc
+ 1065              	.LFE135:
+ 1067              		.section	.text.USART_ITConfig,"ax",%progbits
+ 1068              		.align	2
+ 1069              		.global	USART_ITConfig
+ 1070              		.thumb
+ 1071              		.thumb_func
+ 1073              	USART_ITConfig:
+ 1074              	.LFB136:
+1117:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1118:.//FWLIB/src/stm32f4xx_usart.c **** }
+1119:.//FWLIB/src/stm32f4xx_usart.c **** 
+1120:.//FWLIB/src/stm32f4xx_usart.c **** /**
+1121:.//FWLIB/src/stm32f4xx_usart.c ****   * @}
+1122:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1123:.//FWLIB/src/stm32f4xx_usart.c ****   
+1124:.//FWLIB/src/stm32f4xx_usart.c **** /** @defgroup USART_Group9 Interrupts and flags management functions
+1125:.//FWLIB/src/stm32f4xx_usart.c ****  *  @brief   Interrupts and flags management functions 
+1126:.//FWLIB/src/stm32f4xx_usart.c ****  *
+1127:.//FWLIB/src/stm32f4xx_usart.c **** @verbatim   
+1128:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================
+1129:.//FWLIB/src/stm32f4xx_usart.c ****             ##### Interrupts and flags management functions #####
+1130:.//FWLIB/src/stm32f4xx_usart.c ****  ===============================================================================  
+1131:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+1132:.//FWLIB/src/stm32f4xx_usart.c ****     This subsection provides a set of functions allowing to configure the USART 
+1133:.//FWLIB/src/stm32f4xx_usart.c ****     Interrupts sources, DMA channels requests and check or clear the flags or 
+1134:.//FWLIB/src/stm32f4xx_usart.c ****     pending bits status.
+1135:.//FWLIB/src/stm32f4xx_usart.c ****     The user should identify which mode will be used in his application to manage 
+1136:.//FWLIB/src/stm32f4xx_usart.c ****     the communication: Polling mode, Interrupt mode or DMA mode. 
+1137:.//FWLIB/src/stm32f4xx_usart.c ****     
+1138:.//FWLIB/src/stm32f4xx_usart.c ****     *** Polling Mode ***
+1139:.//FWLIB/src/stm32f4xx_usart.c ****     ====================
+1140:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 39
+
+
+1141:.//FWLIB/src/stm32f4xx_usart.c ****     In Polling Mode, the SPI communication can be managed by 10 flags:
+1142:.//FWLIB/src/stm32f4xx_usart.c ****       (#) USART_FLAG_TXE : to indicate the status of the transmit buffer register
+1143:.//FWLIB/src/stm32f4xx_usart.c ****       (#) USART_FLAG_RXNE : to indicate the status of the receive buffer register
+1144:.//FWLIB/src/stm32f4xx_usart.c ****       (#) USART_FLAG_TC : to indicate the status of the transmit operation
+1145:.//FWLIB/src/stm32f4xx_usart.c ****       (#) USART_FLAG_IDLE : to indicate the status of the Idle Line             
+1146:.//FWLIB/src/stm32f4xx_usart.c ****       (#) USART_FLAG_CTS : to indicate the status of the nCTS input
+1147:.//FWLIB/src/stm32f4xx_usart.c ****       (#) USART_FLAG_LBD : to indicate the status of the LIN break detection
+1148:.//FWLIB/src/stm32f4xx_usart.c ****       (#) USART_FLAG_NE : to indicate if a noise error occur
+1149:.//FWLIB/src/stm32f4xx_usart.c ****       (#) USART_FLAG_FE : to indicate if a frame error occur
+1150:.//FWLIB/src/stm32f4xx_usart.c ****       (#) USART_FLAG_PE : to indicate if a parity error occur
+1151:.//FWLIB/src/stm32f4xx_usart.c ****       (#) USART_FLAG_ORE : to indicate if an Overrun error occur
+1152:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+1153:.//FWLIB/src/stm32f4xx_usart.c ****     In this Mode it is advised to use the following functions:
+1154:.//FWLIB/src/stm32f4xx_usart.c ****       (+) FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG);
+1155:.//FWLIB/src/stm32f4xx_usart.c ****       (+) void USART_ClearFlag(USART_TypeDef* USARTx, uint16_t USART_FLAG);
+1156:.//FWLIB/src/stm32f4xx_usart.c **** 
+1157:.//FWLIB/src/stm32f4xx_usart.c ****     *** Interrupt Mode ***
+1158:.//FWLIB/src/stm32f4xx_usart.c ****     ======================
+1159:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+1160:.//FWLIB/src/stm32f4xx_usart.c ****     In Interrupt Mode, the USART communication can be managed by 8 interrupt sources
+1161:.//FWLIB/src/stm32f4xx_usart.c ****     and 10 pending bits: 
+1162:.//FWLIB/src/stm32f4xx_usart.c **** 
+1163:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Pending Bits:
+1164:.//FWLIB/src/stm32f4xx_usart.c **** 
+1165:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_TXE : to indicate the status of the transmit buffer register
+1166:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_RXNE : to indicate the status of the receive buffer register
+1167:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_TC : to indicate the status of the transmit operation
+1168:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_IDLE : to indicate the status of the Idle Line             
+1169:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_CTS : to indicate the status of the nCTS input
+1170:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_LBD : to indicate the status of the LIN break detection
+1171:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_NE : to indicate if a noise error occur
+1172:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_FE : to indicate if a frame error occur
+1173:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_PE : to indicate if a parity error occur
+1174:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_ORE : to indicate if an Overrun error occur
+1175:.//FWLIB/src/stm32f4xx_usart.c **** 
+1176:.//FWLIB/src/stm32f4xx_usart.c ****       (#) Interrupt Source:
+1177:.//FWLIB/src/stm32f4xx_usart.c **** 
+1178:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_TXE : specifies the interrupt source for the Tx buffer empty 
+1179:.//FWLIB/src/stm32f4xx_usart.c ****                             interrupt. 
+1180:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_RXNE : specifies the interrupt source for the Rx buffer not 
+1181:.//FWLIB/src/stm32f4xx_usart.c ****                              empty interrupt.
+1182:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_TC : specifies the interrupt source for the Transmit complete 
+1183:.//FWLIB/src/stm32f4xx_usart.c ****                            interrupt. 
+1184:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_IDLE : specifies the interrupt source for the Idle Line interrupt.           
+1185:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_CTS : specifies the interrupt source for the CTS interrupt. 
+1186:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_LBD : specifies the interrupt source for the LIN break detection
+1187:.//FWLIB/src/stm32f4xx_usart.c ****                             interrupt. 
+1188:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_PE : specifies the interrupt source for the parity error interrupt. 
+1189:.//FWLIB/src/stm32f4xx_usart.c ****         (##) USART_IT_ERR :  specifies the interrupt source for the errors interrupt.
+1190:.//FWLIB/src/stm32f4xx_usart.c **** 
+1191:.//FWLIB/src/stm32f4xx_usart.c ****       -@@- Some parameters are coded in order to use them as interrupt source 
+1192:.//FWLIB/src/stm32f4xx_usart.c ****           or as pending bits.
+1193:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+1194:.//FWLIB/src/stm32f4xx_usart.c ****     In this Mode it is advised to use the following functions:
+1195:.//FWLIB/src/stm32f4xx_usart.c ****       (+) void USART_ITConfig(USART_TypeDef* USARTx, uint16_t USART_IT, FunctionalState NewState);
+1196:.//FWLIB/src/stm32f4xx_usart.c ****       (+) ITStatus USART_GetITStatus(USART_TypeDef* USARTx, uint16_t USART_IT);
+1197:.//FWLIB/src/stm32f4xx_usart.c ****       (+) void USART_ClearITPendingBit(USART_TypeDef* USARTx, uint16_t USART_IT);
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 40
+
+
+1198:.//FWLIB/src/stm32f4xx_usart.c **** 
+1199:.//FWLIB/src/stm32f4xx_usart.c ****     *** DMA Mode ***
+1200:.//FWLIB/src/stm32f4xx_usart.c ****     ================
+1201:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+1202:.//FWLIB/src/stm32f4xx_usart.c ****     In DMA Mode, the USART communication can be managed by 2 DMA Channel requests:
+1203:.//FWLIB/src/stm32f4xx_usart.c ****       (#) USART_DMAReq_Tx: specifies the Tx buffer DMA transfer request
+1204:.//FWLIB/src/stm32f4xx_usart.c ****       (#) USART_DMAReq_Rx: specifies the Rx buffer DMA transfer request
+1205:.//FWLIB/src/stm32f4xx_usart.c ****     [..]
+1206:.//FWLIB/src/stm32f4xx_usart.c ****     In this Mode it is advised to use the following function:
+1207:.//FWLIB/src/stm32f4xx_usart.c ****       (+) void USART_DMACmd(USART_TypeDef* USARTx, uint16_t USART_DMAReq, FunctionalState NewState)
+1208:.//FWLIB/src/stm32f4xx_usart.c **** 
+1209:.//FWLIB/src/stm32f4xx_usart.c **** @endverbatim
+1210:.//FWLIB/src/stm32f4xx_usart.c ****   * @{
+1211:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1212:.//FWLIB/src/stm32f4xx_usart.c **** 
+1213:.//FWLIB/src/stm32f4xx_usart.c **** /**
+1214:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Enables or disables the specified USART interrupts.
+1215:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+1216:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+1217:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_IT: specifies the USART interrupt sources to be enabled or disabled.
+1218:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be one of the following values:
+1219:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_CTS:  CTS change interrupt
+1220:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_LBD:  LIN Break detection interrupt
+1221:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_TXE:  Transmit Data Register empty interrupt
+1222:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_TC:   Transmission complete interrupt
+1223:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_RXNE: Receive Data register not empty interrupt
+1224:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_IDLE: Idle line detection interrupt
+1225:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_PE:   Parity Error interrupt
+1226:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_ERR:  Error interrupt(Frame error, noise error, overrun error)
+1227:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  NewState: new state of the specified USARTx interrupts.
+1228:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be: ENABLE or DISABLE.
+1229:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+1230:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1231:.//FWLIB/src/stm32f4xx_usart.c **** void USART_ITConfig(USART_TypeDef* USARTx, uint16_t USART_IT, FunctionalState NewState)
+1232:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 1075              		.loc 1 1232 0
+ 1076              		.cfi_startproc
+ 1077              		@ args = 0, pretend = 0, frame = 0
+ 1078              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1079              		@ link register save eliminated.
+ 1080              	.LVL108:
+ 1081 0000 10B4     		push	{r4}
+ 1082              	.LCFI6:
+ 1083              		.cfi_def_cfa_offset 4
+ 1084              		.cfi_offset 4, -4
+ 1085              	.LVL109:
+1233:.//FWLIB/src/stm32f4xx_usart.c ****   uint32_t usartreg = 0x00, itpos = 0x00, itmask = 0x00;
+1234:.//FWLIB/src/stm32f4xx_usart.c ****   uint32_t usartxbase = 0x00;
+1235:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+1236:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+1237:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_CONFIG_IT(USART_IT));
+1238:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+1239:.//FWLIB/src/stm32f4xx_usart.c **** 
+1240:.//FWLIB/src/stm32f4xx_usart.c ****   /* The CTS interrupt is not available for UART4 and UART5 */
+1241:.//FWLIB/src/stm32f4xx_usart.c ****   if (USART_IT == USART_IT_CTS)
+1242:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1243:.//FWLIB/src/stm32f4xx_usart.c ****     assert_param(IS_USART_1236_PERIPH(USARTx));
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 41
+
+
+1244:.//FWLIB/src/stm32f4xx_usart.c ****   } 
+1245:.//FWLIB/src/stm32f4xx_usart.c ****     
+1246:.//FWLIB/src/stm32f4xx_usart.c ****   usartxbase = (uint32_t)USARTx;
+1247:.//FWLIB/src/stm32f4xx_usart.c **** 
+1248:.//FWLIB/src/stm32f4xx_usart.c ****   /* Get the USART register index */
+1249:.//FWLIB/src/stm32f4xx_usart.c ****   usartreg = (((uint8_t)USART_IT) >> 0x05);
+ 1086              		.loc 1 1249 0
+ 1087 0002 C1F34214 		ubfx	r4, r1, #5, #3
+ 1088              	.LVL110:
+1250:.//FWLIB/src/stm32f4xx_usart.c **** 
+1251:.//FWLIB/src/stm32f4xx_usart.c ****   /* Get the interrupt position */
+1252:.//FWLIB/src/stm32f4xx_usart.c ****   itpos = USART_IT & IT_MASK;
+ 1089              		.loc 1 1252 0
+ 1090 0006 01F01F01 		and	r1, r1, #31
+ 1091              	.LVL111:
+1253:.//FWLIB/src/stm32f4xx_usart.c ****   itmask = (((uint32_t)0x01) << itpos);
+ 1092              		.loc 1 1253 0
+ 1093 000a 0123     		movs	r3, #1
+ 1094 000c 03FA01F1 		lsl	r1, r3, r1
+ 1095              	.LVL112:
+1254:.//FWLIB/src/stm32f4xx_usart.c ****     
+1255:.//FWLIB/src/stm32f4xx_usart.c ****   if (usartreg == 0x01) /* The IT is in CR1 register */
+ 1096              		.loc 1 1255 0
+ 1097 0010 9C42     		cmp	r4, r3
+ 1098 0012 01D1     		bne	.L68
+1256:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1257:.//FWLIB/src/stm32f4xx_usart.c ****     usartxbase += 0x0C;
+ 1099              		.loc 1 1257 0
+ 1100 0014 0C30     		adds	r0, r0, #12
+ 1101              	.LVL113:
+ 1102 0016 04E0     		b	.L69
+ 1103              	.LVL114:
+ 1104              	.L68:
+1258:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1259:.//FWLIB/src/stm32f4xx_usart.c ****   else if (usartreg == 0x02) /* The IT is in CR2 register */
+ 1105              		.loc 1 1259 0
+ 1106 0018 022C     		cmp	r4, #2
+ 1107 001a 01D1     		bne	.L70
+1260:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1261:.//FWLIB/src/stm32f4xx_usart.c ****     usartxbase += 0x10;
+ 1108              		.loc 1 1261 0
+ 1109 001c 1030     		adds	r0, r0, #16
+ 1110              	.LVL115:
+ 1111 001e 00E0     		b	.L69
+ 1112              	.LVL116:
+ 1113              	.L70:
+1262:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1263:.//FWLIB/src/stm32f4xx_usart.c ****   else /* The IT is in CR3 register */
+1264:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1265:.//FWLIB/src/stm32f4xx_usart.c ****     usartxbase += 0x14; 
+ 1114              		.loc 1 1265 0
+ 1115 0020 1430     		adds	r0, r0, #20
+ 1116              	.LVL117:
+ 1117              	.L69:
+1266:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1267:.//FWLIB/src/stm32f4xx_usart.c ****   if (NewState != DISABLE)
+ 1118              		.loc 1 1267 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 42
+
+
+ 1119 0022 1AB1     		cbz	r2, .L71
+1268:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1269:.//FWLIB/src/stm32f4xx_usart.c ****     *(__IO uint32_t*)usartxbase  |= itmask;
+ 1120              		.loc 1 1269 0
+ 1121 0024 0368     		ldr	r3, [r0]
+ 1122 0026 1943     		orrs	r1, r1, r3
+ 1123              	.LVL118:
+ 1124 0028 0160     		str	r1, [r0]
+ 1125 002a 03E0     		b	.L67
+ 1126              	.LVL119:
+ 1127              	.L71:
+1270:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1271:.//FWLIB/src/stm32f4xx_usart.c ****   else
+1272:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1273:.//FWLIB/src/stm32f4xx_usart.c ****     *(__IO uint32_t*)usartxbase &= ~itmask;
+ 1128              		.loc 1 1273 0
+ 1129 002c 0368     		ldr	r3, [r0]
+ 1130 002e 23EA0101 		bic	r1, r3, r1
+ 1131              	.LVL120:
+ 1132 0032 0160     		str	r1, [r0]
+ 1133              	.L67:
+1274:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1275:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 1134              		.loc 1 1275 0
+ 1135 0034 5DF8044B 		ldr	r4, [sp], #4
+ 1136              	.LCFI7:
+ 1137              		.cfi_restore 4
+ 1138              		.cfi_def_cfa_offset 0
+ 1139              	.LVL121:
+ 1140 0038 7047     		bx	lr
+ 1141              		.cfi_endproc
+ 1142              	.LFE136:
+ 1144 003a 00BF     		.section	.text.USART_GetFlagStatus,"ax",%progbits
+ 1145              		.align	2
+ 1146              		.global	USART_GetFlagStatus
+ 1147              		.thumb
+ 1148              		.thumb_func
+ 1150              	USART_GetFlagStatus:
+ 1151              	.LFB137:
+1276:.//FWLIB/src/stm32f4xx_usart.c **** 
+1277:.//FWLIB/src/stm32f4xx_usart.c **** /**
+1278:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Checks whether the specified USART flag is set or not.
+1279:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+1280:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+1281:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_FLAG: specifies the flag to check.
+1282:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be one of the following values:
+1283:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_CTS:  CTS Change flag (not available for UART4 and UART5)
+1284:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_LBD:  LIN Break detection flag
+1285:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_TXE:  Transmit data register empty flag
+1286:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_TC:   Transmission Complete flag
+1287:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_RXNE: Receive data register not empty flag
+1288:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_IDLE: Idle Line detection flag
+1289:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_ORE:  OverRun Error flag
+1290:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_NE:   Noise Error flag
+1291:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_FE:   Framing Error flag
+1292:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_PE:   Parity Error flag
+1293:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval The new state of USART_FLAG (SET or RESET).
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 43
+
+
+1294:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1295:.//FWLIB/src/stm32f4xx_usart.c **** FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
+1296:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 1152              		.loc 1 1296 0
+ 1153              		.cfi_startproc
+ 1154              		@ args = 0, pretend = 0, frame = 0
+ 1155              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1156              		@ link register save eliminated.
+ 1157              	.LVL122:
+1297:.//FWLIB/src/stm32f4xx_usart.c ****   FlagStatus bitstatus = RESET;
+1298:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+1299:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+1300:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_FLAG(USART_FLAG));
+1301:.//FWLIB/src/stm32f4xx_usart.c **** 
+1302:.//FWLIB/src/stm32f4xx_usart.c ****   /* The CTS flag is not available for UART4 and UART5 */
+1303:.//FWLIB/src/stm32f4xx_usart.c ****   if (USART_FLAG == USART_FLAG_CTS)
+1304:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1305:.//FWLIB/src/stm32f4xx_usart.c ****     assert_param(IS_USART_1236_PERIPH(USARTx));
+1306:.//FWLIB/src/stm32f4xx_usart.c ****   } 
+1307:.//FWLIB/src/stm32f4xx_usart.c ****     
+1308:.//FWLIB/src/stm32f4xx_usart.c ****   if ((USARTx->SR & USART_FLAG) != (uint16_t)RESET)
+ 1158              		.loc 1 1308 0
+ 1159 0000 0388     		ldrh	r3, [r0]
+ 1160 0002 1942     		tst	r1, r3
+ 1161 0004 01D0     		beq	.L76
+1309:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1310:.//FWLIB/src/stm32f4xx_usart.c ****     bitstatus = SET;
+ 1162              		.loc 1 1310 0
+ 1163 0006 0120     		movs	r0, #1
+ 1164              	.LVL123:
+ 1165 0008 7047     		bx	lr
+ 1166              	.LVL124:
+ 1167              	.L76:
+1311:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1312:.//FWLIB/src/stm32f4xx_usart.c ****   else
+1313:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1314:.//FWLIB/src/stm32f4xx_usart.c ****     bitstatus = RESET;
+ 1168              		.loc 1 1314 0
+ 1169 000a 0020     		movs	r0, #0
+ 1170              	.LVL125:
+1315:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1316:.//FWLIB/src/stm32f4xx_usart.c ****   return bitstatus;
+1317:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 1171              		.loc 1 1317 0
+ 1172 000c 7047     		bx	lr
+ 1173              		.cfi_endproc
+ 1174              	.LFE137:
+ 1176 000e 00BF     		.section	.text.USART_ClearFlag,"ax",%progbits
+ 1177              		.align	2
+ 1178              		.global	USART_ClearFlag
+ 1179              		.thumb
+ 1180              		.thumb_func
+ 1182              	USART_ClearFlag:
+ 1183              	.LFB138:
+1318:.//FWLIB/src/stm32f4xx_usart.c **** 
+1319:.//FWLIB/src/stm32f4xx_usart.c **** /**
+1320:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Clears the USARTx's pending flags.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 44
+
+
+1321:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+1322:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+1323:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_FLAG: specifies the flag to clear.
+1324:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be any combination of the following values:
+1325:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_CTS:  CTS Change flag (not available for UART4 and UART5).
+1326:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_LBD:  LIN Break detection flag.
+1327:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_TC:   Transmission Complete flag.
+1328:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_FLAG_RXNE: Receive data register not empty flag.
+1329:.//FWLIB/src/stm32f4xx_usart.c ****   *   
+1330:.//FWLIB/src/stm32f4xx_usart.c ****   * @note   PE (Parity error), FE (Framing error), NE (Noise error), ORE (OverRun 
+1331:.//FWLIB/src/stm32f4xx_usart.c ****   *          error) and IDLE (Idle line detected) flags are cleared by software 
+1332:.//FWLIB/src/stm32f4xx_usart.c ****   *          sequence: a read operation to USART_SR register (USART_GetFlagStatus()) 
+1333:.//FWLIB/src/stm32f4xx_usart.c ****   *          followed by a read operation to USART_DR register (USART_ReceiveData()).
+1334:.//FWLIB/src/stm32f4xx_usart.c ****   * @note   RXNE flag can be also cleared by a read to the USART_DR register 
+1335:.//FWLIB/src/stm32f4xx_usart.c ****   *          (USART_ReceiveData()).
+1336:.//FWLIB/src/stm32f4xx_usart.c ****   * @note   TC flag can be also cleared by software sequence: a read operation to 
+1337:.//FWLIB/src/stm32f4xx_usart.c ****   *          USART_SR register (USART_GetFlagStatus()) followed by a write operation
+1338:.//FWLIB/src/stm32f4xx_usart.c ****   *          to USART_DR register (USART_SendData()).
+1339:.//FWLIB/src/stm32f4xx_usart.c ****   * @note   TXE flag is cleared only by a write to the USART_DR register 
+1340:.//FWLIB/src/stm32f4xx_usart.c ****   *          (USART_SendData()).
+1341:.//FWLIB/src/stm32f4xx_usart.c ****   *   
+1342:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+1343:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1344:.//FWLIB/src/stm32f4xx_usart.c **** void USART_ClearFlag(USART_TypeDef* USARTx, uint16_t USART_FLAG)
+1345:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 1184              		.loc 1 1345 0
+ 1185              		.cfi_startproc
+ 1186              		@ args = 0, pretend = 0, frame = 0
+ 1187              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1188              		@ link register save eliminated.
+ 1189              	.LVL126:
+1346:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+1347:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+1348:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_CLEAR_FLAG(USART_FLAG));
+1349:.//FWLIB/src/stm32f4xx_usart.c **** 
+1350:.//FWLIB/src/stm32f4xx_usart.c ****   /* The CTS flag is not available for UART4 and UART5 */
+1351:.//FWLIB/src/stm32f4xx_usart.c ****   if ((USART_FLAG & USART_FLAG_CTS) == USART_FLAG_CTS)
+1352:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1353:.//FWLIB/src/stm32f4xx_usart.c ****     assert_param(IS_USART_1236_PERIPH(USARTx));
+1354:.//FWLIB/src/stm32f4xx_usart.c ****   } 
+1355:.//FWLIB/src/stm32f4xx_usart.c ****        
+1356:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->SR = (uint16_t)~USART_FLAG;
+ 1190              		.loc 1 1356 0
+ 1191 0000 C943     		mvns	r1, r1
+ 1192              	.LVL127:
+ 1193 0002 89B2     		uxth	r1, r1
+ 1194 0004 0180     		strh	r1, [r0]	@ movhi
+ 1195 0006 7047     		bx	lr
+ 1196              		.cfi_endproc
+ 1197              	.LFE138:
+ 1199              		.section	.text.USART_GetITStatus,"ax",%progbits
+ 1200              		.align	2
+ 1201              		.global	USART_GetITStatus
+ 1202              		.thumb
+ 1203              		.thumb_func
+ 1205              	USART_GetITStatus:
+ 1206              	.LFB139:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 45
+
+
+1357:.//FWLIB/src/stm32f4xx_usart.c **** }
+1358:.//FWLIB/src/stm32f4xx_usart.c **** 
+1359:.//FWLIB/src/stm32f4xx_usart.c **** /**
+1360:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Checks whether the specified USART interrupt has occurred or not.
+1361:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+1362:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+1363:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_IT: specifies the USART interrupt source to check.
+1364:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be one of the following values:
+1365:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_CTS:  CTS change interrupt (not available for UART4 and UART5)
+1366:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_LBD:  LIN Break detection interrupt
+1367:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_TXE:  Transmit Data Register empty interrupt
+1368:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_TC:   Transmission complete interrupt
+1369:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_RXNE: Receive Data register not empty interrupt
+1370:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_IDLE: Idle line detection interrupt
+1371:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_ORE_RX : OverRun Error interrupt if the RXNEIE bit is set
+1372:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_ORE_ER : OverRun Error interrupt if the EIE bit is set  
+1373:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_NE:   Noise Error interrupt
+1374:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_FE:   Framing Error interrupt
+1375:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_PE:   Parity Error interrupt
+1376:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval The new state of USART_IT (SET or RESET).
+1377:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1378:.//FWLIB/src/stm32f4xx_usart.c **** ITStatus USART_GetITStatus(USART_TypeDef* USARTx, uint16_t USART_IT)
+1379:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 1207              		.loc 1 1379 0
+ 1208              		.cfi_startproc
+ 1209              		@ args = 0, pretend = 0, frame = 0
+ 1210              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1211              		@ link register save eliminated.
+ 1212              	.LVL128:
+ 1213 0000 10B4     		push	{r4}
+ 1214              	.LCFI8:
+ 1215              		.cfi_def_cfa_offset 4
+ 1216              		.cfi_offset 4, -4
+ 1217              	.LVL129:
+1380:.//FWLIB/src/stm32f4xx_usart.c ****   uint32_t bitpos = 0x00, itmask = 0x00, usartreg = 0x00;
+1381:.//FWLIB/src/stm32f4xx_usart.c ****   ITStatus bitstatus = RESET;
+1382:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+1383:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+1384:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_GET_IT(USART_IT)); 
+1385:.//FWLIB/src/stm32f4xx_usart.c **** 
+1386:.//FWLIB/src/stm32f4xx_usart.c ****   /* The CTS interrupt is not available for UART4 and UART5 */ 
+1387:.//FWLIB/src/stm32f4xx_usart.c ****   if (USART_IT == USART_IT_CTS)
+1388:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1389:.//FWLIB/src/stm32f4xx_usart.c ****     assert_param(IS_USART_1236_PERIPH(USARTx));
+1390:.//FWLIB/src/stm32f4xx_usart.c ****   } 
+1391:.//FWLIB/src/stm32f4xx_usart.c ****     
+1392:.//FWLIB/src/stm32f4xx_usart.c ****   /* Get the USART register index */
+1393:.//FWLIB/src/stm32f4xx_usart.c ****   usartreg = (((uint8_t)USART_IT) >> 0x05);
+ 1218              		.loc 1 1393 0
+ 1219 0002 C1F34212 		ubfx	r2, r1, #5, #3
+ 1220              	.LVL130:
+1394:.//FWLIB/src/stm32f4xx_usart.c ****   /* Get the interrupt position */
+1395:.//FWLIB/src/stm32f4xx_usart.c ****   itmask = USART_IT & IT_MASK;
+ 1221              		.loc 1 1395 0
+ 1222 0006 01F01F04 		and	r4, r1, #31
+ 1223              	.LVL131:
+1396:.//FWLIB/src/stm32f4xx_usart.c ****   itmask = (uint32_t)0x01 << itmask;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 46
+
+
+ 1224              		.loc 1 1396 0
+ 1225 000a 0123     		movs	r3, #1
+ 1226 000c A340     		lsls	r3, r3, r4
+ 1227              	.LVL132:
+1397:.//FWLIB/src/stm32f4xx_usart.c ****   
+1398:.//FWLIB/src/stm32f4xx_usart.c ****   if (usartreg == 0x01) /* The IT  is in CR1 register */
+ 1228              		.loc 1 1398 0
+ 1229 000e 012A     		cmp	r2, #1
+ 1230 0010 03D1     		bne	.L79
+1399:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1400:.//FWLIB/src/stm32f4xx_usart.c ****     itmask &= USARTx->CR1;
+ 1231              		.loc 1 1400 0
+ 1232 0012 8289     		ldrh	r2, [r0, #12]
+ 1233              	.LVL133:
+ 1234 0014 92B2     		uxth	r2, r2
+ 1235 0016 1340     		ands	r3, r3, r2
+ 1236              	.LVL134:
+ 1237 0018 08E0     		b	.L80
+ 1238              	.LVL135:
+ 1239              	.L79:
+1401:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1402:.//FWLIB/src/stm32f4xx_usart.c ****   else if (usartreg == 0x02) /* The IT  is in CR2 register */
+ 1240              		.loc 1 1402 0
+ 1241 001a 022A     		cmp	r2, #2
+ 1242 001c 03D1     		bne	.L81
+1403:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1404:.//FWLIB/src/stm32f4xx_usart.c ****     itmask &= USARTx->CR2;
+ 1243              		.loc 1 1404 0
+ 1244 001e 028A     		ldrh	r2, [r0, #16]
+ 1245              	.LVL136:
+ 1246 0020 92B2     		uxth	r2, r2
+ 1247 0022 1340     		ands	r3, r3, r2
+ 1248              	.LVL137:
+ 1249 0024 02E0     		b	.L80
+ 1250              	.LVL138:
+ 1251              	.L81:
+1405:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1406:.//FWLIB/src/stm32f4xx_usart.c ****   else /* The IT  is in CR3 register */
+1407:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1408:.//FWLIB/src/stm32f4xx_usart.c ****     itmask &= USARTx->CR3;
+ 1252              		.loc 1 1408 0
+ 1253 0026 828A     		ldrh	r2, [r0, #20]
+ 1254              	.LVL139:
+ 1255 0028 92B2     		uxth	r2, r2
+ 1256 002a 1340     		ands	r3, r3, r2
+ 1257              	.LVL140:
+ 1258              	.L80:
+1409:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1410:.//FWLIB/src/stm32f4xx_usart.c ****   
+1411:.//FWLIB/src/stm32f4xx_usart.c ****   bitpos = USART_IT >> 0x08;
+ 1259              		.loc 1 1411 0
+ 1260 002c 090A     		lsrs	r1, r1, #8
+ 1261              	.LVL141:
+1412:.//FWLIB/src/stm32f4xx_usart.c ****   bitpos = (uint32_t)0x01 << bitpos;
+ 1262              		.loc 1 1412 0
+ 1263 002e 0122     		movs	r2, #1
+ 1264 0030 02FA01F1 		lsl	r1, r2, r1
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 47
+
+
+ 1265              	.LVL142:
+1413:.//FWLIB/src/stm32f4xx_usart.c ****   bitpos &= USARTx->SR;
+ 1266              		.loc 1 1413 0
+ 1267 0034 0288     		ldrh	r2, [r0]
+ 1268 0036 92B2     		uxth	r2, r2
+ 1269 0038 1140     		ands	r1, r1, r2
+ 1270              	.LVL143:
+1414:.//FWLIB/src/stm32f4xx_usart.c ****   if ((itmask != (uint16_t)RESET)&&(bitpos != (uint16_t)RESET))
+ 1271              		.loc 1 1414 0
+ 1272 003a 13B1     		cbz	r3, .L83
+ 1273              		.loc 1 1414 0 is_stmt 0 discriminator 1
+ 1274 003c 19B9     		cbnz	r1, .L84
+1415:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1416:.//FWLIB/src/stm32f4xx_usart.c ****     bitstatus = SET;
+1417:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1418:.//FWLIB/src/stm32f4xx_usart.c ****   else
+1419:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1420:.//FWLIB/src/stm32f4xx_usart.c ****     bitstatus = RESET;
+ 1275              		.loc 1 1420 0 is_stmt 1
+ 1276 003e 0020     		movs	r0, #0
+ 1277              	.LVL144:
+ 1278 0040 02E0     		b	.L82
+ 1279              	.LVL145:
+ 1280              	.L83:
+ 1281 0042 0020     		movs	r0, #0
+ 1282              	.LVL146:
+ 1283 0044 00E0     		b	.L82
+ 1284              	.LVL147:
+ 1285              	.L84:
+1416:.//FWLIB/src/stm32f4xx_usart.c ****   }
+ 1286              		.loc 1 1416 0
+ 1287 0046 0120     		movs	r0, #1
+ 1288              	.LVL148:
+ 1289              	.L82:
+1421:.//FWLIB/src/stm32f4xx_usart.c ****   }
+1422:.//FWLIB/src/stm32f4xx_usart.c ****   
+1423:.//FWLIB/src/stm32f4xx_usart.c ****   return bitstatus;  
+1424:.//FWLIB/src/stm32f4xx_usart.c **** }
+ 1290              		.loc 1 1424 0
+ 1291 0048 5DF8044B 		ldr	r4, [sp], #4
+ 1292              	.LCFI9:
+ 1293              		.cfi_restore 4
+ 1294              		.cfi_def_cfa_offset 0
+ 1295 004c 7047     		bx	lr
+ 1296              		.cfi_endproc
+ 1297              	.LFE139:
+ 1299 004e 00BF     		.section	.text.USART_ClearITPendingBit,"ax",%progbits
+ 1300              		.align	2
+ 1301              		.global	USART_ClearITPendingBit
+ 1302              		.thumb
+ 1303              		.thumb_func
+ 1305              	USART_ClearITPendingBit:
+ 1306              	.LFB140:
+1425:.//FWLIB/src/stm32f4xx_usart.c **** 
+1426:.//FWLIB/src/stm32f4xx_usart.c **** /**
+1427:.//FWLIB/src/stm32f4xx_usart.c ****   * @brief  Clears the USARTx's interrupt pending bits.
+1428:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USARTx: where x can be 1, 2, 3, 4, 5, 6, 7 or 8 to select the USART or 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 48
+
+
+1429:.//FWLIB/src/stm32f4xx_usart.c ****   *         UART peripheral.
+1430:.//FWLIB/src/stm32f4xx_usart.c ****   * @param  USART_IT: specifies the interrupt pending bit to clear.
+1431:.//FWLIB/src/stm32f4xx_usart.c ****   *          This parameter can be one of the following values:
+1432:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_CTS:  CTS change interrupt (not available for UART4 and UART5)
+1433:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_LBD:  LIN Break detection interrupt
+1434:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_TC:   Transmission complete interrupt. 
+1435:.//FWLIB/src/stm32f4xx_usart.c ****   *            @arg USART_IT_RXNE: Receive Data register not empty interrupt.
+1436:.//FWLIB/src/stm32f4xx_usart.c ****   *
+1437:.//FWLIB/src/stm32f4xx_usart.c ****   * @note   PE (Parity error), FE (Framing error), NE (Noise error), ORE (OverRun 
+1438:.//FWLIB/src/stm32f4xx_usart.c ****   *          error) and IDLE (Idle line detected) pending bits are cleared by 
+1439:.//FWLIB/src/stm32f4xx_usart.c ****   *          software sequence: a read operation to USART_SR register 
+1440:.//FWLIB/src/stm32f4xx_usart.c ****   *          (USART_GetITStatus()) followed by a read operation to USART_DR register 
+1441:.//FWLIB/src/stm32f4xx_usart.c ****   *          (USART_ReceiveData()).
+1442:.//FWLIB/src/stm32f4xx_usart.c ****   * @note   RXNE pending bit can be also cleared by a read to the USART_DR register 
+1443:.//FWLIB/src/stm32f4xx_usart.c ****   *          (USART_ReceiveData()).
+1444:.//FWLIB/src/stm32f4xx_usart.c ****   * @note   TC pending bit can be also cleared by software sequence: a read 
+1445:.//FWLIB/src/stm32f4xx_usart.c ****   *          operation to USART_SR register (USART_GetITStatus()) followed by a write 
+1446:.//FWLIB/src/stm32f4xx_usart.c ****   *          operation to USART_DR register (USART_SendData()).
+1447:.//FWLIB/src/stm32f4xx_usart.c ****   * @note   TXE pending bit is cleared only by a write to the USART_DR register 
+1448:.//FWLIB/src/stm32f4xx_usart.c ****   *          (USART_SendData()).
+1449:.//FWLIB/src/stm32f4xx_usart.c ****   *  
+1450:.//FWLIB/src/stm32f4xx_usart.c ****   * @retval None
+1451:.//FWLIB/src/stm32f4xx_usart.c ****   */
+1452:.//FWLIB/src/stm32f4xx_usart.c **** void USART_ClearITPendingBit(USART_TypeDef* USARTx, uint16_t USART_IT)
+1453:.//FWLIB/src/stm32f4xx_usart.c **** {
+ 1307              		.loc 1 1453 0
+ 1308              		.cfi_startproc
+ 1309              		@ args = 0, pretend = 0, frame = 0
+ 1310              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1311              		@ link register save eliminated.
+ 1312              	.LVL149:
+1454:.//FWLIB/src/stm32f4xx_usart.c ****   uint16_t bitpos = 0x00, itmask = 0x00;
+1455:.//FWLIB/src/stm32f4xx_usart.c ****   /* Check the parameters */
+1456:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_ALL_PERIPH(USARTx));
+1457:.//FWLIB/src/stm32f4xx_usart.c ****   assert_param(IS_USART_CLEAR_IT(USART_IT)); 
+1458:.//FWLIB/src/stm32f4xx_usart.c **** 
+1459:.//FWLIB/src/stm32f4xx_usart.c ****   /* The CTS interrupt is not available for UART4 and UART5 */
+1460:.//FWLIB/src/stm32f4xx_usart.c ****   if (USART_IT == USART_IT_CTS)
+1461:.//FWLIB/src/stm32f4xx_usart.c ****   {
+1462:.//FWLIB/src/stm32f4xx_usart.c ****     assert_param(IS_USART_1236_PERIPH(USARTx));
+1463:.//FWLIB/src/stm32f4xx_usart.c ****   } 
+1464:.//FWLIB/src/stm32f4xx_usart.c ****     
+1465:.//FWLIB/src/stm32f4xx_usart.c ****   bitpos = USART_IT >> 0x08;
+ 1313              		.loc 1 1465 0
+ 1314 0000 090A     		lsrs	r1, r1, #8
+ 1315              	.LVL150:
+1466:.//FWLIB/src/stm32f4xx_usart.c ****   itmask = ((uint16_t)0x01 << (uint16_t)bitpos);
+ 1316              		.loc 1 1466 0
+ 1317 0002 0123     		movs	r3, #1
+ 1318 0004 8B40     		lsls	r3, r3, r1
+ 1319 0006 9BB2     		uxth	r3, r3
+ 1320              	.LVL151:
+1467:.//FWLIB/src/stm32f4xx_usart.c ****   USARTx->SR = (uint16_t)~itmask;
+ 1321              		.loc 1 1467 0
+ 1322 0008 DB43     		mvns	r3, r3
+ 1323              	.LVL152:
+ 1324 000a 9BB2     		uxth	r3, r3
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 49
+
+
+ 1325              	.LVL153:
+ 1326 000c 0380     		strh	r3, [r0]	@ movhi
+ 1327 000e 7047     		bx	lr
+ 1328              		.cfi_endproc
+ 1329              	.LFE140:
+ 1331              		.text
+ 1332              	.Letext0:
+ 1333              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 1334              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 1335              		.file 4 "USER/stm32f4xx.h"
+ 1336              		.file 5 "FWLIB/inc/stm32f4xx_rcc.h"
+ 1337              		.file 6 "FWLIB/inc/stm32f4xx_usart.h"
+ 1338              		.file 7 "CORE/core_cm4.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 50
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_usart.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:22     .text.USART_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:27     .text.USART_DeInit:0000000000000000 USART_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:186    .text.USART_DeInit:00000000000000dc $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:198    .text.USART_Init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:203    .text.USART_Init:0000000000000000 USART_Init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:374    .text.USART_Init:00000000000000c8 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:380    .text.USART_StructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:385    .text.USART_StructInit:0000000000000000 USART_StructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:413    .text.USART_ClockInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:418    .text.USART_ClockInit:0000000000000000 USART_ClockInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:465    .text.USART_ClockStructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:470    .text.USART_ClockStructInit:0000000000000000 USART_ClockStructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:492    .text.USART_Cmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:497    .text.USART_Cmd:0000000000000000 USART_Cmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:525    .text.USART_SetPrescaler:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:530    .text.USART_SetPrescaler:0000000000000000 USART_SetPrescaler
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:553    .text.USART_OverSampling8Cmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:558    .text.USART_OverSampling8Cmd:0000000000000000 USART_OverSampling8Cmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:585    .text.USART_OneBitMethodCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:590    .text.USART_OneBitMethodCmd:0000000000000000 USART_OneBitMethodCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:618    .text.USART_SendData:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:623    .text.USART_SendData:0000000000000000 USART_SendData
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:640    .text.USART_ReceiveData:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:645    .text.USART_ReceiveData:0000000000000000 USART_ReceiveData
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:663    .text.USART_SetAddress:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:668    .text.USART_SetAddress:0000000000000000 USART_SetAddress
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:693    .text.USART_ReceiverWakeUpCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:698    .text.USART_ReceiverWakeUpCmd:0000000000000000 USART_ReceiverWakeUpCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:726    .text.USART_WakeUpConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:731    .text.USART_WakeUpConfig:0000000000000000 USART_WakeUpConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:756    .text.USART_LINBreakDetectLengthConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:761    .text.USART_LINBreakDetectLengthConfig:0000000000000000 USART_LINBreakDetectLengthConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:786    .text.USART_LINCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:791    .text.USART_LINCmd:0000000000000000 USART_LINCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:819    .text.USART_SendBreak:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:824    .text.USART_SendBreak:0000000000000000 USART_SendBreak
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:842    .text.USART_HalfDuplexCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:847    .text.USART_HalfDuplexCmd:0000000000000000 USART_HalfDuplexCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:875    .text.USART_SetGuardTime:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:880    .text.USART_SetGuardTime:0000000000000000 USART_SetGuardTime
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:903    .text.USART_SmartCardCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:908    .text.USART_SmartCardCmd:0000000000000000 USART_SmartCardCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:936    .text.USART_SmartCardNACKCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:941    .text.USART_SmartCardNACKCmd:0000000000000000 USART_SmartCardNACKCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:969    .text.USART_IrDAConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:974    .text.USART_IrDAConfig:0000000000000000 USART_IrDAConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:999    .text.USART_IrDACmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1004   .text.USART_IrDACmd:0000000000000000 USART_IrDACmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1032   .text.USART_DMACmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1037   .text.USART_DMACmd:0000000000000000 USART_DMACmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1068   .text.USART_ITConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1073   .text.USART_ITConfig:0000000000000000 USART_ITConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1145   .text.USART_GetFlagStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1150   .text.USART_GetFlagStatus:0000000000000000 USART_GetFlagStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1177   .text.USART_ClearFlag:0000000000000000 $t
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s 			page 51
+
+
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1182   .text.USART_ClearFlag:0000000000000000 USART_ClearFlag
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1200   .text.USART_GetITStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1205   .text.USART_GetITStatus:0000000000000000 USART_GetITStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1300   .text.USART_ClearITPendingBit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc2c1Ih8.s:1305   .text.USART_ClearITPendingBit:0000000000000000 USART_ClearITPendingBit
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphResetCmd
+RCC_APB1PeriphResetCmd
+RCC_GetClocksFreq

@@ -1,0 +1,2066 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"stm32f4xx_pwr.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.PWR_DeInit,"ax",%progbits
+  22              		.align	2
+  23              		.global	PWR_DeInit
+  24              		.thumb
+  25              		.thumb_func
+  27              	PWR_DeInit:
+  28              	.LFB112:
+  29              		.file 1 ".//FWLIB/src/stm32f4xx_pwr.c"
+   1:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+   2:.//FWLIB/src/stm32f4xx_pwr.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f4xx_pwr.c ****   * @file    stm32f4xx_pwr.c
+   4:.//FWLIB/src/stm32f4xx_pwr.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f4xx_pwr.c ****   * @version V1.4.0
+   6:.//FWLIB/src/stm32f4xx_pwr.c ****   * @date    04-August-2014
+   7:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:.//FWLIB/src/stm32f4xx_pwr.c ****   *          functionalities of the Power Controller (PWR) peripheral:           
+   9:.//FWLIB/src/stm32f4xx_pwr.c ****   *           + Backup Domain Access
+  10:.//FWLIB/src/stm32f4xx_pwr.c ****   *           + PVD configuration
+  11:.//FWLIB/src/stm32f4xx_pwr.c ****   *           + WakeUp pin configuration
+  12:.//FWLIB/src/stm32f4xx_pwr.c ****   *           + Main and Backup Regulators configuration
+  13:.//FWLIB/src/stm32f4xx_pwr.c ****   *           + FLASH Power Down configuration
+  14:.//FWLIB/src/stm32f4xx_pwr.c ****   *           + Low Power modes configuration
+  15:.//FWLIB/src/stm32f4xx_pwr.c ****   *           + Flags management
+  16:.//FWLIB/src/stm32f4xx_pwr.c ****   *               
+  17:.//FWLIB/src/stm32f4xx_pwr.c ****   ******************************************************************************
+  18:.//FWLIB/src/stm32f4xx_pwr.c ****   * @attention
+  19:.//FWLIB/src/stm32f4xx_pwr.c ****   *
+  20:.//FWLIB/src/stm32f4xx_pwr.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  21:.//FWLIB/src/stm32f4xx_pwr.c ****   *
+  22:.//FWLIB/src/stm32f4xx_pwr.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  23:.//FWLIB/src/stm32f4xx_pwr.c ****   * You may not use this file except in compliance with the License.
+  24:.//FWLIB/src/stm32f4xx_pwr.c ****   * You may obtain a copy of the License at:
+  25:.//FWLIB/src/stm32f4xx_pwr.c ****   *
+  26:.//FWLIB/src/stm32f4xx_pwr.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  27:.//FWLIB/src/stm32f4xx_pwr.c ****   *
+  28:.//FWLIB/src/stm32f4xx_pwr.c ****   * Unless required by applicable law or agreed to in writing, software 
+  29:.//FWLIB/src/stm32f4xx_pwr.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 2
+
+
+  30:.//FWLIB/src/stm32f4xx_pwr.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  31:.//FWLIB/src/stm32f4xx_pwr.c ****   * See the License for the specific language governing permissions and
+  32:.//FWLIB/src/stm32f4xx_pwr.c ****   * limitations under the License.
+  33:.//FWLIB/src/stm32f4xx_pwr.c ****   *
+  34:.//FWLIB/src/stm32f4xx_pwr.c ****   ******************************************************************************
+  35:.//FWLIB/src/stm32f4xx_pwr.c ****   */ 
+  36:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  37:.//FWLIB/src/stm32f4xx_pwr.c **** /* Includes ------------------------------------------------------------------*/
+  38:.//FWLIB/src/stm32f4xx_pwr.c **** #include "stm32f4xx_pwr.h"
+  39:.//FWLIB/src/stm32f4xx_pwr.c **** #include "stm32f4xx_rcc.h"
+  40:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  41:.//FWLIB/src/stm32f4xx_pwr.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+  42:.//FWLIB/src/stm32f4xx_pwr.c ****   * @{
+  43:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+  44:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  45:.//FWLIB/src/stm32f4xx_pwr.c **** /** @defgroup PWR 
+  46:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief PWR driver modules
+  47:.//FWLIB/src/stm32f4xx_pwr.c ****   * @{
+  48:.//FWLIB/src/stm32f4xx_pwr.c ****   */ 
+  49:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  50:.//FWLIB/src/stm32f4xx_pwr.c **** /* Private typedef -----------------------------------------------------------*/
+  51:.//FWLIB/src/stm32f4xx_pwr.c **** /* Private define ------------------------------------------------------------*/
+  52:.//FWLIB/src/stm32f4xx_pwr.c **** /* --------- PWR registers bit address in the alias region ---------- */
+  53:.//FWLIB/src/stm32f4xx_pwr.c **** #define PWR_OFFSET               (PWR_BASE - PERIPH_BASE)
+  54:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  55:.//FWLIB/src/stm32f4xx_pwr.c **** /* --- CR Register ---*/
+  56:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  57:.//FWLIB/src/stm32f4xx_pwr.c **** /* Alias word address of DBP bit */
+  58:.//FWLIB/src/stm32f4xx_pwr.c **** #define CR_OFFSET                (PWR_OFFSET + 0x00)
+  59:.//FWLIB/src/stm32f4xx_pwr.c **** #define DBP_BitNumber            0x08
+  60:.//FWLIB/src/stm32f4xx_pwr.c **** #define CR_DBP_BB                (PERIPH_BB_BASE + (CR_OFFSET * 32) + (DBP_BitNumber * 4))
+  61:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  62:.//FWLIB/src/stm32f4xx_pwr.c **** /* Alias word address of PVDE bit */
+  63:.//FWLIB/src/stm32f4xx_pwr.c **** #define PVDE_BitNumber           0x04
+  64:.//FWLIB/src/stm32f4xx_pwr.c **** #define CR_PVDE_BB               (PERIPH_BB_BASE + (CR_OFFSET * 32) + (PVDE_BitNumber * 4))
+  65:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  66:.//FWLIB/src/stm32f4xx_pwr.c **** /* Alias word address of FPDS bit */
+  67:.//FWLIB/src/stm32f4xx_pwr.c **** #define FPDS_BitNumber           0x09
+  68:.//FWLIB/src/stm32f4xx_pwr.c **** #define CR_FPDS_BB               (PERIPH_BB_BASE + (CR_OFFSET * 32) + (FPDS_BitNumber * 4))
+  69:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  70:.//FWLIB/src/stm32f4xx_pwr.c **** /* Alias word address of PMODE bit */
+  71:.//FWLIB/src/stm32f4xx_pwr.c **** #define PMODE_BitNumber           0x0E
+  72:.//FWLIB/src/stm32f4xx_pwr.c **** #define CR_PMODE_BB               (PERIPH_BB_BASE + (CR_OFFSET * 32) + (PMODE_BitNumber * 4))
+  73:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  74:.//FWLIB/src/stm32f4xx_pwr.c **** /* Alias word address of ODEN bit */
+  75:.//FWLIB/src/stm32f4xx_pwr.c **** #define ODEN_BitNumber           0x10
+  76:.//FWLIB/src/stm32f4xx_pwr.c **** #define CR_ODEN_BB               (PERIPH_BB_BASE + (CR_OFFSET * 32) + (ODEN_BitNumber * 4))
+  77:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  78:.//FWLIB/src/stm32f4xx_pwr.c **** /* Alias word address of ODSWEN bit */
+  79:.//FWLIB/src/stm32f4xx_pwr.c **** #define ODSWEN_BitNumber         0x11
+  80:.//FWLIB/src/stm32f4xx_pwr.c **** #define CR_ODSWEN_BB             (PERIPH_BB_BASE + (CR_OFFSET * 32) + (ODSWEN_BitNumber * 4))
+  81:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  82:.//FWLIB/src/stm32f4xx_pwr.c **** /* Alias word address of MRLVDS bit */
+  83:.//FWLIB/src/stm32f4xx_pwr.c **** #define MRLVDS_BitNumber         0x0B
+  84:.//FWLIB/src/stm32f4xx_pwr.c **** #define CR_MRLVDS_BB             (PERIPH_BB_BASE + (CR_OFFSET * 32) + (MRLVDS_BitNumber * 4))
+  85:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  86:.//FWLIB/src/stm32f4xx_pwr.c **** /* Alias word address of LPLVDS bit */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 3
+
+
+  87:.//FWLIB/src/stm32f4xx_pwr.c **** #define LPLVDS_BitNumber         0x0A
+  88:.//FWLIB/src/stm32f4xx_pwr.c **** #define CR_LPLVDS_BB             (PERIPH_BB_BASE + (CR_OFFSET * 32) + (LPLVDS_BitNumber * 4))
+  89:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  90:.//FWLIB/src/stm32f4xx_pwr.c **** /* --- CSR Register ---*/
+  91:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  92:.//FWLIB/src/stm32f4xx_pwr.c **** /* Alias word address of EWUP bit */
+  93:.//FWLIB/src/stm32f4xx_pwr.c **** #define CSR_OFFSET               (PWR_OFFSET + 0x04)
+  94:.//FWLIB/src/stm32f4xx_pwr.c **** #define EWUP_BitNumber           0x08
+  95:.//FWLIB/src/stm32f4xx_pwr.c **** #define CSR_EWUP_BB              (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (EWUP_BitNumber * 4))
+  96:.//FWLIB/src/stm32f4xx_pwr.c **** 
+  97:.//FWLIB/src/stm32f4xx_pwr.c **** /* Alias word address of BRE bit */
+  98:.//FWLIB/src/stm32f4xx_pwr.c **** #define BRE_BitNumber            0x09
+  99:.//FWLIB/src/stm32f4xx_pwr.c **** #define CSR_BRE_BB              (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (BRE_BitNumber * 4))
+ 100:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 101:.//FWLIB/src/stm32f4xx_pwr.c **** /* ------------------ PWR registers bit mask ------------------------ */
+ 102:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 103:.//FWLIB/src/stm32f4xx_pwr.c **** /* CR register bit mask */
+ 104:.//FWLIB/src/stm32f4xx_pwr.c **** #define CR_DS_MASK               ((uint32_t)0xFFFFF3FC)
+ 105:.//FWLIB/src/stm32f4xx_pwr.c **** #define CR_PLS_MASK              ((uint32_t)0xFFFFFF1F)
+ 106:.//FWLIB/src/stm32f4xx_pwr.c **** #define CR_VOS_MASK              ((uint32_t)0xFFFF3FFF)
+ 107:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 108:.//FWLIB/src/stm32f4xx_pwr.c **** /* Private macro -------------------------------------------------------------*/
+ 109:.//FWLIB/src/stm32f4xx_pwr.c **** /* Private variables ---------------------------------------------------------*/
+ 110:.//FWLIB/src/stm32f4xx_pwr.c **** /* Private function prototypes -----------------------------------------------*/
+ 111:.//FWLIB/src/stm32f4xx_pwr.c **** /* Private functions ---------------------------------------------------------*/
+ 112:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 113:.//FWLIB/src/stm32f4xx_pwr.c **** /** @defgroup PWR_Private_Functions
+ 114:.//FWLIB/src/stm32f4xx_pwr.c ****   * @{
+ 115:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 116:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 117:.//FWLIB/src/stm32f4xx_pwr.c **** /** @defgroup PWR_Group1 Backup Domain Access function 
+ 118:.//FWLIB/src/stm32f4xx_pwr.c ****  *  @brief   Backup Domain Access function  
+ 119:.//FWLIB/src/stm32f4xx_pwr.c ****  *
+ 120:.//FWLIB/src/stm32f4xx_pwr.c **** @verbatim   
+ 121:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================
+ 122:.//FWLIB/src/stm32f4xx_pwr.c ****                   ##### Backup Domain Access function #####
+ 123:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================  
+ 124:.//FWLIB/src/stm32f4xx_pwr.c ****     [..]
+ 125:.//FWLIB/src/stm32f4xx_pwr.c ****       After reset, the backup domain (RTC registers, RTC backup data 
+ 126:.//FWLIB/src/stm32f4xx_pwr.c ****       registers and backup SRAM) is protected against possible unwanted 
+ 127:.//FWLIB/src/stm32f4xx_pwr.c ****       write accesses. 
+ 128:.//FWLIB/src/stm32f4xx_pwr.c ****       To enable access to the RTC Domain and RTC registers, proceed as follows:
+ 129:.//FWLIB/src/stm32f4xx_pwr.c ****         (+) Enable the Power Controller (PWR) APB1 interface clock using the
+ 130:.//FWLIB/src/stm32f4xx_pwr.c ****             RCC_APB1PeriphClockCmd() function.
+ 131:.//FWLIB/src/stm32f4xx_pwr.c ****         (+) Enable access to RTC domain using the PWR_BackupAccessCmd() function.
+ 132:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 133:.//FWLIB/src/stm32f4xx_pwr.c **** @endverbatim
+ 134:.//FWLIB/src/stm32f4xx_pwr.c ****   * @{
+ 135:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 136:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 137:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 138:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Deinitializes the PWR peripheral registers to their default reset values.     
+ 139:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  None
+ 140:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 141:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 142:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_DeInit(void)
+ 143:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 4
+
+
+  30              		.loc 1 143 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+ 144:.//FWLIB/src/stm32f4xx_pwr.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_PWR, ENABLE);
+  39              		.loc 1 144 0
+  40 0002 0121     		movs	r1, #1
+  41 0004 4FF08050 		mov	r0, #268435456
+  42 0008 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  43              	.LVL0:
+ 145:.//FWLIB/src/stm32f4xx_pwr.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_PWR, DISABLE);
+  44              		.loc 1 145 0
+  45 000c 0021     		movs	r1, #0
+  46 000e 4FF08050 		mov	r0, #268435456
+  47 0012 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  48              	.LVL1:
+  49 0016 08BD     		pop	{r3, pc}
+  50              		.cfi_endproc
+  51              	.LFE112:
+  53              		.section	.text.PWR_BackupAccessCmd,"ax",%progbits
+  54              		.align	2
+  55              		.global	PWR_BackupAccessCmd
+  56              		.thumb
+  57              		.thumb_func
+  59              	PWR_BackupAccessCmd:
+  60              	.LFB113:
+ 146:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 147:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 148:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 149:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Enables or disables access to the backup domain (RTC registers, RTC 
+ 150:.//FWLIB/src/stm32f4xx_pwr.c ****   *         backup data registers and backup SRAM).
+ 151:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   If the HSE divided by 2, 3, ..31 is used as the RTC clock, the 
+ 152:.//FWLIB/src/stm32f4xx_pwr.c ****   *         Backup Domain Access should be kept enabled.
+ 153:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  NewState: new state of the access to the backup domain.
+ 154:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 155:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 156:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 157:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_BackupAccessCmd(FunctionalState NewState)
+ 158:.//FWLIB/src/stm32f4xx_pwr.c **** {
+  61              		.loc 1 158 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66              	.LVL2:
+ 159:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 160:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 161:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 162:.//FWLIB/src/stm32f4xx_pwr.c ****   *(__IO uint32_t *) CR_DBP_BB = (uint32_t)NewState;
+  67              		.loc 1 162 0
+  68 0000 014B     		ldr	r3, .L4
+  69 0002 1860     		str	r0, [r3]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 5
+
+
+  70 0004 7047     		bx	lr
+  71              	.L5:
+  72 0006 00BF     		.align	2
+  73              	.L4:
+  74 0008 20000E42 		.word	1108213792
+  75              		.cfi_endproc
+  76              	.LFE113:
+  78              		.section	.text.PWR_PVDLevelConfig,"ax",%progbits
+  79              		.align	2
+  80              		.global	PWR_PVDLevelConfig
+  81              		.thumb
+  82              		.thumb_func
+  84              	PWR_PVDLevelConfig:
+  85              	.LFB114:
+ 163:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 164:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 165:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 166:.//FWLIB/src/stm32f4xx_pwr.c ****   * @}
+ 167:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 168:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 169:.//FWLIB/src/stm32f4xx_pwr.c **** /** @defgroup PWR_Group2 PVD configuration functions
+ 170:.//FWLIB/src/stm32f4xx_pwr.c ****  *  @brief   PVD configuration functions 
+ 171:.//FWLIB/src/stm32f4xx_pwr.c ****  *
+ 172:.//FWLIB/src/stm32f4xx_pwr.c **** @verbatim   
+ 173:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================
+ 174:.//FWLIB/src/stm32f4xx_pwr.c ****                     ##### PVD configuration functions #####
+ 175:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================  
+ 176:.//FWLIB/src/stm32f4xx_pwr.c ****     [..]
+ 177:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) The PVD is used to monitor the VDD power supply by comparing it to a 
+ 178:.//FWLIB/src/stm32f4xx_pwr.c ****           threshold selected by the PVD Level (PLS[2:0] bits in the PWR_CR).
+ 179:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) A PVDO flag is available to indicate if VDD/VDDA is higher or lower 
+ 180:.//FWLIB/src/stm32f4xx_pwr.c ****           than the PVD threshold. This event is internally connected to the EXTI 
+ 181:.//FWLIB/src/stm32f4xx_pwr.c ****           line16 and can generate an interrupt if enabled through the EXTI registers.
+ 182:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) The PVD is stopped in Standby mode.
+ 183:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 184:.//FWLIB/src/stm32f4xx_pwr.c **** @endverbatim
+ 185:.//FWLIB/src/stm32f4xx_pwr.c ****   * @{
+ 186:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 187:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 188:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 189:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Configures the voltage threshold detected by the Power Voltage Detector(PVD).
+ 190:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  PWR_PVDLevel: specifies the PVD detection level
+ 191:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be one of the following values:
+ 192:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_PVDLevel_0
+ 193:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_PVDLevel_1
+ 194:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_PVDLevel_2
+ 195:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_PVDLevel_3
+ 196:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_PVDLevel_4
+ 197:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_PVDLevel_5
+ 198:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_PVDLevel_6
+ 199:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_PVDLevel_7
+ 200:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   Refer to the electrical characteristics of your device datasheet for
+ 201:.//FWLIB/src/stm32f4xx_pwr.c ****   *         more details about the voltage threshold corresponding to each 
+ 202:.//FWLIB/src/stm32f4xx_pwr.c ****   *         detection level.
+ 203:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 204:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 205:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 6
+
+
+ 206:.//FWLIB/src/stm32f4xx_pwr.c **** {
+  86              		.loc 1 206 0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              		@ link register save eliminated.
+  91              	.LVL3:
+ 207:.//FWLIB/src/stm32f4xx_pwr.c ****   uint32_t tmpreg = 0;
+ 208:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 209:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 210:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_PWR_PVD_LEVEL(PWR_PVDLevel));
+ 211:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 212:.//FWLIB/src/stm32f4xx_pwr.c ****   tmpreg = PWR->CR;
+  92              		.loc 1 212 0
+  93 0000 034A     		ldr	r2, .L7
+  94 0002 1368     		ldr	r3, [r2]
+  95              	.LVL4:
+ 213:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 214:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Clear PLS[7:5] bits */
+ 215:.//FWLIB/src/stm32f4xx_pwr.c ****   tmpreg &= CR_PLS_MASK;
+  96              		.loc 1 215 0
+  97 0004 23F0E003 		bic	r3, r3, #224
+  98              	.LVL5:
+ 216:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 217:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Set PLS[7:5] bits according to PWR_PVDLevel value */
+ 218:.//FWLIB/src/stm32f4xx_pwr.c ****   tmpreg |= PWR_PVDLevel;
+  99              		.loc 1 218 0
+ 100 0008 1843     		orrs	r0, r0, r3
+ 101              	.LVL6:
+ 219:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 220:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Store the new value */
+ 221:.//FWLIB/src/stm32f4xx_pwr.c ****   PWR->CR = tmpreg;
+ 102              		.loc 1 221 0
+ 103 000a 1060     		str	r0, [r2]
+ 104 000c 7047     		bx	lr
+ 105              	.L8:
+ 106 000e 00BF     		.align	2
+ 107              	.L7:
+ 108 0010 00700040 		.word	1073770496
+ 109              		.cfi_endproc
+ 110              	.LFE114:
+ 112              		.section	.text.PWR_PVDCmd,"ax",%progbits
+ 113              		.align	2
+ 114              		.global	PWR_PVDCmd
+ 115              		.thumb
+ 116              		.thumb_func
+ 118              	PWR_PVDCmd:
+ 119              	.LFB115:
+ 222:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 223:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 224:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 225:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Enables or disables the Power Voltage Detector(PVD).
+ 226:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  NewState: new state of the PVD.
+ 227:.//FWLIB/src/stm32f4xx_pwr.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 228:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 229:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 230:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_PVDCmd(FunctionalState NewState)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 7
+
+
+ 231:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 120              		.loc 1 231 0
+ 121              		.cfi_startproc
+ 122              		@ args = 0, pretend = 0, frame = 0
+ 123              		@ frame_needed = 0, uses_anonymous_args = 0
+ 124              		@ link register save eliminated.
+ 125              	.LVL7:
+ 232:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 233:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 234:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 235:.//FWLIB/src/stm32f4xx_pwr.c ****   *(__IO uint32_t *) CR_PVDE_BB = (uint32_t)NewState;
+ 126              		.loc 1 235 0
+ 127 0000 014B     		ldr	r3, .L10
+ 128 0002 1860     		str	r0, [r3]
+ 129 0004 7047     		bx	lr
+ 130              	.L11:
+ 131 0006 00BF     		.align	2
+ 132              	.L10:
+ 133 0008 10000E42 		.word	1108213776
+ 134              		.cfi_endproc
+ 135              	.LFE115:
+ 137              		.section	.text.PWR_WakeUpPinCmd,"ax",%progbits
+ 138              		.align	2
+ 139              		.global	PWR_WakeUpPinCmd
+ 140              		.thumb
+ 141              		.thumb_func
+ 143              	PWR_WakeUpPinCmd:
+ 144              	.LFB116:
+ 236:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 237:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 238:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 239:.//FWLIB/src/stm32f4xx_pwr.c ****   * @}
+ 240:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 241:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 242:.//FWLIB/src/stm32f4xx_pwr.c **** /** @defgroup PWR_Group3 WakeUp pin configuration functions
+ 243:.//FWLIB/src/stm32f4xx_pwr.c ****  *  @brief   WakeUp pin configuration functions 
+ 244:.//FWLIB/src/stm32f4xx_pwr.c ****  *
+ 245:.//FWLIB/src/stm32f4xx_pwr.c **** @verbatim   
+ 246:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================
+ 247:.//FWLIB/src/stm32f4xx_pwr.c ****                  ##### WakeUp pin configuration functions #####
+ 248:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================  
+ 249:.//FWLIB/src/stm32f4xx_pwr.c ****     [..]
+ 250:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) WakeUp pin is used to wakeup the system from Standby mode. This pin is 
+ 251:.//FWLIB/src/stm32f4xx_pwr.c ****           forced in input pull down configuration and is active on rising edges.
+ 252:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) There is only one WakeUp pin: WakeUp Pin 1 on PA.00.
+ 253:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 254:.//FWLIB/src/stm32f4xx_pwr.c **** @endverbatim
+ 255:.//FWLIB/src/stm32f4xx_pwr.c ****   * @{
+ 256:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 257:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 258:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 259:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Enables or disables the WakeUp Pin functionality.
+ 260:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  NewState: new state of the WakeUp Pin functionality.
+ 261:.//FWLIB/src/stm32f4xx_pwr.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 262:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 263:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 264:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_WakeUpPinCmd(FunctionalState NewState)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 8
+
+
+ 265:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 145              		.loc 1 265 0
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 0
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149              		@ link register save eliminated.
+ 150              	.LVL8:
+ 266:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */  
+ 267:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 268:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 269:.//FWLIB/src/stm32f4xx_pwr.c ****   *(__IO uint32_t *) CSR_EWUP_BB = (uint32_t)NewState;
+ 151              		.loc 1 269 0
+ 152 0000 014B     		ldr	r3, .L13
+ 153 0002 1860     		str	r0, [r3]
+ 154 0004 7047     		bx	lr
+ 155              	.L14:
+ 156 0006 00BF     		.align	2
+ 157              	.L13:
+ 158 0008 A0000E42 		.word	1108213920
+ 159              		.cfi_endproc
+ 160              	.LFE116:
+ 162              		.section	.text.PWR_BackupRegulatorCmd,"ax",%progbits
+ 163              		.align	2
+ 164              		.global	PWR_BackupRegulatorCmd
+ 165              		.thumb
+ 166              		.thumb_func
+ 168              	PWR_BackupRegulatorCmd:
+ 169              	.LFB117:
+ 270:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 271:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 272:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 273:.//FWLIB/src/stm32f4xx_pwr.c ****   * @}
+ 274:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 275:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 276:.//FWLIB/src/stm32f4xx_pwr.c **** /** @defgroup PWR_Group4 Main and Backup Regulators configuration functions
+ 277:.//FWLIB/src/stm32f4xx_pwr.c ****  *  @brief   Main and Backup Regulators configuration functions 
+ 278:.//FWLIB/src/stm32f4xx_pwr.c ****  *
+ 279:.//FWLIB/src/stm32f4xx_pwr.c **** @verbatim   
+ 280:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================
+ 281:.//FWLIB/src/stm32f4xx_pwr.c ****           ##### Main and Backup Regulators configuration functions #####
+ 282:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================  
+ 283:.//FWLIB/src/stm32f4xx_pwr.c ****     [..]
+ 284:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) The backup domain includes 4 Kbytes of backup SRAM accessible only from 
+ 285:.//FWLIB/src/stm32f4xx_pwr.c ****           the CPU, and address in 32-bit, 16-bit or 8-bit mode. Its content is 
+ 286:.//FWLIB/src/stm32f4xx_pwr.c ****           retained even in Standby or VBAT mode when the low power backup regulator
+ 287:.//FWLIB/src/stm32f4xx_pwr.c ****           is enabled. It can be considered as an internal EEPROM when VBAT is 
+ 288:.//FWLIB/src/stm32f4xx_pwr.c ****           always present. You can use the PWR_BackupRegulatorCmd() function to 
+ 289:.//FWLIB/src/stm32f4xx_pwr.c ****           enable the low power backup regulator and use the PWR_GetFlagStatus
+ 290:.//FWLIB/src/stm32f4xx_pwr.c ****           (PWR_FLAG_BRR) to check if it is ready or not. 
+ 291:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 292:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) When the backup domain is supplied by VDD (analog switch connected to VDD) 
+ 293:.//FWLIB/src/stm32f4xx_pwr.c ****           the backup SRAM is powered from VDD which replaces the VBAT power supply to 
+ 294:.//FWLIB/src/stm32f4xx_pwr.c ****           save battery life.
+ 295:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 296:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) The backup SRAM is not mass erased by an tamper event. It is read 
+ 297:.//FWLIB/src/stm32f4xx_pwr.c ****           protected to prevent confidential data, such as cryptographic private 
+ 298:.//FWLIB/src/stm32f4xx_pwr.c ****           key, from being accessed. The backup SRAM can be erased only through 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 9
+
+
+ 299:.//FWLIB/src/stm32f4xx_pwr.c ****           the Flash interface when a protection level change from level 1 to 
+ 300:.//FWLIB/src/stm32f4xx_pwr.c ****           level 0 is requested. 
+ 301:.//FWLIB/src/stm32f4xx_pwr.c ****       -@- Refer to the description of Read protection (RDP) in the reference manual.
+ 302:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 303:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) The main internal regulator can be configured to have a tradeoff between 
+ 304:.//FWLIB/src/stm32f4xx_pwr.c ****           performance and power consumption when the device does not operate at 
+ 305:.//FWLIB/src/stm32f4xx_pwr.c ****           the maximum frequency. 
+ 306:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) For STM32F405xx/407xx and STM32F415xx/417xx  Devices, the regulator can be     
+ 307:.//FWLIB/src/stm32f4xx_pwr.c ****           configured on the fly through PWR_MainRegulatorModeConfig() function which  
+ 308:.//FWLIB/src/stm32f4xx_pwr.c ****           configure VOS bit in PWR_CR register:
+ 309:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) When this bit is set (Regulator voltage output Scale 1 mode selected) 
+ 310:.//FWLIB/src/stm32f4xx_pwr.c ****              the System frequency can go up to 168 MHz. 
+ 311:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) When this bit is reset (Regulator voltage output Scale 2 mode selected) 
+ 312:.//FWLIB/src/stm32f4xx_pwr.c ****              the System frequency can go up to 144 MHz.
+ 313:.//FWLIB/src/stm32f4xx_pwr.c ****              
+ 314:.//FWLIB/src/stm32f4xx_pwr.c ****        (+) For STM32F42xxx/43xxx Devices, the regulator can be configured through    
+ 315:.//FWLIB/src/stm32f4xx_pwr.c ****            PWR_MainRegulatorModeConfig() function which configure VOS[1:0] bits in
+ 316:.//FWLIB/src/stm32f4xx_pwr.c ****            PWR_CR register:  
+ 317:.//FWLIB/src/stm32f4xx_pwr.c ****            which configure VOS[1:0] bits in PWR_CR register: 
+ 318:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) When VOS[1:0] = 11 (Regulator voltage output Scale 1 mode selected) 
+ 319:.//FWLIB/src/stm32f4xx_pwr.c ****              the System frequency can go up to 168 MHz. 
+ 320:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) When VOS[1:0] = 10 (Regulator voltage output Scale 2 mode selected) 
+ 321:.//FWLIB/src/stm32f4xx_pwr.c ****              the System frequency can go up to 144 MHz.  
+ 322:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) When VOS[1:0] = 01 (Regulator voltage output Scale 3 mode selected) 
+ 323:.//FWLIB/src/stm32f4xx_pwr.c ****              the System frequency can go up to 120 MHz. 
+ 324:.//FWLIB/src/stm32f4xx_pwr.c ****                           
+ 325:.//FWLIB/src/stm32f4xx_pwr.c ****        (+) For STM32F42xxx/43xxx Devices, the scale can be modified only when the PLL 
+ 326:.//FWLIB/src/stm32f4xx_pwr.c ****            is OFF and the HSI or HSE clock source is selected as system clock. 
+ 327:.//FWLIB/src/stm32f4xx_pwr.c ****            The new value programmed is active only when the PLL is ON.
+ 328:.//FWLIB/src/stm32f4xx_pwr.c ****            When the PLL is OFF, the voltage scale 3 is automatically selected. 
+ 329:.//FWLIB/src/stm32f4xx_pwr.c ****         Refer to the datasheets for more details.
+ 330:.//FWLIB/src/stm32f4xx_pwr.c ****         
+ 331:.//FWLIB/src/stm32f4xx_pwr.c ****        (+) For STM32F42xxx/43xxx Devices, in Run mode: the main regulator has
+ 332:.//FWLIB/src/stm32f4xx_pwr.c ****            2 operating modes available:
+ 333:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) Normal mode: The CPU and core logic operate at maximum frequency at a given 
+ 334:.//FWLIB/src/stm32f4xx_pwr.c ****              voltage scaling (scale 1, scale 2 or scale 3)
+ 335:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) Over-drive mode: This mode allows the CPU and the core logic to operate at a 
+ 336:.//FWLIB/src/stm32f4xx_pwr.c ****             higher frequency than the normal mode for a given voltage scaling (scale 1,  
+ 337:.//FWLIB/src/stm32f4xx_pwr.c ****             scale 2 or scale 3). This mode is enabled through PWR_OverDriveCmd() function and
+ 338:.//FWLIB/src/stm32f4xx_pwr.c ****             PWR_OverDriveSWCmd() function, to enter or exit from Over-drive mode please follow 
+ 339:.//FWLIB/src/stm32f4xx_pwr.c ****             the sequence described in Reference manual.
+ 340:.//FWLIB/src/stm32f4xx_pwr.c ****              
+ 341:.//FWLIB/src/stm32f4xx_pwr.c ****        (+) For STM32F42xxx/43xxx Devices, in Stop mode: the main regulator or low power regulator 
+ 342:.//FWLIB/src/stm32f4xx_pwr.c ****            supplies a low power voltage to the 1.2V domain, thus preserving the content of register
+ 343:.//FWLIB/src/stm32f4xx_pwr.c ****            and internal SRAM. 2 operating modes are available:
+ 344:.//FWLIB/src/stm32f4xx_pwr.c ****          (++) Normal mode: the 1.2V domain is preserved in nominal leakage mode. This mode is only 
+ 345:.//FWLIB/src/stm32f4xx_pwr.c ****               available when the main regulator or the low power regulator is used in Scale 3 or 
+ 346:.//FWLIB/src/stm32f4xx_pwr.c ****               low voltage mode.
+ 347:.//FWLIB/src/stm32f4xx_pwr.c ****          (++) Under-drive mode: the 1.2V domain is preserved in reduced leakage mode. This mode is 
+ 348:.//FWLIB/src/stm32f4xx_pwr.c ****               available when the main regulator or the low power regulator is in low voltage mode.
+ 349:.//FWLIB/src/stm32f4xx_pwr.c ****               This mode is enabled through PWR_UnderDriveCmd() function.
+ 350:.//FWLIB/src/stm32f4xx_pwr.c ****             
+ 351:.//FWLIB/src/stm32f4xx_pwr.c **** @endverbatim
+ 352:.//FWLIB/src/stm32f4xx_pwr.c ****   * @{
+ 353:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 354:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 355:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 10
+
+
+ 356:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Enables or disables the Backup Regulator.
+ 357:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  NewState: new state of the Backup Regulator.
+ 358:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 359:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 360:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 361:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_BackupRegulatorCmd(FunctionalState NewState)
+ 362:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 170              		.loc 1 362 0
+ 171              		.cfi_startproc
+ 172              		@ args = 0, pretend = 0, frame = 0
+ 173              		@ frame_needed = 0, uses_anonymous_args = 0
+ 174              		@ link register save eliminated.
+ 175              	.LVL9:
+ 363:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 364:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 365:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 366:.//FWLIB/src/stm32f4xx_pwr.c ****   *(__IO uint32_t *) CSR_BRE_BB = (uint32_t)NewState;
+ 176              		.loc 1 366 0
+ 177 0000 014B     		ldr	r3, .L16
+ 178 0002 1860     		str	r0, [r3]
+ 179 0004 7047     		bx	lr
+ 180              	.L17:
+ 181 0006 00BF     		.align	2
+ 182              	.L16:
+ 183 0008 A4000E42 		.word	1108213924
+ 184              		.cfi_endproc
+ 185              	.LFE117:
+ 187              		.section	.text.PWR_MainRegulatorModeConfig,"ax",%progbits
+ 188              		.align	2
+ 189              		.global	PWR_MainRegulatorModeConfig
+ 190              		.thumb
+ 191              		.thumb_func
+ 193              	PWR_MainRegulatorModeConfig:
+ 194              	.LFB118:
+ 367:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 368:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 369:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 370:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Configures the main internal regulator output voltage.
+ 371:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  PWR_Regulator_Voltage: specifies the regulator output voltage to achieve
+ 372:.//FWLIB/src/stm32f4xx_pwr.c ****   *         a tradeoff between performance and power consumption when the device does
+ 373:.//FWLIB/src/stm32f4xx_pwr.c ****   *         not operate at the maximum frequency (refer to the datasheets for more details).
+ 374:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be one of the following values:
+ 375:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_Regulator_Voltage_Scale1: Regulator voltage output Scale 1 mode, 
+ 376:.//FWLIB/src/stm32f4xx_pwr.c ****   *                                                System frequency up to 168 MHz. 
+ 377:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_Regulator_Voltage_Scale2: Regulator voltage output Scale 2 mode, 
+ 378:.//FWLIB/src/stm32f4xx_pwr.c ****   *                                                System frequency up to 144 MHz.    
+ 379:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_Regulator_Voltage_Scale3: Regulator voltage output Scale 3 mode, 
+ 380:.//FWLIB/src/stm32f4xx_pwr.c ****   *                                                System frequency up to 120 MHz (only for STM32F4
+ 381:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 382:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 383:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_MainRegulatorModeConfig(uint32_t PWR_Regulator_Voltage)
+ 384:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 195              		.loc 1 384 0
+ 196              		.cfi_startproc
+ 197              		@ args = 0, pretend = 0, frame = 0
+ 198              		@ frame_needed = 0, uses_anonymous_args = 0
+ 199              		@ link register save eliminated.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 11
+
+
+ 200              	.LVL10:
+ 385:.//FWLIB/src/stm32f4xx_pwr.c ****   uint32_t tmpreg = 0;
+ 386:.//FWLIB/src/stm32f4xx_pwr.c **** 	
+ 387:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 388:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_PWR_REGULATOR_VOLTAGE(PWR_Regulator_Voltage));
+ 389:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 390:.//FWLIB/src/stm32f4xx_pwr.c ****   tmpreg = PWR->CR;
+ 201              		.loc 1 390 0
+ 202 0000 034A     		ldr	r2, .L19
+ 203 0002 1368     		ldr	r3, [r2]
+ 204              	.LVL11:
+ 391:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 392:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Clear VOS[15:14] bits */
+ 393:.//FWLIB/src/stm32f4xx_pwr.c ****   tmpreg &= CR_VOS_MASK;
+ 205              		.loc 1 393 0
+ 206 0004 23F44043 		bic	r3, r3, #49152
+ 207              	.LVL12:
+ 394:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 395:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Set VOS[15:14] bits according to PWR_Regulator_Voltage value */
+ 396:.//FWLIB/src/stm32f4xx_pwr.c ****   tmpreg |= PWR_Regulator_Voltage;
+ 208              		.loc 1 396 0
+ 209 0008 1843     		orrs	r0, r0, r3
+ 210              	.LVL13:
+ 397:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 398:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Store the new value */
+ 399:.//FWLIB/src/stm32f4xx_pwr.c ****   PWR->CR = tmpreg;
+ 211              		.loc 1 399 0
+ 212 000a 1060     		str	r0, [r2]
+ 213 000c 7047     		bx	lr
+ 214              	.L20:
+ 215 000e 00BF     		.align	2
+ 216              	.L19:
+ 217 0010 00700040 		.word	1073770496
+ 218              		.cfi_endproc
+ 219              	.LFE118:
+ 221              		.section	.text.PWR_OverDriveCmd,"ax",%progbits
+ 222              		.align	2
+ 223              		.global	PWR_OverDriveCmd
+ 224              		.thumb
+ 225              		.thumb_func
+ 227              	PWR_OverDriveCmd:
+ 228              	.LFB119:
+ 400:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 401:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 402:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 403:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Enables or disables the Over-Drive.
+ 404:.//FWLIB/src/stm32f4xx_pwr.c ****   * 
+ 405:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   This function can be used only for STM32F42xxx/STM3243xxx devices.
+ 406:.//FWLIB/src/stm32f4xx_pwr.c ****   *         This mode allows the CPU and the core logic to operate at a higher frequency
+ 407:.//FWLIB/src/stm32f4xx_pwr.c ****   *         than the normal mode for a given voltage scaling (scale 1, scale 2 or scale 3).   
+ 408:.//FWLIB/src/stm32f4xx_pwr.c ****   * 
+ 409:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   It is recommended to enter or exit Over-drive mode when the application is not running 
+ 410:.//FWLIB/src/stm32f4xx_pwr.c ****   *          critical tasks and when the system clock source is either HSI or HSE. 
+ 411:.//FWLIB/src/stm32f4xx_pwr.c ****   *          During the Over-drive switch activation, no peripheral clocks should be enabled.   
+ 412:.//FWLIB/src/stm32f4xx_pwr.c ****   *          The peripheral clocks must be enabled once the Over-drive mode is activated.
+ 413:.//FWLIB/src/stm32f4xx_pwr.c ****   *            
+ 414:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  NewState: new state of the Over Drive mode.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 12
+
+
+ 415:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 416:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 417:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 418:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_OverDriveCmd(FunctionalState NewState)
+ 419:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 229              		.loc 1 419 0
+ 230              		.cfi_startproc
+ 231              		@ args = 0, pretend = 0, frame = 0
+ 232              		@ frame_needed = 0, uses_anonymous_args = 0
+ 233              		@ link register save eliminated.
+ 234              	.LVL14:
+ 420:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 421:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 422:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 423:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Set/Reset the ODEN bit to enable/disable the Over Drive mode */
+ 424:.//FWLIB/src/stm32f4xx_pwr.c ****   *(__IO uint32_t *) CR_ODEN_BB = (uint32_t)NewState;
+ 235              		.loc 1 424 0
+ 236 0000 014B     		ldr	r3, .L22
+ 237 0002 1860     		str	r0, [r3]
+ 238 0004 7047     		bx	lr
+ 239              	.L23:
+ 240 0006 00BF     		.align	2
+ 241              	.L22:
+ 242 0008 40000E42 		.word	1108213824
+ 243              		.cfi_endproc
+ 244              	.LFE119:
+ 246              		.section	.text.PWR_OverDriveSWCmd,"ax",%progbits
+ 247              		.align	2
+ 248              		.global	PWR_OverDriveSWCmd
+ 249              		.thumb
+ 250              		.thumb_func
+ 252              	PWR_OverDriveSWCmd:
+ 253              	.LFB120:
+ 425:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 426:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 427:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 428:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Enables or disables the Over-Drive switching.
+ 429:.//FWLIB/src/stm32f4xx_pwr.c ****   * 
+ 430:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   This function can be used only for STM32F42xxx/STM3243xxx devices. 
+ 431:.//FWLIB/src/stm32f4xx_pwr.c ****   *       
+ 432:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  NewState: new state of the Over Drive switching mode.
+ 433:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 434:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 435:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 436:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_OverDriveSWCmd(FunctionalState NewState)
+ 437:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 254              		.loc 1 437 0
+ 255              		.cfi_startproc
+ 256              		@ args = 0, pretend = 0, frame = 0
+ 257              		@ frame_needed = 0, uses_anonymous_args = 0
+ 258              		@ link register save eliminated.
+ 259              	.LVL15:
+ 438:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 439:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 440:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 441:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Set/Reset the ODSWEN bit to enable/disable the Over Drive switching mode */
+ 442:.//FWLIB/src/stm32f4xx_pwr.c ****   *(__IO uint32_t *) CR_ODSWEN_BB = (uint32_t)NewState;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 13
+
+
+ 260              		.loc 1 442 0
+ 261 0000 014B     		ldr	r3, .L25
+ 262 0002 1860     		str	r0, [r3]
+ 263 0004 7047     		bx	lr
+ 264              	.L26:
+ 265 0006 00BF     		.align	2
+ 266              	.L25:
+ 267 0008 44000E42 		.word	1108213828
+ 268              		.cfi_endproc
+ 269              	.LFE120:
+ 271              		.section	.text.PWR_UnderDriveCmd,"ax",%progbits
+ 272              		.align	2
+ 273              		.global	PWR_UnderDriveCmd
+ 274              		.thumb
+ 275              		.thumb_func
+ 277              	PWR_UnderDriveCmd:
+ 278              	.LFB121:
+ 443:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 444:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 445:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 446:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief   Enables or disables the Under-Drive mode.
+ 447:.//FWLIB/src/stm32f4xx_pwr.c ****   * 
+ 448:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   This function can be used only for STM32F42xxx/STM3243xxx devices.
+ 449:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note    This mode is enabled only with STOP low power mode.
+ 450:.//FWLIB/src/stm32f4xx_pwr.c ****   *          In this mode, the 1.2V domain is preserved in reduced leakage mode. This 
+ 451:.//FWLIB/src/stm32f4xx_pwr.c ****   *          mode is only available when the main regulator or the low power regulator 
+ 452:.//FWLIB/src/stm32f4xx_pwr.c ****   *          is in low voltage mode
+ 453:.//FWLIB/src/stm32f4xx_pwr.c ****   *        
+ 454:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   If the Under-drive mode was enabled, it is automatically disabled after 
+ 455:.//FWLIB/src/stm32f4xx_pwr.c ****   *         exiting Stop mode. 
+ 456:.//FWLIB/src/stm32f4xx_pwr.c ****   *         When the voltage regulator operates in Under-drive mode, an additional  
+ 457:.//FWLIB/src/stm32f4xx_pwr.c ****   *         startup delay is induced when waking up from Stop mode.
+ 458:.//FWLIB/src/stm32f4xx_pwr.c ****   *                    
+ 459:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  NewState: new state of the Under Drive mode.
+ 460:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 461:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 462:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 463:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_UnderDriveCmd(FunctionalState NewState)
+ 464:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 279              		.loc 1 464 0
+ 280              		.cfi_startproc
+ 281              		@ args = 0, pretend = 0, frame = 0
+ 282              		@ frame_needed = 0, uses_anonymous_args = 0
+ 283              		@ link register save eliminated.
+ 284              	.LVL16:
+ 465:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 466:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 467:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 468:.//FWLIB/src/stm32f4xx_pwr.c ****   if (NewState != DISABLE)
+ 285              		.loc 1 468 0
+ 286 0000 28B1     		cbz	r0, .L28
+ 469:.//FWLIB/src/stm32f4xx_pwr.c ****   {
+ 470:.//FWLIB/src/stm32f4xx_pwr.c ****     /* Set the UDEN[1:0] bits to enable the Under Drive mode */
+ 471:.//FWLIB/src/stm32f4xx_pwr.c ****     PWR->CR |= (uint32_t)PWR_CR_UDEN;
+ 287              		.loc 1 471 0
+ 288 0002 064A     		ldr	r2, .L30
+ 289 0004 1368     		ldr	r3, [r2]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 14
+
+
+ 290 0006 43F44023 		orr	r3, r3, #786432
+ 291 000a 1360     		str	r3, [r2]
+ 292 000c 7047     		bx	lr
+ 293              	.L28:
+ 472:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 473:.//FWLIB/src/stm32f4xx_pwr.c ****   else
+ 474:.//FWLIB/src/stm32f4xx_pwr.c ****   {
+ 475:.//FWLIB/src/stm32f4xx_pwr.c ****     /* Reset the UDEN[1:0] bits to disable the Under Drive mode */
+ 476:.//FWLIB/src/stm32f4xx_pwr.c ****     PWR->CR &= (uint32_t)(~PWR_CR_UDEN);
+ 294              		.loc 1 476 0
+ 295 000e 034A     		ldr	r2, .L30
+ 296 0010 1368     		ldr	r3, [r2]
+ 297 0012 23F44023 		bic	r3, r3, #786432
+ 298 0016 1360     		str	r3, [r2]
+ 299 0018 7047     		bx	lr
+ 300              	.L31:
+ 301 001a 00BF     		.align	2
+ 302              	.L30:
+ 303 001c 00700040 		.word	1073770496
+ 304              		.cfi_endproc
+ 305              	.LFE121:
+ 307              		.section	.text.PWR_MainRegulatorLowVoltageCmd,"ax",%progbits
+ 308              		.align	2
+ 309              		.global	PWR_MainRegulatorLowVoltageCmd
+ 310              		.thumb
+ 311              		.thumb_func
+ 313              	PWR_MainRegulatorLowVoltageCmd:
+ 314              	.LFB122:
+ 477:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 478:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 479:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 480:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 481:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief Enables or disables the Main Regulator low voltage mode.
+ 482:.//FWLIB/src/stm32f4xx_pwr.c ****   *
+ 483:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note  This mode is only available for STM32F401xx/STM32F411xx devices.
+ 484:.//FWLIB/src/stm32f4xx_pwr.c ****   *
+ 485:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  NewState: new state of the Under Drive mode.
+ 486:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 487:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 488:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 489:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_MainRegulatorLowVoltageCmd(FunctionalState NewState)
+ 490:.//FWLIB/src/stm32f4xx_pwr.c **** { 
+ 315              		.loc 1 490 0
+ 316              		.cfi_startproc
+ 317              		@ args = 0, pretend = 0, frame = 0
+ 318              		@ frame_needed = 0, uses_anonymous_args = 0
+ 319              		@ link register save eliminated.
+ 320              	.LVL17:
+ 491:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 492:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 493:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 494:.//FWLIB/src/stm32f4xx_pwr.c ****   if (NewState != DISABLE)
+ 321              		.loc 1 494 0
+ 322 0000 18B1     		cbz	r0, .L33
+ 495:.//FWLIB/src/stm32f4xx_pwr.c ****   {
+ 496:.//FWLIB/src/stm32f4xx_pwr.c ****     *(__IO uint32_t *) CR_MRLVDS_BB = (uint32_t)ENABLE;
+ 323              		.loc 1 496 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 15
+
+
+ 324 0002 0122     		movs	r2, #1
+ 325 0004 034B     		ldr	r3, .L35
+ 326 0006 1A60     		str	r2, [r3]
+ 327 0008 7047     		bx	lr
+ 328              	.L33:
+ 497:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 498:.//FWLIB/src/stm32f4xx_pwr.c ****   else
+ 499:.//FWLIB/src/stm32f4xx_pwr.c ****   {
+ 500:.//FWLIB/src/stm32f4xx_pwr.c ****     *(__IO uint32_t *) CR_MRLVDS_BB = (uint32_t)DISABLE;
+ 329              		.loc 1 500 0
+ 330 000a 0022     		movs	r2, #0
+ 331 000c 014B     		ldr	r3, .L35
+ 332 000e 1A60     		str	r2, [r3]
+ 333 0010 7047     		bx	lr
+ 334              	.L36:
+ 335 0012 00BF     		.align	2
+ 336              	.L35:
+ 337 0014 2C000E42 		.word	1108213804
+ 338              		.cfi_endproc
+ 339              	.LFE122:
+ 341              		.section	.text.PWR_LowRegulatorLowVoltageCmd,"ax",%progbits
+ 342              		.align	2
+ 343              		.global	PWR_LowRegulatorLowVoltageCmd
+ 344              		.thumb
+ 345              		.thumb_func
+ 347              	PWR_LowRegulatorLowVoltageCmd:
+ 348              	.LFB123:
+ 501:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 502:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 503:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 504:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 505:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief Enables or disables the Low Power Regulator low voltage mode.
+ 506:.//FWLIB/src/stm32f4xx_pwr.c ****   *
+ 507:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note  This mode is only available for STM32F401xx/STM32F411xx devices.
+ 508:.//FWLIB/src/stm32f4xx_pwr.c ****   *
+ 509:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  NewState: new state of the Under Drive mode.
+ 510:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 511:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 512:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 513:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_LowRegulatorLowVoltageCmd(FunctionalState NewState)
+ 514:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 349              		.loc 1 514 0
+ 350              		.cfi_startproc
+ 351              		@ args = 0, pretend = 0, frame = 0
+ 352              		@ frame_needed = 0, uses_anonymous_args = 0
+ 353              		@ link register save eliminated.
+ 354              	.LVL18:
+ 515:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 516:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 517:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 518:.//FWLIB/src/stm32f4xx_pwr.c ****   if (NewState != DISABLE)
+ 355              		.loc 1 518 0
+ 356 0000 18B1     		cbz	r0, .L38
+ 519:.//FWLIB/src/stm32f4xx_pwr.c ****   {
+ 520:.//FWLIB/src/stm32f4xx_pwr.c ****     *(__IO uint32_t *) CR_LPLVDS_BB = (uint32_t)ENABLE;
+ 357              		.loc 1 520 0
+ 358 0002 0122     		movs	r2, #1
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 16
+
+
+ 359 0004 034B     		ldr	r3, .L40
+ 360 0006 1A60     		str	r2, [r3]
+ 361 0008 7047     		bx	lr
+ 362              	.L38:
+ 521:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 522:.//FWLIB/src/stm32f4xx_pwr.c ****   else
+ 523:.//FWLIB/src/stm32f4xx_pwr.c ****   {
+ 524:.//FWLIB/src/stm32f4xx_pwr.c ****     *(__IO uint32_t *) CR_LPLVDS_BB = (uint32_t)DISABLE;
+ 363              		.loc 1 524 0
+ 364 000a 0022     		movs	r2, #0
+ 365 000c 014B     		ldr	r3, .L40
+ 366 000e 1A60     		str	r2, [r3]
+ 367 0010 7047     		bx	lr
+ 368              	.L41:
+ 369 0012 00BF     		.align	2
+ 370              	.L40:
+ 371 0014 28000E42 		.word	1108213800
+ 372              		.cfi_endproc
+ 373              	.LFE123:
+ 375              		.section	.text.PWR_FlashPowerDownCmd,"ax",%progbits
+ 376              		.align	2
+ 377              		.global	PWR_FlashPowerDownCmd
+ 378              		.thumb
+ 379              		.thumb_func
+ 381              	PWR_FlashPowerDownCmd:
+ 382              	.LFB124:
+ 525:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 526:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 527:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 528:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 529:.//FWLIB/src/stm32f4xx_pwr.c ****   * @}
+ 530:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 531:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 532:.//FWLIB/src/stm32f4xx_pwr.c **** /** @defgroup PWR_Group5 FLASH Power Down configuration functions
+ 533:.//FWLIB/src/stm32f4xx_pwr.c ****  *  @brief   FLASH Power Down configuration functions 
+ 534:.//FWLIB/src/stm32f4xx_pwr.c ****  *
+ 535:.//FWLIB/src/stm32f4xx_pwr.c **** @verbatim   
+ 536:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================
+ 537:.//FWLIB/src/stm32f4xx_pwr.c ****              ##### FLASH Power Down configuration functions #####
+ 538:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================  
+ 539:.//FWLIB/src/stm32f4xx_pwr.c ****     [..]
+ 540:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) By setting the FPDS bit in the PWR_CR register by using the 
+ 541:.//FWLIB/src/stm32f4xx_pwr.c ****           PWR_FlashPowerDownCmd() function, the Flash memory also enters power 
+ 542:.//FWLIB/src/stm32f4xx_pwr.c ****           down mode when the device enters Stop mode. When the Flash memory 
+ 543:.//FWLIB/src/stm32f4xx_pwr.c ****           is in power down mode, an additional startup delay is incurred when 
+ 544:.//FWLIB/src/stm32f4xx_pwr.c ****           waking up from Stop mode.
+ 545:.//FWLIB/src/stm32f4xx_pwr.c **** @endverbatim
+ 546:.//FWLIB/src/stm32f4xx_pwr.c ****   * @{
+ 547:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 548:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 549:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 550:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Enables or disables the Flash Power Down in STOP mode.
+ 551:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  NewState: new state of the Flash power mode.
+ 552:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 553:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 554:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 555:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_FlashPowerDownCmd(FunctionalState NewState)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 17
+
+
+ 556:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 383              		.loc 1 556 0
+ 384              		.cfi_startproc
+ 385              		@ args = 0, pretend = 0, frame = 0
+ 386              		@ frame_needed = 0, uses_anonymous_args = 0
+ 387              		@ link register save eliminated.
+ 388              	.LVL19:
+ 557:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 558:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 559:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 560:.//FWLIB/src/stm32f4xx_pwr.c ****   *(__IO uint32_t *) CR_FPDS_BB = (uint32_t)NewState;
+ 389              		.loc 1 560 0
+ 390 0000 014B     		ldr	r3, .L43
+ 391 0002 1860     		str	r0, [r3]
+ 392 0004 7047     		bx	lr
+ 393              	.L44:
+ 394 0006 00BF     		.align	2
+ 395              	.L43:
+ 396 0008 24000E42 		.word	1108213796
+ 397              		.cfi_endproc
+ 398              	.LFE124:
+ 400              		.section	.text.PWR_EnterSTOPMode,"ax",%progbits
+ 401              		.align	2
+ 402              		.global	PWR_EnterSTOPMode
+ 403              		.thumb
+ 404              		.thumb_func
+ 406              	PWR_EnterSTOPMode:
+ 407              	.LFB125:
+ 561:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 562:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 563:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 564:.//FWLIB/src/stm32f4xx_pwr.c ****   * @}
+ 565:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 566:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 567:.//FWLIB/src/stm32f4xx_pwr.c **** /** @defgroup PWR_Group6 Low Power modes configuration functions
+ 568:.//FWLIB/src/stm32f4xx_pwr.c ****  *  @brief   Low Power modes configuration functions 
+ 569:.//FWLIB/src/stm32f4xx_pwr.c ****  *
+ 570:.//FWLIB/src/stm32f4xx_pwr.c **** @verbatim   
+ 571:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================
+ 572:.//FWLIB/src/stm32f4xx_pwr.c ****               ##### Low Power modes configuration functions #####
+ 573:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================  
+ 574:.//FWLIB/src/stm32f4xx_pwr.c ****     [..]
+ 575:.//FWLIB/src/stm32f4xx_pwr.c ****       The devices feature 3 low-power modes:
+ 576:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) Sleep mode: Cortex-M4 core stopped, peripherals kept running.
+ 577:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) Stop mode: all clocks are stopped, regulator running, regulator 
+ 578:.//FWLIB/src/stm32f4xx_pwr.c ****           in low power mode
+ 579:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) Standby mode: 1.2V domain powered off.
+ 580:.//FWLIB/src/stm32f4xx_pwr.c ****    
+ 581:.//FWLIB/src/stm32f4xx_pwr.c ****    *** Sleep mode ***
+ 582:.//FWLIB/src/stm32f4xx_pwr.c ****    ==================
+ 583:.//FWLIB/src/stm32f4xx_pwr.c ****     [..]
+ 584:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) Entry:
+ 585:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) The Sleep mode is entered by using the __WFI() or __WFE() functions.
+ 586:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) Exit:
+ 587:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) Any peripheral interrupt acknowledged by the nested vectored interrupt 
+ 588:.//FWLIB/src/stm32f4xx_pwr.c ****              controller (NVIC) can wake up the device from Sleep mode.
+ 589:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 18
+
+
+ 590:.//FWLIB/src/stm32f4xx_pwr.c ****    *** Stop mode ***
+ 591:.//FWLIB/src/stm32f4xx_pwr.c ****    =================
+ 592:.//FWLIB/src/stm32f4xx_pwr.c ****     [..]
+ 593:.//FWLIB/src/stm32f4xx_pwr.c ****       In Stop mode, all clocks in the 1.2V domain are stopped, the PLL, the HSI,
+ 594:.//FWLIB/src/stm32f4xx_pwr.c ****       and the HSE RC oscillators are disabled. Internal SRAM and register contents 
+ 595:.//FWLIB/src/stm32f4xx_pwr.c ****       are preserved.
+ 596:.//FWLIB/src/stm32f4xx_pwr.c ****       The voltage regulator can be configured either in normal or low-power mode.
+ 597:.//FWLIB/src/stm32f4xx_pwr.c ****       To minimize the consumption In Stop mode, FLASH can be powered off before 
+ 598:.//FWLIB/src/stm32f4xx_pwr.c ****       entering the Stop mode. It can be switched on again by software after exiting 
+ 599:.//FWLIB/src/stm32f4xx_pwr.c ****       the Stop mode using the PWR_FlashPowerDownCmd() function. 
+ 600:.//FWLIB/src/stm32f4xx_pwr.c ****    
+ 601:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) Entry:
+ 602:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) The Stop mode is entered using the PWR_EnterSTOPMode(PWR_MainRegulator_ON) 
+ 603:.//FWLIB/src/stm32f4xx_pwr.c ****              function with:
+ 604:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Main regulator ON.
+ 605:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Low Power regulator ON.
+ 606:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) Exit:
+ 607:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) Any EXTI Line (Internal or External) configured in Interrupt/Event mode.
+ 608:.//FWLIB/src/stm32f4xx_pwr.c ****       
+ 609:.//FWLIB/src/stm32f4xx_pwr.c ****    *** Standby mode ***
+ 610:.//FWLIB/src/stm32f4xx_pwr.c ****    ====================
+ 611:.//FWLIB/src/stm32f4xx_pwr.c ****     [..]
+ 612:.//FWLIB/src/stm32f4xx_pwr.c ****       The Standby mode allows to achieve the lowest power consumption. It is based 
+ 613:.//FWLIB/src/stm32f4xx_pwr.c ****       on the Cortex-M4 deepsleep mode, with the voltage regulator disabled. 
+ 614:.//FWLIB/src/stm32f4xx_pwr.c ****       The 1.2V domain is consequently powered off. The PLL, the HSI oscillator and 
+ 615:.//FWLIB/src/stm32f4xx_pwr.c ****       the HSE oscillator are also switched off. SRAM and register contents are lost 
+ 616:.//FWLIB/src/stm32f4xx_pwr.c ****       except for the RTC registers, RTC backup registers, backup SRAM and Standby 
+ 617:.//FWLIB/src/stm32f4xx_pwr.c ****       circuitry.
+ 618:.//FWLIB/src/stm32f4xx_pwr.c ****    
+ 619:.//FWLIB/src/stm32f4xx_pwr.c ****       The voltage regulator is OFF.
+ 620:.//FWLIB/src/stm32f4xx_pwr.c ****       
+ 621:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) Entry:
+ 622:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) The Standby mode is entered using the PWR_EnterSTANDBYMode() function.
+ 623:.//FWLIB/src/stm32f4xx_pwr.c ****       (+) Exit:
+ 624:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) WKUP pin rising edge, RTC alarm (Alarm A and Alarm B), RTC wakeup,
+ 625:.//FWLIB/src/stm32f4xx_pwr.c ****              tamper event, time-stamp event, external reset in NRST pin, IWDG reset.              
+ 626:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 627:.//FWLIB/src/stm32f4xx_pwr.c ****    *** Auto-wakeup (AWU) from low-power mode ***
+ 628:.//FWLIB/src/stm32f4xx_pwr.c ****    =============================================
+ 629:.//FWLIB/src/stm32f4xx_pwr.c ****     [..]
+ 630:.//FWLIB/src/stm32f4xx_pwr.c ****       The MCU can be woken up from low-power mode by an RTC Alarm event, an RTC 
+ 631:.//FWLIB/src/stm32f4xx_pwr.c ****       Wakeup event, a tamper event, a time-stamp event, or a comparator event, 
+ 632:.//FWLIB/src/stm32f4xx_pwr.c ****       without depending on an external interrupt (Auto-wakeup mode).
+ 633:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 634:.//FWLIB/src/stm32f4xx_pwr.c ****       (#) RTC auto-wakeup (AWU) from the Stop mode
+ 635:.//FWLIB/src/stm32f4xx_pwr.c ****        
+ 636:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) To wake up from the Stop mode with an RTC alarm event, it is necessary to:
+ 637:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Configure the EXTI Line 17 to be sensitive to rising edges (Interrupt 
+ 638:.//FWLIB/src/stm32f4xx_pwr.c ****                 or Event modes) using the EXTI_Init() function.
+ 639:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Enable the RTC Alarm Interrupt using the RTC_ITConfig() function
+ 640:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Configure the RTC to generate the RTC alarm using the RTC_SetAlarm() 
+ 641:.//FWLIB/src/stm32f4xx_pwr.c ****                 and RTC_AlarmCmd() functions.
+ 642:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) To wake up from the Stop mode with an RTC Tamper or time stamp event, it 
+ 643:.//FWLIB/src/stm32f4xx_pwr.c ****              is necessary to:
+ 644:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Configure the EXTI Line 21 to be sensitive to rising edges (Interrupt 
+ 645:.//FWLIB/src/stm32f4xx_pwr.c ****                 or Event modes) using the EXTI_Init() function.
+ 646:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Enable the RTC Tamper or time stamp Interrupt using the RTC_ITConfig() 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 19
+
+
+ 647:.//FWLIB/src/stm32f4xx_pwr.c ****                 function
+ 648:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Configure the RTC to detect the tamper or time stamp event using the
+ 649:.//FWLIB/src/stm32f4xx_pwr.c ****                 RTC_TimeStampConfig(), RTC_TamperTriggerConfig() and RTC_TamperCmd()
+ 650:.//FWLIB/src/stm32f4xx_pwr.c ****                 functions.
+ 651:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) To wake up from the Stop mode with an RTC WakeUp event, it is necessary to:
+ 652:.//FWLIB/src/stm32f4xx_pwr.c ****            (+++) Configure the EXTI Line 22 to be sensitive to rising edges (Interrupt 
+ 653:.//FWLIB/src/stm32f4xx_pwr.c ****                  or Event modes) using the EXTI_Init() function.
+ 654:.//FWLIB/src/stm32f4xx_pwr.c ****            (+++) Enable the RTC WakeUp Interrupt using the RTC_ITConfig() function
+ 655:.//FWLIB/src/stm32f4xx_pwr.c ****            (+++) Configure the RTC to generate the RTC WakeUp event using the RTC_WakeUpClockConfig
+ 656:.//FWLIB/src/stm32f4xx_pwr.c ****                  RTC_SetWakeUpCounter() and RTC_WakeUpCmd() functions.
+ 657:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 658:.//FWLIB/src/stm32f4xx_pwr.c ****       (#) RTC auto-wakeup (AWU) from the Standby mode
+ 659:.//FWLIB/src/stm32f4xx_pwr.c ****    
+ 660:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) To wake up from the Standby mode with an RTC alarm event, it is necessary to:
+ 661:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Enable the RTC Alarm Interrupt using the RTC_ITConfig() function
+ 662:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Configure the RTC to generate the RTC alarm using the RTC_SetAlarm() 
+ 663:.//FWLIB/src/stm32f4xx_pwr.c ****                 and RTC_AlarmCmd() functions.
+ 664:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) To wake up from the Standby mode with an RTC Tamper or time stamp event, it 
+ 665:.//FWLIB/src/stm32f4xx_pwr.c ****              is necessary to:
+ 666:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Enable the RTC Tamper or time stamp Interrupt using the RTC_ITConfig() 
+ 667:.//FWLIB/src/stm32f4xx_pwr.c ****                 function
+ 668:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Configure the RTC to detect the tamper or time stamp event using the
+ 669:.//FWLIB/src/stm32f4xx_pwr.c ****                 RTC_TimeStampConfig(), RTC_TamperTriggerConfig() and RTC_TamperCmd()
+ 670:.//FWLIB/src/stm32f4xx_pwr.c ****                 functions.
+ 671:.//FWLIB/src/stm32f4xx_pwr.c ****         (++) To wake up from the Standby mode with an RTC WakeUp event, it is necessary to:
+ 672:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Enable the RTC WakeUp Interrupt using the RTC_ITConfig() function
+ 673:.//FWLIB/src/stm32f4xx_pwr.c ****           (+++) Configure the RTC to generate the RTC WakeUp event using the RTC_WakeUpClockConfig(
+ 674:.//FWLIB/src/stm32f4xx_pwr.c ****                 RTC_SetWakeUpCounter() and RTC_WakeUpCmd() functions.
+ 675:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 676:.//FWLIB/src/stm32f4xx_pwr.c **** @endverbatim
+ 677:.//FWLIB/src/stm32f4xx_pwr.c ****   * @{
+ 678:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 679:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 680:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 681:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Enters STOP mode.
+ 682:.//FWLIB/src/stm32f4xx_pwr.c ****   *   
+ 683:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   In Stop mode, all I/O pins keep the same state as in Run mode.
+ 684:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   When exiting Stop mode by issuing an interrupt or a wakeup event, 
+ 685:.//FWLIB/src/stm32f4xx_pwr.c ****   *         the HSI RC oscillator is selected as system clock.
+ 686:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   When the voltage regulator operates in low power mode, an additional 
+ 687:.//FWLIB/src/stm32f4xx_pwr.c ****   *         startup delay is incurred when waking up from Stop mode. 
+ 688:.//FWLIB/src/stm32f4xx_pwr.c ****   *         By keeping the internal regulator ON during Stop mode, the consumption 
+ 689:.//FWLIB/src/stm32f4xx_pwr.c ****   *         is higher although the startup time is reduced.
+ 690:.//FWLIB/src/stm32f4xx_pwr.c ****   *     
+ 691:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  PWR_Regulator: specifies the regulator state in STOP mode.
+ 692:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be one of the following values:
+ 693:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_MainRegulator_ON: STOP mode with regulator ON
+ 694:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_LowPowerRegulator_ON: STOP mode with low power regulator ON
+ 695:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  PWR_STOPEntry: specifies if STOP mode in entered with WFI or WFE instruction.
+ 696:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be one of the following values:
+ 697:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_STOPEntry_WFI: enter STOP mode with WFI instruction
+ 698:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_STOPEntry_WFE: enter STOP mode with WFE instruction
+ 699:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 700:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 701:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
+ 702:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 408              		.loc 1 702 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 20
+
+
+ 409              		.cfi_startproc
+ 410              		@ args = 0, pretend = 0, frame = 0
+ 411              		@ frame_needed = 0, uses_anonymous_args = 0
+ 412              		@ link register save eliminated.
+ 413              	.LVL20:
+ 703:.//FWLIB/src/stm32f4xx_pwr.c ****   uint32_t tmpreg = 0;
+ 704:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 705:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 706:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_PWR_REGULATOR(PWR_Regulator));
+ 707:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_PWR_STOP_ENTRY(PWR_STOPEntry));
+ 708:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 709:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Select the regulator state in STOP mode ---------------------------------*/
+ 710:.//FWLIB/src/stm32f4xx_pwr.c ****   tmpreg = PWR->CR;
+ 414              		.loc 1 710 0
+ 415 0000 0B4A     		ldr	r2, .L48
+ 416 0002 1368     		ldr	r3, [r2]
+ 417              	.LVL21:
+ 711:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Clear PDDS and LPDS bits */
+ 712:.//FWLIB/src/stm32f4xx_pwr.c ****   tmpreg &= CR_DS_MASK;
+ 418              		.loc 1 712 0
+ 419 0004 23F44063 		bic	r3, r3, #3072
+ 420              	.LVL22:
+ 421 0008 23F00303 		bic	r3, r3, #3
+ 422              	.LVL23:
+ 713:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 714:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Set LPDS, MRLVDS and LPLVDS bits according to PWR_Regulator value */
+ 715:.//FWLIB/src/stm32f4xx_pwr.c ****   tmpreg |= PWR_Regulator;
+ 423              		.loc 1 715 0
+ 424 000c 1843     		orrs	r0, r0, r3
+ 425              	.LVL24:
+ 716:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 717:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Store the new value */
+ 718:.//FWLIB/src/stm32f4xx_pwr.c ****   PWR->CR = tmpreg;
+ 426              		.loc 1 718 0
+ 427 000e 1060     		str	r0, [r2]
+ 719:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 720:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Set SLEEPDEEP bit of Cortex System Control Register */
+ 721:.//FWLIB/src/stm32f4xx_pwr.c ****   SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+ 428              		.loc 1 721 0
+ 429 0010 084A     		ldr	r2, .L48+4
+ 430 0012 1369     		ldr	r3, [r2, #16]
+ 431 0014 43F00403 		orr	r3, r3, #4
+ 432 0018 1361     		str	r3, [r2, #16]
+ 722:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 723:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Select STOP mode entry --------------------------------------------------*/
+ 724:.//FWLIB/src/stm32f4xx_pwr.c ****   if(PWR_STOPEntry == PWR_STOPEntry_WFI)
+ 433              		.loc 1 724 0
+ 434 001a 0129     		cmp	r1, #1
+ 435 001c 01D1     		bne	.L46
+ 436              	.LBB12:
+ 437              	.LBB13:
+ 438              		.file 2 "CORE/core_cmInstr.h"
+   1:CORE/core_cmInstr.h **** /**************************************************************************//**
+   2:CORE/core_cmInstr.h ****  * @file     core_cmInstr.h
+   3:CORE/core_cmInstr.h ****  * @brief    CMSIS Cortex-M Core Instruction Access Header File
+   4:CORE/core_cmInstr.h ****  * @version  V3.20
+   5:CORE/core_cmInstr.h ****  * @date     05. March 2013
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 21
+
+
+   6:CORE/core_cmInstr.h ****  *
+   7:CORE/core_cmInstr.h ****  * @note
+   8:CORE/core_cmInstr.h ****  *
+   9:CORE/core_cmInstr.h ****  ******************************************************************************/
+  10:CORE/core_cmInstr.h **** /* Copyright (c) 2009 - 2013 ARM LIMITED
+  11:CORE/core_cmInstr.h **** 
+  12:CORE/core_cmInstr.h ****    All rights reserved.
+  13:CORE/core_cmInstr.h ****    Redistribution and use in source and binary forms, with or without
+  14:CORE/core_cmInstr.h ****    modification, are permitted provided that the following conditions are met:
+  15:CORE/core_cmInstr.h ****    - Redistributions of source code must retain the above copyright
+  16:CORE/core_cmInstr.h ****      notice, this list of conditions and the following disclaimer.
+  17:CORE/core_cmInstr.h ****    - Redistributions in binary form must reproduce the above copyright
+  18:CORE/core_cmInstr.h ****      notice, this list of conditions and the following disclaimer in the
+  19:CORE/core_cmInstr.h ****      documentation and/or other materials provided with the distribution.
+  20:CORE/core_cmInstr.h ****    - Neither the name of ARM nor the names of its contributors may be used
+  21:CORE/core_cmInstr.h ****      to endorse or promote products derived from this software without
+  22:CORE/core_cmInstr.h ****      specific prior written permission.
+  23:CORE/core_cmInstr.h ****    *
+  24:CORE/core_cmInstr.h ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  25:CORE/core_cmInstr.h ****    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  26:CORE/core_cmInstr.h ****    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  27:CORE/core_cmInstr.h ****    ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+  28:CORE/core_cmInstr.h ****    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  29:CORE/core_cmInstr.h ****    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  30:CORE/core_cmInstr.h ****    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  31:CORE/core_cmInstr.h ****    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  32:CORE/core_cmInstr.h ****    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  33:CORE/core_cmInstr.h ****    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  34:CORE/core_cmInstr.h ****    POSSIBILITY OF SUCH DAMAGE.
+  35:CORE/core_cmInstr.h ****    ---------------------------------------------------------------------------*/
+  36:CORE/core_cmInstr.h **** 
+  37:CORE/core_cmInstr.h **** 
+  38:CORE/core_cmInstr.h **** #ifndef __CORE_CMINSTR_H
+  39:CORE/core_cmInstr.h **** #define __CORE_CMINSTR_H
+  40:CORE/core_cmInstr.h **** 
+  41:CORE/core_cmInstr.h **** 
+  42:CORE/core_cmInstr.h **** /* ##########################  Core Instruction Access  ######################### */
+  43:CORE/core_cmInstr.h **** /** \defgroup CMSIS_Core_InstructionInterface CMSIS Core Instruction Interface
+  44:CORE/core_cmInstr.h ****   Access to dedicated instructions
+  45:CORE/core_cmInstr.h ****   @{
+  46:CORE/core_cmInstr.h **** */
+  47:CORE/core_cmInstr.h **** 
+  48:CORE/core_cmInstr.h **** #if   defined ( __CC_ARM ) /*------------------RealView Compiler -----------------*/
+  49:CORE/core_cmInstr.h **** /* ARM armcc specific functions */
+  50:CORE/core_cmInstr.h **** 
+  51:CORE/core_cmInstr.h **** #if (__ARMCC_VERSION < 400677)
+  52:CORE/core_cmInstr.h ****   #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
+  53:CORE/core_cmInstr.h **** #endif
+  54:CORE/core_cmInstr.h **** 
+  55:CORE/core_cmInstr.h **** 
+  56:CORE/core_cmInstr.h **** /** \brief  No Operation
+  57:CORE/core_cmInstr.h **** 
+  58:CORE/core_cmInstr.h ****     No Operation does nothing. This instruction can be used for code alignment purposes.
+  59:CORE/core_cmInstr.h ****  */
+  60:CORE/core_cmInstr.h **** #define __NOP                             __nop
+  61:CORE/core_cmInstr.h **** 
+  62:CORE/core_cmInstr.h **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 22
+
+
+  63:CORE/core_cmInstr.h **** /** \brief  Wait For Interrupt
+  64:CORE/core_cmInstr.h **** 
+  65:CORE/core_cmInstr.h ****     Wait For Interrupt is a hint instruction that suspends execution
+  66:CORE/core_cmInstr.h ****     until one of a number of events occurs.
+  67:CORE/core_cmInstr.h ****  */
+  68:CORE/core_cmInstr.h **** #define __WFI                             __wfi
+  69:CORE/core_cmInstr.h **** 
+  70:CORE/core_cmInstr.h **** 
+  71:CORE/core_cmInstr.h **** /** \brief  Wait For Event
+  72:CORE/core_cmInstr.h **** 
+  73:CORE/core_cmInstr.h ****     Wait For Event is a hint instruction that permits the processor to enter
+  74:CORE/core_cmInstr.h ****     a low-power state until one of a number of events occurs.
+  75:CORE/core_cmInstr.h ****  */
+  76:CORE/core_cmInstr.h **** #define __WFE                             __wfe
+  77:CORE/core_cmInstr.h **** 
+  78:CORE/core_cmInstr.h **** 
+  79:CORE/core_cmInstr.h **** /** \brief  Send Event
+  80:CORE/core_cmInstr.h **** 
+  81:CORE/core_cmInstr.h ****     Send Event is a hint instruction. It causes an event to be signaled to the CPU.
+  82:CORE/core_cmInstr.h ****  */
+  83:CORE/core_cmInstr.h **** #define __SEV                             __sev
+  84:CORE/core_cmInstr.h **** 
+  85:CORE/core_cmInstr.h **** 
+  86:CORE/core_cmInstr.h **** /** \brief  Instruction Synchronization Barrier
+  87:CORE/core_cmInstr.h **** 
+  88:CORE/core_cmInstr.h ****     Instruction Synchronization Barrier flushes the pipeline in the processor,
+  89:CORE/core_cmInstr.h ****     so that all instructions following the ISB are fetched from cache or
+  90:CORE/core_cmInstr.h ****     memory, after the instruction has been completed.
+  91:CORE/core_cmInstr.h ****  */
+  92:CORE/core_cmInstr.h **** #define __ISB()                           __isb(0xF)
+  93:CORE/core_cmInstr.h **** 
+  94:CORE/core_cmInstr.h **** 
+  95:CORE/core_cmInstr.h **** /** \brief  Data Synchronization Barrier
+  96:CORE/core_cmInstr.h **** 
+  97:CORE/core_cmInstr.h ****     This function acts as a special kind of Data Memory Barrier.
+  98:CORE/core_cmInstr.h ****     It completes when all explicit memory accesses before this instruction complete.
+  99:CORE/core_cmInstr.h ****  */
+ 100:CORE/core_cmInstr.h **** #define __DSB()                           __dsb(0xF)
+ 101:CORE/core_cmInstr.h **** 
+ 102:CORE/core_cmInstr.h **** 
+ 103:CORE/core_cmInstr.h **** /** \brief  Data Memory Barrier
+ 104:CORE/core_cmInstr.h **** 
+ 105:CORE/core_cmInstr.h ****     This function ensures the apparent order of the explicit memory operations before
+ 106:CORE/core_cmInstr.h ****     and after the instruction, without ensuring their completion.
+ 107:CORE/core_cmInstr.h ****  */
+ 108:CORE/core_cmInstr.h **** #define __DMB()                           __dmb(0xF)
+ 109:CORE/core_cmInstr.h **** 
+ 110:CORE/core_cmInstr.h **** 
+ 111:CORE/core_cmInstr.h **** /** \brief  Reverse byte order (32 bit)
+ 112:CORE/core_cmInstr.h **** 
+ 113:CORE/core_cmInstr.h ****     This function reverses the byte order in integer value.
+ 114:CORE/core_cmInstr.h **** 
+ 115:CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 116:CORE/core_cmInstr.h ****     \return               Reversed value
+ 117:CORE/core_cmInstr.h ****  */
+ 118:CORE/core_cmInstr.h **** #define __REV                             __rev
+ 119:CORE/core_cmInstr.h **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 23
+
+
+ 120:CORE/core_cmInstr.h **** 
+ 121:CORE/core_cmInstr.h **** /** \brief  Reverse byte order (16 bit)
+ 122:CORE/core_cmInstr.h **** 
+ 123:CORE/core_cmInstr.h ****     This function reverses the byte order in two unsigned short values.
+ 124:CORE/core_cmInstr.h **** 
+ 125:CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 126:CORE/core_cmInstr.h ****     \return               Reversed value
+ 127:CORE/core_cmInstr.h ****  */
+ 128:CORE/core_cmInstr.h **** #ifndef __NO_EMBEDDED_ASM
+ 129:CORE/core_cmInstr.h **** __attribute__((section(".rev16_text"))) __STATIC_INLINE __ASM uint32_t __REV16(uint32_t value)
+ 130:CORE/core_cmInstr.h **** {
+ 131:CORE/core_cmInstr.h ****   rev16 r0, r0
+ 132:CORE/core_cmInstr.h ****   bx lr
+ 133:CORE/core_cmInstr.h **** }
+ 134:CORE/core_cmInstr.h **** #endif
+ 135:CORE/core_cmInstr.h **** 
+ 136:CORE/core_cmInstr.h **** /** \brief  Reverse byte order in signed short value
+ 137:CORE/core_cmInstr.h **** 
+ 138:CORE/core_cmInstr.h ****     This function reverses the byte order in a signed short value with sign extension to integer.
+ 139:CORE/core_cmInstr.h **** 
+ 140:CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 141:CORE/core_cmInstr.h ****     \return               Reversed value
+ 142:CORE/core_cmInstr.h ****  */
+ 143:CORE/core_cmInstr.h **** #ifndef __NO_EMBEDDED_ASM
+ 144:CORE/core_cmInstr.h **** __attribute__((section(".revsh_text"))) __STATIC_INLINE __ASM int32_t __REVSH(int32_t value)
+ 145:CORE/core_cmInstr.h **** {
+ 146:CORE/core_cmInstr.h ****   revsh r0, r0
+ 147:CORE/core_cmInstr.h ****   bx lr
+ 148:CORE/core_cmInstr.h **** }
+ 149:CORE/core_cmInstr.h **** #endif
+ 150:CORE/core_cmInstr.h **** 
+ 151:CORE/core_cmInstr.h **** 
+ 152:CORE/core_cmInstr.h **** /** \brief  Rotate Right in unsigned value (32 bit)
+ 153:CORE/core_cmInstr.h **** 
+ 154:CORE/core_cmInstr.h ****     This function Rotate Right (immediate) provides the value of the contents of a register rotated
+ 155:CORE/core_cmInstr.h **** 
+ 156:CORE/core_cmInstr.h ****     \param [in]    value  Value to rotate
+ 157:CORE/core_cmInstr.h ****     \param [in]    value  Number of Bits to rotate
+ 158:CORE/core_cmInstr.h ****     \return               Rotated value
+ 159:CORE/core_cmInstr.h ****  */
+ 160:CORE/core_cmInstr.h **** #define __ROR                             __ror
+ 161:CORE/core_cmInstr.h **** 
+ 162:CORE/core_cmInstr.h **** 
+ 163:CORE/core_cmInstr.h **** /** \brief  Breakpoint
+ 164:CORE/core_cmInstr.h **** 
+ 165:CORE/core_cmInstr.h ****     This function causes the processor to enter Debug state.
+ 166:CORE/core_cmInstr.h ****     Debug tools can use this to investigate system state when the instruction at a particular addre
+ 167:CORE/core_cmInstr.h **** 
+ 168:CORE/core_cmInstr.h ****     \param [in]    value  is ignored by the processor.
+ 169:CORE/core_cmInstr.h ****                    If required, a debugger can use it to store additional information about the bre
+ 170:CORE/core_cmInstr.h ****  */
+ 171:CORE/core_cmInstr.h **** #define __BKPT(value)                       __breakpoint(value)
+ 172:CORE/core_cmInstr.h **** 
+ 173:CORE/core_cmInstr.h **** 
+ 174:CORE/core_cmInstr.h **** #if       (__CORTEX_M >= 0x03)
+ 175:CORE/core_cmInstr.h **** 
+ 176:CORE/core_cmInstr.h **** /** \brief  Reverse bit order of value
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 24
+
+
+ 177:CORE/core_cmInstr.h **** 
+ 178:CORE/core_cmInstr.h ****     This function reverses the bit order of the given value.
+ 179:CORE/core_cmInstr.h **** 
+ 180:CORE/core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 181:CORE/core_cmInstr.h ****     \return               Reversed value
+ 182:CORE/core_cmInstr.h ****  */
+ 183:CORE/core_cmInstr.h **** #define __RBIT                            __rbit
+ 184:CORE/core_cmInstr.h **** 
+ 185:CORE/core_cmInstr.h **** 
+ 186:CORE/core_cmInstr.h **** /** \brief  LDR Exclusive (8 bit)
+ 187:CORE/core_cmInstr.h **** 
+ 188:CORE/core_cmInstr.h ****     This function performs a exclusive LDR command for 8 bit value.
+ 189:CORE/core_cmInstr.h **** 
+ 190:CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 191:CORE/core_cmInstr.h ****     \return             value of type uint8_t at (*ptr)
+ 192:CORE/core_cmInstr.h ****  */
+ 193:CORE/core_cmInstr.h **** #define __LDREXB(ptr)                     ((uint8_t ) __ldrex(ptr))
+ 194:CORE/core_cmInstr.h **** 
+ 195:CORE/core_cmInstr.h **** 
+ 196:CORE/core_cmInstr.h **** /** \brief  LDR Exclusive (16 bit)
+ 197:CORE/core_cmInstr.h **** 
+ 198:CORE/core_cmInstr.h ****     This function performs a exclusive LDR command for 16 bit values.
+ 199:CORE/core_cmInstr.h **** 
+ 200:CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 201:CORE/core_cmInstr.h ****     \return        value of type uint16_t at (*ptr)
+ 202:CORE/core_cmInstr.h ****  */
+ 203:CORE/core_cmInstr.h **** #define __LDREXH(ptr)                     ((uint16_t) __ldrex(ptr))
+ 204:CORE/core_cmInstr.h **** 
+ 205:CORE/core_cmInstr.h **** 
+ 206:CORE/core_cmInstr.h **** /** \brief  LDR Exclusive (32 bit)
+ 207:CORE/core_cmInstr.h **** 
+ 208:CORE/core_cmInstr.h ****     This function performs a exclusive LDR command for 32 bit values.
+ 209:CORE/core_cmInstr.h **** 
+ 210:CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 211:CORE/core_cmInstr.h ****     \return        value of type uint32_t at (*ptr)
+ 212:CORE/core_cmInstr.h ****  */
+ 213:CORE/core_cmInstr.h **** #define __LDREXW(ptr)                     ((uint32_t ) __ldrex(ptr))
+ 214:CORE/core_cmInstr.h **** 
+ 215:CORE/core_cmInstr.h **** 
+ 216:CORE/core_cmInstr.h **** /** \brief  STR Exclusive (8 bit)
+ 217:CORE/core_cmInstr.h **** 
+ 218:CORE/core_cmInstr.h ****     This function performs a exclusive STR command for 8 bit values.
+ 219:CORE/core_cmInstr.h **** 
+ 220:CORE/core_cmInstr.h ****     \param [in]  value  Value to store
+ 221:CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 222:CORE/core_cmInstr.h ****     \return          0  Function succeeded
+ 223:CORE/core_cmInstr.h ****     \return          1  Function failed
+ 224:CORE/core_cmInstr.h ****  */
+ 225:CORE/core_cmInstr.h **** #define __STREXB(value, ptr)              __strex(value, ptr)
+ 226:CORE/core_cmInstr.h **** 
+ 227:CORE/core_cmInstr.h **** 
+ 228:CORE/core_cmInstr.h **** /** \brief  STR Exclusive (16 bit)
+ 229:CORE/core_cmInstr.h **** 
+ 230:CORE/core_cmInstr.h ****     This function performs a exclusive STR command for 16 bit values.
+ 231:CORE/core_cmInstr.h **** 
+ 232:CORE/core_cmInstr.h ****     \param [in]  value  Value to store
+ 233:CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 25
+
+
+ 234:CORE/core_cmInstr.h ****     \return          0  Function succeeded
+ 235:CORE/core_cmInstr.h ****     \return          1  Function failed
+ 236:CORE/core_cmInstr.h ****  */
+ 237:CORE/core_cmInstr.h **** #define __STREXH(value, ptr)              __strex(value, ptr)
+ 238:CORE/core_cmInstr.h **** 
+ 239:CORE/core_cmInstr.h **** 
+ 240:CORE/core_cmInstr.h **** /** \brief  STR Exclusive (32 bit)
+ 241:CORE/core_cmInstr.h **** 
+ 242:CORE/core_cmInstr.h ****     This function performs a exclusive STR command for 32 bit values.
+ 243:CORE/core_cmInstr.h **** 
+ 244:CORE/core_cmInstr.h ****     \param [in]  value  Value to store
+ 245:CORE/core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 246:CORE/core_cmInstr.h ****     \return          0  Function succeeded
+ 247:CORE/core_cmInstr.h ****     \return          1  Function failed
+ 248:CORE/core_cmInstr.h ****  */
+ 249:CORE/core_cmInstr.h **** #define __STREXW(value, ptr)              __strex(value, ptr)
+ 250:CORE/core_cmInstr.h **** 
+ 251:CORE/core_cmInstr.h **** 
+ 252:CORE/core_cmInstr.h **** /** \brief  Remove the exclusive lock
+ 253:CORE/core_cmInstr.h **** 
+ 254:CORE/core_cmInstr.h ****     This function removes the exclusive lock which is created by LDREX.
+ 255:CORE/core_cmInstr.h **** 
+ 256:CORE/core_cmInstr.h ****  */
+ 257:CORE/core_cmInstr.h **** #define __CLREX                           __clrex
+ 258:CORE/core_cmInstr.h **** 
+ 259:CORE/core_cmInstr.h **** 
+ 260:CORE/core_cmInstr.h **** /** \brief  Signed Saturate
+ 261:CORE/core_cmInstr.h **** 
+ 262:CORE/core_cmInstr.h ****     This function saturates a signed value.
+ 263:CORE/core_cmInstr.h **** 
+ 264:CORE/core_cmInstr.h ****     \param [in]  value  Value to be saturated
+ 265:CORE/core_cmInstr.h ****     \param [in]    sat  Bit position to saturate to (1..32)
+ 266:CORE/core_cmInstr.h ****     \return             Saturated value
+ 267:CORE/core_cmInstr.h ****  */
+ 268:CORE/core_cmInstr.h **** #define __SSAT                            __ssat
+ 269:CORE/core_cmInstr.h **** 
+ 270:CORE/core_cmInstr.h **** 
+ 271:CORE/core_cmInstr.h **** /** \brief  Unsigned Saturate
+ 272:CORE/core_cmInstr.h **** 
+ 273:CORE/core_cmInstr.h ****     This function saturates an unsigned value.
+ 274:CORE/core_cmInstr.h **** 
+ 275:CORE/core_cmInstr.h ****     \param [in]  value  Value to be saturated
+ 276:CORE/core_cmInstr.h ****     \param [in]    sat  Bit position to saturate to (0..31)
+ 277:CORE/core_cmInstr.h ****     \return             Saturated value
+ 278:CORE/core_cmInstr.h ****  */
+ 279:CORE/core_cmInstr.h **** #define __USAT                            __usat
+ 280:CORE/core_cmInstr.h **** 
+ 281:CORE/core_cmInstr.h **** 
+ 282:CORE/core_cmInstr.h **** /** \brief  Count leading zeros
+ 283:CORE/core_cmInstr.h **** 
+ 284:CORE/core_cmInstr.h ****     This function counts the number of leading zeros of a data value.
+ 285:CORE/core_cmInstr.h **** 
+ 286:CORE/core_cmInstr.h ****     \param [in]  value  Value to count the leading zeros
+ 287:CORE/core_cmInstr.h ****     \return             number of leading zeros in value
+ 288:CORE/core_cmInstr.h ****  */
+ 289:CORE/core_cmInstr.h **** #define __CLZ                             __clz
+ 290:CORE/core_cmInstr.h **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 26
+
+
+ 291:CORE/core_cmInstr.h **** #endif /* (__CORTEX_M >= 0x03) */
+ 292:CORE/core_cmInstr.h **** 
+ 293:CORE/core_cmInstr.h **** 
+ 294:CORE/core_cmInstr.h **** 
+ 295:CORE/core_cmInstr.h **** #elif defined ( __ICCARM__ ) /*------------------ ICC Compiler -------------------*/
+ 296:CORE/core_cmInstr.h **** /* IAR iccarm specific functions */
+ 297:CORE/core_cmInstr.h **** 
+ 298:CORE/core_cmInstr.h **** #include <cmsis_iar.h>
+ 299:CORE/core_cmInstr.h **** 
+ 300:CORE/core_cmInstr.h **** 
+ 301:CORE/core_cmInstr.h **** #elif defined ( __TMS470__ ) /*---------------- TI CCS Compiler ------------------*/
+ 302:CORE/core_cmInstr.h **** /* TI CCS specific functions */
+ 303:CORE/core_cmInstr.h **** 
+ 304:CORE/core_cmInstr.h **** #include <cmsis_ccs.h>
+ 305:CORE/core_cmInstr.h **** 
+ 306:CORE/core_cmInstr.h **** 
+ 307:CORE/core_cmInstr.h **** #elif defined ( __GNUC__ ) /*------------------ GNU Compiler ---------------------*/
+ 308:CORE/core_cmInstr.h **** /* GNU gcc specific functions */
+ 309:CORE/core_cmInstr.h **** 
+ 310:CORE/core_cmInstr.h **** /* Define macros for porting to both thumb1 and thumb2.
+ 311:CORE/core_cmInstr.h ****  * For thumb1, use low register (r0-r7), specified by constrant "l"
+ 312:CORE/core_cmInstr.h ****  * Otherwise, use general registers, specified by constrant "r" */
+ 313:CORE/core_cmInstr.h **** #if defined (__thumb__) && !defined (__thumb2__)
+ 314:CORE/core_cmInstr.h **** #define __CMSIS_GCC_OUT_REG(r) "=l" (r)
+ 315:CORE/core_cmInstr.h **** #define __CMSIS_GCC_USE_REG(r) "l" (r)
+ 316:CORE/core_cmInstr.h **** #else
+ 317:CORE/core_cmInstr.h **** #define __CMSIS_GCC_OUT_REG(r) "=r" (r)
+ 318:CORE/core_cmInstr.h **** #define __CMSIS_GCC_USE_REG(r) "r" (r)
+ 319:CORE/core_cmInstr.h **** #endif
+ 320:CORE/core_cmInstr.h **** 
+ 321:CORE/core_cmInstr.h **** /** \brief  No Operation
+ 322:CORE/core_cmInstr.h **** 
+ 323:CORE/core_cmInstr.h ****     No Operation does nothing. This instruction can be used for code alignment purposes.
+ 324:CORE/core_cmInstr.h ****  */
+ 325:CORE/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __NOP(void)
+ 326:CORE/core_cmInstr.h **** {
+ 327:CORE/core_cmInstr.h ****   __ASM volatile ("nop");
+ 328:CORE/core_cmInstr.h **** }
+ 329:CORE/core_cmInstr.h **** 
+ 330:CORE/core_cmInstr.h **** 
+ 331:CORE/core_cmInstr.h **** /** \brief  Wait For Interrupt
+ 332:CORE/core_cmInstr.h **** 
+ 333:CORE/core_cmInstr.h ****     Wait For Interrupt is a hint instruction that suspends execution
+ 334:CORE/core_cmInstr.h ****     until one of a number of events occurs.
+ 335:CORE/core_cmInstr.h ****  */
+ 336:CORE/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __WFI(void)
+ 337:CORE/core_cmInstr.h **** {
+ 338:CORE/core_cmInstr.h ****   __ASM volatile ("wfi");
+ 439              		.loc 2 338 0
+ 440              		.syntax unified
+ 441              	@ 338 "CORE/core_cmInstr.h" 1
+ 442 001e 30BF     		wfi
+ 443              	@ 0 "" 2
+ 444              		.thumb
+ 445              		.syntax unified
+ 446 0020 00E0     		b	.L47
+ 447              	.L46:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 27
+
+
+ 448              	.LBE13:
+ 449              	.LBE12:
+ 450              	.LBB14:
+ 451              	.LBB15:
+ 339:CORE/core_cmInstr.h **** }
+ 340:CORE/core_cmInstr.h **** 
+ 341:CORE/core_cmInstr.h **** 
+ 342:CORE/core_cmInstr.h **** /** \brief  Wait For Event
+ 343:CORE/core_cmInstr.h **** 
+ 344:CORE/core_cmInstr.h ****     Wait For Event is a hint instruction that permits the processor to enter
+ 345:CORE/core_cmInstr.h ****     a low-power state until one of a number of events occurs.
+ 346:CORE/core_cmInstr.h ****  */
+ 347:CORE/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __WFE(void)
+ 348:CORE/core_cmInstr.h **** {
+ 349:CORE/core_cmInstr.h ****   __ASM volatile ("wfe");
+ 452              		.loc 2 349 0
+ 453              		.syntax unified
+ 454              	@ 349 "CORE/core_cmInstr.h" 1
+ 455 0022 20BF     		wfe
+ 456              	@ 0 "" 2
+ 457              		.thumb
+ 458              		.syntax unified
+ 459              	.L47:
+ 460              	.LBE15:
+ 461              	.LBE14:
+ 725:.//FWLIB/src/stm32f4xx_pwr.c ****   {   
+ 726:.//FWLIB/src/stm32f4xx_pwr.c ****     /* Request Wait For Interrupt */
+ 727:.//FWLIB/src/stm32f4xx_pwr.c ****     __WFI();
+ 728:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 729:.//FWLIB/src/stm32f4xx_pwr.c ****   else
+ 730:.//FWLIB/src/stm32f4xx_pwr.c ****   {
+ 731:.//FWLIB/src/stm32f4xx_pwr.c ****     /* Request Wait For Event */
+ 732:.//FWLIB/src/stm32f4xx_pwr.c ****     __WFE();
+ 733:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 734:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Reset SLEEPDEEP bit of Cortex System Control Register */
+ 735:.//FWLIB/src/stm32f4xx_pwr.c ****   SCB->SCR &= (uint32_t)~((uint32_t)SCB_SCR_SLEEPDEEP_Msk);  
+ 462              		.loc 1 735 0
+ 463 0024 034A     		ldr	r2, .L48+4
+ 464 0026 1369     		ldr	r3, [r2, #16]
+ 465 0028 23F00403 		bic	r3, r3, #4
+ 466 002c 1361     		str	r3, [r2, #16]
+ 467 002e 7047     		bx	lr
+ 468              	.L49:
+ 469              		.align	2
+ 470              	.L48:
+ 471 0030 00700040 		.word	1073770496
+ 472 0034 00ED00E0 		.word	-536810240
+ 473              		.cfi_endproc
+ 474              	.LFE125:
+ 476              		.section	.text.PWR_EnterUnderDriveSTOPMode,"ax",%progbits
+ 477              		.align	2
+ 478              		.global	PWR_EnterUnderDriveSTOPMode
+ 479              		.thumb
+ 480              		.thumb_func
+ 482              	PWR_EnterUnderDriveSTOPMode:
+ 483              	.LFB126:
+ 736:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 28
+
+
+ 737:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 738:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 739:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Enters in Under-Drive STOP mode.
+ 740:.//FWLIB/src/stm32f4xx_pwr.c ****   *  
+ 741:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   This mode is only available for STM32F42xxx/STM3243xxx devices. 
+ 742:.//FWLIB/src/stm32f4xx_pwr.c ****   * 
+ 743:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note    This mode can be selected only when the Under-Drive is already active 
+ 744:.//FWLIB/src/stm32f4xx_pwr.c ****   *         
+ 745:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   In Stop mode, all I/O pins keep the same state as in Run mode.
+ 746:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   When exiting Stop mode by issuing an interrupt or a wakeup event, 
+ 747:.//FWLIB/src/stm32f4xx_pwr.c ****   *         the HSI RC oscillator is selected as system clock.
+ 748:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   When the voltage regulator operates in low power mode, an additional 
+ 749:.//FWLIB/src/stm32f4xx_pwr.c ****   *         startup delay is incurred when waking up from Stop mode. 
+ 750:.//FWLIB/src/stm32f4xx_pwr.c ****   *         By keeping the internal regulator ON during Stop mode, the consumption 
+ 751:.//FWLIB/src/stm32f4xx_pwr.c ****   *         is higher although the startup time is reduced.
+ 752:.//FWLIB/src/stm32f4xx_pwr.c ****   *     
+ 753:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  PWR_Regulator: specifies the regulator state in STOP mode.
+ 754:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be one of the following values:
+ 755:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_MainRegulator_UnderDrive_ON:  Main Regulator in under-drive mode 
+ 756:.//FWLIB/src/stm32f4xx_pwr.c ****   *                 and Flash memory in power-down when the device is in Stop under-drive mode
+ 757:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_LowPowerRegulator_UnderDrive_ON:  Low Power Regulator in under-drive mode 
+ 758:.//FWLIB/src/stm32f4xx_pwr.c ****   *                and Flash memory in power-down when the device is in Stop under-drive mode
+ 759:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  PWR_STOPEntry: specifies if STOP mode in entered with WFI or WFE instruction.
+ 760:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be one of the following values:
+ 761:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_STOPEntry_WFI: enter STOP mode with WFI instruction
+ 762:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_STOPEntry_WFE: enter STOP mode with WFE instruction
+ 763:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 764:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 765:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_EnterUnderDriveSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
+ 766:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 484              		.loc 1 766 0
+ 485              		.cfi_startproc
+ 486              		@ args = 0, pretend = 0, frame = 0
+ 487              		@ frame_needed = 0, uses_anonymous_args = 0
+ 488              		@ link register save eliminated.
+ 489              	.LVL25:
+ 767:.//FWLIB/src/stm32f4xx_pwr.c ****   uint32_t tmpreg = 0;
+ 768:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 769:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 770:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_PWR_REGULATOR_UNDERDRIVE(PWR_Regulator));
+ 771:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_PWR_STOP_ENTRY(PWR_STOPEntry));
+ 772:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 773:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Select the regulator state in STOP mode ---------------------------------*/
+ 774:.//FWLIB/src/stm32f4xx_pwr.c ****   tmpreg = PWR->CR;
+ 490              		.loc 1 774 0
+ 491 0000 0B4A     		ldr	r2, .L53
+ 492 0002 1368     		ldr	r3, [r2]
+ 493              	.LVL26:
+ 775:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Clear PDDS and LPDS bits */
+ 776:.//FWLIB/src/stm32f4xx_pwr.c ****   tmpreg &= CR_DS_MASK;
+ 494              		.loc 1 776 0
+ 495 0004 23F44063 		bic	r3, r3, #3072
+ 496              	.LVL27:
+ 497 0008 23F00303 		bic	r3, r3, #3
+ 498              	.LVL28:
+ 777:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 778:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Set LPDS, MRLUDS and LPLUDS bits according to PWR_Regulator value */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 29
+
+
+ 779:.//FWLIB/src/stm32f4xx_pwr.c ****   tmpreg |= PWR_Regulator;
+ 499              		.loc 1 779 0
+ 500 000c 1843     		orrs	r0, r0, r3
+ 501              	.LVL29:
+ 780:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 781:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Store the new value */
+ 782:.//FWLIB/src/stm32f4xx_pwr.c ****   PWR->CR = tmpreg;
+ 502              		.loc 1 782 0
+ 503 000e 1060     		str	r0, [r2]
+ 783:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 784:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Set SLEEPDEEP bit of Cortex System Control Register */
+ 785:.//FWLIB/src/stm32f4xx_pwr.c ****   SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+ 504              		.loc 1 785 0
+ 505 0010 084A     		ldr	r2, .L53+4
+ 506 0012 1369     		ldr	r3, [r2, #16]
+ 507 0014 43F00403 		orr	r3, r3, #4
+ 508 0018 1361     		str	r3, [r2, #16]
+ 786:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 787:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Select STOP mode entry --------------------------------------------------*/
+ 788:.//FWLIB/src/stm32f4xx_pwr.c ****   if(PWR_STOPEntry == PWR_STOPEntry_WFI)
+ 509              		.loc 1 788 0
+ 510 001a 0129     		cmp	r1, #1
+ 511 001c 01D1     		bne	.L51
+ 512              	.LBB16:
+ 513              	.LBB17:
+ 338:CORE/core_cmInstr.h **** }
+ 514              		.loc 2 338 0
+ 515              		.syntax unified
+ 516              	@ 338 "CORE/core_cmInstr.h" 1
+ 517 001e 30BF     		wfi
+ 518              	@ 0 "" 2
+ 519              		.thumb
+ 520              		.syntax unified
+ 521 0020 00E0     		b	.L52
+ 522              	.L51:
+ 523              	.LBE17:
+ 524              	.LBE16:
+ 525              	.LBB18:
+ 526              	.LBB19:
+ 527              		.loc 2 349 0
+ 528              		.syntax unified
+ 529              	@ 349 "CORE/core_cmInstr.h" 1
+ 530 0022 20BF     		wfe
+ 531              	@ 0 "" 2
+ 532              		.thumb
+ 533              		.syntax unified
+ 534              	.L52:
+ 535              	.LBE19:
+ 536              	.LBE18:
+ 789:.//FWLIB/src/stm32f4xx_pwr.c ****   {   
+ 790:.//FWLIB/src/stm32f4xx_pwr.c ****     /* Request Wait For Interrupt */
+ 791:.//FWLIB/src/stm32f4xx_pwr.c ****     __WFI();
+ 792:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 793:.//FWLIB/src/stm32f4xx_pwr.c ****   else
+ 794:.//FWLIB/src/stm32f4xx_pwr.c ****   {
+ 795:.//FWLIB/src/stm32f4xx_pwr.c ****     /* Request Wait For Event */
+ 796:.//FWLIB/src/stm32f4xx_pwr.c ****     __WFE();
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 30
+
+
+ 797:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 798:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Reset SLEEPDEEP bit of Cortex System Control Register */
+ 799:.//FWLIB/src/stm32f4xx_pwr.c ****   SCB->SCR &= (uint32_t)~((uint32_t)SCB_SCR_SLEEPDEEP_Msk);  
+ 537              		.loc 1 799 0
+ 538 0024 034A     		ldr	r2, .L53+4
+ 539 0026 1369     		ldr	r3, [r2, #16]
+ 540 0028 23F00403 		bic	r3, r3, #4
+ 541 002c 1361     		str	r3, [r2, #16]
+ 542 002e 7047     		bx	lr
+ 543              	.L54:
+ 544              		.align	2
+ 545              	.L53:
+ 546 0030 00700040 		.word	1073770496
+ 547 0034 00ED00E0 		.word	-536810240
+ 548              		.cfi_endproc
+ 549              	.LFE126:
+ 551              		.section	.text.PWR_EnterSTANDBYMode,"ax",%progbits
+ 552              		.align	2
+ 553              		.global	PWR_EnterSTANDBYMode
+ 554              		.thumb
+ 555              		.thumb_func
+ 557              	PWR_EnterSTANDBYMode:
+ 558              	.LFB127:
+ 800:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 801:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 802:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 803:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Enters STANDBY mode.
+ 804:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   In Standby mode, all I/O pins are high impedance except for:
+ 805:.//FWLIB/src/stm32f4xx_pwr.c ****   *          - Reset pad (still available) 
+ 806:.//FWLIB/src/stm32f4xx_pwr.c ****   *          - RTC_AF1 pin (PC13) if configured for tamper, time-stamp, RTC 
+ 807:.//FWLIB/src/stm32f4xx_pwr.c ****   *            Alarm out, or RTC clock calibration out.
+ 808:.//FWLIB/src/stm32f4xx_pwr.c ****   *          - RTC_AF2 pin (PI8) if configured for tamper or time-stamp.  
+ 809:.//FWLIB/src/stm32f4xx_pwr.c ****   *          - WKUP pin 1 (PA0) if enabled.
+ 810:.//FWLIB/src/stm32f4xx_pwr.c ****   * @note   The Wakeup flag (WUF) need to be cleared at application level before to call this funct
+ 811:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  None
+ 812:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 813:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 814:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_EnterSTANDBYMode(void)
+ 815:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 559              		.loc 1 815 0
+ 560              		.cfi_startproc
+ 561              		@ args = 0, pretend = 0, frame = 0
+ 562              		@ frame_needed = 0, uses_anonymous_args = 0
+ 563              		@ link register save eliminated.
+ 816:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Select STANDBY mode */
+ 817:.//FWLIB/src/stm32f4xx_pwr.c ****   PWR->CR |= PWR_CR_PDDS;
+ 564              		.loc 1 817 0
+ 565 0000 054A     		ldr	r2, .L56
+ 566 0002 1368     		ldr	r3, [r2]
+ 567 0004 43F00203 		orr	r3, r3, #2
+ 568 0008 1360     		str	r3, [r2]
+ 818:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 819:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Set SLEEPDEEP bit of Cortex System Control Register */
+ 820:.//FWLIB/src/stm32f4xx_pwr.c ****   SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+ 569              		.loc 1 820 0
+ 570 000a 044A     		ldr	r2, .L56+4
+ 571 000c 1369     		ldr	r3, [r2, #16]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 31
+
+
+ 572 000e 43F00403 		orr	r3, r3, #4
+ 573 0012 1361     		str	r3, [r2, #16]
+ 574              	.LBB20:
+ 575              	.LBB21:
+ 338:CORE/core_cmInstr.h **** }
+ 576              		.loc 2 338 0
+ 577              		.syntax unified
+ 578              	@ 338 "CORE/core_cmInstr.h" 1
+ 579 0014 30BF     		wfi
+ 580              	@ 0 "" 2
+ 581              		.thumb
+ 582              		.syntax unified
+ 583 0016 7047     		bx	lr
+ 584              	.L57:
+ 585              		.align	2
+ 586              	.L56:
+ 587 0018 00700040 		.word	1073770496
+ 588 001c 00ED00E0 		.word	-536810240
+ 589              	.LBE21:
+ 590              	.LBE20:
+ 591              		.cfi_endproc
+ 592              	.LFE127:
+ 594              		.section	.text.PWR_GetFlagStatus,"ax",%progbits
+ 595              		.align	2
+ 596              		.global	PWR_GetFlagStatus
+ 597              		.thumb
+ 598              		.thumb_func
+ 600              	PWR_GetFlagStatus:
+ 601              	.LFB128:
+ 821:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 822:.//FWLIB/src/stm32f4xx_pwr.c ****   /* This option is used to ensure that store operations are completed */
+ 823:.//FWLIB/src/stm32f4xx_pwr.c **** #if defined ( __CC_ARM   )
+ 824:.//FWLIB/src/stm32f4xx_pwr.c ****   __force_stores();
+ 825:.//FWLIB/src/stm32f4xx_pwr.c **** #endif
+ 826:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Request Wait For Interrupt */
+ 827:.//FWLIB/src/stm32f4xx_pwr.c ****   __WFI();
+ 828:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 829:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 830:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 831:.//FWLIB/src/stm32f4xx_pwr.c ****   * @}
+ 832:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 833:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 834:.//FWLIB/src/stm32f4xx_pwr.c **** /** @defgroup PWR_Group7 Flags management functions
+ 835:.//FWLIB/src/stm32f4xx_pwr.c ****  *  @brief   Flags management functions 
+ 836:.//FWLIB/src/stm32f4xx_pwr.c ****  *
+ 837:.//FWLIB/src/stm32f4xx_pwr.c **** @verbatim   
+ 838:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================
+ 839:.//FWLIB/src/stm32f4xx_pwr.c ****                     ##### Flags management functions #####
+ 840:.//FWLIB/src/stm32f4xx_pwr.c ****  ===============================================================================  
+ 841:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 842:.//FWLIB/src/stm32f4xx_pwr.c **** @endverbatim
+ 843:.//FWLIB/src/stm32f4xx_pwr.c ****   * @{
+ 844:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 845:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 846:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 847:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Checks whether the specified PWR flag is set or not.
+ 848:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  PWR_FLAG: specifies the flag to check.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 32
+
+
+ 849:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be one of the following values:
+ 850:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_FLAG_WU: Wake Up flag. This flag indicates that a wakeup event 
+ 851:.//FWLIB/src/stm32f4xx_pwr.c ****   *                  was received from the WKUP pin or from the RTC alarm (Alarm A 
+ 852:.//FWLIB/src/stm32f4xx_pwr.c ****   *                  or Alarm B), RTC Tamper event, RTC TimeStamp event or RTC Wakeup.
+ 853:.//FWLIB/src/stm32f4xx_pwr.c ****   *                  An additional wakeup event is detected if the WKUP pin is enabled 
+ 854:.//FWLIB/src/stm32f4xx_pwr.c ****   *                  (by setting the EWUP bit) when the WKUP pin level is already high.  
+ 855:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_FLAG_SB: StandBy flag. This flag indicates that the system was
+ 856:.//FWLIB/src/stm32f4xx_pwr.c ****   *                  resumed from StandBy mode.    
+ 857:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_FLAG_PVDO: PVD Output. This flag is valid only if PVD is enabled 
+ 858:.//FWLIB/src/stm32f4xx_pwr.c ****   *                  by the PWR_PVDCmd() function. The PVD is stopped by Standby mode 
+ 859:.//FWLIB/src/stm32f4xx_pwr.c ****   *                  For this reason, this bit is equal to 0 after Standby or reset
+ 860:.//FWLIB/src/stm32f4xx_pwr.c ****   *                  until the PVDE bit is set.
+ 861:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_FLAG_BRR: Backup regulator ready flag. This bit is not reset 
+ 862:.//FWLIB/src/stm32f4xx_pwr.c ****   *                  when the device wakes up from Standby mode or by a system reset 
+ 863:.//FWLIB/src/stm32f4xx_pwr.c ****   *                  or power reset.  
+ 864:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_FLAG_VOSRDY: This flag indicates that the Regulator voltage 
+ 865:.//FWLIB/src/stm32f4xx_pwr.c ****   *                 scaling output selection is ready.
+ 866:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_FLAG_ODRDY: This flag indicates that the Over-drive mode
+ 867:.//FWLIB/src/stm32f4xx_pwr.c ****   *                 is ready (STM32F42xxx/43xxx devices) 
+ 868:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_FLAG_ODSWRDY: This flag indicates that the Over-drive mode
+ 869:.//FWLIB/src/stm32f4xx_pwr.c ****   *                 switcching is ready (STM32F42xxx/43xxx devices) 
+ 870:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_FLAG_UDRDY: This flag indicates that the Under-drive mode
+ 871:.//FWLIB/src/stm32f4xx_pwr.c ****   *                 is enabled in Stop mode (STM32F42xxx/43xxx devices)
+ 872:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval The new state of PWR_FLAG (SET or RESET).
+ 873:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 874:.//FWLIB/src/stm32f4xx_pwr.c **** FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG)
+ 875:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 602              		.loc 1 875 0
+ 603              		.cfi_startproc
+ 604              		@ args = 0, pretend = 0, frame = 0
+ 605              		@ frame_needed = 0, uses_anonymous_args = 0
+ 606              		@ link register save eliminated.
+ 607              	.LVL30:
+ 876:.//FWLIB/src/stm32f4xx_pwr.c ****   FlagStatus bitstatus = RESET;
+ 877:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 878:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 879:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_PWR_GET_FLAG(PWR_FLAG));
+ 880:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 881:.//FWLIB/src/stm32f4xx_pwr.c ****   if ((PWR->CSR & PWR_FLAG) != (uint32_t)RESET)
+ 608              		.loc 1 881 0
+ 609 0000 034B     		ldr	r3, .L61
+ 610 0002 5B68     		ldr	r3, [r3, #4]
+ 611 0004 0342     		tst	r3, r0
+ 612 0006 01D0     		beq	.L60
+ 882:.//FWLIB/src/stm32f4xx_pwr.c ****   {
+ 883:.//FWLIB/src/stm32f4xx_pwr.c ****     bitstatus = SET;
+ 613              		.loc 1 883 0
+ 614 0008 0120     		movs	r0, #1
+ 615              	.LVL31:
+ 616 000a 7047     		bx	lr
+ 617              	.LVL32:
+ 618              	.L60:
+ 884:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 885:.//FWLIB/src/stm32f4xx_pwr.c ****   else
+ 886:.//FWLIB/src/stm32f4xx_pwr.c ****   {
+ 887:.//FWLIB/src/stm32f4xx_pwr.c ****     bitstatus = RESET;
+ 619              		.loc 1 887 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 33
+
+
+ 620 000c 0020     		movs	r0, #0
+ 621              	.LVL33:
+ 888:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 889:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Return the flag status */
+ 890:.//FWLIB/src/stm32f4xx_pwr.c ****   return bitstatus;
+ 891:.//FWLIB/src/stm32f4xx_pwr.c **** }
+ 622              		.loc 1 891 0
+ 623 000e 7047     		bx	lr
+ 624              	.L62:
+ 625              		.align	2
+ 626              	.L61:
+ 627 0010 00700040 		.word	1073770496
+ 628              		.cfi_endproc
+ 629              	.LFE128:
+ 631              		.section	.text.PWR_ClearFlag,"ax",%progbits
+ 632              		.align	2
+ 633              		.global	PWR_ClearFlag
+ 634              		.thumb
+ 635              		.thumb_func
+ 637              	PWR_ClearFlag:
+ 638              	.LFB129:
+ 892:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 893:.//FWLIB/src/stm32f4xx_pwr.c **** /**
+ 894:.//FWLIB/src/stm32f4xx_pwr.c ****   * @brief  Clears the PWR's pending flags.
+ 895:.//FWLIB/src/stm32f4xx_pwr.c ****   * @param  PWR_FLAG: specifies the flag to clear.
+ 896:.//FWLIB/src/stm32f4xx_pwr.c ****   *          This parameter can be one of the following values:
+ 897:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_FLAG_WU: Wake Up flag
+ 898:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_FLAG_SB: StandBy flag
+ 899:.//FWLIB/src/stm32f4xx_pwr.c ****   *            @arg PWR_FLAG_UDRDY: Under-drive ready flag (STM32F42xxx/43xxx devices)
+ 900:.//FWLIB/src/stm32f4xx_pwr.c ****   * @retval None
+ 901:.//FWLIB/src/stm32f4xx_pwr.c ****   */
+ 902:.//FWLIB/src/stm32f4xx_pwr.c **** void PWR_ClearFlag(uint32_t PWR_FLAG)
+ 903:.//FWLIB/src/stm32f4xx_pwr.c **** {
+ 639              		.loc 1 903 0
+ 640              		.cfi_startproc
+ 641              		@ args = 0, pretend = 0, frame = 0
+ 642              		@ frame_needed = 0, uses_anonymous_args = 0
+ 643              		@ link register save eliminated.
+ 644              	.LVL34:
+ 904:.//FWLIB/src/stm32f4xx_pwr.c ****   /* Check the parameters */
+ 905:.//FWLIB/src/stm32f4xx_pwr.c ****   assert_param(IS_PWR_CLEAR_FLAG(PWR_FLAG));
+ 906:.//FWLIB/src/stm32f4xx_pwr.c ****   
+ 907:.//FWLIB/src/stm32f4xx_pwr.c **** #if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+ 908:.//FWLIB/src/stm32f4xx_pwr.c ****   if (PWR_FLAG != PWR_FLAG_UDRDY)
+ 909:.//FWLIB/src/stm32f4xx_pwr.c ****   {
+ 910:.//FWLIB/src/stm32f4xx_pwr.c ****     PWR->CR |=  PWR_FLAG << 2;
+ 911:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 912:.//FWLIB/src/stm32f4xx_pwr.c ****   else
+ 913:.//FWLIB/src/stm32f4xx_pwr.c ****   {
+ 914:.//FWLIB/src/stm32f4xx_pwr.c ****     PWR->CSR |= PWR_FLAG_UDRDY;
+ 915:.//FWLIB/src/stm32f4xx_pwr.c ****   }
+ 916:.//FWLIB/src/stm32f4xx_pwr.c **** #endif /* STM32F427_437xx ||  STM32F429_439xx */
+ 917:.//FWLIB/src/stm32f4xx_pwr.c **** 
+ 918:.//FWLIB/src/stm32f4xx_pwr.c **** #if defined (STM32F40_41xxx) || defined (STM32F401xx) || defined (STM32F411xE) 
+ 919:.//FWLIB/src/stm32f4xx_pwr.c ****   PWR->CR |=  PWR_FLAG << 2;
+ 645              		.loc 1 919 0
+ 646 0000 024A     		ldr	r2, .L64
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 34
+
+
+ 647 0002 1368     		ldr	r3, [r2]
+ 648 0004 43EA8000 		orr	r0, r3, r0, lsl #2
+ 649              	.LVL35:
+ 650 0008 1060     		str	r0, [r2]
+ 651 000a 7047     		bx	lr
+ 652              	.L65:
+ 653              		.align	2
+ 654              	.L64:
+ 655 000c 00700040 		.word	1073770496
+ 656              		.cfi_endproc
+ 657              	.LFE129:
+ 659              		.text
+ 660              	.Letext0:
+ 661              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 662              		.file 4 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 663              		.file 5 "CORE/core_cm4.h"
+ 664              		.file 6 "USER/stm32f4xx.h"
+ 665              		.file 7 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 35
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_pwr.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:22     .text.PWR_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:27     .text.PWR_DeInit:0000000000000000 PWR_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:54     .text.PWR_BackupAccessCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:59     .text.PWR_BackupAccessCmd:0000000000000000 PWR_BackupAccessCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:74     .text.PWR_BackupAccessCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:79     .text.PWR_PVDLevelConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:84     .text.PWR_PVDLevelConfig:0000000000000000 PWR_PVDLevelConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:108    .text.PWR_PVDLevelConfig:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:113    .text.PWR_PVDCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:118    .text.PWR_PVDCmd:0000000000000000 PWR_PVDCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:133    .text.PWR_PVDCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:138    .text.PWR_WakeUpPinCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:143    .text.PWR_WakeUpPinCmd:0000000000000000 PWR_WakeUpPinCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:158    .text.PWR_WakeUpPinCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:163    .text.PWR_BackupRegulatorCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:168    .text.PWR_BackupRegulatorCmd:0000000000000000 PWR_BackupRegulatorCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:183    .text.PWR_BackupRegulatorCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:188    .text.PWR_MainRegulatorModeConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:193    .text.PWR_MainRegulatorModeConfig:0000000000000000 PWR_MainRegulatorModeConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:217    .text.PWR_MainRegulatorModeConfig:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:222    .text.PWR_OverDriveCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:227    .text.PWR_OverDriveCmd:0000000000000000 PWR_OverDriveCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:242    .text.PWR_OverDriveCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:247    .text.PWR_OverDriveSWCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:252    .text.PWR_OverDriveSWCmd:0000000000000000 PWR_OverDriveSWCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:267    .text.PWR_OverDriveSWCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:272    .text.PWR_UnderDriveCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:277    .text.PWR_UnderDriveCmd:0000000000000000 PWR_UnderDriveCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:303    .text.PWR_UnderDriveCmd:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:308    .text.PWR_MainRegulatorLowVoltageCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:313    .text.PWR_MainRegulatorLowVoltageCmd:0000000000000000 PWR_MainRegulatorLowVoltageCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:337    .text.PWR_MainRegulatorLowVoltageCmd:0000000000000014 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:342    .text.PWR_LowRegulatorLowVoltageCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:347    .text.PWR_LowRegulatorLowVoltageCmd:0000000000000000 PWR_LowRegulatorLowVoltageCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:371    .text.PWR_LowRegulatorLowVoltageCmd:0000000000000014 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:376    .text.PWR_FlashPowerDownCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:381    .text.PWR_FlashPowerDownCmd:0000000000000000 PWR_FlashPowerDownCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:396    .text.PWR_FlashPowerDownCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:401    .text.PWR_EnterSTOPMode:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:406    .text.PWR_EnterSTOPMode:0000000000000000 PWR_EnterSTOPMode
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:471    .text.PWR_EnterSTOPMode:0000000000000030 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:477    .text.PWR_EnterUnderDriveSTOPMode:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:482    .text.PWR_EnterUnderDriveSTOPMode:0000000000000000 PWR_EnterUnderDriveSTOPMode
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:546    .text.PWR_EnterUnderDriveSTOPMode:0000000000000030 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:552    .text.PWR_EnterSTANDBYMode:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:557    .text.PWR_EnterSTANDBYMode:0000000000000000 PWR_EnterSTANDBYMode
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:587    .text.PWR_EnterSTANDBYMode:0000000000000018 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:595    .text.PWR_GetFlagStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:600    .text.PWR_GetFlagStatus:0000000000000000 PWR_GetFlagStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:627    .text.PWR_GetFlagStatus:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:632    .text.PWR_ClearFlag:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:637    .text.PWR_ClearFlag:0000000000000000 PWR_ClearFlag
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s:655    .text.PWR_ClearFlag:000000000000000c $d
+                     .debug_frame:0000000000000010 $d
+
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccI0oJgt.s 			page 36
+
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphResetCmd

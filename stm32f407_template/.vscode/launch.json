@@ -1,0 +1,59 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "blink Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "targetArchitecture": "arm",//虽然官方说弃用了，但实际上必须指明
+            "program": "blink", // 采用了自定义的设置，这里没啥用了
+            "args": [""],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/Users/ertuil/gcc-arm-none-eabi/bin/arm-none-eabi-gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "launchCompleteCommand": "None",
+            "miDebuggerServerAddress": "localhost:4242",
+            "customLaunchSetupCommands": [
+                {
+                    "text": "target remote :4242",
+                    "description": "connect to server",
+                    "ignoreFailures": false
+                },
+                {
+                    "text": "file ${workspaceFolder}/build/target.elf",
+                    "description": "load file to gdb",
+                    "ignoreFailures": false
+                },
+                {
+                    "text": "load",
+                    "description": "download file to MCU",
+                    "ignoreFailures": false
+                },
+                {
+                    "text": "monitor reset",
+                    "description": "reset MCU",
+                    "ignoreFailures": false
+                },
+                {
+                    "text": "b main",
+                    "description": "set breakpoints at main",
+                    "ignoreFailures": false
+                },
+            ]
+        }
+    ]
+}

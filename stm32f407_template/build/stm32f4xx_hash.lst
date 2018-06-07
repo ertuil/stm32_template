@@ -1,0 +1,1536 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"stm32f4xx_hash.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.HASH_DeInit,"ax",%progbits
+  22              		.align	2
+  23              		.global	HASH_DeInit
+  24              		.thumb
+  25              		.thumb_func
+  27              	HASH_DeInit:
+  28              	.LFB112:
+  29              		.file 1 ".//FWLIB/src/stm32f4xx_hash.c"
+   1:.//FWLIB/src/stm32f4xx_hash.c **** /**
+   2:.//FWLIB/src/stm32f4xx_hash.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f4xx_hash.c ****   * @file    stm32f4xx_hash.c
+   4:.//FWLIB/src/stm32f4xx_hash.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f4xx_hash.c ****   * @version V1.4.0
+   6:.//FWLIB/src/stm32f4xx_hash.c ****   * @date    04-August-2014
+   7:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:.//FWLIB/src/stm32f4xx_hash.c ****   *          functionalities of the HASH / HMAC Processor (HASH) peripheral:           
+   9:.//FWLIB/src/stm32f4xx_hash.c ****   *           - Initialization and Configuration functions
+  10:.//FWLIB/src/stm32f4xx_hash.c ****   *           - Message Digest generation functions
+  11:.//FWLIB/src/stm32f4xx_hash.c ****   *           - context swapping functions   
+  12:.//FWLIB/src/stm32f4xx_hash.c ****   *           - DMA interface function       
+  13:.//FWLIB/src/stm32f4xx_hash.c ****   *           - Interrupts and flags management       
+  14:.//FWLIB/src/stm32f4xx_hash.c ****   *         
+  15:.//FWLIB/src/stm32f4xx_hash.c **** @verbatim
+  16:.//FWLIB/src/stm32f4xx_hash.c ****  ===================================================================      
+  17:.//FWLIB/src/stm32f4xx_hash.c ****                  ##### How to use this driver #####
+  18:.//FWLIB/src/stm32f4xx_hash.c ****  ===================================================================
+  19:.//FWLIB/src/stm32f4xx_hash.c ****             
+  20:.//FWLIB/src/stm32f4xx_hash.c ****  *** HASH operation : *** 
+  21:.//FWLIB/src/stm32f4xx_hash.c ****  ========================                 
+  22:.//FWLIB/src/stm32f4xx_hash.c ****  [..]
+  23:.//FWLIB/src/stm32f4xx_hash.c ****    (#) Enable the HASH controller clock using 
+  24:.//FWLIB/src/stm32f4xx_hash.c ****        RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_HASH, ENABLE) function.
+  25:.//FWLIB/src/stm32f4xx_hash.c ****              
+  26:.//FWLIB/src/stm32f4xx_hash.c ****    (#) Initialise the HASH using HASH_Init() function. 
+  27:.//FWLIB/src/stm32f4xx_hash.c ****                  
+  28:.//FWLIB/src/stm32f4xx_hash.c ****    (#) Reset the HASH processor core, so that the HASH will be ready 
+  29:.//FWLIB/src/stm32f4xx_hash.c ****        to compute he message digest of a new message by using HASH_Reset() function.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 2
+
+
+  30:.//FWLIB/src/stm32f4xx_hash.c ****   
+  31:.//FWLIB/src/stm32f4xx_hash.c ****    (#) Enable the HASH controller using the HASH_Cmd() function. 
+  32:.//FWLIB/src/stm32f4xx_hash.c ****                   
+  33:.//FWLIB/src/stm32f4xx_hash.c ****    (#) if using DMA for Data input transfer, Activate the DMA Request 
+  34:.//FWLIB/src/stm32f4xx_hash.c ****        using HASH_DMACmd() function 
+  35:.//FWLIB/src/stm32f4xx_hash.c ****                       
+  36:.//FWLIB/src/stm32f4xx_hash.c ****    (#) if DMA is not used for data transfer, use HASH_DataIn() function 
+  37:.//FWLIB/src/stm32f4xx_hash.c ****        to enter data to IN FIFO.
+  38:.//FWLIB/src/stm32f4xx_hash.c ****                
+  39:.//FWLIB/src/stm32f4xx_hash.c ****             
+  40:.//FWLIB/src/stm32f4xx_hash.c ****    (#) Configure the Number of valid bits in last word of the message 
+  41:.//FWLIB/src/stm32f4xx_hash.c ****        using HASH_SetLastWordValidBitsNbr() function.
+  42:.//FWLIB/src/stm32f4xx_hash.c ****                
+  43:.//FWLIB/src/stm32f4xx_hash.c ****    (#) if the message length is not an exact multiple of 512 bits, 
+  44:.//FWLIB/src/stm32f4xx_hash.c ****        then the function HASH_StartDigest() must be called to launch the computation
+  45:.//FWLIB/src/stm32f4xx_hash.c ****        of the final digest.     
+  46:.//FWLIB/src/stm32f4xx_hash.c ****                
+  47:.//FWLIB/src/stm32f4xx_hash.c ****    (#) Once computed, the digest can be read using HASH_GetDigest() function.         
+  48:.//FWLIB/src/stm32f4xx_hash.c ****                      
+  49:.//FWLIB/src/stm32f4xx_hash.c ****    (#) To control HASH events you can use one of the following wo methods:
+  50:.//FWLIB/src/stm32f4xx_hash.c ****        (++) Check on HASH flags using the HASH_GetFlagStatus() function.  
+  51:.//FWLIB/src/stm32f4xx_hash.c ****        (++) Use HASH interrupts through the function HASH_ITConfig() at 
+  52:.//FWLIB/src/stm32f4xx_hash.c ****             initialization phase and HASH_GetITStatus() function into 
+  53:.//FWLIB/src/stm32f4xx_hash.c ****             interrupt routines in hashing phase.
+  54:.//FWLIB/src/stm32f4xx_hash.c ****             After checking on a flag you should clear it using HASH_ClearFlag()
+  55:.//FWLIB/src/stm32f4xx_hash.c ****             function. And after checking on an interrupt event you should 
+  56:.//FWLIB/src/stm32f4xx_hash.c ****             clear it using HASH_ClearITPendingBit() function.     
+  57:.//FWLIB/src/stm32f4xx_hash.c ****                        
+  58:.//FWLIB/src/stm32f4xx_hash.c ****    (#) Save and restore hash processor context using 
+  59:.//FWLIB/src/stm32f4xx_hash.c ****        HASH_SaveContext() and HASH_RestoreContext() functions.     
+  60:.//FWLIB/src/stm32f4xx_hash.c ****                 
+  61:.//FWLIB/src/stm32f4xx_hash.c ****   
+  62:.//FWLIB/src/stm32f4xx_hash.c ****               
+  63:.//FWLIB/src/stm32f4xx_hash.c ****  *** HMAC operation : *** 
+  64:.//FWLIB/src/stm32f4xx_hash.c ****  ========================
+  65:.//FWLIB/src/stm32f4xx_hash.c ****  [..] The HMAC algorithm is used for message authentication, by 
+  66:.//FWLIB/src/stm32f4xx_hash.c ****       irreversibly binding the message being processed to a key chosen 
+  67:.//FWLIB/src/stm32f4xx_hash.c ****       by the user. 
+  68:.//FWLIB/src/stm32f4xx_hash.c ****       For HMAC specifications, refer to "HMAC: keyed-hashing for message 
+  69:.//FWLIB/src/stm32f4xx_hash.c ****       authentication, H. Krawczyk, M. Bellare, R. Canetti, February 1997"
+  70:.//FWLIB/src/stm32f4xx_hash.c ****             
+  71:.//FWLIB/src/stm32f4xx_hash.c ****  [..] Basically, the HMAC algorithm consists of two nested hash operations:
+  72:.//FWLIB/src/stm32f4xx_hash.c ****       HMAC(message) = Hash[((key | pad) XOR 0x5C) | Hash(((key | pad) XOR 0x36) | message)]
+  73:.//FWLIB/src/stm32f4xx_hash.c ****       where:
+  74:.//FWLIB/src/stm32f4xx_hash.c ****       (+) "pad" is a sequence of zeroes needed to extend the key to the 
+  75:.//FWLIB/src/stm32f4xx_hash.c ****           length of the underlying hash function data block (that is 
+  76:.//FWLIB/src/stm32f4xx_hash.c ****           512 bits for both the SHA-1 and MD5 hash algorithms)
+  77:.//FWLIB/src/stm32f4xx_hash.c ****       (+) "|"   represents the concatenation operator 
+  78:.//FWLIB/src/stm32f4xx_hash.c ****             
+  79:.//FWLIB/src/stm32f4xx_hash.c ****            
+  80:.//FWLIB/src/stm32f4xx_hash.c ****  [..]To compute the HMAC, four different phases are required:                  
+  81:.//FWLIB/src/stm32f4xx_hash.c ****    (#) Initialise the HASH using HASH_Init() function to do HMAC 
+  82:.//FWLIB/src/stm32f4xx_hash.c ****        operation. 
+  83:.//FWLIB/src/stm32f4xx_hash.c ****                   
+  84:.//FWLIB/src/stm32f4xx_hash.c ****    (#) The key (to be used for the inner hash function) is then given to the core. 
+  85:.//FWLIB/src/stm32f4xx_hash.c ****        This operation follows the same mechanism as the one used to send the 
+  86:.//FWLIB/src/stm32f4xx_hash.c ****        message in the hash operation (that is, by HASH_DataIn() function and, 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 3
+
+
+  87:.//FWLIB/src/stm32f4xx_hash.c ****        finally, HASH_StartDigest() function.
+  88:.//FWLIB/src/stm32f4xx_hash.c ****             
+  89:.//FWLIB/src/stm32f4xx_hash.c ****    (#) Once the last word has been entered and computation has started, 
+  90:.//FWLIB/src/stm32f4xx_hash.c ****        the hash processor elaborates the key. It is then ready to accept the message
+  91:.//FWLIB/src/stm32f4xx_hash.c ****        text using the same mechanism as the one used to send the message in the
+  92:.//FWLIB/src/stm32f4xx_hash.c ****        hash operation.
+  93:.//FWLIB/src/stm32f4xx_hash.c ****          
+  94:.//FWLIB/src/stm32f4xx_hash.c ****    (#) After the first hash round, the hash processor returns "ready" to indicate 
+  95:.//FWLIB/src/stm32f4xx_hash.c ****        that it is ready to receive the key to be used for the outer hash function 
+  96:.//FWLIB/src/stm32f4xx_hash.c ****        (normally, this key is the same as the one used for the inner hash function). 
+  97:.//FWLIB/src/stm32f4xx_hash.c ****        When the last word of the key is entered and computation starts, the HMAC 
+  98:.//FWLIB/src/stm32f4xx_hash.c ****        result is made available using HASH_GetDigest() function.
+  99:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 100:.//FWLIB/src/stm32f4xx_hash.c **** @endverbatim
+ 101:.//FWLIB/src/stm32f4xx_hash.c ****   *         
+ 102:.//FWLIB/src/stm32f4xx_hash.c ****   ******************************************************************************
+ 103:.//FWLIB/src/stm32f4xx_hash.c ****   * @attention
+ 104:.//FWLIB/src/stm32f4xx_hash.c ****   *
+ 105:.//FWLIB/src/stm32f4xx_hash.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+ 106:.//FWLIB/src/stm32f4xx_hash.c ****   *
+ 107:.//FWLIB/src/stm32f4xx_hash.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+ 108:.//FWLIB/src/stm32f4xx_hash.c ****   * You may not use this file except in compliance with the License.
+ 109:.//FWLIB/src/stm32f4xx_hash.c ****   * You may obtain a copy of the License at:
+ 110:.//FWLIB/src/stm32f4xx_hash.c ****   *
+ 111:.//FWLIB/src/stm32f4xx_hash.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+ 112:.//FWLIB/src/stm32f4xx_hash.c ****   *
+ 113:.//FWLIB/src/stm32f4xx_hash.c ****   * Unless required by applicable law or agreed to in writing, software 
+ 114:.//FWLIB/src/stm32f4xx_hash.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+ 115:.//FWLIB/src/stm32f4xx_hash.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ 116:.//FWLIB/src/stm32f4xx_hash.c ****   * See the License for the specific language governing permissions and
+ 117:.//FWLIB/src/stm32f4xx_hash.c ****   * limitations under the License.
+ 118:.//FWLIB/src/stm32f4xx_hash.c ****   *
+ 119:.//FWLIB/src/stm32f4xx_hash.c ****   ******************************************************************************  
+ 120:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 121:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 122:.//FWLIB/src/stm32f4xx_hash.c **** /* Includes ------------------------------------------------------------------*/
+ 123:.//FWLIB/src/stm32f4xx_hash.c **** #include "stm32f4xx_hash.h"
+ 124:.//FWLIB/src/stm32f4xx_hash.c **** #include "stm32f4xx_rcc.h"
+ 125:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 126:.//FWLIB/src/stm32f4xx_hash.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+ 127:.//FWLIB/src/stm32f4xx_hash.c ****   * @{
+ 128:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 129:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 130:.//FWLIB/src/stm32f4xx_hash.c **** /** @defgroup HASH 
+ 131:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief HASH driver modules
+ 132:.//FWLIB/src/stm32f4xx_hash.c ****   * @{
+ 133:.//FWLIB/src/stm32f4xx_hash.c ****   */ 
+ 134:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 135:.//FWLIB/src/stm32f4xx_hash.c **** /* Private typedef -----------------------------------------------------------*/
+ 136:.//FWLIB/src/stm32f4xx_hash.c **** /* Private define ------------------------------------------------------------*/
+ 137:.//FWLIB/src/stm32f4xx_hash.c **** /* Private macro -------------------------------------------------------------*/
+ 138:.//FWLIB/src/stm32f4xx_hash.c **** /* Private variables ---------------------------------------------------------*/
+ 139:.//FWLIB/src/stm32f4xx_hash.c **** /* Private function prototypes -----------------------------------------------*/
+ 140:.//FWLIB/src/stm32f4xx_hash.c **** /* Private functions ---------------------------------------------------------*/ 
+ 141:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 142:.//FWLIB/src/stm32f4xx_hash.c **** /** @defgroup HASH_Private_Functions
+ 143:.//FWLIB/src/stm32f4xx_hash.c ****   * @{
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 4
+
+
+ 144:.//FWLIB/src/stm32f4xx_hash.c ****   */ 
+ 145:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 146:.//FWLIB/src/stm32f4xx_hash.c **** /** @defgroup HASH_Group1 Initialization and Configuration functions
+ 147:.//FWLIB/src/stm32f4xx_hash.c ****  *  @brief    Initialization and Configuration functions 
+ 148:.//FWLIB/src/stm32f4xx_hash.c ****  *
+ 149:.//FWLIB/src/stm32f4xx_hash.c **** @verbatim    
+ 150:.//FWLIB/src/stm32f4xx_hash.c ****  ===============================================================================
+ 151:.//FWLIB/src/stm32f4xx_hash.c ****               ##### Initialization and Configuration functions #####
+ 152:.//FWLIB/src/stm32f4xx_hash.c ****  ===============================================================================  
+ 153:.//FWLIB/src/stm32f4xx_hash.c ****  [..] This section provides functions allowing to 
+ 154:.//FWLIB/src/stm32f4xx_hash.c ****    (+) Initialize the HASH peripheral
+ 155:.//FWLIB/src/stm32f4xx_hash.c ****    (+) Configure the HASH Processor 
+ 156:.//FWLIB/src/stm32f4xx_hash.c ****    (+) MD5/SHA1, 
+ 157:.//FWLIB/src/stm32f4xx_hash.c ****    (+) HASH/HMAC, 
+ 158:.//FWLIB/src/stm32f4xx_hash.c ****    (+) datatype 
+ 159:.//FWLIB/src/stm32f4xx_hash.c ****    (+) HMAC Key (if mode = HMAC)
+ 160:.//FWLIB/src/stm32f4xx_hash.c ****    (+) Reset the HASH Processor 
+ 161:.//FWLIB/src/stm32f4xx_hash.c ****    
+ 162:.//FWLIB/src/stm32f4xx_hash.c **** @endverbatim
+ 163:.//FWLIB/src/stm32f4xx_hash.c ****   * @{
+ 164:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 165:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 166:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 167:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  De-initializes the HASH peripheral registers to their default reset values
+ 168:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  None
+ 169:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 170:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 171:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_DeInit(void)
+ 172:.//FWLIB/src/stm32f4xx_hash.c **** {
+  30              		.loc 1 172 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+ 173:.//FWLIB/src/stm32f4xx_hash.c ****   /* Enable HASH reset state */
+ 174:.//FWLIB/src/stm32f4xx_hash.c ****   RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_HASH, ENABLE);
+  39              		.loc 1 174 0
+  40 0002 0121     		movs	r1, #1
+  41 0004 2020     		movs	r0, #32
+  42 0006 FFF7FEFF 		bl	RCC_AHB2PeriphResetCmd
+  43              	.LVL0:
+ 175:.//FWLIB/src/stm32f4xx_hash.c ****   /* Release HASH from reset state */
+ 176:.//FWLIB/src/stm32f4xx_hash.c ****   RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_HASH, DISABLE);
+  44              		.loc 1 176 0
+  45 000a 0021     		movs	r1, #0
+  46 000c 2020     		movs	r0, #32
+  47 000e FFF7FEFF 		bl	RCC_AHB2PeriphResetCmd
+  48              	.LVL1:
+  49 0012 08BD     		pop	{r3, pc}
+  50              		.cfi_endproc
+  51              	.LFE112:
+  53              		.section	.text.HASH_Init,"ax",%progbits
+  54              		.align	2
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 5
+
+
+  55              		.global	HASH_Init
+  56              		.thumb
+  57              		.thumb_func
+  59              	HASH_Init:
+  60              	.LFB113:
+ 177:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 178:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 179:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 180:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Initializes the HASH peripheral according to the specified parameters
+ 181:.//FWLIB/src/stm32f4xx_hash.c ****   *         in the HASH_InitStruct structure.
+ 182:.//FWLIB/src/stm32f4xx_hash.c ****   * @note   the hash processor is reset when calling this function so that the
+ 183:.//FWLIB/src/stm32f4xx_hash.c ****   *         HASH will be ready to compute the message digest of a new message.
+ 184:.//FWLIB/src/stm32f4xx_hash.c ****   *         There is no need to call HASH_Reset() function.           
+ 185:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  HASH_InitStruct: pointer to a HASH_InitTypeDef structure that contains
+ 186:.//FWLIB/src/stm32f4xx_hash.c ****   *         the configuration information for the HASH peripheral.
+ 187:.//FWLIB/src/stm32f4xx_hash.c ****   * @note   The field HASH_HMACKeyType in HASH_InitTypeDef must be filled only 
+ 188:.//FWLIB/src/stm32f4xx_hash.c ****   *          if the algorithm mode is HMAC.       
+ 189:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 190:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 191:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_Init(HASH_InitTypeDef* HASH_InitStruct)
+ 192:.//FWLIB/src/stm32f4xx_hash.c **** {
+  61              		.loc 1 192 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66              	.LVL2:
+  67 0000 10B4     		push	{r4}
+  68              	.LCFI1:
+  69              		.cfi_def_cfa_offset 4
+  70              		.cfi_offset 4, -4
+ 193:.//FWLIB/src/stm32f4xx_hash.c ****   /* Check the parameters */
+ 194:.//FWLIB/src/stm32f4xx_hash.c ****   assert_param(IS_HASH_ALGOSELECTION(HASH_InitStruct->HASH_AlgoSelection));
+ 195:.//FWLIB/src/stm32f4xx_hash.c ****   assert_param(IS_HASH_DATATYPE(HASH_InitStruct->HASH_DataType));
+ 196:.//FWLIB/src/stm32f4xx_hash.c ****   assert_param(IS_HASH_ALGOMODE(HASH_InitStruct->HASH_AlgoMode));
+ 197:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 198:.//FWLIB/src/stm32f4xx_hash.c ****   /* Configure the Algorithm used, algorithm mode and the datatype */
+ 199:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->CR &= ~ (HASH_CR_ALGO | HASH_CR_DATATYPE | HASH_CR_MODE);
+  71              		.loc 1 199 0
+  72 0002 114A     		ldr	r2, .L6
+  73 0004 1368     		ldr	r3, [r2]
+  74 0006 23F48023 		bic	r3, r3, #262144
+  75 000a 23F0F003 		bic	r3, r3, #240
+  76 000e 1360     		str	r3, [r2]
+ 200:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->CR |= (HASH_InitStruct->HASH_AlgoSelection | \
+  77              		.loc 1 200 0
+  78 0010 1468     		ldr	r4, [r2]
+  79 0012 0368     		ldr	r3, [r0]
+ 201:.//FWLIB/src/stm32f4xx_hash.c ****                HASH_InitStruct->HASH_DataType | \
+  80              		.loc 1 201 0
+  81 0014 8168     		ldr	r1, [r0, #8]
+ 200:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->CR |= (HASH_InitStruct->HASH_AlgoSelection | \
+  82              		.loc 1 200 0
+  83 0016 1943     		orrs	r1, r1, r3
+ 202:.//FWLIB/src/stm32f4xx_hash.c ****                HASH_InitStruct->HASH_AlgoMode);
+  84              		.loc 1 202 0
+  85 0018 4368     		ldr	r3, [r0, #4]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 6
+
+
+ 201:.//FWLIB/src/stm32f4xx_hash.c ****                HASH_InitStruct->HASH_DataType | \
+  86              		.loc 1 201 0
+  87 001a 0B43     		orrs	r3, r3, r1
+ 200:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->CR |= (HASH_InitStruct->HASH_AlgoSelection | \
+  88              		.loc 1 200 0
+  89 001c 2343     		orrs	r3, r3, r4
+  90 001e 1360     		str	r3, [r2]
+ 203:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 204:.//FWLIB/src/stm32f4xx_hash.c ****   /* if algorithm mode is HMAC, set the Key */  
+ 205:.//FWLIB/src/stm32f4xx_hash.c ****   if(HASH_InitStruct->HASH_AlgoMode == HASH_AlgoMode_HMAC) 
+  91              		.loc 1 205 0
+  92 0020 4368     		ldr	r3, [r0, #4]
+  93 0022 402B     		cmp	r3, #64
+  94 0024 08D1     		bne	.L4
+ 206:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 207:.//FWLIB/src/stm32f4xx_hash.c ****     assert_param(IS_HASH_HMAC_KEYTYPE(HASH_InitStruct->HASH_HMACKeyType));
+ 208:.//FWLIB/src/stm32f4xx_hash.c ****     HASH->CR &= ~HASH_CR_LKEY;
+  95              		.loc 1 208 0
+  96 0026 1346     		mov	r3, r2
+  97 0028 1268     		ldr	r2, [r2]
+  98 002a 22F48032 		bic	r2, r2, #65536
+  99 002e 1A60     		str	r2, [r3]
+ 209:.//FWLIB/src/stm32f4xx_hash.c ****     HASH->CR |= HASH_InitStruct->HASH_HMACKeyType;
+ 100              		.loc 1 209 0
+ 101 0030 1968     		ldr	r1, [r3]
+ 102 0032 C268     		ldr	r2, [r0, #12]
+ 103 0034 0A43     		orrs	r2, r2, r1
+ 104 0036 1A60     		str	r2, [r3]
+ 105              	.L4:
+ 210:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 211:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 212:.//FWLIB/src/stm32f4xx_hash.c ****   /* Reset the HASH processor core, so that the HASH will be ready to compute 
+ 213:.//FWLIB/src/stm32f4xx_hash.c ****      the message digest of a new message */
+ 214:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->CR |= HASH_CR_INIT;  
+ 106              		.loc 1 214 0
+ 107 0038 034A     		ldr	r2, .L6
+ 108 003a 1368     		ldr	r3, [r2]
+ 109 003c 43F00403 		orr	r3, r3, #4
+ 110 0040 1360     		str	r3, [r2]
+ 215:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 111              		.loc 1 215 0
+ 112 0042 5DF8044B 		ldr	r4, [sp], #4
+ 113              	.LCFI2:
+ 114              		.cfi_restore 4
+ 115              		.cfi_def_cfa_offset 0
+ 116 0046 7047     		bx	lr
+ 117              	.L7:
+ 118              		.align	2
+ 119              	.L6:
+ 120 0048 00040650 		.word	1342571520
+ 121              		.cfi_endproc
+ 122              	.LFE113:
+ 124              		.section	.text.HASH_StructInit,"ax",%progbits
+ 125              		.align	2
+ 126              		.global	HASH_StructInit
+ 127              		.thumb
+ 128              		.thumb_func
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 7
+
+
+ 130              	HASH_StructInit:
+ 131              	.LFB114:
+ 216:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 217:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 218:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Fills each HASH_InitStruct member with its default value.
+ 219:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  HASH_InitStruct : pointer to a HASH_InitTypeDef structure which will
+ 220:.//FWLIB/src/stm32f4xx_hash.c ****   *          be initialized.  
+ 221:.//FWLIB/src/stm32f4xx_hash.c ****   *  @note  The default values set are : Processor mode is HASH, Algorithm selected is SHA1,
+ 222:.//FWLIB/src/stm32f4xx_hash.c ****   *          Data type selected is 32b and HMAC Key Type is short key.  
+ 223:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 224:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 225:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_StructInit(HASH_InitTypeDef* HASH_InitStruct)
+ 226:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 132              		.loc 1 226 0
+ 133              		.cfi_startproc
+ 134              		@ args = 0, pretend = 0, frame = 0
+ 135              		@ frame_needed = 0, uses_anonymous_args = 0
+ 136              		@ link register save eliminated.
+ 137              	.LVL3:
+ 227:.//FWLIB/src/stm32f4xx_hash.c ****   /* Initialize the HASH_AlgoSelection member */
+ 228:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_InitStruct->HASH_AlgoSelection = HASH_AlgoSelection_SHA1;
+ 138              		.loc 1 228 0
+ 139 0000 0023     		movs	r3, #0
+ 140 0002 0360     		str	r3, [r0]
+ 229:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 230:.//FWLIB/src/stm32f4xx_hash.c ****   /* Initialize the HASH_AlgoMode member */
+ 231:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_InitStruct->HASH_AlgoMode = HASH_AlgoMode_HASH;
+ 141              		.loc 1 231 0
+ 142 0004 4360     		str	r3, [r0, #4]
+ 232:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 233:.//FWLIB/src/stm32f4xx_hash.c ****   /* Initialize the HASH_DataType member */
+ 234:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_InitStruct->HASH_DataType = HASH_DataType_32b;
+ 143              		.loc 1 234 0
+ 144 0006 8360     		str	r3, [r0, #8]
+ 235:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 236:.//FWLIB/src/stm32f4xx_hash.c ****   /* Initialize the HASH_HMACKeyType member */
+ 237:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_InitStruct->HASH_HMACKeyType = HASH_HMACKeyType_ShortKey;
+ 145              		.loc 1 237 0
+ 146 0008 C360     		str	r3, [r0, #12]
+ 147 000a 7047     		bx	lr
+ 148              		.cfi_endproc
+ 149              	.LFE114:
+ 151              		.section	.text.HASH_Reset,"ax",%progbits
+ 152              		.align	2
+ 153              		.global	HASH_Reset
+ 154              		.thumb
+ 155              		.thumb_func
+ 157              	HASH_Reset:
+ 158              	.LFB115:
+ 238:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 239:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 240:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 241:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Resets the HASH processor core, so that the HASH will be ready
+ 242:.//FWLIB/src/stm32f4xx_hash.c ****   *         to compute the message digest of a new message.
+ 243:.//FWLIB/src/stm32f4xx_hash.c ****   * @note   Calling this function will clear the HASH_SR_DCIS (Digest calculation 
+ 244:.//FWLIB/src/stm32f4xx_hash.c ****   *         completion interrupt status) bit corresponding to HASH_IT_DCI 
+ 245:.//FWLIB/src/stm32f4xx_hash.c ****   *         interrupt and HASH_FLAG_DCIS flag. 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 8
+
+
+ 246:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  None
+ 247:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 248:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 249:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_Reset(void)
+ 250:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 159              		.loc 1 250 0
+ 160              		.cfi_startproc
+ 161              		@ args = 0, pretend = 0, frame = 0
+ 162              		@ frame_needed = 0, uses_anonymous_args = 0
+ 163              		@ link register save eliminated.
+ 251:.//FWLIB/src/stm32f4xx_hash.c ****   /* Reset the HASH processor core */
+ 252:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->CR |= HASH_CR_INIT;
+ 164              		.loc 1 252 0
+ 165 0000 024A     		ldr	r2, .L10
+ 166 0002 1368     		ldr	r3, [r2]
+ 167 0004 43F00403 		orr	r3, r3, #4
+ 168 0008 1360     		str	r3, [r2]
+ 169 000a 7047     		bx	lr
+ 170              	.L11:
+ 171              		.align	2
+ 172              	.L10:
+ 173 000c 00040650 		.word	1342571520
+ 174              		.cfi_endproc
+ 175              	.LFE115:
+ 177              		.section	.text.HASH_SetLastWordValidBitsNbr,"ax",%progbits
+ 178              		.align	2
+ 179              		.global	HASH_SetLastWordValidBitsNbr
+ 180              		.thumb
+ 181              		.thumb_func
+ 183              	HASH_SetLastWordValidBitsNbr:
+ 184              	.LFB116:
+ 253:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 254:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 255:.//FWLIB/src/stm32f4xx_hash.c ****   * @}
+ 256:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 257:.//FWLIB/src/stm32f4xx_hash.c ****  
+ 258:.//FWLIB/src/stm32f4xx_hash.c **** /** @defgroup HASH_Group2 Message Digest generation functions
+ 259:.//FWLIB/src/stm32f4xx_hash.c ****  *  @brief    Message Digest generation functions
+ 260:.//FWLIB/src/stm32f4xx_hash.c ****  *
+ 261:.//FWLIB/src/stm32f4xx_hash.c **** @verbatim    
+ 262:.//FWLIB/src/stm32f4xx_hash.c ****  ===============================================================================
+ 263:.//FWLIB/src/stm32f4xx_hash.c ****                   ##### Message Digest generation functions #####
+ 264:.//FWLIB/src/stm32f4xx_hash.c ****  ===============================================================================  
+ 265:.//FWLIB/src/stm32f4xx_hash.c ****  [..] This section provides functions allowing the generation of message digest: 
+ 266:.//FWLIB/src/stm32f4xx_hash.c ****    (+) Push data in the IN FIFO : using HASH_DataIn()
+ 267:.//FWLIB/src/stm32f4xx_hash.c ****    (+) Get the number of words set in IN FIFO, use HASH_GetInFIFOWordsNbr()  
+ 268:.//FWLIB/src/stm32f4xx_hash.c ****    (+) set the last word valid bits number using HASH_SetLastWordValidBitsNbr() 
+ 269:.//FWLIB/src/stm32f4xx_hash.c ****    (+) start digest calculation : using HASH_StartDigest()
+ 270:.//FWLIB/src/stm32f4xx_hash.c ****    (+) Get the Digest message : using HASH_GetDigest()
+ 271:.//FWLIB/src/stm32f4xx_hash.c ****  
+ 272:.//FWLIB/src/stm32f4xx_hash.c **** @endverbatim
+ 273:.//FWLIB/src/stm32f4xx_hash.c ****   * @{
+ 274:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 275:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 276:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 277:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 278:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Configure the Number of valid bits in last word of the message
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 9
+
+
+ 279:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  ValidNumber: Number of valid bits in last word of the message.
+ 280:.//FWLIB/src/stm32f4xx_hash.c ****   *           This parameter must be a number between 0 and 0x1F.
+ 281:.//FWLIB/src/stm32f4xx_hash.c ****   *             - 0x00: All 32 bits of the last data written are valid
+ 282:.//FWLIB/src/stm32f4xx_hash.c ****   *             - 0x01: Only bit [0] of the last data written is valid
+ 283:.//FWLIB/src/stm32f4xx_hash.c ****   *             - 0x02: Only bits[1:0] of the last data written are valid
+ 284:.//FWLIB/src/stm32f4xx_hash.c ****   *             - 0x03: Only bits[2:0] of the last data written are valid
+ 285:.//FWLIB/src/stm32f4xx_hash.c ****   *             - ...
+ 286:.//FWLIB/src/stm32f4xx_hash.c ****   *             - 0x1F: Only bits[30:0] of the last data written are valid    
+ 287:.//FWLIB/src/stm32f4xx_hash.c ****   * @note   The Number of valid bits must be set before to start the message 
+ 288:.//FWLIB/src/stm32f4xx_hash.c ****   *         digest competition (in Hash and HMAC) and key treatment(in HMAC).    
+ 289:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 290:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 291:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_SetLastWordValidBitsNbr(uint16_t ValidNumber)
+ 292:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 185              		.loc 1 292 0
+ 186              		.cfi_startproc
+ 187              		@ args = 0, pretend = 0, frame = 0
+ 188              		@ frame_needed = 0, uses_anonymous_args = 0
+ 189              		@ link register save eliminated.
+ 190              	.LVL4:
+ 293:.//FWLIB/src/stm32f4xx_hash.c ****   /* Check the parameters */
+ 294:.//FWLIB/src/stm32f4xx_hash.c ****   assert_param(IS_HASH_VALIDBITSNUMBER(ValidNumber));
+ 295:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 296:.//FWLIB/src/stm32f4xx_hash.c ****   /* Configure the Number of valid bits in last word of the message */
+ 297:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->STR &= ~(HASH_STR_NBW);
+ 191              		.loc 1 297 0
+ 192 0000 044B     		ldr	r3, .L13
+ 193 0002 9A68     		ldr	r2, [r3, #8]
+ 194 0004 22F01F02 		bic	r2, r2, #31
+ 195 0008 9A60     		str	r2, [r3, #8]
+ 298:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->STR |= ValidNumber;
+ 196              		.loc 1 298 0
+ 197 000a 9A68     		ldr	r2, [r3, #8]
+ 198 000c 1043     		orrs	r0, r0, r2
+ 199              	.LVL5:
+ 200 000e 9860     		str	r0, [r3, #8]
+ 201 0010 7047     		bx	lr
+ 202              	.L14:
+ 203 0012 00BF     		.align	2
+ 204              	.L13:
+ 205 0014 00040650 		.word	1342571520
+ 206              		.cfi_endproc
+ 207              	.LFE116:
+ 209              		.section	.text.HASH_DataIn,"ax",%progbits
+ 210              		.align	2
+ 211              		.global	HASH_DataIn
+ 212              		.thumb
+ 213              		.thumb_func
+ 215              	HASH_DataIn:
+ 216              	.LFB117:
+ 299:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 300:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 301:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 302:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Writes data in the Data Input FIFO
+ 303:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  Data: new data of the message to be processed.
+ 304:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 305:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 10
+
+
+ 306:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_DataIn(uint32_t Data)
+ 307:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 217              		.loc 1 307 0
+ 218              		.cfi_startproc
+ 219              		@ args = 0, pretend = 0, frame = 0
+ 220              		@ frame_needed = 0, uses_anonymous_args = 0
+ 221              		@ link register save eliminated.
+ 222              	.LVL6:
+ 308:.//FWLIB/src/stm32f4xx_hash.c ****   /* Write in the DIN register a new data */
+ 309:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->DIN = Data;
+ 223              		.loc 1 309 0
+ 224 0000 014B     		ldr	r3, .L16
+ 225 0002 5860     		str	r0, [r3, #4]
+ 226 0004 7047     		bx	lr
+ 227              	.L17:
+ 228 0006 00BF     		.align	2
+ 229              	.L16:
+ 230 0008 00040650 		.word	1342571520
+ 231              		.cfi_endproc
+ 232              	.LFE117:
+ 234              		.section	.text.HASH_GetInFIFOWordsNbr,"ax",%progbits
+ 235              		.align	2
+ 236              		.global	HASH_GetInFIFOWordsNbr
+ 237              		.thumb
+ 238              		.thumb_func
+ 240              	HASH_GetInFIFOWordsNbr:
+ 241              	.LFB118:
+ 310:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 311:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 312:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 313:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Returns the number of words already pushed into the IN FIFO.
+ 314:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  None
+ 315:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval The value of words already pushed into the IN FIFO.
+ 316:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 317:.//FWLIB/src/stm32f4xx_hash.c **** uint8_t HASH_GetInFIFOWordsNbr(void)
+ 318:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 242              		.loc 1 318 0
+ 243              		.cfi_startproc
+ 244              		@ args = 0, pretend = 0, frame = 0
+ 245              		@ frame_needed = 0, uses_anonymous_args = 0
+ 246              		@ link register save eliminated.
+ 319:.//FWLIB/src/stm32f4xx_hash.c ****   /* Return the value of NBW bits */
+ 320:.//FWLIB/src/stm32f4xx_hash.c ****   return ((HASH->CR & HASH_CR_NBW) >> 8);
+ 247              		.loc 1 320 0
+ 248 0000 024B     		ldr	r3, .L19
+ 249 0002 1868     		ldr	r0, [r3]
+ 321:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 250              		.loc 1 321 0
+ 251 0004 C0F30320 		ubfx	r0, r0, #8, #4
+ 252 0008 7047     		bx	lr
+ 253              	.L20:
+ 254 000a 00BF     		.align	2
+ 255              	.L19:
+ 256 000c 00040650 		.word	1342571520
+ 257              		.cfi_endproc
+ 258              	.LFE118:
+ 260              		.section	.text.HASH_GetDigest,"ax",%progbits
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 11
+
+
+ 261              		.align	2
+ 262              		.global	HASH_GetDigest
+ 263              		.thumb
+ 264              		.thumb_func
+ 266              	HASH_GetDigest:
+ 267              	.LFB119:
+ 322:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 323:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 324:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Provides the message digest result.
+ 325:.//FWLIB/src/stm32f4xx_hash.c ****   * @note   In MD5 mode, Data[7] to Data[4] filed of HASH_MsgDigest structure is not used
+ 326:.//FWLIB/src/stm32f4xx_hash.c ****   *         and is read as zero.
+ 327:.//FWLIB/src/stm32f4xx_hash.c ****   *         In SHA-1 mode, Data[7] to Data[5] filed of HASH_MsgDigest structure is not used
+ 328:.//FWLIB/src/stm32f4xx_hash.c ****   *         and is read as zero.    
+ 329:.//FWLIB/src/stm32f4xx_hash.c ****   *         In SHA-224 mode, Data[7] filed of HASH_MsgDigest structure is not used
+ 330:.//FWLIB/src/stm32f4xx_hash.c ****   *         and is read as zero.  
+ 331:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  HASH_MessageDigest: pointer to a HASH_MsgDigest structure which will 
+ 332:.//FWLIB/src/stm32f4xx_hash.c ****   *         hold the message digest result 
+ 333:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 334:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 335:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_GetDigest(HASH_MsgDigest* HASH_MessageDigest)
+ 336:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 268              		.loc 1 336 0
+ 269              		.cfi_startproc
+ 270              		@ args = 0, pretend = 0, frame = 0
+ 271              		@ frame_needed = 0, uses_anonymous_args = 0
+ 272              		@ link register save eliminated.
+ 273              	.LVL7:
+ 337:.//FWLIB/src/stm32f4xx_hash.c ****   /* Get the data field */
+ 338:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[0] = HASH->HR[0];
+ 274              		.loc 1 338 0
+ 275 0000 094B     		ldr	r3, .L22
+ 276 0002 DA68     		ldr	r2, [r3, #12]
+ 277 0004 0260     		str	r2, [r0]
+ 339:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[1] = HASH->HR[1];
+ 278              		.loc 1 339 0
+ 279 0006 1A69     		ldr	r2, [r3, #16]
+ 280 0008 4260     		str	r2, [r0, #4]
+ 340:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[2] = HASH->HR[2];
+ 281              		.loc 1 340 0
+ 282 000a 5A69     		ldr	r2, [r3, #20]
+ 283 000c 8260     		str	r2, [r0, #8]
+ 341:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[3] = HASH->HR[3];
+ 284              		.loc 1 341 0
+ 285 000e 9A69     		ldr	r2, [r3, #24]
+ 286 0010 C260     		str	r2, [r0, #12]
+ 342:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[4] = HASH->HR[4];
+ 287              		.loc 1 342 0
+ 288 0012 DB69     		ldr	r3, [r3, #28]
+ 289 0014 0361     		str	r3, [r0, #16]
+ 343:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[5] = HASH_DIGEST->HR[5];
+ 290              		.loc 1 343 0
+ 291 0016 054B     		ldr	r3, .L22+4
+ 292 0018 5A69     		ldr	r2, [r3, #20]
+ 293 001a 4261     		str	r2, [r0, #20]
+ 344:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[6] = HASH_DIGEST->HR[6];
+ 294              		.loc 1 344 0
+ 295 001c 9A69     		ldr	r2, [r3, #24]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 12
+
+
+ 296 001e 8261     		str	r2, [r0, #24]
+ 345:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_MessageDigest->Data[7] = HASH_DIGEST->HR[7];
+ 297              		.loc 1 345 0
+ 298 0020 DB69     		ldr	r3, [r3, #28]
+ 299 0022 C361     		str	r3, [r0, #28]
+ 300 0024 7047     		bx	lr
+ 301              	.L23:
+ 302 0026 00BF     		.align	2
+ 303              	.L22:
+ 304 0028 00040650 		.word	1342571520
+ 305 002c 10070650 		.word	1342572304
+ 306              		.cfi_endproc
+ 307              	.LFE119:
+ 309              		.section	.text.HASH_StartDigest,"ax",%progbits
+ 310              		.align	2
+ 311              		.global	HASH_StartDigest
+ 312              		.thumb
+ 313              		.thumb_func
+ 315              	HASH_StartDigest:
+ 316              	.LFB120:
+ 346:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 347:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 348:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 349:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Starts the message padding and calculation of the final message     
+ 350:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  None
+ 351:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 352:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 353:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_StartDigest(void)
+ 354:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 317              		.loc 1 354 0
+ 318              		.cfi_startproc
+ 319              		@ args = 0, pretend = 0, frame = 0
+ 320              		@ frame_needed = 0, uses_anonymous_args = 0
+ 321              		@ link register save eliminated.
+ 355:.//FWLIB/src/stm32f4xx_hash.c ****   /* Start the Digest calculation */
+ 356:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->STR |= HASH_STR_DCAL;
+ 322              		.loc 1 356 0
+ 323 0000 024A     		ldr	r2, .L25
+ 324 0002 9368     		ldr	r3, [r2, #8]
+ 325 0004 43F48073 		orr	r3, r3, #256
+ 326 0008 9360     		str	r3, [r2, #8]
+ 327 000a 7047     		bx	lr
+ 328              	.L26:
+ 329              		.align	2
+ 330              	.L25:
+ 331 000c 00040650 		.word	1342571520
+ 332              		.cfi_endproc
+ 333              	.LFE120:
+ 335              		.section	.text.HASH_SaveContext,"ax",%progbits
+ 336              		.align	2
+ 337              		.global	HASH_SaveContext
+ 338              		.thumb
+ 339              		.thumb_func
+ 341              	HASH_SaveContext:
+ 342              	.LFB121:
+ 357:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 358:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 13
+
+
+ 359:.//FWLIB/src/stm32f4xx_hash.c ****   * @}
+ 360:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 361:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 362:.//FWLIB/src/stm32f4xx_hash.c **** /** @defgroup HASH_Group3 Context swapping functions
+ 363:.//FWLIB/src/stm32f4xx_hash.c ****  *  @brief   Context swapping functions
+ 364:.//FWLIB/src/stm32f4xx_hash.c ****  *
+ 365:.//FWLIB/src/stm32f4xx_hash.c **** @verbatim   
+ 366:.//FWLIB/src/stm32f4xx_hash.c ****  ===============================================================================
+ 367:.//FWLIB/src/stm32f4xx_hash.c ****                       ##### Context swapping functions #####
+ 368:.//FWLIB/src/stm32f4xx_hash.c ****  ===============================================================================  
+ 369:.//FWLIB/src/stm32f4xx_hash.c ****  
+ 370:.//FWLIB/src/stm32f4xx_hash.c ****  [..] This section provides functions allowing to save and store HASH Context
+ 371:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 372:.//FWLIB/src/stm32f4xx_hash.c ****  [..] It is possible to interrupt a HASH/HMAC process to perform another processing 
+ 373:.//FWLIB/src/stm32f4xx_hash.c ****       with a higher priority, and to complete the interrupted process later on, when 
+ 374:.//FWLIB/src/stm32f4xx_hash.c ****       the higher priority task is complete. To do so, the context of the interrupted 
+ 375:.//FWLIB/src/stm32f4xx_hash.c ****       task must be saved from the HASH registers to memory, and then be restored 
+ 376:.//FWLIB/src/stm32f4xx_hash.c ****       from memory to the HASH registers.
+ 377:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 378:.//FWLIB/src/stm32f4xx_hash.c ****    (#) To save the current context, use HASH_SaveContext() function
+ 379:.//FWLIB/src/stm32f4xx_hash.c ****    (#) To restore the saved context, use HASH_RestoreContext() function 
+ 380:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 381:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 382:.//FWLIB/src/stm32f4xx_hash.c **** @endverbatim
+ 383:.//FWLIB/src/stm32f4xx_hash.c ****   * @{
+ 384:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 385:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 386:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 387:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Save the Hash peripheral Context. 
+ 388:.//FWLIB/src/stm32f4xx_hash.c ****   * @note   The context can be saved only when no block is currently being 
+ 389:.//FWLIB/src/stm32f4xx_hash.c ****   *         processed. So user must wait for DINIS = 1 (the last block has been 
+ 390:.//FWLIB/src/stm32f4xx_hash.c ****   *         processed and the input FIFO is empty) or NBW != 0 (the FIFO is not 
+ 391:.//FWLIB/src/stm32f4xx_hash.c ****   *         full and no processing is ongoing).   
+ 392:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  HASH_ContextSave: pointer to a HASH_Context structure that contains
+ 393:.//FWLIB/src/stm32f4xx_hash.c ****   *         the repository for current context.
+ 394:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 395:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 396:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_SaveContext(HASH_Context* HASH_ContextSave)
+ 397:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 343              		.loc 1 397 0
+ 344              		.cfi_startproc
+ 345              		@ args = 0, pretend = 0, frame = 0
+ 346              		@ frame_needed = 0, uses_anonymous_args = 0
+ 347              		@ link register save eliminated.
+ 348              	.LVL8:
+ 398:.//FWLIB/src/stm32f4xx_hash.c ****   uint8_t i = 0;
+ 399:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 400:.//FWLIB/src/stm32f4xx_hash.c ****   /* save context registers */
+ 401:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_ContextSave->HASH_IMR = HASH->IMR;  
+ 349              		.loc 1 401 0
+ 350 0000 0B4B     		ldr	r3, .L30
+ 351 0002 1A6A     		ldr	r2, [r3, #32]
+ 352 0004 0260     		str	r2, [r0]
+ 402:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_ContextSave->HASH_STR = HASH->STR;      
+ 353              		.loc 1 402 0
+ 354 0006 9A68     		ldr	r2, [r3, #8]
+ 355 0008 4260     		str	r2, [r0, #4]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 14
+
+
+ 403:.//FWLIB/src/stm32f4xx_hash.c ****   HASH_ContextSave->HASH_CR  = HASH->CR;     
+ 356              		.loc 1 403 0
+ 357 000a 1B68     		ldr	r3, [r3]
+ 358 000c 8360     		str	r3, [r0, #8]
+ 404:.//FWLIB/src/stm32f4xx_hash.c ****   for(i=0; i<=53;i++)
+ 359              		.loc 1 404 0
+ 360 000e 0023     		movs	r3, #0
+ 361 0010 0AE0     		b	.L28
+ 362              	.LVL9:
+ 363              	.L29:
+ 405:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 406:.//FWLIB/src/stm32f4xx_hash.c ****      HASH_ContextSave->HASH_CSR[i] = HASH->CSR[i];
+ 364              		.loc 1 406 0 discriminator 3
+ 365 0012 03F13E01 		add	r1, r3, #62
+ 366 0016 064A     		ldr	r2, .L30
+ 367 0018 52F82110 		ldr	r1, [r2, r1, lsl #2]
+ 368 001c 9A1C     		adds	r2, r3, #2
+ 369 001e 00EB8202 		add	r2, r0, r2, lsl #2
+ 370 0022 5160     		str	r1, [r2, #4]
+ 404:.//FWLIB/src/stm32f4xx_hash.c ****   for(i=0; i<=53;i++)
+ 371              		.loc 1 404 0 discriminator 3
+ 372 0024 0133     		adds	r3, r3, #1
+ 373              	.LVL10:
+ 374 0026 DBB2     		uxtb	r3, r3
+ 375              	.LVL11:
+ 376              	.L28:
+ 404:.//FWLIB/src/stm32f4xx_hash.c ****   for(i=0; i<=53;i++)
+ 377              		.loc 1 404 0 is_stmt 0 discriminator 1
+ 378 0028 352B     		cmp	r3, #53
+ 379 002a F2D9     		bls	.L29
+ 407:.//FWLIB/src/stm32f4xx_hash.c ****   }   
+ 408:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 380              		.loc 1 408 0 is_stmt 1
+ 381 002c 7047     		bx	lr
+ 382              	.L31:
+ 383 002e 00BF     		.align	2
+ 384              	.L30:
+ 385 0030 00040650 		.word	1342571520
+ 386              		.cfi_endproc
+ 387              	.LFE121:
+ 389              		.section	.text.HASH_RestoreContext,"ax",%progbits
+ 390              		.align	2
+ 391              		.global	HASH_RestoreContext
+ 392              		.thumb
+ 393              		.thumb_func
+ 395              	HASH_RestoreContext:
+ 396              	.LFB122:
+ 409:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 410:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 411:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Restore the Hash peripheral Context.  
+ 412:.//FWLIB/src/stm32f4xx_hash.c ****   * @note   After calling this function, user can restart the processing from the
+ 413:.//FWLIB/src/stm32f4xx_hash.c ****   *         point where it has been interrupted.  
+ 414:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  HASH_ContextRestore: pointer to a HASH_Context structure that contains
+ 415:.//FWLIB/src/stm32f4xx_hash.c ****   *         the repository for saved context.
+ 416:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 417:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 418:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_RestoreContext(HASH_Context* HASH_ContextRestore)  
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 15
+
+
+ 419:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 397              		.loc 1 419 0
+ 398              		.cfi_startproc
+ 399              		@ args = 0, pretend = 0, frame = 0
+ 400              		@ frame_needed = 0, uses_anonymous_args = 0
+ 401              		@ link register save eliminated.
+ 402              	.LVL12:
+ 403 0000 10B4     		push	{r4}
+ 404              	.LCFI3:
+ 405              		.cfi_def_cfa_offset 4
+ 406              		.cfi_offset 4, -4
+ 407              	.LVL13:
+ 420:.//FWLIB/src/stm32f4xx_hash.c ****   uint8_t i = 0;
+ 421:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 422:.//FWLIB/src/stm32f4xx_hash.c ****   /* restore context registers */
+ 423:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->IMR = HASH_ContextRestore->HASH_IMR;   
+ 408              		.loc 1 423 0
+ 409 0002 0268     		ldr	r2, [r0]
+ 410 0004 0D4B     		ldr	r3, .L36
+ 411 0006 1A62     		str	r2, [r3, #32]
+ 424:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->STR = HASH_ContextRestore->HASH_STR;     
+ 412              		.loc 1 424 0
+ 413 0008 4268     		ldr	r2, [r0, #4]
+ 414 000a 9A60     		str	r2, [r3, #8]
+ 425:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->CR = HASH_ContextRestore->HASH_CR;
+ 415              		.loc 1 425 0
+ 416 000c 8268     		ldr	r2, [r0, #8]
+ 417 000e 1A60     		str	r2, [r3]
+ 426:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 427:.//FWLIB/src/stm32f4xx_hash.c ****   /* Initialize the hash processor */
+ 428:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->CR |= HASH_CR_INIT; 
+ 418              		.loc 1 428 0
+ 419 0010 1A68     		ldr	r2, [r3]
+ 420 0012 42F00402 		orr	r2, r2, #4
+ 421 0016 1A60     		str	r2, [r3]
+ 429:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 430:.//FWLIB/src/stm32f4xx_hash.c ****    /* continue restoring context registers */     
+ 431:.//FWLIB/src/stm32f4xx_hash.c ****   for(i=0; i<=53;i++)
+ 422              		.loc 1 431 0
+ 423 0018 0023     		movs	r3, #0
+ 424 001a 0AE0     		b	.L33
+ 425              	.LVL14:
+ 426              	.L34:
+ 432:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 433:.//FWLIB/src/stm32f4xx_hash.c ****      HASH->CSR[i] = HASH_ContextRestore->HASH_CSR[i];
+ 427              		.loc 1 433 0 discriminator 3
+ 428 001c 9A1C     		adds	r2, r3, #2
+ 429 001e 00EB8202 		add	r2, r0, r2, lsl #2
+ 430 0022 5468     		ldr	r4, [r2, #4]
+ 431 0024 03F13E01 		add	r1, r3, #62
+ 432 0028 044A     		ldr	r2, .L36
+ 433 002a 42F82140 		str	r4, [r2, r1, lsl #2]
+ 431:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 434              		.loc 1 431 0 discriminator 3
+ 435 002e 0133     		adds	r3, r3, #1
+ 436              	.LVL15:
+ 437 0030 DBB2     		uxtb	r3, r3
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 16
+
+
+ 438              	.LVL16:
+ 439              	.L33:
+ 431:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 440              		.loc 1 431 0 is_stmt 0 discriminator 1
+ 441 0032 352B     		cmp	r3, #53
+ 442 0034 F2D9     		bls	.L34
+ 434:.//FWLIB/src/stm32f4xx_hash.c ****   }   
+ 435:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 443              		.loc 1 435 0 is_stmt 1
+ 444 0036 5DF8044B 		ldr	r4, [sp], #4
+ 445              	.LCFI4:
+ 446              		.cfi_restore 4
+ 447              		.cfi_def_cfa_offset 0
+ 448 003a 7047     		bx	lr
+ 449              	.L37:
+ 450              		.align	2
+ 451              	.L36:
+ 452 003c 00040650 		.word	1342571520
+ 453              		.cfi_endproc
+ 454              	.LFE122:
+ 456              		.section	.text.HASH_AutoStartDigest,"ax",%progbits
+ 457              		.align	2
+ 458              		.global	HASH_AutoStartDigest
+ 459              		.thumb
+ 460              		.thumb_func
+ 462              	HASH_AutoStartDigest:
+ 463              	.LFB123:
+ 436:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 437:.//FWLIB/src/stm32f4xx_hash.c ****   * @}
+ 438:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 439:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 440:.//FWLIB/src/stm32f4xx_hash.c **** /** @defgroup HASH_Group4 HASH's DMA interface Configuration function
+ 441:.//FWLIB/src/stm32f4xx_hash.c ****  *  @brief   HASH's DMA interface Configuration function 
+ 442:.//FWLIB/src/stm32f4xx_hash.c ****  *
+ 443:.//FWLIB/src/stm32f4xx_hash.c **** @verbatim   
+ 444:.//FWLIB/src/stm32f4xx_hash.c ****  ===============================================================================
+ 445:.//FWLIB/src/stm32f4xx_hash.c ****                ##### HASH's DMA interface Configuration function #####
+ 446:.//FWLIB/src/stm32f4xx_hash.c ****  ===============================================================================  
+ 447:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 448:.//FWLIB/src/stm32f4xx_hash.c ****  [..] This section provides functions allowing to configure the DMA interface for 
+ 449:.//FWLIB/src/stm32f4xx_hash.c ****       HASH/ HMAC data input transfer.
+ 450:.//FWLIB/src/stm32f4xx_hash.c ****    
+ 451:.//FWLIB/src/stm32f4xx_hash.c ****  [..] When the DMA mode is enabled (using the HASH_DMACmd() function), data can be 
+ 452:.//FWLIB/src/stm32f4xx_hash.c ****       sent to the IN FIFO using the DMA peripheral.
+ 453:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 454:.//FWLIB/src/stm32f4xx_hash.c **** @endverbatim
+ 455:.//FWLIB/src/stm32f4xx_hash.c ****   * @{
+ 456:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 457:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 458:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 459:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Enables or disables auto-start message padding and
+ 460:.//FWLIB/src/stm32f4xx_hash.c ****   *         calculation of the final message digest at the end of DMA transfer.
+ 461:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  NewState: new state of the selected HASH DMA transfer request.
+ 462:.//FWLIB/src/stm32f4xx_hash.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 463:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 464:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 465:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_AutoStartDigest(FunctionalState NewState)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 17
+
+
+ 466:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 464              		.loc 1 466 0
+ 465              		.cfi_startproc
+ 466              		@ args = 0, pretend = 0, frame = 0
+ 467              		@ frame_needed = 0, uses_anonymous_args = 0
+ 468              		@ link register save eliminated.
+ 469              	.LVL17:
+ 467:.//FWLIB/src/stm32f4xx_hash.c ****   /* Check the parameters */
+ 468:.//FWLIB/src/stm32f4xx_hash.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 469:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 470:.//FWLIB/src/stm32f4xx_hash.c ****   if (NewState != DISABLE)
+ 470              		.loc 1 470 0
+ 471 0000 28B1     		cbz	r0, .L39
+ 471:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 472:.//FWLIB/src/stm32f4xx_hash.c ****     /* Enable the auto start of the final message digest at the end of DMA transfer */
+ 473:.//FWLIB/src/stm32f4xx_hash.c ****     HASH->CR &= ~HASH_CR_MDMAT;
+ 472              		.loc 1 473 0
+ 473 0002 064A     		ldr	r2, .L41
+ 474 0004 1368     		ldr	r3, [r2]
+ 475 0006 23F40053 		bic	r3, r3, #8192
+ 476 000a 1360     		str	r3, [r2]
+ 477 000c 7047     		bx	lr
+ 478              	.L39:
+ 474:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 475:.//FWLIB/src/stm32f4xx_hash.c ****   else
+ 476:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 477:.//FWLIB/src/stm32f4xx_hash.c ****     /* Disable the auto start of the final message digest at the end of DMA transfer */
+ 478:.//FWLIB/src/stm32f4xx_hash.c ****     HASH->CR |= HASH_CR_MDMAT;
+ 479              		.loc 1 478 0
+ 480 000e 034A     		ldr	r2, .L41
+ 481 0010 1368     		ldr	r3, [r2]
+ 482 0012 43F40053 		orr	r3, r3, #8192
+ 483 0016 1360     		str	r3, [r2]
+ 484 0018 7047     		bx	lr
+ 485              	.L42:
+ 486 001a 00BF     		.align	2
+ 487              	.L41:
+ 488 001c 00040650 		.word	1342571520
+ 489              		.cfi_endproc
+ 490              	.LFE123:
+ 492              		.section	.text.HASH_DMACmd,"ax",%progbits
+ 493              		.align	2
+ 494              		.global	HASH_DMACmd
+ 495              		.thumb
+ 496              		.thumb_func
+ 498              	HASH_DMACmd:
+ 499              	.LFB124:
+ 479:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 480:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 481:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 482:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 483:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Enables or disables the HASH DMA interface.
+ 484:.//FWLIB/src/stm32f4xx_hash.c ****   * @note   The DMA is disabled by hardware after the end of transfer.
+ 485:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  NewState: new state of the selected HASH DMA transfer request.
+ 486:.//FWLIB/src/stm32f4xx_hash.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 487:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 488:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 18
+
+
+ 489:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_DMACmd(FunctionalState NewState)
+ 490:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 500              		.loc 1 490 0
+ 501              		.cfi_startproc
+ 502              		@ args = 0, pretend = 0, frame = 0
+ 503              		@ frame_needed = 0, uses_anonymous_args = 0
+ 504              		@ link register save eliminated.
+ 505              	.LVL18:
+ 491:.//FWLIB/src/stm32f4xx_hash.c ****   /* Check the parameters */
+ 492:.//FWLIB/src/stm32f4xx_hash.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 493:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 494:.//FWLIB/src/stm32f4xx_hash.c ****   if (NewState != DISABLE)
+ 506              		.loc 1 494 0
+ 507 0000 28B1     		cbz	r0, .L44
+ 495:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 496:.//FWLIB/src/stm32f4xx_hash.c ****     /* Enable the HASH DMA request */
+ 497:.//FWLIB/src/stm32f4xx_hash.c ****     HASH->CR |= HASH_CR_DMAE;
+ 508              		.loc 1 497 0
+ 509 0002 064A     		ldr	r2, .L46
+ 510 0004 1368     		ldr	r3, [r2]
+ 511 0006 43F00803 		orr	r3, r3, #8
+ 512 000a 1360     		str	r3, [r2]
+ 513 000c 7047     		bx	lr
+ 514              	.L44:
+ 498:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 499:.//FWLIB/src/stm32f4xx_hash.c ****   else
+ 500:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 501:.//FWLIB/src/stm32f4xx_hash.c ****     /* Disable the HASH DMA request */
+ 502:.//FWLIB/src/stm32f4xx_hash.c ****     HASH->CR &= ~HASH_CR_DMAE;
+ 515              		.loc 1 502 0
+ 516 000e 034A     		ldr	r2, .L46
+ 517 0010 1368     		ldr	r3, [r2]
+ 518 0012 23F00803 		bic	r3, r3, #8
+ 519 0016 1360     		str	r3, [r2]
+ 520 0018 7047     		bx	lr
+ 521              	.L47:
+ 522 001a 00BF     		.align	2
+ 523              	.L46:
+ 524 001c 00040650 		.word	1342571520
+ 525              		.cfi_endproc
+ 526              	.LFE124:
+ 528              		.section	.text.HASH_ITConfig,"ax",%progbits
+ 529              		.align	2
+ 530              		.global	HASH_ITConfig
+ 531              		.thumb
+ 532              		.thumb_func
+ 534              	HASH_ITConfig:
+ 535              	.LFB125:
+ 503:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 504:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 505:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 506:.//FWLIB/src/stm32f4xx_hash.c ****   * @}
+ 507:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 508:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 509:.//FWLIB/src/stm32f4xx_hash.c **** /** @defgroup HASH_Group5 Interrupts and flags management functions
+ 510:.//FWLIB/src/stm32f4xx_hash.c ****  *  @brief   Interrupts and flags management functions
+ 511:.//FWLIB/src/stm32f4xx_hash.c ****  *
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 19
+
+
+ 512:.//FWLIB/src/stm32f4xx_hash.c **** @verbatim   
+ 513:.//FWLIB/src/stm32f4xx_hash.c ****  ===============================================================================
+ 514:.//FWLIB/src/stm32f4xx_hash.c ****                ##### Interrupts and flags management functions #####
+ 515:.//FWLIB/src/stm32f4xx_hash.c ****  ===============================================================================  
+ 516:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 517:.//FWLIB/src/stm32f4xx_hash.c ****  [..] This section provides functions allowing to configure the HASH Interrupts and 
+ 518:.//FWLIB/src/stm32f4xx_hash.c ****       to get the status and clear flags and Interrupts pending bits.
+ 519:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 520:.//FWLIB/src/stm32f4xx_hash.c ****  [..] The HASH provides 2 Interrupts sources and 5 Flags:
+ 521:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 522:.//FWLIB/src/stm32f4xx_hash.c ****  *** Flags : ***
+ 523:.//FWLIB/src/stm32f4xx_hash.c ****  =============== 
+ 524:.//FWLIB/src/stm32f4xx_hash.c ****  [..]
+ 525:.//FWLIB/src/stm32f4xx_hash.c ****    (#) HASH_FLAG_DINIS : set when 16 locations are free in the Data IN FIFO 
+ 526:.//FWLIB/src/stm32f4xx_hash.c ****       which means that a  new block (512 bit) can be entered into the input buffer.
+ 527:.//FWLIB/src/stm32f4xx_hash.c ****                           
+ 528:.//FWLIB/src/stm32f4xx_hash.c ****    (#) HASH_FLAG_DCIS :  set when Digest calculation is complete
+ 529:.//FWLIB/src/stm32f4xx_hash.c ****       
+ 530:.//FWLIB/src/stm32f4xx_hash.c ****    (#) HASH_FLAG_DMAS :  set when HASH's DMA interface is enabled (DMAE=1) or 
+ 531:.//FWLIB/src/stm32f4xx_hash.c ****        a transfer is ongoing. This Flag is cleared only by hardware.
+ 532:.//FWLIB/src/stm32f4xx_hash.c ****                            
+ 533:.//FWLIB/src/stm32f4xx_hash.c ****    (#) HASH_FLAG_BUSY :  set when The hash core is processing a block of data
+ 534:.//FWLIB/src/stm32f4xx_hash.c ****        This Flag is cleared only by hardware. 
+ 535:.//FWLIB/src/stm32f4xx_hash.c ****                            
+ 536:.//FWLIB/src/stm32f4xx_hash.c ****    (#) HASH_FLAG_DINNE : set when Data IN FIFO is not empty which means that 
+ 537:.//FWLIB/src/stm32f4xx_hash.c ****        the Data IN FIFO contains at least one word of data. This Flag is cleared 
+ 538:.//FWLIB/src/stm32f4xx_hash.c ****        only by hardware.
+ 539:.//FWLIB/src/stm32f4xx_hash.c ****      
+ 540:.//FWLIB/src/stm32f4xx_hash.c ****  *** Interrupts : ***
+ 541:.//FWLIB/src/stm32f4xx_hash.c ****  ====================
+ 542:.//FWLIB/src/stm32f4xx_hash.c ****  [..]   
+ 543:.//FWLIB/src/stm32f4xx_hash.c ****    (#) HASH_IT_DINI  : if enabled, this interrupt source is pending when 16 
+ 544:.//FWLIB/src/stm32f4xx_hash.c ****        locations are free in the Data IN FIFO  which means that a new block (512 bit)
+ 545:.//FWLIB/src/stm32f4xx_hash.c ****        can be entered into the input buffer. This interrupt source is cleared using 
+ 546:.//FWLIB/src/stm32f4xx_hash.c ****        HASH_ClearITPendingBit(HASH_IT_DINI) function.
+ 547:.//FWLIB/src/stm32f4xx_hash.c ****    
+ 548:.//FWLIB/src/stm32f4xx_hash.c ****    (#) HASH_IT_DCI   : if enabled, this interrupt source is pending when Digest 
+ 549:.//FWLIB/src/stm32f4xx_hash.c ****        calculation is complete. This interrupt source is cleared using 
+ 550:.//FWLIB/src/stm32f4xx_hash.c ****        HASH_ClearITPendingBit(HASH_IT_DCI) function.
+ 551:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 552:.//FWLIB/src/stm32f4xx_hash.c ****  *** Managing the HASH controller events : ***
+ 553:.//FWLIB/src/stm32f4xx_hash.c ****  =============================================
+ 554:.//FWLIB/src/stm32f4xx_hash.c ****  [..] The user should identify which mode will be used in his application to manage 
+ 555:.//FWLIB/src/stm32f4xx_hash.c ****       the HASH controller events: Polling mode or Interrupt mode.
+ 556:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 557:.//FWLIB/src/stm32f4xx_hash.c ****    (#) In the Polling Mode it is advised to use the following functions:
+ 558:.//FWLIB/src/stm32f4xx_hash.c ****        (++) HASH_GetFlagStatus() : to check if flags events occur. 
+ 559:.//FWLIB/src/stm32f4xx_hash.c ****        (++) HASH_ClearFlag()     : to clear the flags events.
+ 560:.//FWLIB/src/stm32f4xx_hash.c ****     
+ 561:.//FWLIB/src/stm32f4xx_hash.c ****    (#)  In the Interrupt Mode it is advised to use the following functions:
+ 562:.//FWLIB/src/stm32f4xx_hash.c ****        (++) HASH_ITConfig()       : to enable or disable the interrupt source.
+ 563:.//FWLIB/src/stm32f4xx_hash.c ****        (++) HASH_GetITStatus()    : to check if Interrupt occurs.
+ 564:.//FWLIB/src/stm32f4xx_hash.c ****        (++) HASH_ClearITPendingBit() : to clear the Interrupt pending Bit 
+ 565:.//FWLIB/src/stm32f4xx_hash.c ****             (corresponding Flag). 
+ 566:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 567:.//FWLIB/src/stm32f4xx_hash.c **** @endverbatim
+ 568:.//FWLIB/src/stm32f4xx_hash.c ****   * @{
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 20
+
+
+ 569:.//FWLIB/src/stm32f4xx_hash.c ****   */ 
+ 570:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 571:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 572:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Enables or disables the specified HASH interrupts.
+ 573:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  HASH_IT: specifies the HASH interrupt source to be enabled or disabled.
+ 574:.//FWLIB/src/stm32f4xx_hash.c ****   *          This parameter can be any combination of the following values:
+ 575:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_IT_DINI: Data Input interrupt
+ 576:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_IT_DCI: Digest Calculation Completion Interrupt
+ 577:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  NewState: new state of the specified HASH interrupt.
+ 578:.//FWLIB/src/stm32f4xx_hash.c ****   *           This parameter can be: ENABLE or DISABLE.
+ 579:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 580:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 581:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_ITConfig(uint32_t HASH_IT, FunctionalState NewState)
+ 582:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 536              		.loc 1 582 0
+ 537              		.cfi_startproc
+ 538              		@ args = 0, pretend = 0, frame = 0
+ 539              		@ frame_needed = 0, uses_anonymous_args = 0
+ 540              		@ link register save eliminated.
+ 541              	.LVL19:
+ 583:.//FWLIB/src/stm32f4xx_hash.c ****   /* Check the parameters */
+ 584:.//FWLIB/src/stm32f4xx_hash.c ****   assert_param(IS_HASH_IT(HASH_IT));
+ 585:.//FWLIB/src/stm32f4xx_hash.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 586:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 587:.//FWLIB/src/stm32f4xx_hash.c ****   if (NewState != DISABLE)
+ 542              		.loc 1 587 0
+ 543 0000 21B1     		cbz	r1, .L49
+ 588:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 589:.//FWLIB/src/stm32f4xx_hash.c ****     /* Enable the selected HASH interrupt */
+ 590:.//FWLIB/src/stm32f4xx_hash.c ****     HASH->IMR |= HASH_IT;
+ 544              		.loc 1 590 0
+ 545 0002 054B     		ldr	r3, .L51
+ 546 0004 1A6A     		ldr	r2, [r3, #32]
+ 547 0006 1043     		orrs	r0, r0, r2
+ 548              	.LVL20:
+ 549 0008 1862     		str	r0, [r3, #32]
+ 550 000a 7047     		bx	lr
+ 551              	.LVL21:
+ 552              	.L49:
+ 591:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 592:.//FWLIB/src/stm32f4xx_hash.c ****   else
+ 593:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 594:.//FWLIB/src/stm32f4xx_hash.c ****     /* Disable the selected HASH interrupt */
+ 595:.//FWLIB/src/stm32f4xx_hash.c ****     HASH->IMR &= (uint32_t)(~HASH_IT);
+ 553              		.loc 1 595 0
+ 554 000c 024A     		ldr	r2, .L51
+ 555 000e 136A     		ldr	r3, [r2, #32]
+ 556 0010 23EA0000 		bic	r0, r3, r0
+ 557              	.LVL22:
+ 558 0014 1062     		str	r0, [r2, #32]
+ 559 0016 7047     		bx	lr
+ 560              	.L52:
+ 561              		.align	2
+ 562              	.L51:
+ 563 0018 00040650 		.word	1342571520
+ 564              		.cfi_endproc
+ 565              	.LFE125:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 21
+
+
+ 567              		.section	.text.HASH_GetFlagStatus,"ax",%progbits
+ 568              		.align	2
+ 569              		.global	HASH_GetFlagStatus
+ 570              		.thumb
+ 571              		.thumb_func
+ 573              	HASH_GetFlagStatus:
+ 574              	.LFB126:
+ 596:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 597:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 598:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 599:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 600:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Checks whether the specified HASH flag is set or not.
+ 601:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  HASH_FLAG: specifies the HASH flag to check.
+ 602:.//FWLIB/src/stm32f4xx_hash.c ****   *          This parameter can be one of the following values:
+ 603:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_DINIS: Data input interrupt status flag
+ 604:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_DCIS: Digest calculation completion interrupt status flag
+ 605:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_BUSY: Busy flag
+ 606:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_DMAS: DMAS Status flag
+ 607:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_DINNE: Data Input register (DIN) not empty status flag
+ 608:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval The new state of HASH_FLAG (SET or RESET)
+ 609:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 610:.//FWLIB/src/stm32f4xx_hash.c **** FlagStatus HASH_GetFlagStatus(uint32_t HASH_FLAG)
+ 611:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 575              		.loc 1 611 0
+ 576              		.cfi_startproc
+ 577              		@ args = 0, pretend = 0, frame = 0
+ 578              		@ frame_needed = 0, uses_anonymous_args = 0
+ 579              		@ link register save eliminated.
+ 580              	.LVL23:
+ 612:.//FWLIB/src/stm32f4xx_hash.c ****   FlagStatus bitstatus = RESET;
+ 613:.//FWLIB/src/stm32f4xx_hash.c ****   uint32_t tempreg = 0;
+ 614:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 615:.//FWLIB/src/stm32f4xx_hash.c ****   /* Check the parameters */
+ 616:.//FWLIB/src/stm32f4xx_hash.c ****   assert_param(IS_HASH_GET_FLAG(HASH_FLAG));
+ 617:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 618:.//FWLIB/src/stm32f4xx_hash.c ****   /* check if the FLAG is in CR register */
+ 619:.//FWLIB/src/stm32f4xx_hash.c ****   if ((HASH_FLAG & HASH_FLAG_DINNE) != (uint32_t)RESET ) 
+ 581              		.loc 1 619 0
+ 582 0000 10F4805F 		tst	r0, #4096
+ 583 0004 02D0     		beq	.L54
+ 620:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 621:.//FWLIB/src/stm32f4xx_hash.c ****     tempreg = HASH->CR;
+ 584              		.loc 1 621 0
+ 585 0006 054B     		ldr	r3, .L58
+ 586 0008 1B68     		ldr	r3, [r3]
+ 587              	.LVL24:
+ 588 000a 01E0     		b	.L55
+ 589              	.LVL25:
+ 590              	.L54:
+ 622:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 623:.//FWLIB/src/stm32f4xx_hash.c ****   else /* The FLAG is in SR register */
+ 624:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 625:.//FWLIB/src/stm32f4xx_hash.c ****     tempreg = HASH->SR;
+ 591              		.loc 1 625 0
+ 592 000c 034B     		ldr	r3, .L58
+ 593 000e 5B6A     		ldr	r3, [r3, #36]
+ 594              	.LVL26:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 22
+
+
+ 595              	.L55:
+ 626:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 627:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 628:.//FWLIB/src/stm32f4xx_hash.c ****   /* Check the status of the specified HASH flag */
+ 629:.//FWLIB/src/stm32f4xx_hash.c ****   if ((tempreg & HASH_FLAG) != (uint32_t)RESET)
+ 596              		.loc 1 629 0
+ 597 0010 0342     		tst	r3, r0
+ 598 0012 01D0     		beq	.L57
+ 630:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 631:.//FWLIB/src/stm32f4xx_hash.c ****     /* HASH is set */
+ 632:.//FWLIB/src/stm32f4xx_hash.c ****     bitstatus = SET;
+ 599              		.loc 1 632 0
+ 600 0014 0120     		movs	r0, #1
+ 601              	.LVL27:
+ 602 0016 7047     		bx	lr
+ 603              	.LVL28:
+ 604              	.L57:
+ 633:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 634:.//FWLIB/src/stm32f4xx_hash.c ****   else
+ 635:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 636:.//FWLIB/src/stm32f4xx_hash.c ****     /* HASH_FLAG is reset */
+ 637:.//FWLIB/src/stm32f4xx_hash.c ****     bitstatus = RESET;
+ 605              		.loc 1 637 0
+ 606 0018 0020     		movs	r0, #0
+ 607              	.LVL29:
+ 638:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 639:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 640:.//FWLIB/src/stm32f4xx_hash.c ****   /* Return the HASH_FLAG status */
+ 641:.//FWLIB/src/stm32f4xx_hash.c ****   return  bitstatus;
+ 642:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 608              		.loc 1 642 0
+ 609 001a 7047     		bx	lr
+ 610              	.L59:
+ 611              		.align	2
+ 612              	.L58:
+ 613 001c 00040650 		.word	1342571520
+ 614              		.cfi_endproc
+ 615              	.LFE126:
+ 617              		.section	.text.HASH_ClearFlag,"ax",%progbits
+ 618              		.align	2
+ 619              		.global	HASH_ClearFlag
+ 620              		.thumb
+ 621              		.thumb_func
+ 623              	HASH_ClearFlag:
+ 624              	.LFB127:
+ 643:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 644:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Clears the HASH flags.
+ 645:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  HASH_FLAG: specifies the flag to clear. 
+ 646:.//FWLIB/src/stm32f4xx_hash.c ****   *          This parameter can be any combination of the following values:
+ 647:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_DINIS: Data Input Flag
+ 648:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_FLAG_DCIS: Digest Calculation Completion Flag                       
+ 649:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 650:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 651:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_ClearFlag(uint32_t HASH_FLAG)
+ 652:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 625              		.loc 1 652 0
+ 626              		.cfi_startproc
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 23
+
+
+ 627              		@ args = 0, pretend = 0, frame = 0
+ 628              		@ frame_needed = 0, uses_anonymous_args = 0
+ 629              		@ link register save eliminated.
+ 630              	.LVL30:
+ 653:.//FWLIB/src/stm32f4xx_hash.c ****   /* Check the parameters */
+ 654:.//FWLIB/src/stm32f4xx_hash.c ****   assert_param(IS_HASH_CLEAR_FLAG(HASH_FLAG));
+ 655:.//FWLIB/src/stm32f4xx_hash.c ****   
+ 656:.//FWLIB/src/stm32f4xx_hash.c ****   /* Clear the selected HASH flags */
+ 657:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->SR = ~(uint32_t)HASH_FLAG;
+ 631              		.loc 1 657 0
+ 632 0000 C043     		mvns	r0, r0
+ 633              	.LVL31:
+ 634 0002 014B     		ldr	r3, .L61
+ 635 0004 5862     		str	r0, [r3, #36]
+ 636 0006 7047     		bx	lr
+ 637              	.L62:
+ 638              		.align	2
+ 639              	.L61:
+ 640 0008 00040650 		.word	1342571520
+ 641              		.cfi_endproc
+ 642              	.LFE127:
+ 644              		.section	.text.HASH_GetITStatus,"ax",%progbits
+ 645              		.align	2
+ 646              		.global	HASH_GetITStatus
+ 647              		.thumb
+ 648              		.thumb_func
+ 650              	HASH_GetITStatus:
+ 651              	.LFB128:
+ 658:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 659:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 660:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Checks whether the specified HASH interrupt has occurred or not.
+ 661:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  HASH_IT: specifies the HASH interrupt source to check.
+ 662:.//FWLIB/src/stm32f4xx_hash.c ****   *          This parameter can be one of the following values:
+ 663:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_IT_DINI: Data Input interrupt
+ 664:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_IT_DCI: Digest Calculation Completion Interrupt
+ 665:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval The new state of HASH_IT (SET or RESET).
+ 666:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 667:.//FWLIB/src/stm32f4xx_hash.c **** ITStatus HASH_GetITStatus(uint32_t HASH_IT)
+ 668:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 652              		.loc 1 668 0
+ 653              		.cfi_startproc
+ 654              		@ args = 0, pretend = 0, frame = 0
+ 655              		@ frame_needed = 0, uses_anonymous_args = 0
+ 656              		@ link register save eliminated.
+ 657              	.LVL32:
+ 669:.//FWLIB/src/stm32f4xx_hash.c ****   ITStatus bitstatus = RESET;
+ 670:.//FWLIB/src/stm32f4xx_hash.c ****   uint32_t tmpreg = 0;
+ 671:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 672:.//FWLIB/src/stm32f4xx_hash.c ****   /* Check the parameters */
+ 673:.//FWLIB/src/stm32f4xx_hash.c ****   assert_param(IS_HASH_GET_IT(HASH_IT));  
+ 674:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 675:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 676:.//FWLIB/src/stm32f4xx_hash.c ****   /* Check the status of the specified HASH interrupt */
+ 677:.//FWLIB/src/stm32f4xx_hash.c ****   tmpreg =  HASH->SR;
+ 658              		.loc 1 677 0
+ 659 0000 044A     		ldr	r2, .L66
+ 660 0002 516A     		ldr	r1, [r2, #36]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 24
+
+
+ 661              	.LVL33:
+ 678:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 679:.//FWLIB/src/stm32f4xx_hash.c ****   if (((HASH->IMR & tmpreg) & HASH_IT) != RESET)
+ 662              		.loc 1 679 0
+ 663 0004 136A     		ldr	r3, [r2, #32]
+ 664 0006 0B40     		ands	r3, r3, r1
+ 665 0008 0342     		tst	r3, r0
+ 666 000a 01D0     		beq	.L65
+ 680:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 681:.//FWLIB/src/stm32f4xx_hash.c ****     /* HASH_IT is set */
+ 682:.//FWLIB/src/stm32f4xx_hash.c ****     bitstatus = SET;
+ 667              		.loc 1 682 0
+ 668 000c 0120     		movs	r0, #1
+ 669              	.LVL34:
+ 670 000e 7047     		bx	lr
+ 671              	.LVL35:
+ 672              	.L65:
+ 683:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 684:.//FWLIB/src/stm32f4xx_hash.c ****   else
+ 685:.//FWLIB/src/stm32f4xx_hash.c ****   {
+ 686:.//FWLIB/src/stm32f4xx_hash.c ****     /* HASH_IT is reset */
+ 687:.//FWLIB/src/stm32f4xx_hash.c ****     bitstatus = RESET;
+ 673              		.loc 1 687 0
+ 674 0010 0020     		movs	r0, #0
+ 675              	.LVL36:
+ 688:.//FWLIB/src/stm32f4xx_hash.c ****   }
+ 689:.//FWLIB/src/stm32f4xx_hash.c ****   /* Return the HASH_IT status */
+ 690:.//FWLIB/src/stm32f4xx_hash.c ****   return bitstatus;
+ 691:.//FWLIB/src/stm32f4xx_hash.c **** }
+ 676              		.loc 1 691 0
+ 677 0012 7047     		bx	lr
+ 678              	.L67:
+ 679              		.align	2
+ 680              	.L66:
+ 681 0014 00040650 		.word	1342571520
+ 682              		.cfi_endproc
+ 683              	.LFE128:
+ 685              		.section	.text.HASH_ClearITPendingBit,"ax",%progbits
+ 686              		.align	2
+ 687              		.global	HASH_ClearITPendingBit
+ 688              		.thumb
+ 689              		.thumb_func
+ 691              	HASH_ClearITPendingBit:
+ 692              	.LFB129:
+ 692:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 693:.//FWLIB/src/stm32f4xx_hash.c **** /**
+ 694:.//FWLIB/src/stm32f4xx_hash.c ****   * @brief  Clears the HASH interrupt pending bit(s).
+ 695:.//FWLIB/src/stm32f4xx_hash.c ****   * @param  HASH_IT: specifies the HASH interrupt pending bit(s) to clear.
+ 696:.//FWLIB/src/stm32f4xx_hash.c ****   *          This parameter can be any combination of the following values:
+ 697:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_IT_DINI: Data Input interrupt
+ 698:.//FWLIB/src/stm32f4xx_hash.c ****   *            @arg HASH_IT_DCI: Digest Calculation Completion Interrupt
+ 699:.//FWLIB/src/stm32f4xx_hash.c ****   * @retval None
+ 700:.//FWLIB/src/stm32f4xx_hash.c ****   */
+ 701:.//FWLIB/src/stm32f4xx_hash.c **** void HASH_ClearITPendingBit(uint32_t HASH_IT)
+ 702:.//FWLIB/src/stm32f4xx_hash.c **** {
+ 693              		.loc 1 702 0
+ 694              		.cfi_startproc
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 25
+
+
+ 695              		@ args = 0, pretend = 0, frame = 0
+ 696              		@ frame_needed = 0, uses_anonymous_args = 0
+ 697              		@ link register save eliminated.
+ 698              	.LVL37:
+ 703:.//FWLIB/src/stm32f4xx_hash.c ****   /* Check the parameters */
+ 704:.//FWLIB/src/stm32f4xx_hash.c ****   assert_param(IS_HASH_IT(HASH_IT));
+ 705:.//FWLIB/src/stm32f4xx_hash.c **** 
+ 706:.//FWLIB/src/stm32f4xx_hash.c ****   /* Clear the selected HASH interrupt pending bit */
+ 707:.//FWLIB/src/stm32f4xx_hash.c ****   HASH->SR = (uint32_t)(~HASH_IT);
+ 699              		.loc 1 707 0
+ 700 0000 C043     		mvns	r0, r0
+ 701              	.LVL38:
+ 702 0002 014B     		ldr	r3, .L69
+ 703 0004 5862     		str	r0, [r3, #36]
+ 704 0006 7047     		bx	lr
+ 705              	.L70:
+ 706              		.align	2
+ 707              	.L69:
+ 708 0008 00040650 		.word	1342571520
+ 709              		.cfi_endproc
+ 710              	.LFE129:
+ 712              		.text
+ 713              	.Letext0:
+ 714              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 715              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 716              		.file 4 "USER/stm32f4xx.h"
+ 717              		.file 5 "FWLIB/inc/stm32f4xx_hash.h"
+ 718              		.file 6 "CORE/core_cm4.h"
+ 719              		.file 7 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 26
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_hash.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:22     .text.HASH_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:27     .text.HASH_DeInit:0000000000000000 HASH_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:54     .text.HASH_Init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:59     .text.HASH_Init:0000000000000000 HASH_Init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:120    .text.HASH_Init:0000000000000048 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:125    .text.HASH_StructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:130    .text.HASH_StructInit:0000000000000000 HASH_StructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:152    .text.HASH_Reset:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:157    .text.HASH_Reset:0000000000000000 HASH_Reset
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:173    .text.HASH_Reset:000000000000000c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:178    .text.HASH_SetLastWordValidBitsNbr:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:183    .text.HASH_SetLastWordValidBitsNbr:0000000000000000 HASH_SetLastWordValidBitsNbr
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:205    .text.HASH_SetLastWordValidBitsNbr:0000000000000014 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:210    .text.HASH_DataIn:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:215    .text.HASH_DataIn:0000000000000000 HASH_DataIn
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:230    .text.HASH_DataIn:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:235    .text.HASH_GetInFIFOWordsNbr:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:240    .text.HASH_GetInFIFOWordsNbr:0000000000000000 HASH_GetInFIFOWordsNbr
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:256    .text.HASH_GetInFIFOWordsNbr:000000000000000c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:261    .text.HASH_GetDigest:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:266    .text.HASH_GetDigest:0000000000000000 HASH_GetDigest
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:304    .text.HASH_GetDigest:0000000000000028 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:310    .text.HASH_StartDigest:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:315    .text.HASH_StartDigest:0000000000000000 HASH_StartDigest
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:331    .text.HASH_StartDigest:000000000000000c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:336    .text.HASH_SaveContext:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:341    .text.HASH_SaveContext:0000000000000000 HASH_SaveContext
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:385    .text.HASH_SaveContext:0000000000000030 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:390    .text.HASH_RestoreContext:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:395    .text.HASH_RestoreContext:0000000000000000 HASH_RestoreContext
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:452    .text.HASH_RestoreContext:000000000000003c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:457    .text.HASH_AutoStartDigest:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:462    .text.HASH_AutoStartDigest:0000000000000000 HASH_AutoStartDigest
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:488    .text.HASH_AutoStartDigest:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:493    .text.HASH_DMACmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:498    .text.HASH_DMACmd:0000000000000000 HASH_DMACmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:524    .text.HASH_DMACmd:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:529    .text.HASH_ITConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:534    .text.HASH_ITConfig:0000000000000000 HASH_ITConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:563    .text.HASH_ITConfig:0000000000000018 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:568    .text.HASH_GetFlagStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:573    .text.HASH_GetFlagStatus:0000000000000000 HASH_GetFlagStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:613    .text.HASH_GetFlagStatus:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:618    .text.HASH_ClearFlag:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:623    .text.HASH_ClearFlag:0000000000000000 HASH_ClearFlag
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:640    .text.HASH_ClearFlag:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:645    .text.HASH_GetITStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:650    .text.HASH_GetITStatus:0000000000000000 HASH_GetITStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:681    .text.HASH_GetITStatus:0000000000000014 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:686    .text.HASH_ClearITPendingBit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:691    .text.HASH_ClearITPendingBit:0000000000000000 HASH_ClearITPendingBit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s:708    .text.HASH_ClearITPendingBit:0000000000000008 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccF3Rfoy.s 			page 27
+
+
+RCC_AHB2PeriphResetCmd

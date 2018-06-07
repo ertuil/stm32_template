@@ -1,0 +1,362 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"usart.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text._sys_exit,"ax",%progbits
+  20              		.align	2
+  21              		.global	_sys_exit
+  22              		.thumb
+  23              		.thumb_func
+  25              	_sys_exit:
+  26              	.LFB30:
+  27              		.file 1 ".//SYSTEM/usart.c"
+   1:.//SYSTEM/usart.c **** #include "sys.h"
+   2:.//SYSTEM/usart.c **** #include "usart.h"	  
+   3:.//SYSTEM/usart.c **** ////////////////////////////////////////////////////////////////////////////////// 	 
+   4:.//SYSTEM/usart.c **** //Èç¹ûÊ¹ÓÃucos,Ôò°üÀ¨ÏÂÃæµÄÍ·ÎÄ¼þ¼´¿É.
+   5:.//SYSTEM/usart.c **** #if SYSTEM_SUPPORT_OS
+   6:.//SYSTEM/usart.c **** #include "includes.h"					//ucos Ê¹ÓÃ	  
+   7:.//SYSTEM/usart.c **** #endif
+   8:.//SYSTEM/usart.c **** //////////////////////////////////////////////////////////////////////////////////	 
+   9:.//SYSTEM/usart.c **** //±¾³ÌÐòÖ»¹©Ñ§Ï°Ê¹ÓÃ£¬Î´¾­×÷ÕßÐí¿É£¬²»µÃÓÃÓÚÆäËüÈÎºÎÓÃÍ¾
+  10:.//SYSTEM/usart.c **** //ALIENTEK STM32¿ª·¢°å
+  11:.//SYSTEM/usart.c **** //´®¿Ú1³õÊ¼»¯		   
+  12:.//SYSTEM/usart.c **** //ÕýµãÔ­×Ó@ALIENTEK
+  13:.//SYSTEM/usart.c **** //¼¼ÊõÂÛÌ³:www.openedv.com
+  14:.//SYSTEM/usart.c **** //ÐÞ¸ÄÈÕÆÚ:2012/8/18
+  15:.//SYSTEM/usart.c **** //°æ±¾£ºV1.5
+  16:.//SYSTEM/usart.c **** //°æÈ¨ËùÓÐ£¬µÁ°æ±Ø¾¿¡£
+  17:.//SYSTEM/usart.c **** //Copyright(C) ¹ãÖÝÊÐÐÇÒíµç×Ó¿Æ¼¼ÓÐÏÞ¹«Ë¾ 2009-2019
+  18:.//SYSTEM/usart.c **** //All rights reserved
+  19:.//SYSTEM/usart.c **** //********************************************************************************
+  20:.//SYSTEM/usart.c **** //V1.3ÐÞ¸ÄËµÃ÷ 
+  21:.//SYSTEM/usart.c **** //Ö§³ÖÊÊÓ¦²»Í¬ÆµÂÊÏÂµÄ´®¿Ú²¨ÌØÂÊÉèÖÃ.
+  22:.//SYSTEM/usart.c **** //¼ÓÈëÁË¶ÔprintfµÄÖ§³Ö
+  23:.//SYSTEM/usart.c **** //Ôö¼ÓÁË´®¿Ú½ÓÊÕÃüÁî¹¦ÄÜ.
+  24:.//SYSTEM/usart.c **** //ÐÞÕýÁËprintfµÚÒ»¸ö×Ö·û¶ªÊ§µÄbug
+  25:.//SYSTEM/usart.c **** //V1.4ÐÞ¸ÄËµÃ÷
+  26:.//SYSTEM/usart.c **** //1,ÐÞ¸Ä´®¿Ú³õÊ¼»¯IOµÄbug
+  27:.//SYSTEM/usart.c **** //2,ÐÞ¸ÄÁËUSART_RX_STA,Ê¹µÃ´®¿Ú×î´ó½ÓÊÕ×Ö½ÚÊýÎª2µÄ14´Î·½
+  28:.//SYSTEM/usart.c **** //3,Ôö¼ÓÁËUSART_REC_LEN,ÓÃÓÚ¶¨Òå´®¿Ú×î´óÔÊÐí½ÓÊÕµÄ×Ö½ÚÊý(²»´óÓÚ2µÄ14´Î·½)
+  29:.//SYSTEM/usart.c **** //4,ÐÞ¸ÄÁËEN_USART1_RXµÄÊ¹ÄÜ·½Ê½
+  30:.//SYSTEM/usart.c **** //V1.5ÐÞ¸ÄËµÃ÷
+  31:.//SYSTEM/usart.c **** //1,Ôö¼ÓÁË¶ÔUCOSIIµÄÖ§³Ö
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s 			page 2
+
+
+  32:.//SYSTEM/usart.c **** ////////////////////////////////////////////////////////////////////////////////// 	  
+  33:.//SYSTEM/usart.c ****  
+  34:.//SYSTEM/usart.c **** 
+  35:.//SYSTEM/usart.c **** //////////////////////////////////////////////////////////////////
+  36:.//SYSTEM/usart.c **** //¼ÓÈëÒÔÏÂ´úÂë,Ö§³Öprintfº¯Êý,¶ø²»ÐèÒªÑ¡Ôñuse MicroLIB	  
+  37:.//SYSTEM/usart.c **** #if 1
+  38:.//SYSTEM/usart.c **** #pragma import(__use_no_semihosting)             
+  39:.//SYSTEM/usart.c **** //±ê×¼¿âÐèÒªµÄÖ§³Öº¯Êý                 
+  40:.//SYSTEM/usart.c **** struct __FILE 
+  41:.//SYSTEM/usart.c **** { 
+  42:.//SYSTEM/usart.c **** 	int handle; 
+  43:.//SYSTEM/usart.c **** 
+  44:.//SYSTEM/usart.c **** }; 
+  45:.//SYSTEM/usart.c **** 
+  46:.//SYSTEM/usart.c **** FILE __stdout;       
+  47:.//SYSTEM/usart.c **** //¶¨Òå_sys_exit()ÒÔ±ÜÃâÊ¹ÓÃ°ëÖ÷»úÄ£Ê½    
+  48:.//SYSTEM/usart.c **** _sys_exit(int x) 
+  49:.//SYSTEM/usart.c **** { 
+  28              		.loc 1 49 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  34              	.LVL1:
+  50:.//SYSTEM/usart.c **** 	x = x; 
+  51:.//SYSTEM/usart.c **** } 
+  35              		.loc 1 51 0
+  36 0000 7047     		bx	lr
+  37              		.cfi_endproc
+  38              	.LFE30:
+  40 0002 00BF     		.section	.text.fputc,"ax",%progbits
+  41              		.align	2
+  42              		.global	fputc
+  43              		.thumb
+  44              		.thumb_func
+  46              	fputc:
+  47              	.LFB31:
+  52:.//SYSTEM/usart.c **** //ÖØ¶¨Òåfputcº¯Êý 
+  53:.//SYSTEM/usart.c **** int fputc(int ch, FILE *f)
+  54:.//SYSTEM/usart.c **** {      
+  48              		.loc 1 54 0
+  49              		.cfi_startproc
+  50              		@ args = 0, pretend = 0, frame = 0
+  51              		@ frame_needed = 0, uses_anonymous_args = 0
+  52              		@ link register save eliminated.
+  53              	.LVL2:
+  54              	.L3:
+  55:.//SYSTEM/usart.c **** 	while((USART1->SR&0X40)==0);//Ñ­»··¢ËÍ,Ö±µ½·¢ËÍÍê±Ï   
+  55              		.loc 1 55 0 discriminator 1
+  56 0000 054B     		ldr	r3, .L4
+  57 0002 1B88     		ldrh	r3, [r3]
+  58 0004 03F04003 		and	r3, r3, #64
+  59 0008 9BB2     		uxth	r3, r3
+  60 000a 002B     		cmp	r3, #0
+  61 000c F8D0     		beq	.L3
+  56:.//SYSTEM/usart.c ****     USART1->DR = (u8) ch;      
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s 			page 3
+
+
+  62              		.loc 1 56 0
+  63 000e C2B2     		uxtb	r2, r0
+  64 0010 014B     		ldr	r3, .L4
+  65 0012 9A80     		strh	r2, [r3, #4]	@ movhi
+  57:.//SYSTEM/usart.c **** 	return ch;
+  58:.//SYSTEM/usart.c **** }
+  66              		.loc 1 58 0
+  67 0014 7047     		bx	lr
+  68              	.L5:
+  69 0016 00BF     		.align	2
+  70              	.L4:
+  71 0018 00380140 		.word	1073821696
+  72              		.cfi_endproc
+  73              	.LFE31:
+  75              		.section	.text.uart_init,"ax",%progbits
+  76              		.align	2
+  77              		.global	uart_init
+  78              		.thumb
+  79              		.thumb_func
+  81              	uart_init:
+  82              	.LFB32:
+  59:.//SYSTEM/usart.c **** #endif 
+  60:.//SYSTEM/usart.c **** 
+  61:.//SYSTEM/usart.c ****  
+  62:.//SYSTEM/usart.c ****  
+  63:.//SYSTEM/usart.c **** #if EN_USART1_RX   //Èç¹ûÊ¹ÄÜÁË½ÓÊÕ
+  64:.//SYSTEM/usart.c **** //´®¿Ú1ÖÐ¶Ï·þÎñ³ÌÐò
+  65:.//SYSTEM/usart.c **** //×¢Òâ,¶ÁÈ¡USARTx->SRÄÜ±ÜÃâÄªÃûÆäÃîµÄ´íÎó   	
+  66:.//SYSTEM/usart.c **** u8 USART_RX_BUF[USART_REC_LEN];     //½ÓÊÕ»º³å,×î´óUSART_REC_LEN¸ö×Ö½Ú.
+  67:.//SYSTEM/usart.c **** //½ÓÊÕ×´Ì¬
+  68:.//SYSTEM/usart.c **** //bit15£¬	½ÓÊÕÍê³É±êÖ¾
+  69:.//SYSTEM/usart.c **** //bit14£¬	½ÓÊÕµ½0x0d
+  70:.//SYSTEM/usart.c **** //bit13~0£¬	½ÓÊÕµ½µÄÓÐÐ§×Ö½ÚÊýÄ¿
+  71:.//SYSTEM/usart.c **** u16 USART_RX_STA=0;       //½ÓÊÕ×´Ì¬±ê¼Ç	  
+  72:.//SYSTEM/usart.c ****   
+  73:.//SYSTEM/usart.c **** void uart_init(u32 bound){
+  83              		.loc 1 73 0
+  84              		.cfi_startproc
+  85              		@ args = 0, pretend = 0, frame = 24
+  86              		@ frame_needed = 0, uses_anonymous_args = 0
+  87              	.LVL3:
+  88 0000 70B5     		push	{r4, r5, r6, lr}
+  89              	.LCFI0:
+  90              		.cfi_def_cfa_offset 16
+  91              		.cfi_offset 4, -16
+  92              		.cfi_offset 5, -12
+  93              		.cfi_offset 6, -8
+  94              		.cfi_offset 14, -4
+  95 0002 86B0     		sub	sp, sp, #24
+  96              	.LCFI1:
+  97              		.cfi_def_cfa_offset 40
+  98 0004 0646     		mov	r6, r0
+  74:.//SYSTEM/usart.c ****   //GPIO¶Ë¿ÚÉèÖÃ
+  75:.//SYSTEM/usart.c ****   GPIO_InitTypeDef GPIO_InitStructure;
+  76:.//SYSTEM/usart.c **** 	USART_InitTypeDef USART_InitStructure;
+  77:.//SYSTEM/usart.c **** 	NVIC_InitTypeDef NVIC_InitStructure;
+  78:.//SYSTEM/usart.c **** 	 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s 			page 4
+
+
+  79:.//SYSTEM/usart.c **** 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_GPIOA, ENABLE);	//Ê¹ÄÜUSART1£¬GPIOAÊ±Ö
+  99              		.loc 1 79 0
+ 100 0006 0121     		movs	r1, #1
+ 101 0008 44F20400 		movw	r0, #16388
+ 102              	.LVL4:
+ 103 000c FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 104              	.LVL5:
+  80:.//SYSTEM/usart.c ****   
+  81:.//SYSTEM/usart.c **** 	//USART1_TX   GPIOA.9
+  82:.//SYSTEM/usart.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9; //PA.9
+ 105              		.loc 1 82 0
+ 106 0010 4FF40073 		mov	r3, #512
+ 107 0014 ADF81430 		strh	r3, [sp, #20]	@ movhi
+  83:.//SYSTEM/usart.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 108              		.loc 1 83 0
+ 109 0018 0324     		movs	r4, #3
+ 110 001a 8DF81640 		strb	r4, [sp, #22]
+  84:.//SYSTEM/usart.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;	//¸´ÓÃÍÆÍìÊä³ö
+ 111              		.loc 1 84 0
+ 112 001e 1823     		movs	r3, #24
+ 113 0020 8DF81730 		strb	r3, [sp, #23]
+  85:.//SYSTEM/usart.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);//³õÊ¼»¯GPIOA.9
+ 114              		.loc 1 85 0
+ 115 0024 1D4D     		ldr	r5, .L8
+ 116 0026 05A9     		add	r1, sp, #20
+ 117 0028 2846     		mov	r0, r5
+ 118 002a FFF7FEFF 		bl	GPIO_Init
+ 119              	.LVL6:
+  86:.//SYSTEM/usart.c ****    
+  87:.//SYSTEM/usart.c ****   //USART1_RX	  GPIOA.10³õÊ¼»¯
+  88:.//SYSTEM/usart.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;//PA10
+ 120              		.loc 1 88 0
+ 121 002e 4FF48063 		mov	r3, #1024
+ 122 0032 ADF81430 		strh	r3, [sp, #20]	@ movhi
+  89:.//SYSTEM/usart.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;//¸¡¿ÕÊäÈë
+ 123              		.loc 1 89 0
+ 124 0036 0423     		movs	r3, #4
+ 125 0038 8DF81730 		strb	r3, [sp, #23]
+  90:.//SYSTEM/usart.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);//³õÊ¼»¯GPIOA.10  
+ 126              		.loc 1 90 0
+ 127 003c 05A9     		add	r1, sp, #20
+ 128 003e 2846     		mov	r0, r5
+ 129 0040 FFF7FEFF 		bl	GPIO_Init
+ 130              	.LVL7:
+  91:.//SYSTEM/usart.c **** 
+  92:.//SYSTEM/usart.c ****   //Usart1 NVIC ÅäÖÃ
+  93:.//SYSTEM/usart.c ****   NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+ 131              		.loc 1 93 0
+ 132 0044 2523     		movs	r3, #37
+ 133 0046 8DF80030 		strb	r3, [sp]
+  94:.//SYSTEM/usart.c **** 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=3 ;//ÇÀÕ¼ÓÅÏÈ¼¶3
+ 134              		.loc 1 94 0
+ 135 004a 8DF80140 		strb	r4, [sp, #1]
+  95:.//SYSTEM/usart.c **** 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;		//×ÓÓÅÏÈ¼¶3
+ 136              		.loc 1 95 0
+ 137 004e 8DF80240 		strb	r4, [sp, #2]
+  96:.//SYSTEM/usart.c **** 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQÍ¨µÀÊ¹ÄÜ
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s 			page 5
+
+
+ 138              		.loc 1 96 0
+ 139 0052 0125     		movs	r5, #1
+ 140 0054 8DF80350 		strb	r5, [sp, #3]
+  97:.//SYSTEM/usart.c **** 	NVIC_Init(&NVIC_InitStructure);	//¸ù¾ÝÖ¸¶¨µÄ²ÎÊý³õÊ¼»¯VIC¼Ä´æÆ÷
+ 141              		.loc 1 97 0
+ 142 0058 6846     		mov	r0, sp
+ 143 005a FFF7FEFF 		bl	NVIC_Init
+ 144              	.LVL8:
+  98:.//SYSTEM/usart.c ****   
+  99:.//SYSTEM/usart.c ****    //USART ³õÊ¼»¯ÉèÖÃ
+ 100:.//SYSTEM/usart.c **** 
+ 101:.//SYSTEM/usart.c **** 	USART_InitStructure.USART_BaudRate = bound;//´®¿Ú²¨ÌØÂÊ
+ 145              		.loc 1 101 0
+ 146 005e 0196     		str	r6, [sp, #4]
+ 102:.//SYSTEM/usart.c **** 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//×Ö³¤Îª8Î»Êý¾Ý¸ñÊ½
+ 147              		.loc 1 102 0
+ 148 0060 0023     		movs	r3, #0
+ 149 0062 ADF80830 		strh	r3, [sp, #8]	@ movhi
+ 103:.//SYSTEM/usart.c **** 	USART_InitStructure.USART_StopBits = USART_StopBits_1;//Ò»¸öÍ£Ö¹Î»
+ 150              		.loc 1 103 0
+ 151 0066 ADF80A30 		strh	r3, [sp, #10]	@ movhi
+ 104:.//SYSTEM/usart.c **** 	USART_InitStructure.USART_Parity = USART_Parity_No;//ÎÞÆæÅ¼Ð£ÑéÎ»
+ 152              		.loc 1 104 0
+ 153 006a ADF80C30 		strh	r3, [sp, #12]	@ movhi
+ 105:.//SYSTEM/usart.c **** 	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//ÎÞÓ²¼þÊý¾ÝÁ÷¿ØÖÆ
+ 154              		.loc 1 105 0
+ 155 006e ADF81030 		strh	r3, [sp, #16]	@ movhi
+ 106:.//SYSTEM/usart.c **** 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//ÊÕ·¢Ä£Ê½
+ 156              		.loc 1 106 0
+ 157 0072 0C23     		movs	r3, #12
+ 158 0074 ADF80E30 		strh	r3, [sp, #14]	@ movhi
+ 107:.//SYSTEM/usart.c **** 
+ 108:.//SYSTEM/usart.c ****   USART_Init(USART1, &USART_InitStructure); //³õÊ¼»¯´®¿Ú1
+ 159              		.loc 1 108 0
+ 160 0078 094C     		ldr	r4, .L8+4
+ 161 007a 01A9     		add	r1, sp, #4
+ 162 007c 2046     		mov	r0, r4
+ 163 007e FFF7FEFF 		bl	USART_Init
+ 164              	.LVL9:
+ 109:.//SYSTEM/usart.c ****   USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);//¿ªÆô´®¿Ú½ÓÊÜÖÐ¶Ï
+ 165              		.loc 1 109 0
+ 166 0082 2A46     		mov	r2, r5
+ 167 0084 40F22551 		movw	r1, #1317
+ 168 0088 2046     		mov	r0, r4
+ 169 008a FFF7FEFF 		bl	USART_ITConfig
+ 170              	.LVL10:
+ 110:.//SYSTEM/usart.c ****   USART_Cmd(USART1, ENABLE);                    //Ê¹ÄÜ´®¿Ú1 
+ 171              		.loc 1 110 0
+ 172 008e 2946     		mov	r1, r5
+ 173 0090 2046     		mov	r0, r4
+ 174 0092 FFF7FEFF 		bl	USART_Cmd
+ 175              	.LVL11:
+ 111:.//SYSTEM/usart.c **** 
+ 112:.//SYSTEM/usart.c **** }
+ 176              		.loc 1 112 0
+ 177 0096 06B0     		add	sp, sp, #24
+ 178              	.LCFI2:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s 			page 6
+
+
+ 179              		.cfi_def_cfa_offset 16
+ 180              		@ sp needed
+ 181 0098 70BD     		pop	{r4, r5, r6, pc}
+ 182              	.LVL12:
+ 183              	.L9:
+ 184 009a 00BF     		.align	2
+ 185              	.L8:
+ 186 009c 00080140 		.word	1073809408
+ 187 00a0 00380140 		.word	1073821696
+ 188              		.cfi_endproc
+ 189              	.LFE32:
+ 191              		.global	USART_RX_STA
+ 192              		.comm	USART_RX_BUF,200,4
+ 193              		.comm	__stdout,104,4
+ 194              		.section	.bss.USART_RX_STA,"aw",%nobits
+ 195              		.align	1
+ 198              	USART_RX_STA:
+ 199 0000 0000     		.space	2
+ 200              		.text
+ 201              	.Letext0:
+ 202              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 203              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 204              		.file 4 "USER/stm32f10x.h"
+ 205              		.file 5 "FWLIB/inc/stm32f10x_gpio.h"
+ 206              		.file 6 "FWLIB/inc/stm32f10x_usart.h"
+ 207              		.file 7 "FWLIB/inc/misc.h"
+ 208              		.file 8 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/lock.h"
+ 209              		.file 9 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_types.h"
+ 210              		.file 10 "/Users/ertuil/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/5.4.1/include/stddef.h"
+ 211              		.file 11 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/reent.h"
+ 212              		.file 12 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/stdio.h"
+ 213              		.file 13 "CORE/core_cm3.h"
+ 214              		.file 14 "FWLIB/inc/stm32f10x_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 usart.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s:20     .text._sys_exit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s:25     .text._sys_exit:0000000000000000 _sys_exit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s:41     .text.fputc:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s:46     .text.fputc:0000000000000000 fputc
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s:71     .text.fputc:0000000000000018 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s:76     .text.uart_init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s:81     .text.uart_init:0000000000000000 uart_init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s:186    .text.uart_init:000000000000009c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s:198    .bss.USART_RX_STA:0000000000000000 USART_RX_STA
+                            *COM*:00000000000000c8 USART_RX_BUF
+                            *COM*:0000000000000068 __stdout
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNOZZPt.s:195    .bss.USART_RX_STA:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphClockCmd
+GPIO_Init
+NVIC_Init
+USART_Init
+USART_ITConfig
+USART_Cmd

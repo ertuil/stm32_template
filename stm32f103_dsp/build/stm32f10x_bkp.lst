@@ -1,0 +1,744 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"stm32f10x_bkp.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.BKP_DeInit,"ax",%progbits
+  20              		.align	2
+  21              		.global	BKP_DeInit
+  22              		.thumb
+  23              		.thumb_func
+  25              	BKP_DeInit:
+  26              	.LFB29:
+  27              		.file 1 ".//FWLIB/src/stm32f10x_bkp.c"
+   1:.//FWLIB/src/stm32f10x_bkp.c **** /**
+   2:.//FWLIB/src/stm32f10x_bkp.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f10x_bkp.c ****   * @file    stm32f10x_bkp.c
+   4:.//FWLIB/src/stm32f10x_bkp.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f10x_bkp.c ****   * @version V3.5.0
+   6:.//FWLIB/src/stm32f10x_bkp.c ****   * @date    11-March-2011
+   7:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief   This file provides all the BKP firmware functions.
+   8:.//FWLIB/src/stm32f10x_bkp.c ****   ******************************************************************************
+   9:.//FWLIB/src/stm32f10x_bkp.c ****   * @attention
+  10:.//FWLIB/src/stm32f10x_bkp.c ****   *
+  11:.//FWLIB/src/stm32f10x_bkp.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:.//FWLIB/src/stm32f10x_bkp.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:.//FWLIB/src/stm32f10x_bkp.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:.//FWLIB/src/stm32f10x_bkp.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:.//FWLIB/src/stm32f10x_bkp.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:.//FWLIB/src/stm32f10x_bkp.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:.//FWLIB/src/stm32f10x_bkp.c ****   *
+  18:.//FWLIB/src/stm32f10x_bkp.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:.//FWLIB/src/stm32f10x_bkp.c ****   ******************************************************************************
+  20:.//FWLIB/src/stm32f10x_bkp.c ****   */
+  21:.//FWLIB/src/stm32f10x_bkp.c **** 
+  22:.//FWLIB/src/stm32f10x_bkp.c **** /* Includes ------------------------------------------------------------------*/
+  23:.//FWLIB/src/stm32f10x_bkp.c **** #include "stm32f10x_bkp.h"
+  24:.//FWLIB/src/stm32f10x_bkp.c **** #include "stm32f10x_rcc.h"
+  25:.//FWLIB/src/stm32f10x_bkp.c **** 
+  26:.//FWLIB/src/stm32f10x_bkp.c **** /** @addtogroup STM32F10x_StdPeriph_Driver
+  27:.//FWLIB/src/stm32f10x_bkp.c ****   * @{
+  28:.//FWLIB/src/stm32f10x_bkp.c ****   */
+  29:.//FWLIB/src/stm32f10x_bkp.c **** 
+  30:.//FWLIB/src/stm32f10x_bkp.c **** /** @defgroup BKP 
+  31:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief BKP driver modules
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 2
+
+
+  32:.//FWLIB/src/stm32f10x_bkp.c ****   * @{
+  33:.//FWLIB/src/stm32f10x_bkp.c ****   */
+  34:.//FWLIB/src/stm32f10x_bkp.c **** 
+  35:.//FWLIB/src/stm32f10x_bkp.c **** /** @defgroup BKP_Private_TypesDefinitions
+  36:.//FWLIB/src/stm32f10x_bkp.c ****   * @{
+  37:.//FWLIB/src/stm32f10x_bkp.c ****   */
+  38:.//FWLIB/src/stm32f10x_bkp.c **** 
+  39:.//FWLIB/src/stm32f10x_bkp.c **** /**
+  40:.//FWLIB/src/stm32f10x_bkp.c ****   * @}
+  41:.//FWLIB/src/stm32f10x_bkp.c ****   */
+  42:.//FWLIB/src/stm32f10x_bkp.c **** 
+  43:.//FWLIB/src/stm32f10x_bkp.c **** /** @defgroup BKP_Private_Defines
+  44:.//FWLIB/src/stm32f10x_bkp.c ****   * @{
+  45:.//FWLIB/src/stm32f10x_bkp.c ****   */
+  46:.//FWLIB/src/stm32f10x_bkp.c **** 
+  47:.//FWLIB/src/stm32f10x_bkp.c **** /* ------------ BKP registers bit address in the alias region --------------- */
+  48:.//FWLIB/src/stm32f10x_bkp.c **** #define BKP_OFFSET        (BKP_BASE - PERIPH_BASE)
+  49:.//FWLIB/src/stm32f10x_bkp.c **** 
+  50:.//FWLIB/src/stm32f10x_bkp.c **** /* --- CR Register ----*/
+  51:.//FWLIB/src/stm32f10x_bkp.c **** 
+  52:.//FWLIB/src/stm32f10x_bkp.c **** /* Alias word address of TPAL bit */
+  53:.//FWLIB/src/stm32f10x_bkp.c **** #define CR_OFFSET         (BKP_OFFSET + 0x30)
+  54:.//FWLIB/src/stm32f10x_bkp.c **** #define TPAL_BitNumber    0x01
+  55:.//FWLIB/src/stm32f10x_bkp.c **** #define CR_TPAL_BB        (PERIPH_BB_BASE + (CR_OFFSET * 32) + (TPAL_BitNumber * 4))
+  56:.//FWLIB/src/stm32f10x_bkp.c **** 
+  57:.//FWLIB/src/stm32f10x_bkp.c **** /* Alias word address of TPE bit */
+  58:.//FWLIB/src/stm32f10x_bkp.c **** #define TPE_BitNumber     0x00
+  59:.//FWLIB/src/stm32f10x_bkp.c **** #define CR_TPE_BB         (PERIPH_BB_BASE + (CR_OFFSET * 32) + (TPE_BitNumber * 4))
+  60:.//FWLIB/src/stm32f10x_bkp.c **** 
+  61:.//FWLIB/src/stm32f10x_bkp.c **** /* --- CSR Register ---*/
+  62:.//FWLIB/src/stm32f10x_bkp.c **** 
+  63:.//FWLIB/src/stm32f10x_bkp.c **** /* Alias word address of TPIE bit */
+  64:.//FWLIB/src/stm32f10x_bkp.c **** #define CSR_OFFSET        (BKP_OFFSET + 0x34)
+  65:.//FWLIB/src/stm32f10x_bkp.c **** #define TPIE_BitNumber    0x02
+  66:.//FWLIB/src/stm32f10x_bkp.c **** #define CSR_TPIE_BB       (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (TPIE_BitNumber * 4))
+  67:.//FWLIB/src/stm32f10x_bkp.c **** 
+  68:.//FWLIB/src/stm32f10x_bkp.c **** /* Alias word address of TIF bit */
+  69:.//FWLIB/src/stm32f10x_bkp.c **** #define TIF_BitNumber     0x09
+  70:.//FWLIB/src/stm32f10x_bkp.c **** #define CSR_TIF_BB        (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (TIF_BitNumber * 4))
+  71:.//FWLIB/src/stm32f10x_bkp.c **** 
+  72:.//FWLIB/src/stm32f10x_bkp.c **** /* Alias word address of TEF bit */
+  73:.//FWLIB/src/stm32f10x_bkp.c **** #define TEF_BitNumber     0x08
+  74:.//FWLIB/src/stm32f10x_bkp.c **** #define CSR_TEF_BB        (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (TEF_BitNumber * 4))
+  75:.//FWLIB/src/stm32f10x_bkp.c **** 
+  76:.//FWLIB/src/stm32f10x_bkp.c **** /* ---------------------- BKP registers bit mask ------------------------ */
+  77:.//FWLIB/src/stm32f10x_bkp.c **** 
+  78:.//FWLIB/src/stm32f10x_bkp.c **** /* RTCCR register bit mask */
+  79:.//FWLIB/src/stm32f10x_bkp.c **** #define RTCCR_CAL_MASK    ((uint16_t)0xFF80)
+  80:.//FWLIB/src/stm32f10x_bkp.c **** #define RTCCR_MASK        ((uint16_t)0xFC7F)
+  81:.//FWLIB/src/stm32f10x_bkp.c **** 
+  82:.//FWLIB/src/stm32f10x_bkp.c **** /**
+  83:.//FWLIB/src/stm32f10x_bkp.c ****   * @}
+  84:.//FWLIB/src/stm32f10x_bkp.c ****   */ 
+  85:.//FWLIB/src/stm32f10x_bkp.c **** 
+  86:.//FWLIB/src/stm32f10x_bkp.c **** 
+  87:.//FWLIB/src/stm32f10x_bkp.c **** /** @defgroup BKP_Private_Macros
+  88:.//FWLIB/src/stm32f10x_bkp.c ****   * @{
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 3
+
+
+  89:.//FWLIB/src/stm32f10x_bkp.c ****   */
+  90:.//FWLIB/src/stm32f10x_bkp.c **** 
+  91:.//FWLIB/src/stm32f10x_bkp.c **** /**
+  92:.//FWLIB/src/stm32f10x_bkp.c ****   * @}
+  93:.//FWLIB/src/stm32f10x_bkp.c ****   */
+  94:.//FWLIB/src/stm32f10x_bkp.c **** 
+  95:.//FWLIB/src/stm32f10x_bkp.c **** /** @defgroup BKP_Private_Variables
+  96:.//FWLIB/src/stm32f10x_bkp.c ****   * @{
+  97:.//FWLIB/src/stm32f10x_bkp.c ****   */
+  98:.//FWLIB/src/stm32f10x_bkp.c **** 
+  99:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 100:.//FWLIB/src/stm32f10x_bkp.c ****   * @}
+ 101:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 102:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 103:.//FWLIB/src/stm32f10x_bkp.c **** /** @defgroup BKP_Private_FunctionPrototypes
+ 104:.//FWLIB/src/stm32f10x_bkp.c ****   * @{
+ 105:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 106:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 107:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 108:.//FWLIB/src/stm32f10x_bkp.c ****   * @}
+ 109:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 110:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 111:.//FWLIB/src/stm32f10x_bkp.c **** /** @defgroup BKP_Private_Functions
+ 112:.//FWLIB/src/stm32f10x_bkp.c ****   * @{
+ 113:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 114:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 115:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 116:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief  Deinitializes the BKP peripheral registers to their default reset values.
+ 117:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  None
+ 118:.//FWLIB/src/stm32f10x_bkp.c ****   * @retval None
+ 119:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 120:.//FWLIB/src/stm32f10x_bkp.c **** void BKP_DeInit(void)
+ 121:.//FWLIB/src/stm32f10x_bkp.c **** {
+  28              		.loc 1 121 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+ 122:.//FWLIB/src/stm32f10x_bkp.c ****   RCC_BackupResetCmd(ENABLE);
+  37              		.loc 1 122 0
+  38 0002 0120     		movs	r0, #1
+  39 0004 FFF7FEFF 		bl	RCC_BackupResetCmd
+  40              	.LVL0:
+ 123:.//FWLIB/src/stm32f10x_bkp.c ****   RCC_BackupResetCmd(DISABLE);
+  41              		.loc 1 123 0
+  42 0008 0020     		movs	r0, #0
+  43 000a FFF7FEFF 		bl	RCC_BackupResetCmd
+  44              	.LVL1:
+  45 000e 08BD     		pop	{r3, pc}
+  46              		.cfi_endproc
+  47              	.LFE29:
+  49              		.section	.text.BKP_TamperPinLevelConfig,"ax",%progbits
+  50              		.align	2
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 4
+
+
+  51              		.global	BKP_TamperPinLevelConfig
+  52              		.thumb
+  53              		.thumb_func
+  55              	BKP_TamperPinLevelConfig:
+  56              	.LFB30:
+ 124:.//FWLIB/src/stm32f10x_bkp.c **** }
+ 125:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 126:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 127:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief  Configures the Tamper Pin active level.
+ 128:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  BKP_TamperPinLevel: specifies the Tamper Pin active level.
+ 129:.//FWLIB/src/stm32f10x_bkp.c ****   *   This parameter can be one of the following values:
+ 130:.//FWLIB/src/stm32f10x_bkp.c ****   *     @arg BKP_TamperPinLevel_High: Tamper pin active on high level
+ 131:.//FWLIB/src/stm32f10x_bkp.c ****   *     @arg BKP_TamperPinLevel_Low: Tamper pin active on low level
+ 132:.//FWLIB/src/stm32f10x_bkp.c ****   * @retval None
+ 133:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 134:.//FWLIB/src/stm32f10x_bkp.c **** void BKP_TamperPinLevelConfig(uint16_t BKP_TamperPinLevel)
+ 135:.//FWLIB/src/stm32f10x_bkp.c **** {
+  57              		.loc 1 135 0
+  58              		.cfi_startproc
+  59              		@ args = 0, pretend = 0, frame = 0
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61              		@ link register save eliminated.
+  62              	.LVL2:
+ 136:.//FWLIB/src/stm32f10x_bkp.c ****   /* Check the parameters */
+ 137:.//FWLIB/src/stm32f10x_bkp.c ****   assert_param(IS_BKP_TAMPER_PIN_LEVEL(BKP_TamperPinLevel));
+ 138:.//FWLIB/src/stm32f10x_bkp.c ****   *(__IO uint32_t *) CR_TPAL_BB = BKP_TamperPinLevel;
+  63              		.loc 1 138 0
+  64 0000 014B     		ldr	r3, .L4
+  65 0002 1860     		str	r0, [r3]
+  66 0004 7047     		bx	lr
+  67              	.L5:
+  68 0006 00BF     		.align	2
+  69              	.L4:
+  70 0008 04860D42 		.word	1108182532
+  71              		.cfi_endproc
+  72              	.LFE30:
+  74              		.section	.text.BKP_TamperPinCmd,"ax",%progbits
+  75              		.align	2
+  76              		.global	BKP_TamperPinCmd
+  77              		.thumb
+  78              		.thumb_func
+  80              	BKP_TamperPinCmd:
+  81              	.LFB31:
+ 139:.//FWLIB/src/stm32f10x_bkp.c **** }
+ 140:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 141:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 142:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief  Enables or disables the Tamper Pin activation.
+ 143:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  NewState: new state of the Tamper Pin activation.
+ 144:.//FWLIB/src/stm32f10x_bkp.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 145:.//FWLIB/src/stm32f10x_bkp.c ****   * @retval None
+ 146:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 147:.//FWLIB/src/stm32f10x_bkp.c **** void BKP_TamperPinCmd(FunctionalState NewState)
+ 148:.//FWLIB/src/stm32f10x_bkp.c **** {
+  82              		.loc 1 148 0
+  83              		.cfi_startproc
+  84              		@ args = 0, pretend = 0, frame = 0
+  85              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 5
+
+
+  86              		@ link register save eliminated.
+  87              	.LVL3:
+ 149:.//FWLIB/src/stm32f10x_bkp.c ****   /* Check the parameters */
+ 150:.//FWLIB/src/stm32f10x_bkp.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 151:.//FWLIB/src/stm32f10x_bkp.c ****   *(__IO uint32_t *) CR_TPE_BB = (uint32_t)NewState;
+  88              		.loc 1 151 0
+  89 0000 014B     		ldr	r3, .L7
+  90 0002 1860     		str	r0, [r3]
+  91 0004 7047     		bx	lr
+  92              	.L8:
+  93 0006 00BF     		.align	2
+  94              	.L7:
+  95 0008 00860D42 		.word	1108182528
+  96              		.cfi_endproc
+  97              	.LFE31:
+  99              		.section	.text.BKP_ITConfig,"ax",%progbits
+ 100              		.align	2
+ 101              		.global	BKP_ITConfig
+ 102              		.thumb
+ 103              		.thumb_func
+ 105              	BKP_ITConfig:
+ 106              	.LFB32:
+ 152:.//FWLIB/src/stm32f10x_bkp.c **** }
+ 153:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 154:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 155:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief  Enables or disables the Tamper Pin Interrupt.
+ 156:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  NewState: new state of the Tamper Pin Interrupt.
+ 157:.//FWLIB/src/stm32f10x_bkp.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 158:.//FWLIB/src/stm32f10x_bkp.c ****   * @retval None
+ 159:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 160:.//FWLIB/src/stm32f10x_bkp.c **** void BKP_ITConfig(FunctionalState NewState)
+ 161:.//FWLIB/src/stm32f10x_bkp.c **** {
+ 107              		.loc 1 161 0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 0
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111              		@ link register save eliminated.
+ 112              	.LVL4:
+ 162:.//FWLIB/src/stm32f10x_bkp.c ****   /* Check the parameters */
+ 163:.//FWLIB/src/stm32f10x_bkp.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 164:.//FWLIB/src/stm32f10x_bkp.c ****   *(__IO uint32_t *) CSR_TPIE_BB = (uint32_t)NewState;
+ 113              		.loc 1 164 0
+ 114 0000 014B     		ldr	r3, .L10
+ 115 0002 1860     		str	r0, [r3]
+ 116 0004 7047     		bx	lr
+ 117              	.L11:
+ 118 0006 00BF     		.align	2
+ 119              	.L10:
+ 120 0008 88860D42 		.word	1108182664
+ 121              		.cfi_endproc
+ 122              	.LFE32:
+ 124              		.section	.text.BKP_RTCOutputConfig,"ax",%progbits
+ 125              		.align	2
+ 126              		.global	BKP_RTCOutputConfig
+ 127              		.thumb
+ 128              		.thumb_func
+ 130              	BKP_RTCOutputConfig:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 6
+
+
+ 131              	.LFB33:
+ 165:.//FWLIB/src/stm32f10x_bkp.c **** }
+ 166:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 167:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 168:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief  Select the RTC output source to output on the Tamper pin.
+ 169:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  BKP_RTCOutputSource: specifies the RTC output source.
+ 170:.//FWLIB/src/stm32f10x_bkp.c ****   *   This parameter can be one of the following values:
+ 171:.//FWLIB/src/stm32f10x_bkp.c ****   *     @arg BKP_RTCOutputSource_None: no RTC output on the Tamper pin.
+ 172:.//FWLIB/src/stm32f10x_bkp.c ****   *     @arg BKP_RTCOutputSource_CalibClock: output the RTC clock with frequency
+ 173:.//FWLIB/src/stm32f10x_bkp.c ****   *                                          divided by 64 on the Tamper pin.
+ 174:.//FWLIB/src/stm32f10x_bkp.c ****   *     @arg BKP_RTCOutputSource_Alarm: output the RTC Alarm pulse signal on
+ 175:.//FWLIB/src/stm32f10x_bkp.c ****   *                                     the Tamper pin.
+ 176:.//FWLIB/src/stm32f10x_bkp.c ****   *     @arg BKP_RTCOutputSource_Second: output the RTC Second pulse signal on
+ 177:.//FWLIB/src/stm32f10x_bkp.c ****   *                                      the Tamper pin.  
+ 178:.//FWLIB/src/stm32f10x_bkp.c ****   * @retval None
+ 179:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 180:.//FWLIB/src/stm32f10x_bkp.c **** void BKP_RTCOutputConfig(uint16_t BKP_RTCOutputSource)
+ 181:.//FWLIB/src/stm32f10x_bkp.c **** {
+ 132              		.loc 1 181 0
+ 133              		.cfi_startproc
+ 134              		@ args = 0, pretend = 0, frame = 0
+ 135              		@ frame_needed = 0, uses_anonymous_args = 0
+ 136              		@ link register save eliminated.
+ 137              	.LVL5:
+ 182:.//FWLIB/src/stm32f10x_bkp.c ****   uint16_t tmpreg = 0;
+ 183:.//FWLIB/src/stm32f10x_bkp.c ****   /* Check the parameters */
+ 184:.//FWLIB/src/stm32f10x_bkp.c ****   assert_param(IS_BKP_RTC_OUTPUT_SOURCE(BKP_RTCOutputSource));
+ 185:.//FWLIB/src/stm32f10x_bkp.c ****   tmpreg = BKP->RTCCR;
+ 138              		.loc 1 185 0
+ 139 0000 034A     		ldr	r2, .L13
+ 140 0002 938D     		ldrh	r3, [r2, #44]
+ 141 0004 9BB2     		uxth	r3, r3
+ 142              	.LVL6:
+ 186:.//FWLIB/src/stm32f10x_bkp.c ****   /* Clear CCO, ASOE and ASOS bits */
+ 187:.//FWLIB/src/stm32f10x_bkp.c ****   tmpreg &= RTCCR_MASK;
+ 143              		.loc 1 187 0
+ 144 0006 23F46073 		bic	r3, r3, #896
+ 145              	.LVL7:
+ 188:.//FWLIB/src/stm32f10x_bkp.c ****   
+ 189:.//FWLIB/src/stm32f10x_bkp.c ****   /* Set CCO, ASOE and ASOS bits according to BKP_RTCOutputSource value */
+ 190:.//FWLIB/src/stm32f10x_bkp.c ****   tmpreg |= BKP_RTCOutputSource;
+ 146              		.loc 1 190 0
+ 147 000a 1843     		orrs	r0, r0, r3
+ 148              	.LVL8:
+ 191:.//FWLIB/src/stm32f10x_bkp.c ****   /* Store the new value */
+ 192:.//FWLIB/src/stm32f10x_bkp.c ****   BKP->RTCCR = tmpreg;
+ 149              		.loc 1 192 0
+ 150 000c 9085     		strh	r0, [r2, #44]	@ movhi
+ 151 000e 7047     		bx	lr
+ 152              	.L14:
+ 153              		.align	2
+ 154              	.L13:
+ 155 0010 006C0040 		.word	1073769472
+ 156              		.cfi_endproc
+ 157              	.LFE33:
+ 159              		.section	.text.BKP_SetRTCCalibrationValue,"ax",%progbits
+ 160              		.align	2
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 7
+
+
+ 161              		.global	BKP_SetRTCCalibrationValue
+ 162              		.thumb
+ 163              		.thumb_func
+ 165              	BKP_SetRTCCalibrationValue:
+ 166              	.LFB34:
+ 193:.//FWLIB/src/stm32f10x_bkp.c **** }
+ 194:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 195:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 196:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief  Sets RTC Clock Calibration value.
+ 197:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  CalibrationValue: specifies the RTC Clock Calibration value.
+ 198:.//FWLIB/src/stm32f10x_bkp.c ****   *   This parameter must be a number between 0 and 0x7F.
+ 199:.//FWLIB/src/stm32f10x_bkp.c ****   * @retval None
+ 200:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 201:.//FWLIB/src/stm32f10x_bkp.c **** void BKP_SetRTCCalibrationValue(uint8_t CalibrationValue)
+ 202:.//FWLIB/src/stm32f10x_bkp.c **** {
+ 167              		.loc 1 202 0
+ 168              		.cfi_startproc
+ 169              		@ args = 0, pretend = 0, frame = 0
+ 170              		@ frame_needed = 0, uses_anonymous_args = 0
+ 171              		@ link register save eliminated.
+ 172              	.LVL9:
+ 203:.//FWLIB/src/stm32f10x_bkp.c ****   uint16_t tmpreg = 0;
+ 204:.//FWLIB/src/stm32f10x_bkp.c ****   /* Check the parameters */
+ 205:.//FWLIB/src/stm32f10x_bkp.c ****   assert_param(IS_BKP_CALIBRATION_VALUE(CalibrationValue));
+ 206:.//FWLIB/src/stm32f10x_bkp.c ****   tmpreg = BKP->RTCCR;
+ 173              		.loc 1 206 0
+ 174 0000 034A     		ldr	r2, .L16
+ 175 0002 938D     		ldrh	r3, [r2, #44]
+ 176 0004 9BB2     		uxth	r3, r3
+ 177              	.LVL10:
+ 207:.//FWLIB/src/stm32f10x_bkp.c ****   /* Clear CAL[6:0] bits */
+ 208:.//FWLIB/src/stm32f10x_bkp.c ****   tmpreg &= RTCCR_CAL_MASK;
+ 178              		.loc 1 208 0
+ 179 0006 23F07F03 		bic	r3, r3, #127
+ 180              	.LVL11:
+ 209:.//FWLIB/src/stm32f10x_bkp.c ****   /* Set CAL[6:0] bits according to CalibrationValue value */
+ 210:.//FWLIB/src/stm32f10x_bkp.c ****   tmpreg |= CalibrationValue;
+ 181              		.loc 1 210 0
+ 182 000a 1843     		orrs	r0, r0, r3
+ 183              	.LVL12:
+ 211:.//FWLIB/src/stm32f10x_bkp.c ****   /* Store the new value */
+ 212:.//FWLIB/src/stm32f10x_bkp.c ****   BKP->RTCCR = tmpreg;
+ 184              		.loc 1 212 0
+ 185 000c 9085     		strh	r0, [r2, #44]	@ movhi
+ 186 000e 7047     		bx	lr
+ 187              	.L17:
+ 188              		.align	2
+ 189              	.L16:
+ 190 0010 006C0040 		.word	1073769472
+ 191              		.cfi_endproc
+ 192              	.LFE34:
+ 194              		.section	.text.BKP_WriteBackupRegister,"ax",%progbits
+ 195              		.align	2
+ 196              		.global	BKP_WriteBackupRegister
+ 197              		.thumb
+ 198              		.thumb_func
+ 200              	BKP_WriteBackupRegister:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 8
+
+
+ 201              	.LFB35:
+ 213:.//FWLIB/src/stm32f10x_bkp.c **** }
+ 214:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 215:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 216:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief  Writes user data to the specified Data Backup Register.
+ 217:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  BKP_DR: specifies the Data Backup Register.
+ 218:.//FWLIB/src/stm32f10x_bkp.c ****   *   This parameter can be BKP_DRx where x:[1, 42]
+ 219:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  Data: data to write
+ 220:.//FWLIB/src/stm32f10x_bkp.c ****   * @retval None
+ 221:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 222:.//FWLIB/src/stm32f10x_bkp.c **** void BKP_WriteBackupRegister(uint16_t BKP_DR, uint16_t Data)
+ 223:.//FWLIB/src/stm32f10x_bkp.c **** {
+ 202              		.loc 1 223 0
+ 203              		.cfi_startproc
+ 204              		@ args = 0, pretend = 0, frame = 8
+ 205              		@ frame_needed = 0, uses_anonymous_args = 0
+ 206              		@ link register save eliminated.
+ 207              	.LVL13:
+ 208 0000 82B0     		sub	sp, sp, #8
+ 209              	.LCFI1:
+ 210              		.cfi_def_cfa_offset 8
+ 224:.//FWLIB/src/stm32f10x_bkp.c ****   __IO uint32_t tmp = 0;
+ 211              		.loc 1 224 0
+ 212 0002 0023     		movs	r3, #0
+ 213 0004 0193     		str	r3, [sp, #4]
+ 225:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 226:.//FWLIB/src/stm32f10x_bkp.c ****   /* Check the parameters */
+ 227:.//FWLIB/src/stm32f10x_bkp.c ****   assert_param(IS_BKP_DR(BKP_DR));
+ 228:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 229:.//FWLIB/src/stm32f10x_bkp.c ****   tmp = (uint32_t)BKP_BASE; 
+ 214              		.loc 1 229 0
+ 215 0006 044B     		ldr	r3, .L20
+ 216 0008 0193     		str	r3, [sp, #4]
+ 230:.//FWLIB/src/stm32f10x_bkp.c ****   tmp += BKP_DR;
+ 217              		.loc 1 230 0
+ 218 000a 019B     		ldr	r3, [sp, #4]
+ 219 000c 1844     		add	r0, r0, r3
+ 220              	.LVL14:
+ 221 000e 0190     		str	r0, [sp, #4]
+ 231:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 232:.//FWLIB/src/stm32f10x_bkp.c ****   *(__IO uint32_t *) tmp = Data;
+ 222              		.loc 1 232 0
+ 223 0010 019B     		ldr	r3, [sp, #4]
+ 224 0012 1960     		str	r1, [r3]
+ 233:.//FWLIB/src/stm32f10x_bkp.c **** }
+ 225              		.loc 1 233 0
+ 226 0014 02B0     		add	sp, sp, #8
+ 227              	.LCFI2:
+ 228              		.cfi_def_cfa_offset 0
+ 229              		@ sp needed
+ 230 0016 7047     		bx	lr
+ 231              	.L21:
+ 232              		.align	2
+ 233              	.L20:
+ 234 0018 006C0040 		.word	1073769472
+ 235              		.cfi_endproc
+ 236              	.LFE35:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 9
+
+
+ 238              		.section	.text.BKP_ReadBackupRegister,"ax",%progbits
+ 239              		.align	2
+ 240              		.global	BKP_ReadBackupRegister
+ 241              		.thumb
+ 242              		.thumb_func
+ 244              	BKP_ReadBackupRegister:
+ 245              	.LFB36:
+ 234:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 235:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 236:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief  Reads data from the specified Data Backup Register.
+ 237:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  BKP_DR: specifies the Data Backup Register.
+ 238:.//FWLIB/src/stm32f10x_bkp.c ****   *   This parameter can be BKP_DRx where x:[1, 42]
+ 239:.//FWLIB/src/stm32f10x_bkp.c ****   * @retval The content of the specified Data Backup Register
+ 240:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 241:.//FWLIB/src/stm32f10x_bkp.c **** uint16_t BKP_ReadBackupRegister(uint16_t BKP_DR)
+ 242:.//FWLIB/src/stm32f10x_bkp.c **** {
+ 246              		.loc 1 242 0
+ 247              		.cfi_startproc
+ 248              		@ args = 0, pretend = 0, frame = 8
+ 249              		@ frame_needed = 0, uses_anonymous_args = 0
+ 250              		@ link register save eliminated.
+ 251              	.LVL15:
+ 252 0000 82B0     		sub	sp, sp, #8
+ 253              	.LCFI3:
+ 254              		.cfi_def_cfa_offset 8
+ 243:.//FWLIB/src/stm32f10x_bkp.c ****   __IO uint32_t tmp = 0;
+ 255              		.loc 1 243 0
+ 256 0002 0023     		movs	r3, #0
+ 257 0004 0193     		str	r3, [sp, #4]
+ 244:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 245:.//FWLIB/src/stm32f10x_bkp.c ****   /* Check the parameters */
+ 246:.//FWLIB/src/stm32f10x_bkp.c ****   assert_param(IS_BKP_DR(BKP_DR));
+ 247:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 248:.//FWLIB/src/stm32f10x_bkp.c ****   tmp = (uint32_t)BKP_BASE; 
+ 258              		.loc 1 248 0
+ 259 0006 054B     		ldr	r3, .L24
+ 260 0008 0193     		str	r3, [sp, #4]
+ 249:.//FWLIB/src/stm32f10x_bkp.c ****   tmp += BKP_DR;
+ 261              		.loc 1 249 0
+ 262 000a 019B     		ldr	r3, [sp, #4]
+ 263 000c 1844     		add	r0, r0, r3
+ 264              	.LVL16:
+ 265 000e 0190     		str	r0, [sp, #4]
+ 250:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 251:.//FWLIB/src/stm32f10x_bkp.c ****   return (*(__IO uint16_t *) tmp);
+ 266              		.loc 1 251 0
+ 267 0010 019B     		ldr	r3, [sp, #4]
+ 268 0012 1888     		ldrh	r0, [r3]
+ 252:.//FWLIB/src/stm32f10x_bkp.c **** }
+ 269              		.loc 1 252 0
+ 270 0014 80B2     		uxth	r0, r0
+ 271 0016 02B0     		add	sp, sp, #8
+ 272              	.LCFI4:
+ 273              		.cfi_def_cfa_offset 0
+ 274              		@ sp needed
+ 275 0018 7047     		bx	lr
+ 276              	.L25:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 10
+
+
+ 277 001a 00BF     		.align	2
+ 278              	.L24:
+ 279 001c 006C0040 		.word	1073769472
+ 280              		.cfi_endproc
+ 281              	.LFE36:
+ 283              		.section	.text.BKP_GetFlagStatus,"ax",%progbits
+ 284              		.align	2
+ 285              		.global	BKP_GetFlagStatus
+ 286              		.thumb
+ 287              		.thumb_func
+ 289              	BKP_GetFlagStatus:
+ 290              	.LFB37:
+ 253:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 254:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 255:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief  Checks whether the Tamper Pin Event flag is set or not.
+ 256:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  None
+ 257:.//FWLIB/src/stm32f10x_bkp.c ****   * @retval The new state of the Tamper Pin Event flag (SET or RESET).
+ 258:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 259:.//FWLIB/src/stm32f10x_bkp.c **** FlagStatus BKP_GetFlagStatus(void)
+ 260:.//FWLIB/src/stm32f10x_bkp.c **** {
+ 291              		.loc 1 260 0
+ 292              		.cfi_startproc
+ 293              		@ args = 0, pretend = 0, frame = 0
+ 294              		@ frame_needed = 0, uses_anonymous_args = 0
+ 295              		@ link register save eliminated.
+ 261:.//FWLIB/src/stm32f10x_bkp.c ****   return (FlagStatus)(*(__IO uint32_t *) CSR_TEF_BB);
+ 296              		.loc 1 261 0
+ 297 0000 014B     		ldr	r3, .L27
+ 298 0002 1868     		ldr	r0, [r3]
+ 262:.//FWLIB/src/stm32f10x_bkp.c **** }
+ 299              		.loc 1 262 0
+ 300 0004 C0B2     		uxtb	r0, r0
+ 301 0006 7047     		bx	lr
+ 302              	.L28:
+ 303              		.align	2
+ 304              	.L27:
+ 305 0008 A0860D42 		.word	1108182688
+ 306              		.cfi_endproc
+ 307              	.LFE37:
+ 309              		.section	.text.BKP_ClearFlag,"ax",%progbits
+ 310              		.align	2
+ 311              		.global	BKP_ClearFlag
+ 312              		.thumb
+ 313              		.thumb_func
+ 315              	BKP_ClearFlag:
+ 316              	.LFB38:
+ 263:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 264:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 265:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief  Clears Tamper Pin Event pending flag.
+ 266:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  None
+ 267:.//FWLIB/src/stm32f10x_bkp.c ****   * @retval None
+ 268:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 269:.//FWLIB/src/stm32f10x_bkp.c **** void BKP_ClearFlag(void)
+ 270:.//FWLIB/src/stm32f10x_bkp.c **** {
+ 317              		.loc 1 270 0
+ 318              		.cfi_startproc
+ 319              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 11
+
+
+ 320              		@ frame_needed = 0, uses_anonymous_args = 0
+ 321              		@ link register save eliminated.
+ 271:.//FWLIB/src/stm32f10x_bkp.c ****   /* Set CTE bit to clear Tamper Pin Event flag */
+ 272:.//FWLIB/src/stm32f10x_bkp.c ****   BKP->CSR |= BKP_CSR_CTE;
+ 322              		.loc 1 272 0
+ 323 0000 034A     		ldr	r2, .L30
+ 324 0002 938E     		ldrh	r3, [r2, #52]
+ 325 0004 9BB2     		uxth	r3, r3
+ 326 0006 43F00103 		orr	r3, r3, #1
+ 327 000a 9386     		strh	r3, [r2, #52]	@ movhi
+ 328 000c 7047     		bx	lr
+ 329              	.L31:
+ 330 000e 00BF     		.align	2
+ 331              	.L30:
+ 332 0010 006C0040 		.word	1073769472
+ 333              		.cfi_endproc
+ 334              	.LFE38:
+ 336              		.section	.text.BKP_GetITStatus,"ax",%progbits
+ 337              		.align	2
+ 338              		.global	BKP_GetITStatus
+ 339              		.thumb
+ 340              		.thumb_func
+ 342              	BKP_GetITStatus:
+ 343              	.LFB39:
+ 273:.//FWLIB/src/stm32f10x_bkp.c **** }
+ 274:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 275:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 276:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief  Checks whether the Tamper Pin Interrupt has occurred or not.
+ 277:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  None
+ 278:.//FWLIB/src/stm32f10x_bkp.c ****   * @retval The new state of the Tamper Pin Interrupt (SET or RESET).
+ 279:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 280:.//FWLIB/src/stm32f10x_bkp.c **** ITStatus BKP_GetITStatus(void)
+ 281:.//FWLIB/src/stm32f10x_bkp.c **** {
+ 344              		.loc 1 281 0
+ 345              		.cfi_startproc
+ 346              		@ args = 0, pretend = 0, frame = 0
+ 347              		@ frame_needed = 0, uses_anonymous_args = 0
+ 348              		@ link register save eliminated.
+ 282:.//FWLIB/src/stm32f10x_bkp.c ****   return (ITStatus)(*(__IO uint32_t *) CSR_TIF_BB);
+ 349              		.loc 1 282 0
+ 350 0000 014B     		ldr	r3, .L33
+ 351 0002 1868     		ldr	r0, [r3]
+ 283:.//FWLIB/src/stm32f10x_bkp.c **** }
+ 352              		.loc 1 283 0
+ 353 0004 C0B2     		uxtb	r0, r0
+ 354 0006 7047     		bx	lr
+ 355              	.L34:
+ 356              		.align	2
+ 357              	.L33:
+ 358 0008 A4860D42 		.word	1108182692
+ 359              		.cfi_endproc
+ 360              	.LFE39:
+ 362              		.section	.text.BKP_ClearITPendingBit,"ax",%progbits
+ 363              		.align	2
+ 364              		.global	BKP_ClearITPendingBit
+ 365              		.thumb
+ 366              		.thumb_func
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 12
+
+
+ 368              	BKP_ClearITPendingBit:
+ 369              	.LFB40:
+ 284:.//FWLIB/src/stm32f10x_bkp.c **** 
+ 285:.//FWLIB/src/stm32f10x_bkp.c **** /**
+ 286:.//FWLIB/src/stm32f10x_bkp.c ****   * @brief  Clears Tamper Pin Interrupt pending bit.
+ 287:.//FWLIB/src/stm32f10x_bkp.c ****   * @param  None
+ 288:.//FWLIB/src/stm32f10x_bkp.c ****   * @retval None
+ 289:.//FWLIB/src/stm32f10x_bkp.c ****   */
+ 290:.//FWLIB/src/stm32f10x_bkp.c **** void BKP_ClearITPendingBit(void)
+ 291:.//FWLIB/src/stm32f10x_bkp.c **** {
+ 370              		.loc 1 291 0
+ 371              		.cfi_startproc
+ 372              		@ args = 0, pretend = 0, frame = 0
+ 373              		@ frame_needed = 0, uses_anonymous_args = 0
+ 374              		@ link register save eliminated.
+ 292:.//FWLIB/src/stm32f10x_bkp.c ****   /* Set CTI bit to clear Tamper Pin Interrupt pending bit */
+ 293:.//FWLIB/src/stm32f10x_bkp.c ****   BKP->CSR |= BKP_CSR_CTI;
+ 375              		.loc 1 293 0
+ 376 0000 034A     		ldr	r2, .L36
+ 377 0002 938E     		ldrh	r3, [r2, #52]
+ 378 0004 9BB2     		uxth	r3, r3
+ 379 0006 43F00203 		orr	r3, r3, #2
+ 380 000a 9386     		strh	r3, [r2, #52]	@ movhi
+ 381 000c 7047     		bx	lr
+ 382              	.L37:
+ 383 000e 00BF     		.align	2
+ 384              	.L36:
+ 385 0010 006C0040 		.word	1073769472
+ 386              		.cfi_endproc
+ 387              	.LFE40:
+ 389              		.text
+ 390              	.Letext0:
+ 391              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 392              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 393              		.file 4 "USER/stm32f10x.h"
+ 394              		.file 5 "CORE/core_cm3.h"
+ 395              		.file 6 "FWLIB/inc/stm32f10x_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f10x_bkp.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:20     .text.BKP_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:25     .text.BKP_DeInit:0000000000000000 BKP_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:50     .text.BKP_TamperPinLevelConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:55     .text.BKP_TamperPinLevelConfig:0000000000000000 BKP_TamperPinLevelConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:70     .text.BKP_TamperPinLevelConfig:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:75     .text.BKP_TamperPinCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:80     .text.BKP_TamperPinCmd:0000000000000000 BKP_TamperPinCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:95     .text.BKP_TamperPinCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:100    .text.BKP_ITConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:105    .text.BKP_ITConfig:0000000000000000 BKP_ITConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:120    .text.BKP_ITConfig:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:125    .text.BKP_RTCOutputConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:130    .text.BKP_RTCOutputConfig:0000000000000000 BKP_RTCOutputConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:155    .text.BKP_RTCOutputConfig:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:160    .text.BKP_SetRTCCalibrationValue:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:165    .text.BKP_SetRTCCalibrationValue:0000000000000000 BKP_SetRTCCalibrationValue
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:190    .text.BKP_SetRTCCalibrationValue:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:195    .text.BKP_WriteBackupRegister:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:200    .text.BKP_WriteBackupRegister:0000000000000000 BKP_WriteBackupRegister
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:234    .text.BKP_WriteBackupRegister:0000000000000018 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:239    .text.BKP_ReadBackupRegister:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:244    .text.BKP_ReadBackupRegister:0000000000000000 BKP_ReadBackupRegister
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:279    .text.BKP_ReadBackupRegister:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:284    .text.BKP_GetFlagStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:289    .text.BKP_GetFlagStatus:0000000000000000 BKP_GetFlagStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:305    .text.BKP_GetFlagStatus:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:310    .text.BKP_ClearFlag:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:315    .text.BKP_ClearFlag:0000000000000000 BKP_ClearFlag
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:332    .text.BKP_ClearFlag:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:337    .text.BKP_GetITStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:342    .text.BKP_GetITStatus:0000000000000000 BKP_GetITStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:358    .text.BKP_GetITStatus:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:363    .text.BKP_ClearITPendingBit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:368    .text.BKP_ClearITPendingBit:0000000000000000 BKP_ClearITPendingBit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccjgXjuH.s:385    .text.BKP_ClearITPendingBit:0000000000000010 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_BackupResetCmd

@@ -1,0 +1,1875 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"stm32f4xx_dma2d.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.DMA2D_DeInit,"ax",%progbits
+  22              		.align	2
+  23              		.global	DMA2D_DeInit
+  24              		.thumb
+  25              		.thumb_func
+  27              	DMA2D_DeInit:
+  28              	.LFB112:
+  29              		.file 1 ".//FWLIB/src/stm32f4xx_dma2d.c"
+   1:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+   2:.//FWLIB/src/stm32f4xx_dma2d.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @file    stm32f4xx_dma2d.c
+   4:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @version V1.4.0
+   6:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @date    04-August-2014
+   7:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:.//FWLIB/src/stm32f4xx_dma2d.c ****   *          functionalities of the DMA2D controller (DMA2D) peripheral:
+   9:.//FWLIB/src/stm32f4xx_dma2d.c ****   *           + Initialization and configuration
+  10:.//FWLIB/src/stm32f4xx_dma2d.c ****   *           + Interrupts and flags management
+  11:.//FWLIB/src/stm32f4xx_dma2d.c ****   *           
+  12:.//FWLIB/src/stm32f4xx_dma2d.c ****   @verbatim  
+  13:.//FWLIB/src/stm32f4xx_dma2d.c ****  ===============================================================================
+  14:.//FWLIB/src/stm32f4xx_dma2d.c ****                       ##### How to use this driver #####
+  15:.//FWLIB/src/stm32f4xx_dma2d.c ****  ===============================================================================
+  16:.//FWLIB/src/stm32f4xx_dma2d.c ****     [..]
+  17:.//FWLIB/src/stm32f4xx_dma2d.c ****         (#) Enable DMA2D clock using 
+  18:.//FWLIB/src/stm32f4xx_dma2d.c ****             RCC_APB2PeriphResetCmd(RCC_APB2Periph_DMA2D, ENABLE) function.
+  19:.//FWLIB/src/stm32f4xx_dma2d.c ****             
+  20:.//FWLIB/src/stm32f4xx_dma2d.c ****         (#) Configures DMA2D
+  21:.//FWLIB/src/stm32f4xx_dma2d.c ****           (++) transfer mode 
+  22:.//FWLIB/src/stm32f4xx_dma2d.c ****           (++) pixel format, line_number, pixel_per_line
+  23:.//FWLIB/src/stm32f4xx_dma2d.c ****           (++) output memory address
+  24:.//FWLIB/src/stm32f4xx_dma2d.c ****           (++) alpha value
+  25:.//FWLIB/src/stm32f4xx_dma2d.c ****           (++) output offset
+  26:.//FWLIB/src/stm32f4xx_dma2d.c ****           (++) Default color (RGB)
+  27:.//FWLIB/src/stm32f4xx_dma2d.c ****            
+  28:.//FWLIB/src/stm32f4xx_dma2d.c ****         (#) Configures Foreground or/and background
+  29:.//FWLIB/src/stm32f4xx_dma2d.c ****           (++) memory address
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 2
+
+
+  30:.//FWLIB/src/stm32f4xx_dma2d.c ****           (++) alpha value
+  31:.//FWLIB/src/stm32f4xx_dma2d.c ****           (++) offset and default color
+  32:.//FWLIB/src/stm32f4xx_dma2d.c ****   
+  33:.//FWLIB/src/stm32f4xx_dma2d.c ****         (#) Call the DMA2D_Start() to enable the DMA2D controller.
+  34:.//FWLIB/src/stm32f4xx_dma2d.c ****         
+  35:.//FWLIB/src/stm32f4xx_dma2d.c ****     @endverbatim
+  36:.//FWLIB/src/stm32f4xx_dma2d.c ****   
+  37:.//FWLIB/src/stm32f4xx_dma2d.c ****   ******************************************************************************
+  38:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @attention
+  39:.//FWLIB/src/stm32f4xx_dma2d.c ****   *
+  40:.//FWLIB/src/stm32f4xx_dma2d.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  41:.//FWLIB/src/stm32f4xx_dma2d.c ****   *
+  42:.//FWLIB/src/stm32f4xx_dma2d.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  43:.//FWLIB/src/stm32f4xx_dma2d.c ****   * You may not use this file except in compliance with the License.
+  44:.//FWLIB/src/stm32f4xx_dma2d.c ****   * You may obtain a copy of the License at:
+  45:.//FWLIB/src/stm32f4xx_dma2d.c ****   *
+  46:.//FWLIB/src/stm32f4xx_dma2d.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  47:.//FWLIB/src/stm32f4xx_dma2d.c ****   *
+  48:.//FWLIB/src/stm32f4xx_dma2d.c ****   * Unless required by applicable law or agreed to in writing, software 
+  49:.//FWLIB/src/stm32f4xx_dma2d.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  50:.//FWLIB/src/stm32f4xx_dma2d.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  51:.//FWLIB/src/stm32f4xx_dma2d.c ****   * See the License for the specific language governing permissions and
+  52:.//FWLIB/src/stm32f4xx_dma2d.c ****   * limitations under the License.
+  53:.//FWLIB/src/stm32f4xx_dma2d.c ****   *
+  54:.//FWLIB/src/stm32f4xx_dma2d.c ****   ******************************************************************************
+  55:.//FWLIB/src/stm32f4xx_dma2d.c ****   */ 
+  56:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+  57:.//FWLIB/src/stm32f4xx_dma2d.c **** /* Includes ------------------------------------------------------------------*/
+  58:.//FWLIB/src/stm32f4xx_dma2d.c **** #include "stm32f4xx_dma2d.h"
+  59:.//FWLIB/src/stm32f4xx_dma2d.c **** #include "stm32f4xx_rcc.h"
+  60:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+  61:.//FWLIB/src/stm32f4xx_dma2d.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+  62:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @{
+  63:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+  64:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+  65:.//FWLIB/src/stm32f4xx_dma2d.c **** /** @defgroup DMA2D 
+  66:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief DMA2D driver modules
+  67:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @{
+  68:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+  69:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+  70:.//FWLIB/src/stm32f4xx_dma2d.c **** /* Private typedef -----------------------------------------------------------*/
+  71:.//FWLIB/src/stm32f4xx_dma2d.c **** /* Private define ------------------------------------------------------------*/
+  72:.//FWLIB/src/stm32f4xx_dma2d.c **** /* Private macro -------------------------------------------------------------*/
+  73:.//FWLIB/src/stm32f4xx_dma2d.c **** /* Private variables ---------------------------------------------------------*/
+  74:.//FWLIB/src/stm32f4xx_dma2d.c **** /* Private function prototypes -----------------------------------------------*/
+  75:.//FWLIB/src/stm32f4xx_dma2d.c **** /* Private functions ---------------------------------------------------------*/
+  76:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+  77:.//FWLIB/src/stm32f4xx_dma2d.c **** #define CR_MASK                     ((uint32_t)0xFFFCE0FC)  /* DMA2D CR Mask */
+  78:.//FWLIB/src/stm32f4xx_dma2d.c **** #define PFCCR_MASK                  ((uint32_t)0x00FC00C0)  /* DMA2D FGPFCCR Mask */
+  79:.//FWLIB/src/stm32f4xx_dma2d.c **** #define DEAD_MASK                   ((uint32_t)0xFFFF00FE)  /* DMA2D DEAD Mask */
+  80:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+  81:.//FWLIB/src/stm32f4xx_dma2d.c **** /** @defgroup DMA2D_Private_Functions
+  82:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @{
+  83:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+  84:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+  85:.//FWLIB/src/stm32f4xx_dma2d.c **** /** @defgroup DMA2D_Group1 Initialization and Configuration functions
+  86:.//FWLIB/src/stm32f4xx_dma2d.c ****  *  @brief   Initialization and Configuration functions 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 3
+
+
+  87:.//FWLIB/src/stm32f4xx_dma2d.c ****  *
+  88:.//FWLIB/src/stm32f4xx_dma2d.c **** @verbatim
+  89:.//FWLIB/src/stm32f4xx_dma2d.c ****  ===============================================================================
+  90:.//FWLIB/src/stm32f4xx_dma2d.c ****             ##### Initialization and Configuration functions #####
+  91:.//FWLIB/src/stm32f4xx_dma2d.c ****  ===============================================================================
+  92:.//FWLIB/src/stm32f4xx_dma2d.c ****     [..]  This section provides functions allowing to:
+  93:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) Initialize and configure the DMA2D
+  94:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) Start/Abort/Suspend Transfer
+  95:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) Initialize, configure and set Foreground and background
+  96:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) configure and enable DeadTime
+  97:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) configure lineWatermark
+  98:.//FWLIB/src/stm32f4xx_dma2d.c ****     
+  99:.//FWLIB/src/stm32f4xx_dma2d.c ****     
+ 100:.//FWLIB/src/stm32f4xx_dma2d.c **** @endverbatim
+ 101:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @{
+ 102:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 103:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 104:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 105:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Deinitializes the DMA2D peripheral registers to their default reset
+ 106:.//FWLIB/src/stm32f4xx_dma2d.c ****   *         values.
+ 107:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  None
+ 108:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 109:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 110:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 111:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_DeInit(void)
+ 112:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+  30              		.loc 1 112 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+ 113:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Enable DMA2D reset state */
+ 114:.//FWLIB/src/stm32f4xx_dma2d.c ****   RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_DMA2D, ENABLE);
+  39              		.loc 1 114 0
+  40 0002 0121     		movs	r1, #1
+  41 0004 4FF40000 		mov	r0, #8388608
+  42 0008 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+  43              	.LVL0:
+ 115:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Release DMA2D from reset state */
+ 116:.//FWLIB/src/stm32f4xx_dma2d.c ****   RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_DMA2D, DISABLE);
+  44              		.loc 1 116 0
+  45 000c 0021     		movs	r1, #0
+  46 000e 4FF40000 		mov	r0, #8388608
+  47 0012 FFF7FEFF 		bl	RCC_AHB1PeriphResetCmd
+  48              	.LVL1:
+  49 0016 08BD     		pop	{r3, pc}
+  50              		.cfi_endproc
+  51              	.LFE112:
+  53              		.section	.text.DMA2D_Init,"ax",%progbits
+  54              		.align	2
+  55              		.global	DMA2D_Init
+  56              		.thumb
+  57              		.thumb_func
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 4
+
+
+  59              	DMA2D_Init:
+  60              	.LFB113:
+ 117:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 118:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 119:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 120:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 121:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Initializes the DMA2D peripheral according to the specified parameters
+ 122:.//FWLIB/src/stm32f4xx_dma2d.c ****   *         in the DMA2D_InitStruct.
+ 123:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @note   This function can be used only when the DMA2D is disabled.
+ 124:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_InitStruct: pointer to a DMA2D_InitTypeDef structure that contains
+ 125:.//FWLIB/src/stm32f4xx_dma2d.c ****   *         the configuration information for the specified DMA2D peripheral.
+ 126:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 127:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 128:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_Init(DMA2D_InitTypeDef* DMA2D_InitStruct)
+ 129:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+  61              		.loc 1 129 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66              	.LVL2:
+  67 0000 70B4     		push	{r4, r5, r6}
+  68              	.LCFI1:
+  69              		.cfi_def_cfa_offset 12
+  70              		.cfi_offset 4, -12
+  71              		.cfi_offset 5, -8
+  72              		.cfi_offset 6, -4
+  73              	.LVL3:
+ 130:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 131:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t outgreen = 0;
+ 132:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t outred   = 0;
+ 133:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t outalpha = 0;
+ 134:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t pixline  = 0;
+ 135:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 136:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Check the parameters */
+ 137:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_MODE(DMA2D_InitStruct->DMA2D_Mode));
+ 138:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_CMODE(DMA2D_InitStruct->DMA2D_CMode));
+ 139:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_OGREEN(DMA2D_InitStruct->DMA2D_OutputGreen));
+ 140:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_ORED(DMA2D_InitStruct->DMA2D_OutputRed));
+ 141:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_OBLUE(DMA2D_InitStruct->DMA2D_OutputBlue));
+ 142:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_OALPHA(DMA2D_InitStruct->DMA2D_OutputAlpha));
+ 143:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_OUTPUT_OFFSET(DMA2D_InitStruct->DMA2D_OutputOffset));
+ 144:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_LINE(DMA2D_InitStruct->DMA2D_NumberOfLine));
+ 145:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_PIXEL(DMA2D_InitStruct->DMA2D_PixelPerLine));
+ 146:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 147:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures the DMA2D operation mode */
+ 148:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->CR &= (uint32_t)CR_MASK;
+  74              		.loc 1 148 0
+  75 0002 2E4B     		ldr	r3, .L10
+  76 0004 1A68     		ldr	r2, [r3]
+  77 0006 22F00312 		bic	r2, r2, #196611
+  78 000a 22F4F852 		bic	r2, r2, #7936
+  79 000e 1A60     		str	r2, [r3]
+ 149:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->CR |= (DMA2D_InitStruct->DMA2D_Mode);
+  80              		.loc 1 149 0
+  81 0010 1968     		ldr	r1, [r3]
+  82 0012 0268     		ldr	r2, [r0]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 5
+
+
+  83 0014 0A43     		orrs	r2, r2, r1
+  84 0016 1A60     		str	r2, [r3]
+ 150:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 151:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures the color mode of the output image */
+ 152:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->OPFCCR &= ~(uint32_t)DMA2D_OPFCCR_CM;
+  85              		.loc 1 152 0
+  86 0018 5A6B     		ldr	r2, [r3, #52]
+  87 001a 22F00702 		bic	r2, r2, #7
+  88 001e 5A63     		str	r2, [r3, #52]
+ 153:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->OPFCCR |= (DMA2D_InitStruct->DMA2D_CMode);
+  89              		.loc 1 153 0
+  90 0020 596B     		ldr	r1, [r3, #52]
+  91 0022 4268     		ldr	r2, [r0, #4]
+  92 0024 0A43     		orrs	r2, r2, r1
+  93 0026 5A63     		str	r2, [r3, #52]
+ 154:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 155:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures the output color */
+ 156:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 157:.//FWLIB/src/stm32f4xx_dma2d.c ****   if (DMA2D_InitStruct->DMA2D_CMode == DMA2D_ARGB8888)
+  94              		.loc 1 157 0
+  95 0028 4368     		ldr	r3, [r0, #4]
+  96 002a 33B9     		cbnz	r3, .L4
+ 158:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 159:.//FWLIB/src/stm32f4xx_dma2d.c ****     outgreen = DMA2D_InitStruct->DMA2D_OutputGreen << 8;
+  97              		.loc 1 159 0
+  98 002c C168     		ldr	r1, [r0, #12]
+  99 002e 0C02     		lsls	r4, r1, #8
+ 100              	.LVL4:
+ 160:.//FWLIB/src/stm32f4xx_dma2d.c ****     outred = DMA2D_InitStruct->DMA2D_OutputRed << 16;
+ 101              		.loc 1 160 0
+ 102 0030 0369     		ldr	r3, [r0, #16]
+ 103 0032 1904     		lsls	r1, r3, #16
+ 104              	.LVL5:
+ 161:.//FWLIB/src/stm32f4xx_dma2d.c ****     outalpha = DMA2D_InitStruct->DMA2D_OutputAlpha << 24;
+ 105              		.loc 1 161 0
+ 106 0034 4269     		ldr	r2, [r0, #20]
+ 107 0036 1506     		lsls	r5, r2, #24
+ 108              	.LVL6:
+ 109 0038 1EE0     		b	.L5
+ 110              	.LVL7:
+ 111              	.L4:
+ 162:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 163:.//FWLIB/src/stm32f4xx_dma2d.c ****   else
+ 164:.//FWLIB/src/stm32f4xx_dma2d.c ****   
+ 165:.//FWLIB/src/stm32f4xx_dma2d.c ****     if (DMA2D_InitStruct->DMA2D_CMode == DMA2D_RGB888)
+ 112              		.loc 1 165 0
+ 113 003a 012B     		cmp	r3, #1
+ 114 003c 05D1     		bne	.L6
+ 166:.//FWLIB/src/stm32f4xx_dma2d.c ****     {
+ 167:.//FWLIB/src/stm32f4xx_dma2d.c ****       outgreen = DMA2D_InitStruct->DMA2D_OutputGreen << 8;
+ 115              		.loc 1 167 0
+ 116 003e C168     		ldr	r1, [r0, #12]
+ 117 0040 0C02     		lsls	r4, r1, #8
+ 118              	.LVL8:
+ 168:.//FWLIB/src/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 16;
+ 119              		.loc 1 168 0
+ 120 0042 0369     		ldr	r3, [r0, #16]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 6
+
+
+ 121 0044 1904     		lsls	r1, r3, #16
+ 122              	.LVL9:
+ 169:.//FWLIB/src/stm32f4xx_dma2d.c ****       outalpha = (uint32_t)0x00000000;
+ 123              		.loc 1 169 0
+ 124 0046 0025     		movs	r5, #0
+ 125 0048 16E0     		b	.L5
+ 126              	.LVL10:
+ 127              	.L6:
+ 170:.//FWLIB/src/stm32f4xx_dma2d.c ****     }
+ 171:.//FWLIB/src/stm32f4xx_dma2d.c ****      
+ 172:.//FWLIB/src/stm32f4xx_dma2d.c ****   else
+ 173:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 174:.//FWLIB/src/stm32f4xx_dma2d.c ****     if (DMA2D_InitStruct->DMA2D_CMode == DMA2D_RGB565)
+ 128              		.loc 1 174 0
+ 129 004a 022B     		cmp	r3, #2
+ 130 004c 05D1     		bne	.L7
+ 175:.//FWLIB/src/stm32f4xx_dma2d.c ****     {
+ 176:.//FWLIB/src/stm32f4xx_dma2d.c ****       outgreen = DMA2D_InitStruct->DMA2D_OutputGreen << 5;
+ 131              		.loc 1 176 0
+ 132 004e C168     		ldr	r1, [r0, #12]
+ 133 0050 4C01     		lsls	r4, r1, #5
+ 134              	.LVL11:
+ 177:.//FWLIB/src/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 11;
+ 135              		.loc 1 177 0
+ 136 0052 0369     		ldr	r3, [r0, #16]
+ 137 0054 D902     		lsls	r1, r3, #11
+ 138              	.LVL12:
+ 178:.//FWLIB/src/stm32f4xx_dma2d.c ****       outalpha = (uint32_t)0x00000000;
+ 139              		.loc 1 178 0
+ 140 0056 0025     		movs	r5, #0
+ 141 0058 0EE0     		b	.L5
+ 142              	.LVL13:
+ 143              	.L7:
+ 179:.//FWLIB/src/stm32f4xx_dma2d.c ****     }
+ 180:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 181:.//FWLIB/src/stm32f4xx_dma2d.c ****   else
+ 182:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 183:.//FWLIB/src/stm32f4xx_dma2d.c ****     if (DMA2D_InitStruct->DMA2D_CMode == DMA2D_ARGB1555)
+ 144              		.loc 1 183 0
+ 145 005a 032B     		cmp	r3, #3
+ 146 005c 06D1     		bne	.L8
+ 184:.//FWLIB/src/stm32f4xx_dma2d.c ****     {  
+ 185:.//FWLIB/src/stm32f4xx_dma2d.c ****       outgreen = DMA2D_InitStruct->DMA2D_OutputGreen << 5;
+ 147              		.loc 1 185 0
+ 148 005e C168     		ldr	r1, [r0, #12]
+ 149 0060 4C01     		lsls	r4, r1, #5
+ 150              	.LVL14:
+ 186:.//FWLIB/src/stm32f4xx_dma2d.c ****       outred = DMA2D_InitStruct->DMA2D_OutputRed << 10;
+ 151              		.loc 1 186 0
+ 152 0062 0369     		ldr	r3, [r0, #16]
+ 153 0064 9902     		lsls	r1, r3, #10
+ 154              	.LVL15:
+ 187:.//FWLIB/src/stm32f4xx_dma2d.c ****       outalpha = DMA2D_InitStruct->DMA2D_OutputAlpha << 15;
+ 155              		.loc 1 187 0
+ 156 0066 4269     		ldr	r2, [r0, #20]
+ 157 0068 D503     		lsls	r5, r2, #15
+ 158              	.LVL16:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 7
+
+
+ 159 006a 05E0     		b	.L5
+ 160              	.LVL17:
+ 161              	.L8:
+ 188:.//FWLIB/src/stm32f4xx_dma2d.c ****     }
+ 189:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 190:.//FWLIB/src/stm32f4xx_dma2d.c ****   else /* DMA2D_CMode = DMA2D_ARGB4444 */
+ 191:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 192:.//FWLIB/src/stm32f4xx_dma2d.c ****     outgreen = DMA2D_InitStruct->DMA2D_OutputGreen << 4;
+ 162              		.loc 1 192 0
+ 163 006c C168     		ldr	r1, [r0, #12]
+ 164 006e 0C01     		lsls	r4, r1, #4
+ 165              	.LVL18:
+ 193:.//FWLIB/src/stm32f4xx_dma2d.c ****     outred = DMA2D_InitStruct->DMA2D_OutputRed << 8;
+ 166              		.loc 1 193 0
+ 167 0070 0369     		ldr	r3, [r0, #16]
+ 168 0072 1902     		lsls	r1, r3, #8
+ 169              	.LVL19:
+ 194:.//FWLIB/src/stm32f4xx_dma2d.c ****     outalpha = DMA2D_InitStruct->DMA2D_OutputAlpha << 12;
+ 170              		.loc 1 194 0
+ 171 0074 4269     		ldr	r2, [r0, #20]
+ 172 0076 1503     		lsls	r5, r2, #12
+ 173              	.LVL20:
+ 174              	.L5:
+ 195:.//FWLIB/src/stm32f4xx_dma2d.c ****   }  
+ 196:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->OCOLR |= ((outgreen) | (outred) | (DMA2D_InitStruct->DMA2D_OutputBlue) | (outalpha));
+ 175              		.loc 1 196 0
+ 176 0078 104B     		ldr	r3, .L10
+ 177 007a 9E6B     		ldr	r6, [r3, #56]
+ 178 007c 2143     		orrs	r1, r1, r4
+ 179              	.LVL21:
+ 180 007e 8268     		ldr	r2, [r0, #8]
+ 181 0080 1143     		orrs	r1, r1, r2
+ 182 0082 45EA0102 		orr	r2, r5, r1
+ 183 0086 3243     		orrs	r2, r2, r6
+ 184 0088 9A63     		str	r2, [r3, #56]
+ 197:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 198:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures the output memory address */
+ 199:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->OMAR = (DMA2D_InitStruct->DMA2D_OutputMemoryAdd);
+ 185              		.loc 1 199 0
+ 186 008a 8269     		ldr	r2, [r0, #24]
+ 187 008c DA63     		str	r2, [r3, #60]
+ 200:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 201:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configure  the line Offset */
+ 202:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->OOR &= ~(uint32_t)DMA2D_OOR_LO;
+ 188              		.loc 1 202 0
+ 189 008e 1A6C     		ldr	r2, [r3, #64]
+ 190 0090 22F47F52 		bic	r2, r2, #16320
+ 191 0094 22F03F02 		bic	r2, r2, #63
+ 192 0098 1A64     		str	r2, [r3, #64]
+ 203:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->OOR |= (DMA2D_InitStruct->DMA2D_OutputOffset);
+ 193              		.loc 1 203 0
+ 194 009a 196C     		ldr	r1, [r3, #64]
+ 195 009c C269     		ldr	r2, [r0, #28]
+ 196 009e 0A43     		orrs	r2, r2, r1
+ 197 00a0 1A64     		str	r2, [r3, #64]
+ 204:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 205:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configure the number of line and pixel per line */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 8
+
+
+ 206:.//FWLIB/src/stm32f4xx_dma2d.c ****   pixline = DMA2D_InitStruct->DMA2D_PixelPerLine << 16; 
+ 198              		.loc 1 206 0
+ 199 00a2 426A     		ldr	r2, [r0, #36]
+ 200              	.LVL22:
+ 207:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->NLR &= ~(DMA2D_NLR_NL | DMA2D_NLR_PL);
+ 201              		.loc 1 207 0
+ 202 00a4 596C     		ldr	r1, [r3, #68]
+ 203 00a6 01F04041 		and	r1, r1, #-1073741824
+ 204 00aa 5964     		str	r1, [r3, #68]
+ 208:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->NLR |= ((DMA2D_InitStruct->DMA2D_NumberOfLine) | (pixline));
+ 205              		.loc 1 208 0
+ 206 00ac 5C6C     		ldr	r4, [r3, #68]
+ 207              	.LVL23:
+ 208 00ae 016A     		ldr	r1, [r0, #32]
+ 209 00b0 41EA0242 		orr	r2, r1, r2, lsl #16
+ 210              	.LVL24:
+ 211 00b4 2243     		orrs	r2, r2, r4
+ 212 00b6 5A64     		str	r2, [r3, #68]
+ 209:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 210:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 211:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Fills each DMA2D_InitStruct member with its default value.
+ 212:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_InitStruct: pointer to a DMA2D_InitTypeDef structure which will
+ 213:.//FWLIB/src/stm32f4xx_dma2d.c ****   *         be initialized.
+ 214:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 215:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 216:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 213              		.loc 1 216 0
+ 214 00b8 70BC     		pop	{r4, r5, r6}
+ 215              	.LCFI2:
+ 216              		.cfi_restore 6
+ 217              		.cfi_restore 5
+ 218              		.cfi_restore 4
+ 219              		.cfi_def_cfa_offset 0
+ 220              	.LVL25:
+ 221 00ba 7047     		bx	lr
+ 222              	.L11:
+ 223              		.align	2
+ 224              	.L10:
+ 225 00bc 00B00240 		.word	1073917952
+ 226              		.cfi_endproc
+ 227              	.LFE113:
+ 229              		.section	.text.DMA2D_StructInit,"ax",%progbits
+ 230              		.align	2
+ 231              		.global	DMA2D_StructInit
+ 232              		.thumb
+ 233              		.thumb_func
+ 235              	DMA2D_StructInit:
+ 236              	.LFB114:
+ 217:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_StructInit(DMA2D_InitTypeDef* DMA2D_InitStruct)
+ 218:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 237              		.loc 1 218 0
+ 238              		.cfi_startproc
+ 239              		@ args = 0, pretend = 0, frame = 0
+ 240              		@ frame_needed = 0, uses_anonymous_args = 0
+ 241              		@ link register save eliminated.
+ 242              	.LVL26:
+ 219:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Initialize the transfer mode member */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 9
+
+
+ 220:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_Mode = DMA2D_M2M;
+ 243              		.loc 1 220 0
+ 244 0000 0023     		movs	r3, #0
+ 245 0002 0360     		str	r3, [r0]
+ 221:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 222:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Initialize the output color mode members */
+ 223:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_CMode = DMA2D_ARGB8888;
+ 246              		.loc 1 223 0
+ 247 0004 4360     		str	r3, [r0, #4]
+ 224:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 225:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Initialize the alpha and RGB values */
+ 226:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_OutputGreen = 0x00;
+ 248              		.loc 1 226 0
+ 249 0006 C360     		str	r3, [r0, #12]
+ 227:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_OutputBlue = 0x00;
+ 250              		.loc 1 227 0
+ 251 0008 8360     		str	r3, [r0, #8]
+ 228:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_OutputRed = 0x00;
+ 252              		.loc 1 228 0
+ 253 000a 0361     		str	r3, [r0, #16]
+ 229:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_OutputAlpha = 0x00;
+ 254              		.loc 1 229 0
+ 255 000c 4361     		str	r3, [r0, #20]
+ 230:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 231:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Initialize the output memory address */
+ 232:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_OutputMemoryAdd = 0x00;
+ 256              		.loc 1 232 0
+ 257 000e 8361     		str	r3, [r0, #24]
+ 233:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 234:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Initialize the output offset */
+ 235:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_OutputOffset = 0x00;
+ 258              		.loc 1 235 0
+ 259 0010 C361     		str	r3, [r0, #28]
+ 236:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 237:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Initialize the number of line and the number of pixel per line */
+ 238:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_NumberOfLine = 0x00;
+ 260              		.loc 1 238 0
+ 261 0012 0362     		str	r3, [r0, #32]
+ 239:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_InitStruct->DMA2D_PixelPerLine = 0x00;
+ 262              		.loc 1 239 0
+ 263 0014 4362     		str	r3, [r0, #36]
+ 264 0016 7047     		bx	lr
+ 265              		.cfi_endproc
+ 266              	.LFE114:
+ 268              		.section	.text.DMA2D_StartTransfer,"ax",%progbits
+ 269              		.align	2
+ 270              		.global	DMA2D_StartTransfer
+ 271              		.thumb
+ 272              		.thumb_func
+ 274              	DMA2D_StartTransfer:
+ 275              	.LFB115:
+ 240:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 241:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 242:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 243:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Start the DMA2D transfer.
+ 244:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param 
+ 245:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 10
+
+
+ 246:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 247:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 248:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_StartTransfer(void)
+ 249:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 276              		.loc 1 249 0
+ 277              		.cfi_startproc
+ 278              		@ args = 0, pretend = 0, frame = 0
+ 279              		@ frame_needed = 0, uses_anonymous_args = 0
+ 280              		@ link register save eliminated.
+ 250:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* Start DMA2D transfer by setting START bit */
+ 251:.//FWLIB/src/stm32f4xx_dma2d.c ****     DMA2D->CR |= (uint32_t)DMA2D_CR_START;
+ 281              		.loc 1 251 0
+ 282 0000 024A     		ldr	r2, .L14
+ 283 0002 1368     		ldr	r3, [r2]
+ 284 0004 43F00103 		orr	r3, r3, #1
+ 285 0008 1360     		str	r3, [r2]
+ 286 000a 7047     		bx	lr
+ 287              	.L15:
+ 288              		.align	2
+ 289              	.L14:
+ 290 000c 00B00240 		.word	1073917952
+ 291              		.cfi_endproc
+ 292              	.LFE115:
+ 294              		.section	.text.DMA2D_AbortTransfer,"ax",%progbits
+ 295              		.align	2
+ 296              		.global	DMA2D_AbortTransfer
+ 297              		.thumb
+ 298              		.thumb_func
+ 300              	DMA2D_AbortTransfer:
+ 301              	.LFB116:
+ 252:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 253:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 254:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 255:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Aboart the DMA2D transfer.
+ 256:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param
+ 257:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 258:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 259:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 260:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_AbortTransfer(void)
+ 261:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 302              		.loc 1 261 0
+ 303              		.cfi_startproc
+ 304              		@ args = 0, pretend = 0, frame = 0
+ 305              		@ frame_needed = 0, uses_anonymous_args = 0
+ 306              		@ link register save eliminated.
+ 262:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* Start DMA2D transfer by setting START bit */
+ 263:.//FWLIB/src/stm32f4xx_dma2d.c ****     DMA2D->CR |= (uint32_t)DMA2D_CR_ABORT;
+ 307              		.loc 1 263 0
+ 308 0000 024A     		ldr	r2, .L17
+ 309 0002 1368     		ldr	r3, [r2]
+ 310 0004 43F00403 		orr	r3, r3, #4
+ 311 0008 1360     		str	r3, [r2]
+ 312 000a 7047     		bx	lr
+ 313              	.L18:
+ 314              		.align	2
+ 315              	.L17:
+ 316 000c 00B00240 		.word	1073917952
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 11
+
+
+ 317              		.cfi_endproc
+ 318              	.LFE116:
+ 320              		.section	.text.DMA2D_Suspend,"ax",%progbits
+ 321              		.align	2
+ 322              		.global	DMA2D_Suspend
+ 323              		.thumb
+ 324              		.thumb_func
+ 326              	DMA2D_Suspend:
+ 327              	.LFB117:
+ 264:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 265:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 266:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 267:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 268:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Stop or continue the DMA2D transfer.
+ 269:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  NewState: new state of the DMA2D peripheral.
+ 270:.//FWLIB/src/stm32f4xx_dma2d.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 271:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 272:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 273:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_Suspend(FunctionalState NewState)
+ 274:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 328              		.loc 1 274 0
+ 329              		.cfi_startproc
+ 330              		@ args = 0, pretend = 0, frame = 0
+ 331              		@ frame_needed = 0, uses_anonymous_args = 0
+ 332              		@ link register save eliminated.
+ 333              	.LVL27:
+ 275:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Check the parameters */
+ 276:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 277:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 278:.//FWLIB/src/stm32f4xx_dma2d.c ****   if (NewState != DISABLE)
+ 334              		.loc 1 278 0
+ 335 0000 28B1     		cbz	r0, .L20
+ 279:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 280:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* Suspend DMA2D transfer by setting STOP bit */
+ 281:.//FWLIB/src/stm32f4xx_dma2d.c ****     DMA2D->CR |= (uint32_t)DMA2D_CR_SUSP;
+ 336              		.loc 1 281 0
+ 337 0002 064A     		ldr	r2, .L22
+ 338 0004 1368     		ldr	r3, [r2]
+ 339 0006 43F00203 		orr	r3, r3, #2
+ 340 000a 1360     		str	r3, [r2]
+ 341 000c 7047     		bx	lr
+ 342              	.L20:
+ 282:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 283:.//FWLIB/src/stm32f4xx_dma2d.c ****   else
+ 284:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 285:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* Continue DMA2D transfer by clearing STOP bit */
+ 286:.//FWLIB/src/stm32f4xx_dma2d.c ****     DMA2D->CR &= ~(uint32_t)DMA2D_CR_SUSP;
+ 343              		.loc 1 286 0
+ 344 000e 034A     		ldr	r2, .L22
+ 345 0010 1368     		ldr	r3, [r2]
+ 346 0012 23F00203 		bic	r3, r3, #2
+ 347 0016 1360     		str	r3, [r2]
+ 348 0018 7047     		bx	lr
+ 349              	.L23:
+ 350 001a 00BF     		.align	2
+ 351              	.L22:
+ 352 001c 00B00240 		.word	1073917952
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 12
+
+
+ 353              		.cfi_endproc
+ 354              	.LFE117:
+ 356              		.section	.text.DMA2D_FGConfig,"ax",%progbits
+ 357              		.align	2
+ 358              		.global	DMA2D_FGConfig
+ 359              		.thumb
+ 360              		.thumb_func
+ 362              	DMA2D_FGConfig:
+ 363              	.LFB118:
+ 287:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 288:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 289:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 290:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 291:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Configures the Foreground according to the specified parameters
+ 292:.//FWLIB/src/stm32f4xx_dma2d.c ****   *         in the DMA2D_FGStruct.
+ 293:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @note   This function can be used only when the transfer is disabled.
+ 294:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_FGStruct: pointer to a DMA2D_FGTypeDef structure that contains
+ 295:.//FWLIB/src/stm32f4xx_dma2d.c ****   *         the configuration information for the specified Background.
+ 296:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 297:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 298:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_FGConfig(DMA2D_FG_InitTypeDef* DMA2D_FG_InitStruct)
+ 299:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 364              		.loc 1 299 0
+ 365              		.cfi_startproc
+ 366              		@ args = 0, pretend = 0, frame = 0
+ 367              		@ frame_needed = 0, uses_anonymous_args = 0
+ 368              		@ link register save eliminated.
+ 369              	.LVL28:
+ 370 0000 F0B4     		push	{r4, r5, r6, r7}
+ 371              	.LCFI3:
+ 372              		.cfi_def_cfa_offset 16
+ 373              		.cfi_offset 4, -16
+ 374              		.cfi_offset 5, -12
+ 375              		.cfi_offset 6, -8
+ 376              		.cfi_offset 7, -4
+ 377              	.LVL29:
+ 300:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 301:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t fg_clutcolormode = 0;
+ 302:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t fg_clutsize = 0;
+ 303:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t fg_alpha_mode = 0;
+ 304:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t fg_alphavalue = 0;
+ 305:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t fg_colorgreen = 0;
+ 306:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t fg_colorred = 0;
+ 307:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 308:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FGO(DMA2D_FG_InitStruct->DMA2D_FGO));
+ 309:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FGCM(DMA2D_FG_InitStruct->DMA2D_FGCM));
+ 310:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FG_CLUT_CM(DMA2D_FG_InitStruct->DMA2D_FG_CLUT_CM));
+ 311:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FG_CLUT_SIZE(DMA2D_FG_InitStruct->DMA2D_FG_CLUT_SIZE));
+ 312:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FG_ALPHA_MODE(DMA2D_FG_InitStruct->DMA2D_FGPFC_ALPHA_MODE));
+ 313:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FG_ALPHA_VALUE(DMA2D_FG_InitStruct->DMA2D_FGPFC_ALPHA_VALUE));
+ 314:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FGC_BLUE(DMA2D_FG_InitStruct->DMA2D_FGC_BLUE));
+ 315:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FGC_GREEN(DMA2D_FG_InitStruct->DMA2D_FGC_GREEN));
+ 316:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_FGC_RED(DMA2D_FG_InitStruct->DMA2D_FGC_RED));
+ 317:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 318:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures the FG memory address */
+ 319:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->FGMAR = (DMA2D_FG_InitStruct->DMA2D_FGMA);
+ 378              		.loc 1 319 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 13
+
+
+ 379 0002 0268     		ldr	r2, [r0]
+ 380 0004 184B     		ldr	r3, .L26
+ 381 0006 DA60     		str	r2, [r3, #12]
+ 320:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 321:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures the FG offset */
+ 322:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->FGOR &= ~(uint32_t)DMA2D_FGOR_LO;
+ 382              		.loc 1 322 0
+ 383 0008 1A69     		ldr	r2, [r3, #16]
+ 384 000a 22F47F52 		bic	r2, r2, #16320
+ 385 000e 22F03F02 		bic	r2, r2, #63
+ 386 0012 1A61     		str	r2, [r3, #16]
+ 323:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->FGOR |= (DMA2D_FG_InitStruct->DMA2D_FGO);
+ 387              		.loc 1 323 0
+ 388 0014 1969     		ldr	r1, [r3, #16]
+ 389 0016 4268     		ldr	r2, [r0, #4]
+ 390 0018 0A43     		orrs	r2, r2, r1
+ 391 001a 1A61     		str	r2, [r3, #16]
+ 324:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 325:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures foreground Pixel Format Convertor */
+ 326:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->FGPFCCR &= (uint32_t)PFCCR_MASK;
+ 392              		.loc 1 326 0
+ 393 001c D969     		ldr	r1, [r3, #28]
+ 394 001e 134A     		ldr	r2, .L26+4
+ 395 0020 0A40     		ands	r2, r2, r1
+ 396 0022 DA61     		str	r2, [r3, #28]
+ 327:.//FWLIB/src/stm32f4xx_dma2d.c ****   fg_clutcolormode = DMA2D_FG_InitStruct->DMA2D_FG_CLUT_CM << 4;
+ 397              		.loc 1 327 0
+ 398 0024 C468     		ldr	r4, [r0, #12]
+ 399              	.LVL30:
+ 328:.//FWLIB/src/stm32f4xx_dma2d.c ****   fg_clutsize = DMA2D_FG_InitStruct->DMA2D_FG_CLUT_SIZE << 8;
+ 400              		.loc 1 328 0
+ 401 0026 0169     		ldr	r1, [r0, #16]
+ 402              	.LVL31:
+ 329:.//FWLIB/src/stm32f4xx_dma2d.c ****   fg_alpha_mode = DMA2D_FG_InitStruct->DMA2D_FGPFC_ALPHA_MODE << 16;
+ 403              		.loc 1 329 0
+ 404 0028 4769     		ldr	r7, [r0, #20]
+ 405              	.LVL32:
+ 330:.//FWLIB/src/stm32f4xx_dma2d.c ****   fg_alphavalue = DMA2D_FG_InitStruct->DMA2D_FGPFC_ALPHA_VALUE << 24;
+ 406              		.loc 1 330 0
+ 407 002a 8669     		ldr	r6, [r0, #24]
+ 408              	.LVL33:
+ 331:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->FGPFCCR |= (DMA2D_FG_InitStruct->DMA2D_FGCM | fg_clutcolormode | fg_clutsize | \
+ 409              		.loc 1 331 0
+ 410 002c DD69     		ldr	r5, [r3, #28]
+ 411 002e 8268     		ldr	r2, [r0, #8]
+ 412 0030 42EA0414 		orr	r4, r2, r4, lsl #4
+ 413              	.LVL34:
+ 414 0034 44EA0121 		orr	r1, r4, r1, lsl #8
+ 415              	.LVL35:
+ 416 0038 41EA0741 		orr	r1, r1, r7, lsl #16
+ 332:.//FWLIB/src/stm32f4xx_dma2d.c ****                     fg_alpha_mode | fg_alphavalue);
+ 417              		.loc 1 332 0
+ 418 003c 41EA0662 		orr	r2, r1, r6, lsl #24
+ 331:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->FGPFCCR |= (DMA2D_FG_InitStruct->DMA2D_FGCM | fg_clutcolormode | fg_clutsize | \
+ 419              		.loc 1 331 0
+ 420 0040 2A43     		orrs	r2, r2, r5
+ 421 0042 DA61     		str	r2, [r3, #28]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 14
+
+
+ 422              	.LVL36:
+ 333:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 334:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures foreground color */
+ 335:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->FGCOLR &= ~(DMA2D_FGCOLR_BLUE | DMA2D_FGCOLR_GREEN | DMA2D_FGCOLR_RED);
+ 423              		.loc 1 335 0
+ 424 0044 1A6A     		ldr	r2, [r3, #32]
+ 425 0046 02F07F42 		and	r2, r2, #-16777216
+ 426 004a 1A62     		str	r2, [r3, #32]
+ 336:.//FWLIB/src/stm32f4xx_dma2d.c ****   fg_colorgreen = DMA2D_FG_InitStruct->DMA2D_FGC_GREEN << 8;
+ 427              		.loc 1 336 0
+ 428 004c 016A     		ldr	r1, [r0, #32]
+ 429              	.LVL37:
+ 337:.//FWLIB/src/stm32f4xx_dma2d.c ****   fg_colorred = DMA2D_FG_InitStruct->DMA2D_FGC_RED << 16;
+ 430              		.loc 1 337 0
+ 431 004e 456A     		ldr	r5, [r0, #36]
+ 432              	.LVL38:
+ 338:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->FGCOLR |= (DMA2D_FG_InitStruct->DMA2D_FGC_BLUE | fg_colorgreen | fg_colorred);
+ 433              		.loc 1 338 0
+ 434 0050 1C6A     		ldr	r4, [r3, #32]
+ 435 0052 C269     		ldr	r2, [r0, #28]
+ 436 0054 42EA0121 		orr	r1, r2, r1, lsl #8
+ 437              	.LVL39:
+ 438 0058 41EA0542 		orr	r2, r1, r5, lsl #16
+ 439 005c 2243     		orrs	r2, r2, r4
+ 440 005e 1A62     		str	r2, [r3, #32]
+ 441              	.LVL40:
+ 339:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 340:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures foreground CLUT memory address */
+ 341:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->FGCMAR = DMA2D_FG_InitStruct->DMA2D_FGCMAR;
+ 442              		.loc 1 341 0
+ 443 0060 826A     		ldr	r2, [r0, #40]
+ 444 0062 DA62     		str	r2, [r3, #44]
+ 342:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 445              		.loc 1 342 0
+ 446 0064 F0BC     		pop	{r4, r5, r6, r7}
+ 447              	.LCFI4:
+ 448              		.cfi_restore 7
+ 449              		.cfi_restore 6
+ 450              		.cfi_restore 5
+ 451              		.cfi_restore 4
+ 452              		.cfi_def_cfa_offset 0
+ 453              	.LVL41:
+ 454 0066 7047     		bx	lr
+ 455              	.L27:
+ 456              		.align	2
+ 457              	.L26:
+ 458 0068 00B00240 		.word	1073917952
+ 459 006c C000FC00 		.word	16515264
+ 460              		.cfi_endproc
+ 461              	.LFE118:
+ 463              		.section	.text.DMA2D_FG_StructInit,"ax",%progbits
+ 464              		.align	2
+ 465              		.global	DMA2D_FG_StructInit
+ 466              		.thumb
+ 467              		.thumb_func
+ 469              	DMA2D_FG_StructInit:
+ 470              	.LFB119:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 15
+
+
+ 343:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 344:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 345:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Fills each DMA2D_FGStruct member with its default value.
+ 346:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_FGStruct: pointer to a DMA2D_FGTypeDef structure which will
+ 347:.//FWLIB/src/stm32f4xx_dma2d.c ****   *         be initialized.
+ 348:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 349:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 350:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_FG_StructInit(DMA2D_FG_InitTypeDef* DMA2D_FG_InitStruct)
+ 351:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 471              		.loc 1 351 0
+ 472              		.cfi_startproc
+ 473              		@ args = 0, pretend = 0, frame = 0
+ 474              		@ frame_needed = 0, uses_anonymous_args = 0
+ 475              		@ link register save eliminated.
+ 476              	.LVL42:
+ 352:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground memory address */
+ 353:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGMA = 0x00;
+ 477              		.loc 1 353 0
+ 478 0000 0023     		movs	r3, #0
+ 479 0002 0360     		str	r3, [r0]
+ 354:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 355:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground offset */
+ 356:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGO = 0x00;
+ 480              		.loc 1 356 0
+ 481 0004 4360     		str	r3, [r0, #4]
+ 357:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 358:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground color mode */
+ 359:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGCM = CM_ARGB8888;
+ 482              		.loc 1 359 0
+ 483 0006 8360     		str	r3, [r0, #8]
+ 360:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 361:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground CLUT color mode */
+ 362:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FG_CLUT_CM = CLUT_CM_ARGB8888;
+ 484              		.loc 1 362 0
+ 485 0008 C360     		str	r3, [r0, #12]
+ 363:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 364:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground CLUT size */
+ 365:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FG_CLUT_SIZE = 0x00;
+ 486              		.loc 1 365 0
+ 487 000a 0361     		str	r3, [r0, #16]
+ 366:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 367:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground alpha mode */
+ 368:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGPFC_ALPHA_MODE = NO_MODIF_ALPHA_VALUE;
+ 488              		.loc 1 368 0
+ 489 000c 4361     		str	r3, [r0, #20]
+ 369:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 370:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground alpha value */
+ 371:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGPFC_ALPHA_VALUE = 0x00;
+ 490              		.loc 1 371 0
+ 491 000e 8361     		str	r3, [r0, #24]
+ 372:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 373:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground blue value */
+ 374:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGC_BLUE = 0x00;
+ 492              		.loc 1 374 0
+ 493 0010 C361     		str	r3, [r0, #28]
+ 375:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 376:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground green value */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 16
+
+
+ 377:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGC_GREEN = 0x00;
+ 494              		.loc 1 377 0
+ 495 0012 0362     		str	r3, [r0, #32]
+ 378:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 379:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground red value */
+ 380:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGC_RED = 0x00;
+ 496              		.loc 1 380 0
+ 497 0014 4362     		str	r3, [r0, #36]
+ 381:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 382:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D foreground CLUT memory address */
+ 383:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_FG_InitStruct->DMA2D_FGCMAR = 0x00;
+ 498              		.loc 1 383 0
+ 499 0016 8362     		str	r3, [r0, #40]
+ 500 0018 7047     		bx	lr
+ 501              		.cfi_endproc
+ 502              	.LFE119:
+ 504 001a 00BF     		.section	.text.DMA2D_BGConfig,"ax",%progbits
+ 505              		.align	2
+ 506              		.global	DMA2D_BGConfig
+ 507              		.thumb
+ 508              		.thumb_func
+ 510              	DMA2D_BGConfig:
+ 511              	.LFB120:
+ 384:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 385:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 386:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 387:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 388:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Configures the Background according to the specified parameters
+ 389:.//FWLIB/src/stm32f4xx_dma2d.c ****   *         in the DMA2D_BGStruct.
+ 390:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @note   This function can be used only when the transfer is disabled.
+ 391:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_BGStruct: pointer to a DMA2D_BGTypeDef structure that contains
+ 392:.//FWLIB/src/stm32f4xx_dma2d.c ****   *         the configuration information for the specified Background.
+ 393:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 394:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 395:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_BGConfig(DMA2D_BG_InitTypeDef* DMA2D_BG_InitStruct)
+ 396:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 512              		.loc 1 396 0
+ 513              		.cfi_startproc
+ 514              		@ args = 0, pretend = 0, frame = 0
+ 515              		@ frame_needed = 0, uses_anonymous_args = 0
+ 516              		@ link register save eliminated.
+ 517              	.LVL43:
+ 518 0000 F0B4     		push	{r4, r5, r6, r7}
+ 519              	.LCFI5:
+ 520              		.cfi_def_cfa_offset 16
+ 521              		.cfi_offset 4, -16
+ 522              		.cfi_offset 5, -12
+ 523              		.cfi_offset 6, -8
+ 524              		.cfi_offset 7, -4
+ 525              	.LVL44:
+ 397:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 398:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t bg_clutcolormode = 0;
+ 399:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t bg_clutsize = 0;
+ 400:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t bg_alpha_mode = 0;
+ 401:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t bg_alphavalue = 0;
+ 402:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t bg_colorgreen = 0;
+ 403:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t bg_colorred = 0;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 17
+
+
+ 404:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 405:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BGO(DMA2D_BG_InitStruct->DMA2D_BGO));
+ 406:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BGCM(DMA2D_BG_InitStruct->DMA2D_BGCM));
+ 407:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BG_CLUT_CM(DMA2D_BG_InitStruct->DMA2D_BG_CLUT_CM));
+ 408:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BG_CLUT_SIZE(DMA2D_BG_InitStruct->DMA2D_BG_CLUT_SIZE));
+ 409:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BG_ALPHA_MODE(DMA2D_BG_InitStruct->DMA2D_BGPFC_ALPHA_MODE));
+ 410:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BG_ALPHA_VALUE(DMA2D_BG_InitStruct->DMA2D_BGPFC_ALPHA_VALUE));
+ 411:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BGC_BLUE(DMA2D_BG_InitStruct->DMA2D_BGC_BLUE));
+ 412:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BGC_GREEN(DMA2D_BG_InitStruct->DMA2D_BGC_GREEN));
+ 413:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_BGC_RED(DMA2D_BG_InitStruct->DMA2D_BGC_RED));
+ 414:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 415:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures the BG memory address */
+ 416:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->BGMAR = (DMA2D_BG_InitStruct->DMA2D_BGMA);
+ 526              		.loc 1 416 0
+ 527 0002 0268     		ldr	r2, [r0]
+ 528 0004 184B     		ldr	r3, .L31
+ 529 0006 5A61     		str	r2, [r3, #20]
+ 417:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 418:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures the BG offset */
+ 419:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->BGOR &= ~(uint32_t)DMA2D_BGOR_LO;
+ 530              		.loc 1 419 0
+ 531 0008 9A69     		ldr	r2, [r3, #24]
+ 532 000a 22F47F52 		bic	r2, r2, #16320
+ 533 000e 22F03F02 		bic	r2, r2, #63
+ 534 0012 9A61     		str	r2, [r3, #24]
+ 420:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->BGOR |= (DMA2D_BG_InitStruct->DMA2D_BGO);
+ 535              		.loc 1 420 0
+ 536 0014 9969     		ldr	r1, [r3, #24]
+ 537 0016 4268     		ldr	r2, [r0, #4]
+ 538 0018 0A43     		orrs	r2, r2, r1
+ 539 001a 9A61     		str	r2, [r3, #24]
+ 421:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 422:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures background Pixel Format Convertor */
+ 423:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->BGPFCCR &= (uint32_t)PFCCR_MASK;
+ 540              		.loc 1 423 0
+ 541 001c 596A     		ldr	r1, [r3, #36]
+ 542 001e 134A     		ldr	r2, .L31+4
+ 543 0020 0A40     		ands	r2, r2, r1
+ 544 0022 5A62     		str	r2, [r3, #36]
+ 424:.//FWLIB/src/stm32f4xx_dma2d.c ****   bg_clutcolormode = DMA2D_BG_InitStruct->DMA2D_BG_CLUT_CM << 4;
+ 545              		.loc 1 424 0
+ 546 0024 C468     		ldr	r4, [r0, #12]
+ 547              	.LVL45:
+ 425:.//FWLIB/src/stm32f4xx_dma2d.c ****   bg_clutsize = DMA2D_BG_InitStruct->DMA2D_BG_CLUT_SIZE << 8;
+ 548              		.loc 1 425 0
+ 549 0026 0169     		ldr	r1, [r0, #16]
+ 550              	.LVL46:
+ 426:.//FWLIB/src/stm32f4xx_dma2d.c ****   bg_alpha_mode = DMA2D_BG_InitStruct->DMA2D_BGPFC_ALPHA_MODE << 16;
+ 551              		.loc 1 426 0
+ 552 0028 4769     		ldr	r7, [r0, #20]
+ 553              	.LVL47:
+ 427:.//FWLIB/src/stm32f4xx_dma2d.c ****   bg_alphavalue = DMA2D_BG_InitStruct->DMA2D_BGPFC_ALPHA_VALUE << 24;
+ 554              		.loc 1 427 0
+ 555 002a 8669     		ldr	r6, [r0, #24]
+ 556              	.LVL48:
+ 428:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->BGPFCCR |= (DMA2D_BG_InitStruct->DMA2D_BGCM | bg_clutcolormode | bg_clutsize | \
+ 557              		.loc 1 428 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 18
+
+
+ 558 002c 5D6A     		ldr	r5, [r3, #36]
+ 559 002e 8268     		ldr	r2, [r0, #8]
+ 560 0030 42EA0414 		orr	r4, r2, r4, lsl #4
+ 561              	.LVL49:
+ 562 0034 44EA0121 		orr	r1, r4, r1, lsl #8
+ 563              	.LVL50:
+ 564 0038 41EA0741 		orr	r1, r1, r7, lsl #16
+ 429:.//FWLIB/src/stm32f4xx_dma2d.c ****                     bg_alpha_mode | bg_alphavalue);
+ 565              		.loc 1 429 0
+ 566 003c 41EA0662 		orr	r2, r1, r6, lsl #24
+ 428:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->BGPFCCR |= (DMA2D_BG_InitStruct->DMA2D_BGCM | bg_clutcolormode | bg_clutsize | \
+ 567              		.loc 1 428 0
+ 568 0040 2A43     		orrs	r2, r2, r5
+ 569 0042 5A62     		str	r2, [r3, #36]
+ 570              	.LVL51:
+ 430:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 431:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures background color */
+ 432:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->BGCOLR &= ~(DMA2D_BGCOLR_BLUE | DMA2D_BGCOLR_GREEN | DMA2D_BGCOLR_RED);
+ 571              		.loc 1 432 0
+ 572 0044 9A6A     		ldr	r2, [r3, #40]
+ 573 0046 02F07F42 		and	r2, r2, #-16777216
+ 574 004a 9A62     		str	r2, [r3, #40]
+ 433:.//FWLIB/src/stm32f4xx_dma2d.c ****   bg_colorgreen = DMA2D_BG_InitStruct->DMA2D_BGC_GREEN << 8;
+ 575              		.loc 1 433 0
+ 576 004c 016A     		ldr	r1, [r0, #32]
+ 577              	.LVL52:
+ 434:.//FWLIB/src/stm32f4xx_dma2d.c ****   bg_colorred = DMA2D_BG_InitStruct->DMA2D_BGC_RED << 16;
+ 578              		.loc 1 434 0
+ 579 004e 456A     		ldr	r5, [r0, #36]
+ 580              	.LVL53:
+ 435:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->BGCOLR |= (DMA2D_BG_InitStruct->DMA2D_BGC_BLUE | bg_colorgreen | bg_colorred);
+ 581              		.loc 1 435 0
+ 582 0050 9C6A     		ldr	r4, [r3, #40]
+ 583 0052 C269     		ldr	r2, [r0, #28]
+ 584 0054 42EA0121 		orr	r1, r2, r1, lsl #8
+ 585              	.LVL54:
+ 586 0058 41EA0542 		orr	r2, r1, r5, lsl #16
+ 587 005c 2243     		orrs	r2, r2, r4
+ 588 005e 9A62     		str	r2, [r3, #40]
+ 589              	.LVL55:
+ 436:.//FWLIB/src/stm32f4xx_dma2d.c ****   
+ 437:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Configures background CLUT memory address */
+ 438:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->BGCMAR = DMA2D_BG_InitStruct->DMA2D_BGCMAR;
+ 590              		.loc 1 438 0
+ 591 0060 826A     		ldr	r2, [r0, #40]
+ 592 0062 1A63     		str	r2, [r3, #48]
+ 439:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 440:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 593              		.loc 1 440 0
+ 594 0064 F0BC     		pop	{r4, r5, r6, r7}
+ 595              	.LCFI6:
+ 596              		.cfi_restore 7
+ 597              		.cfi_restore 6
+ 598              		.cfi_restore 5
+ 599              		.cfi_restore 4
+ 600              		.cfi_def_cfa_offset 0
+ 601              	.LVL56:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 19
+
+
+ 602 0066 7047     		bx	lr
+ 603              	.L32:
+ 604              		.align	2
+ 605              	.L31:
+ 606 0068 00B00240 		.word	1073917952
+ 607 006c C000FC00 		.word	16515264
+ 608              		.cfi_endproc
+ 609              	.LFE120:
+ 611              		.section	.text.DMA2D_BG_StructInit,"ax",%progbits
+ 612              		.align	2
+ 613              		.global	DMA2D_BG_StructInit
+ 614              		.thumb
+ 615              		.thumb_func
+ 617              	DMA2D_BG_StructInit:
+ 618              	.LFB121:
+ 441:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 442:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 443:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Fills each DMA2D_BGStruct member with its default value.
+ 444:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_BGStruct: pointer to a DMA2D_BGTypeDef structure which will
+ 445:.//FWLIB/src/stm32f4xx_dma2d.c ****   *         be initialized.
+ 446:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 447:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 448:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_BG_StructInit(DMA2D_BG_InitTypeDef* DMA2D_BG_InitStruct)
+ 449:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 619              		.loc 1 449 0
+ 620              		.cfi_startproc
+ 621              		@ args = 0, pretend = 0, frame = 0
+ 622              		@ frame_needed = 0, uses_anonymous_args = 0
+ 623              		@ link register save eliminated.
+ 624              	.LVL57:
+ 450:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background memory address */
+ 451:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGMA = 0x00;
+ 625              		.loc 1 451 0
+ 626 0000 0023     		movs	r3, #0
+ 627 0002 0360     		str	r3, [r0]
+ 452:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 453:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background offset */
+ 454:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGO = 0x00;
+ 628              		.loc 1 454 0
+ 629 0004 4360     		str	r3, [r0, #4]
+ 455:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 456:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background color mode */
+ 457:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGCM = CM_ARGB8888;
+ 630              		.loc 1 457 0
+ 631 0006 8360     		str	r3, [r0, #8]
+ 458:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 459:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background CLUT color mode */
+ 460:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BG_CLUT_CM = CLUT_CM_ARGB8888;
+ 632              		.loc 1 460 0
+ 633 0008 C360     		str	r3, [r0, #12]
+ 461:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 462:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background CLUT size */
+ 463:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BG_CLUT_SIZE = 0x00;
+ 634              		.loc 1 463 0
+ 635 000a 0361     		str	r3, [r0, #16]
+ 464:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 465:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background alpha mode */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 20
+
+
+ 466:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGPFC_ALPHA_MODE = NO_MODIF_ALPHA_VALUE;
+ 636              		.loc 1 466 0
+ 637 000c 4361     		str	r3, [r0, #20]
+ 467:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 468:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background alpha value */
+ 469:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGPFC_ALPHA_VALUE = 0x00;
+ 638              		.loc 1 469 0
+ 639 000e 8361     		str	r3, [r0, #24]
+ 470:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 471:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background blue value */
+ 472:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGC_BLUE = 0x00;
+ 640              		.loc 1 472 0
+ 641 0010 C361     		str	r3, [r0, #28]
+ 473:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 474:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background green value */
+ 475:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGC_GREEN = 0x00;
+ 642              		.loc 1 475 0
+ 643 0012 0362     		str	r3, [r0, #32]
+ 476:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 477:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background red value */
+ 478:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGC_RED = 0x00;
+ 644              		.loc 1 478 0
+ 645 0014 4362     		str	r3, [r0, #36]
+ 479:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 480:.//FWLIB/src/stm32f4xx_dma2d.c ****   /*!< Initialize the DMA2D background CLUT memory address */
+ 481:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_BG_InitStruct->DMA2D_BGCMAR = 0x00;
+ 646              		.loc 1 481 0
+ 647 0016 8362     		str	r3, [r0, #40]
+ 648 0018 7047     		bx	lr
+ 649              		.cfi_endproc
+ 650              	.LFE121:
+ 652 001a 00BF     		.section	.text.DMA2D_FGStart,"ax",%progbits
+ 653              		.align	2
+ 654              		.global	DMA2D_FGStart
+ 655              		.thumb
+ 656              		.thumb_func
+ 658              	DMA2D_FGStart:
+ 659              	.LFB122:
+ 482:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 483:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 484:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 485:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Start the automatic loading of the CLUT or abort the transfer.
+ 486:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  NewState: new state of the DMA2D peripheral.
+ 487:.//FWLIB/src/stm32f4xx_dma2d.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 488:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 489:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 490:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 491:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_FGStart(FunctionalState NewState) 
+ 492:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 660              		.loc 1 492 0
+ 661              		.cfi_startproc
+ 662              		@ args = 0, pretend = 0, frame = 0
+ 663              		@ frame_needed = 0, uses_anonymous_args = 0
+ 664              		@ link register save eliminated.
+ 665              	.LVL58:
+ 493:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Check the parameters */
+ 494:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 21
+
+
+ 495:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 496:.//FWLIB/src/stm32f4xx_dma2d.c ****   if (NewState != DISABLE)
+ 666              		.loc 1 496 0
+ 667 0000 28B1     		cbz	r0, .L35
+ 497:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 498:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* Start the automatic loading of the CLUT */
+ 499:.//FWLIB/src/stm32f4xx_dma2d.c ****     DMA2D->FGPFCCR |= DMA2D_FGPFCCR_START;
+ 668              		.loc 1 499 0
+ 669 0002 064A     		ldr	r2, .L37
+ 670 0004 D369     		ldr	r3, [r2, #28]
+ 671 0006 43F02003 		orr	r3, r3, #32
+ 672 000a D361     		str	r3, [r2, #28]
+ 673 000c 7047     		bx	lr
+ 674              	.L35:
+ 500:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 501:.//FWLIB/src/stm32f4xx_dma2d.c ****   else
+ 502:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 503:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* abort the transfer */
+ 504:.//FWLIB/src/stm32f4xx_dma2d.c ****     DMA2D->FGPFCCR &= (uint32_t)~DMA2D_FGPFCCR_START;
+ 675              		.loc 1 504 0
+ 676 000e 034A     		ldr	r2, .L37
+ 677 0010 D369     		ldr	r3, [r2, #28]
+ 678 0012 23F02003 		bic	r3, r3, #32
+ 679 0016 D361     		str	r3, [r2, #28]
+ 680 0018 7047     		bx	lr
+ 681              	.L38:
+ 682 001a 00BF     		.align	2
+ 683              	.L37:
+ 684 001c 00B00240 		.word	1073917952
+ 685              		.cfi_endproc
+ 686              	.LFE122:
+ 688              		.section	.text.DMA2D_BGStart,"ax",%progbits
+ 689              		.align	2
+ 690              		.global	DMA2D_BGStart
+ 691              		.thumb
+ 692              		.thumb_func
+ 694              	DMA2D_BGStart:
+ 695              	.LFB123:
+ 505:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 506:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 507:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 508:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 509:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Start the automatic loading of the CLUT or abort the transfer.
+ 510:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  NewState: new state of the DMA2D peripheral.
+ 511:.//FWLIB/src/stm32f4xx_dma2d.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 512:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 513:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 514:.//FWLIB/src/stm32f4xx_dma2d.c ****   
+ 515:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_BGStart(FunctionalState NewState) 
+ 516:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 696              		.loc 1 516 0
+ 697              		.cfi_startproc
+ 698              		@ args = 0, pretend = 0, frame = 0
+ 699              		@ frame_needed = 0, uses_anonymous_args = 0
+ 700              		@ link register save eliminated.
+ 701              	.LVL59:
+ 517:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Check the parameters */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 22
+
+
+ 518:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 519:.//FWLIB/src/stm32f4xx_dma2d.c ****   
+ 520:.//FWLIB/src/stm32f4xx_dma2d.c ****   if (NewState != DISABLE)
+ 702              		.loc 1 520 0
+ 703 0000 28B1     		cbz	r0, .L40
+ 521:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 522:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* Start the automatic loading of the CLUT */
+ 523:.//FWLIB/src/stm32f4xx_dma2d.c ****     DMA2D->BGPFCCR |= DMA2D_BGPFCCR_START;
+ 704              		.loc 1 523 0
+ 705 0002 064A     		ldr	r2, .L42
+ 706 0004 536A     		ldr	r3, [r2, #36]
+ 707 0006 43F02003 		orr	r3, r3, #32
+ 708 000a 5362     		str	r3, [r2, #36]
+ 709 000c 7047     		bx	lr
+ 710              	.L40:
+ 524:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 525:.//FWLIB/src/stm32f4xx_dma2d.c ****   else
+ 526:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 527:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* abort the transfer */
+ 528:.//FWLIB/src/stm32f4xx_dma2d.c ****     DMA2D->BGPFCCR &= (uint32_t)~DMA2D_BGPFCCR_START;
+ 711              		.loc 1 528 0
+ 712 000e 034A     		ldr	r2, .L42
+ 713 0010 536A     		ldr	r3, [r2, #36]
+ 714 0012 23F02003 		bic	r3, r3, #32
+ 715 0016 5362     		str	r3, [r2, #36]
+ 716 0018 7047     		bx	lr
+ 717              	.L43:
+ 718 001a 00BF     		.align	2
+ 719              	.L42:
+ 720 001c 00B00240 		.word	1073917952
+ 721              		.cfi_endproc
+ 722              	.LFE123:
+ 724              		.section	.text.DMA2D_DeadTimeConfig,"ax",%progbits
+ 725              		.align	2
+ 726              		.global	DMA2D_DeadTimeConfig
+ 727              		.thumb
+ 728              		.thumb_func
+ 730              	DMA2D_DeadTimeConfig:
+ 731              	.LFB124:
+ 529:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 530:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 531:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 532:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 533:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Configures the DMA2D dead time.
+ 534:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_DeadTime: specifies the DMA2D dead time.
+ 535:.//FWLIB/src/stm32f4xx_dma2d.c ****   *   This parameter can be one of the following values:
+ 536:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 537:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 538:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_DeadTimeConfig(uint32_t DMA2D_DeadTime, FunctionalState NewState)
+ 539:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 732              		.loc 1 539 0
+ 733              		.cfi_startproc
+ 734              		@ args = 0, pretend = 0, frame = 0
+ 735              		@ frame_needed = 0, uses_anonymous_args = 0
+ 736              		@ link register save eliminated.
+ 737              	.LVL60:
+ 540:.//FWLIB/src/stm32f4xx_dma2d.c ****    uint32_t DeadTime;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 23
+
+
+ 541:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 542:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Check the parameters */
+ 543:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_DEAD_TIME(DMA2D_DeadTime));
+ 544:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 545:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 546:.//FWLIB/src/stm32f4xx_dma2d.c ****   if (NewState != DISABLE)
+ 738              		.loc 1 546 0
+ 739 0000 69B1     		cbz	r1, .L45
+ 547:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 548:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* Enable and Configures the dead time */
+ 549:.//FWLIB/src/stm32f4xx_dma2d.c ****     DMA2D->AMTCR &= (uint32_t)DEAD_MASK;
+ 740              		.loc 1 549 0
+ 741 0002 0A4A     		ldr	r2, .L47
+ 742 0004 D36C     		ldr	r3, [r2, #76]
+ 743 0006 23F47F43 		bic	r3, r3, #65280
+ 744 000a 23F00103 		bic	r3, r3, #1
+ 745 000e D364     		str	r3, [r2, #76]
+ 746              	.LVL61:
+ 550:.//FWLIB/src/stm32f4xx_dma2d.c ****     DeadTime = DMA2D_DeadTime << 8;
+ 551:.//FWLIB/src/stm32f4xx_dma2d.c ****     DMA2D->AMTCR |= (DeadTime | DMA2D_AMTCR_EN);
+ 747              		.loc 1 551 0
+ 748 0010 D36C     		ldr	r3, [r2, #76]
+ 749 0012 43EA0020 		orr	r0, r3, r0, lsl #8
+ 750              	.LVL62:
+ 751 0016 40F00100 		orr	r0, r0, #1
+ 752 001a D064     		str	r0, [r2, #76]
+ 753 001c 7047     		bx	lr
+ 754              	.LVL63:
+ 755              	.L45:
+ 552:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 553:.//FWLIB/src/stm32f4xx_dma2d.c ****   else
+ 554:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 555:.//FWLIB/src/stm32f4xx_dma2d.c ****      DMA2D->AMTCR &= ~(uint32_t)DMA2D_AMTCR_EN;
+ 756              		.loc 1 555 0
+ 757 001e 034A     		ldr	r2, .L47
+ 758 0020 D36C     		ldr	r3, [r2, #76]
+ 759 0022 23F00103 		bic	r3, r3, #1
+ 760 0026 D364     		str	r3, [r2, #76]
+ 761 0028 7047     		bx	lr
+ 762              	.L48:
+ 763 002a 00BF     		.align	2
+ 764              	.L47:
+ 765 002c 00B00240 		.word	1073917952
+ 766              		.cfi_endproc
+ 767              	.LFE124:
+ 769              		.section	.text.DMA2D_LineWatermarkConfig,"ax",%progbits
+ 770              		.align	2
+ 771              		.global	DMA2D_LineWatermarkConfig
+ 772              		.thumb
+ 773              		.thumb_func
+ 775              	DMA2D_LineWatermarkConfig:
+ 776              	.LFB125:
+ 556:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 557:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 558:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 559:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 560:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Define the configuration of the line watermark .
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 24
+
+
+ 561:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_LWatermarkConfig: Line Watermark configuration.
+ 562:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 563:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 564:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 565:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_LineWatermarkConfig(uint32_t DMA2D_LWatermarkConfig)
+ 566:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 777              		.loc 1 566 0
+ 778              		.cfi_startproc
+ 779              		@ args = 0, pretend = 0, frame = 0
+ 780              		@ frame_needed = 0, uses_anonymous_args = 0
+ 781              		@ link register save eliminated.
+ 782              	.LVL64:
+ 567:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Check the parameters */
+ 568:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_LineWatermark(DMA2D_LWatermarkConfig));
+ 569:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 570:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Sets the Line watermark configuration */
+ 571:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->LWR = (uint32_t)DMA2D_LWatermarkConfig;
+ 783              		.loc 1 571 0
+ 784 0000 014B     		ldr	r3, .L50
+ 785 0002 9864     		str	r0, [r3, #72]
+ 786 0004 7047     		bx	lr
+ 787              	.L51:
+ 788 0006 00BF     		.align	2
+ 789              	.L50:
+ 790 0008 00B00240 		.word	1073917952
+ 791              		.cfi_endproc
+ 792              	.LFE125:
+ 794              		.section	.text.DMA2D_ITConfig,"ax",%progbits
+ 795              		.align	2
+ 796              		.global	DMA2D_ITConfig
+ 797              		.thumb
+ 798              		.thumb_func
+ 800              	DMA2D_ITConfig:
+ 801              	.LFB126:
+ 572:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 573:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 574:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 575:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @}
+ 576:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 577:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 578:.//FWLIB/src/stm32f4xx_dma2d.c **** /** @defgroup DMA2D_Group2 Interrupts and flags management functions
+ 579:.//FWLIB/src/stm32f4xx_dma2d.c ****  *  @brief   Interrupts and flags management functions
+ 580:.//FWLIB/src/stm32f4xx_dma2d.c ****  *
+ 581:.//FWLIB/src/stm32f4xx_dma2d.c **** @verbatim
+ 582:.//FWLIB/src/stm32f4xx_dma2d.c ****  ===============================================================================
+ 583:.//FWLIB/src/stm32f4xx_dma2d.c ****             ##### Interrupts and flags management functions #####
+ 584:.//FWLIB/src/stm32f4xx_dma2d.c ****  ===============================================================================
+ 585:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 586:.//FWLIB/src/stm32f4xx_dma2d.c ****     [..] This section provides functions allowing to configure the DMA2D 
+ 587:.//FWLIB/src/stm32f4xx_dma2d.c ****          Interrupts and to get the status and clear flags and Interrupts 
+ 588:.//FWLIB/src/stm32f4xx_dma2d.c ****          pending bits.
+ 589:.//FWLIB/src/stm32f4xx_dma2d.c ****     [..] The DMA2D provides 6 Interrupts sources and 6 Flags
+ 590:.//FWLIB/src/stm32f4xx_dma2d.c ****     
+ 591:.//FWLIB/src/stm32f4xx_dma2d.c ****     *** Flags ***
+ 592:.//FWLIB/src/stm32f4xx_dma2d.c ****     =============
+ 593:.//FWLIB/src/stm32f4xx_dma2d.c ****     [..]
+ 594:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) DMA2D_FLAG_CE : Configuration Error Interrupt flag
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 25
+
+
+ 595:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) DMA2D_FLAG_CAE: CLUT Access Error Interrupt flag
+ 596:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) DMA2D_FLAG_TW:  Transfer Watermark Interrupt flag
+ 597:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) DMA2D_FLAG_TC:  Transfer Complete interrupt flag
+ 598:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) DMA2D_FLAG_TE:  Transfer Error interrupt flag
+ 599:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) DMA2D_FLAG_CTC: CLUT Transfer Complete Interrupt flag
+ 600:.//FWLIB/src/stm32f4xx_dma2d.c ****       
+ 601:.//FWLIB/src/stm32f4xx_dma2d.c ****     *** Interrupts ***
+ 602:.//FWLIB/src/stm32f4xx_dma2d.c ****     ==================
+ 603:.//FWLIB/src/stm32f4xx_dma2d.c ****     [..]
+ 604:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) DMA2D_IT_CE: Configuration Error Interrupt is generated when a wrong 
+ 605:.//FWLIB/src/stm32f4xx_dma2d.c ****                        configuration is detected
+ 606:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) DMA2D_IT_CAE: CLUT Access Error Interrupt
+ 607:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) DMA2D_IT_TW: Transfer Watermark Interrupt is generated when 
+ 608:.//FWLIB/src/stm32f4xx_dma2d.c ****                        the programmed watermark is reached 
+ 609:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) DMA2D_IT_TE: Transfer Error interrupt is generated when the CPU trying 
+ 610:.//FWLIB/src/stm32f4xx_dma2d.c ****                        to access the CLUT while a CLUT loading or a DMA2D1 transfer 
+ 611:.//FWLIB/src/stm32f4xx_dma2d.c ****                        is on going       
+ 612:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) DMA2D_IT_CTC: CLUT Transfer Complete Interrupt 
+ 613:.//FWLIB/src/stm32f4xx_dma2d.c ****       (+) DMA2D_IT_TC: Transfer Complete interrupt         
+ 614:.//FWLIB/src/stm32f4xx_dma2d.c **** @endverbatim
+ 615:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @{
+ 616:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 617:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 618:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Enables or disables the specified DMA2D's interrupts.
+ 619:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_IT: specifies the DMA2D interrupts sources to be enabled or disabled.
+ 620:.//FWLIB/src/stm32f4xx_dma2d.c ****   *   This parameter can be any combination of the following values:
+ 621:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_CE:   Configuration Error Interrupt Enable.
+ 622:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_CTC:  CLUT Transfer Complete Interrupt Enable.
+ 623:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_CAE:  CLUT Access Error Interrupt Enable.
+ 624:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_TW:   Transfer Watermark Interrupt Enable.
+ 625:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_TC:   Transfer Complete interrupt enable.
+ 626:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_TE:   Transfer Error interrupt enable.
+ 627:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param NewState: new state of the specified DMA2D interrupts.
+ 628:.//FWLIB/src/stm32f4xx_dma2d.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 629:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 630:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 631:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 632:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_ITConfig(uint32_t DMA2D_IT, FunctionalState NewState)
+ 633:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 802              		.loc 1 633 0
+ 803              		.cfi_startproc
+ 804              		@ args = 0, pretend = 0, frame = 0
+ 805              		@ frame_needed = 0, uses_anonymous_args = 0
+ 806              		@ link register save eliminated.
+ 807              	.LVL65:
+ 634:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Check the parameters */
+ 635:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_IT(DMA2D_IT));
+ 636:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 637:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 638:.//FWLIB/src/stm32f4xx_dma2d.c ****   if (NewState != DISABLE)
+ 808              		.loc 1 638 0
+ 809 0000 21B1     		cbz	r1, .L53
+ 639:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 640:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* Enable the selected DMA2D interrupts */
+ 641:.//FWLIB/src/stm32f4xx_dma2d.c ****     DMA2D->CR |= DMA2D_IT;
+ 810              		.loc 1 641 0
+ 811 0002 054B     		ldr	r3, .L55
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 26
+
+
+ 812 0004 1A68     		ldr	r2, [r3]
+ 813 0006 1043     		orrs	r0, r0, r2
+ 814              	.LVL66:
+ 815 0008 1860     		str	r0, [r3]
+ 816 000a 7047     		bx	lr
+ 817              	.LVL67:
+ 818              	.L53:
+ 642:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 643:.//FWLIB/src/stm32f4xx_dma2d.c ****   else
+ 644:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 645:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* Disable the selected DMA2D interrupts */
+ 646:.//FWLIB/src/stm32f4xx_dma2d.c ****     DMA2D->CR &= (uint32_t)~DMA2D_IT;
+ 819              		.loc 1 646 0
+ 820 000c 024A     		ldr	r2, .L55
+ 821 000e 1368     		ldr	r3, [r2]
+ 822 0010 23EA0000 		bic	r0, r3, r0
+ 823              	.LVL68:
+ 824 0014 1060     		str	r0, [r2]
+ 825 0016 7047     		bx	lr
+ 826              	.L56:
+ 827              		.align	2
+ 828              	.L55:
+ 829 0018 00B00240 		.word	1073917952
+ 830              		.cfi_endproc
+ 831              	.LFE126:
+ 833              		.section	.text.DMA2D_GetFlagStatus,"ax",%progbits
+ 834              		.align	2
+ 835              		.global	DMA2D_GetFlagStatus
+ 836              		.thumb
+ 837              		.thumb_func
+ 839              	DMA2D_GetFlagStatus:
+ 840              	.LFB127:
+ 647:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 648:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 649:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 650:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 651:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Checks whether the specified DMA2D's flag is set or not.
+ 652:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_FLAG: specifies the flag to check.
+ 653:.//FWLIB/src/stm32f4xx_dma2d.c ****   *   This parameter can be one of the following values:
+ 654:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_FLAG_CE:   Configuration Error Interrupt flag.
+ 655:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_FLAG_CTC:  CLUT Transfer Complete Interrupt flag.
+ 656:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_FLAG_CAE:  CLUT Access Error Interrupt flag.
+ 657:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_FLAG_TW:   Transfer Watermark Interrupt flag.
+ 658:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_FLAG_TC:   Transfer Complete interrupt flag.
+ 659:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_FLAG_TE:   Transfer Error interrupt flag.
+ 660:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval The new state of DMA2D_FLAG (SET or RESET).
+ 661:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 662:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 663:.//FWLIB/src/stm32f4xx_dma2d.c **** FlagStatus DMA2D_GetFlagStatus(uint32_t DMA2D_FLAG)
+ 664:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 841              		.loc 1 664 0
+ 842              		.cfi_startproc
+ 843              		@ args = 0, pretend = 0, frame = 0
+ 844              		@ frame_needed = 0, uses_anonymous_args = 0
+ 845              		@ link register save eliminated.
+ 846              	.LVL69:
+ 665:.//FWLIB/src/stm32f4xx_dma2d.c ****   FlagStatus bitstatus = RESET;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 27
+
+
+ 666:.//FWLIB/src/stm32f4xx_dma2d.c ****   
+ 667:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Check the parameters */
+ 668:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_GET_FLAG(DMA2D_FLAG));
+ 669:.//FWLIB/src/stm32f4xx_dma2d.c ****   
+ 670:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Check the status of the specified DMA2D flag */
+ 671:.//FWLIB/src/stm32f4xx_dma2d.c ****   if (((DMA2D->ISR) & DMA2D_FLAG) != (uint32_t)RESET)
+ 847              		.loc 1 671 0
+ 848 0000 034B     		ldr	r3, .L60
+ 849 0002 5B68     		ldr	r3, [r3, #4]
+ 850 0004 0342     		tst	r3, r0
+ 851 0006 01D0     		beq	.L59
+ 672:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 673:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* DMA2D_FLAG is set */
+ 674:.//FWLIB/src/stm32f4xx_dma2d.c ****     bitstatus = SET;
+ 852              		.loc 1 674 0
+ 853 0008 0120     		movs	r0, #1
+ 854              	.LVL70:
+ 855 000a 7047     		bx	lr
+ 856              	.LVL71:
+ 857              	.L59:
+ 675:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 676:.//FWLIB/src/stm32f4xx_dma2d.c ****   else
+ 677:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 678:.//FWLIB/src/stm32f4xx_dma2d.c ****     /* DMA2D_FLAG is reset */
+ 679:.//FWLIB/src/stm32f4xx_dma2d.c ****     bitstatus = RESET;
+ 858              		.loc 1 679 0
+ 859 000c 0020     		movs	r0, #0
+ 860              	.LVL72:
+ 680:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 681:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Return the DMA2D_FLAG status */
+ 682:.//FWLIB/src/stm32f4xx_dma2d.c ****   return bitstatus;
+ 683:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 861              		.loc 1 683 0
+ 862 000e 7047     		bx	lr
+ 863              	.L61:
+ 864              		.align	2
+ 865              	.L60:
+ 866 0010 00B00240 		.word	1073917952
+ 867              		.cfi_endproc
+ 868              	.LFE127:
+ 870              		.section	.text.DMA2D_ClearFlag,"ax",%progbits
+ 871              		.align	2
+ 872              		.global	DMA2D_ClearFlag
+ 873              		.thumb
+ 874              		.thumb_func
+ 876              	DMA2D_ClearFlag:
+ 877              	.LFB128:
+ 684:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 685:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 686:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Clears the DMA2D's pending flags.
+ 687:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_FLAG: specifies the flag to clear.
+ 688:.//FWLIB/src/stm32f4xx_dma2d.c ****   *   This parameter can be any combination of the following values:
+ 689:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_FLAG_CE:   Configuration Error Interrupt flag.
+ 690:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_FLAG_CTC:  CLUT Transfer Complete Interrupt flag.
+ 691:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_FLAG_CAE:  CLUT Access Error Interrupt flag.
+ 692:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_FLAG_TW:   Transfer Watermark Interrupt flag.
+ 693:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_FLAG_TC:   Transfer Complete interrupt flag.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 28
+
+
+ 694:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_FLAG_TE:   Transfer Error interrupt flag.
+ 695:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 696:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 697:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_ClearFlag(uint32_t DMA2D_FLAG)
+ 698:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 878              		.loc 1 698 0
+ 879              		.cfi_startproc
+ 880              		@ args = 0, pretend = 0, frame = 0
+ 881              		@ frame_needed = 0, uses_anonymous_args = 0
+ 882              		@ link register save eliminated.
+ 883              	.LVL73:
+ 699:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Check the parameters */
+ 700:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_GET_FLAG(DMA2D_FLAG));
+ 701:.//FWLIB/src/stm32f4xx_dma2d.c ****     
+ 702:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Clear the corresponding DMA2D flag */
+ 703:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->IFCR = (uint32_t)DMA2D_FLAG;
+ 884              		.loc 1 703 0
+ 885 0000 014B     		ldr	r3, .L63
+ 886 0002 9860     		str	r0, [r3, #8]
+ 887 0004 7047     		bx	lr
+ 888              	.L64:
+ 889 0006 00BF     		.align	2
+ 890              	.L63:
+ 891 0008 00B00240 		.word	1073917952
+ 892              		.cfi_endproc
+ 893              	.LFE128:
+ 895              		.section	.text.DMA2D_GetITStatus,"ax",%progbits
+ 896              		.align	2
+ 897              		.global	DMA2D_GetITStatus
+ 898              		.thumb
+ 899              		.thumb_func
+ 901              	DMA2D_GetITStatus:
+ 902              	.LFB129:
+ 704:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 705:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 706:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 707:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Checks whether the specified DMA2D's interrupt has occurred or not.
+ 708:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_IT: specifies the DMA2D interrupts sources to check.
+ 709:.//FWLIB/src/stm32f4xx_dma2d.c ****   *   This parameter can be one of the following values:
+ 710:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_CE:   Configuration Error Interrupt Enable.
+ 711:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_CTC:  CLUT Transfer Complete Interrupt Enable.
+ 712:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_CAE:  CLUT Access Error Interrupt Enable.
+ 713:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_TW:   Transfer Watermark Interrupt Enable.
+ 714:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_TC:   Transfer Complete interrupt enable.
+ 715:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_TE:   Transfer Error interrupt enable.
+ 716:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval The new state of the DMA2D_IT (SET or RESET).
+ 717:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 718:.//FWLIB/src/stm32f4xx_dma2d.c **** ITStatus DMA2D_GetITStatus(uint32_t DMA2D_IT)
+ 719:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 903              		.loc 1 719 0
+ 904              		.cfi_startproc
+ 905              		@ args = 0, pretend = 0, frame = 0
+ 906              		@ frame_needed = 0, uses_anonymous_args = 0
+ 907              		@ link register save eliminated.
+ 908              	.LVL74:
+ 720:.//FWLIB/src/stm32f4xx_dma2d.c ****   ITStatus bitstatus = RESET;
+ 721:.//FWLIB/src/stm32f4xx_dma2d.c ****   uint32_t DMA2D_IT_FLAG = DMA2D_IT >> 8;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 29
+
+
+ 722:.//FWLIB/src/stm32f4xx_dma2d.c ****   
+ 723:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Check the parameters */
+ 724:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_IT(DMA2D_IT));
+ 725:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 726:.//FWLIB/src/stm32f4xx_dma2d.c ****   if ((DMA2D->ISR & DMA2D_IT_FLAG) != (uint32_t)RESET)
+ 909              		.loc 1 726 0
+ 910 0000 094B     		ldr	r3, .L71
+ 911 0002 5B68     		ldr	r3, [r3, #4]
+ 912 0004 13EA1023 		ands	r3, r3, r0, lsr #8
+ 913 0008 01D0     		beq	.L68
+ 727:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 728:.//FWLIB/src/stm32f4xx_dma2d.c ****     bitstatus = SET;
+ 914              		.loc 1 728 0
+ 915 000a 0122     		movs	r2, #1
+ 916 000c 00E0     		b	.L66
+ 917              	.L68:
+ 729:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 730:.//FWLIB/src/stm32f4xx_dma2d.c ****   else
+ 731:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 732:.//FWLIB/src/stm32f4xx_dma2d.c ****     bitstatus = RESET;
+ 918              		.loc 1 732 0
+ 919 000e 0022     		movs	r2, #0
+ 920              	.L66:
+ 921              	.LVL75:
+ 733:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 734:.//FWLIB/src/stm32f4xx_dma2d.c ****   
+ 735:.//FWLIB/src/stm32f4xx_dma2d.c ****   if (((DMA2D->CR & DMA2D_IT) != (uint32_t)RESET) && (bitstatus != (uint32_t)RESET))
+ 922              		.loc 1 735 0
+ 923 0010 054B     		ldr	r3, .L71
+ 924 0012 1B68     		ldr	r3, [r3]
+ 925 0014 1842     		tst	r0, r3
+ 926 0016 02D0     		beq	.L69
+ 927              		.loc 1 735 0 is_stmt 0 discriminator 1
+ 928 0018 1AB9     		cbnz	r2, .L70
+ 736:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 737:.//FWLIB/src/stm32f4xx_dma2d.c ****     bitstatus = SET;
+ 738:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 739:.//FWLIB/src/stm32f4xx_dma2d.c ****   else
+ 740:.//FWLIB/src/stm32f4xx_dma2d.c ****   {
+ 741:.//FWLIB/src/stm32f4xx_dma2d.c ****     bitstatus = RESET;
+ 929              		.loc 1 741 0 is_stmt 1
+ 930 001a 0020     		movs	r0, #0
+ 931              	.LVL76:
+ 932 001c 7047     		bx	lr
+ 933              	.LVL77:
+ 934              	.L69:
+ 935 001e 0020     		movs	r0, #0
+ 936              	.LVL78:
+ 937 0020 7047     		bx	lr
+ 938              	.LVL79:
+ 939              	.L70:
+ 737:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 940              		.loc 1 737 0
+ 941 0022 0120     		movs	r0, #1
+ 942              	.LVL80:
+ 742:.//FWLIB/src/stm32f4xx_dma2d.c ****   }
+ 743:.//FWLIB/src/stm32f4xx_dma2d.c ****   return bitstatus;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 30
+
+
+ 744:.//FWLIB/src/stm32f4xx_dma2d.c **** }
+ 943              		.loc 1 744 0
+ 944 0024 7047     		bx	lr
+ 945              	.L72:
+ 946 0026 00BF     		.align	2
+ 947              	.L71:
+ 948 0028 00B00240 		.word	1073917952
+ 949              		.cfi_endproc
+ 950              	.LFE129:
+ 952              		.section	.text.DMA2D_ClearITPendingBit,"ax",%progbits
+ 953              		.align	2
+ 954              		.global	DMA2D_ClearITPendingBit
+ 955              		.thumb
+ 956              		.thumb_func
+ 958              	DMA2D_ClearITPendingBit:
+ 959              	.LFB130:
+ 745:.//FWLIB/src/stm32f4xx_dma2d.c **** 
+ 746:.//FWLIB/src/stm32f4xx_dma2d.c **** /**
+ 747:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @brief  Clears the DMA2D's interrupt pending bits.
+ 748:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @param  DMA2D_IT: specifies the interrupt pending bit to clear.
+ 749:.//FWLIB/src/stm32f4xx_dma2d.c ****   *   This parameter can be any combination of the following values:
+ 750:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_CE:   Configuration Error Interrupt.
+ 751:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_CTC:  CLUT Transfer Complete Interrupt.
+ 752:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_CAE:  CLUT Access Error Interrupt.
+ 753:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_TW:   Transfer Watermark Interrupt.
+ 754:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_TC:   Transfer Complete interrupt.
+ 755:.//FWLIB/src/stm32f4xx_dma2d.c ****   *     @arg DMA2D_IT_TE:   Transfer Error interrupt.
+ 756:.//FWLIB/src/stm32f4xx_dma2d.c ****   * @retval None
+ 757:.//FWLIB/src/stm32f4xx_dma2d.c ****   */
+ 758:.//FWLIB/src/stm32f4xx_dma2d.c **** void DMA2D_ClearITPendingBit(uint32_t DMA2D_IT)
+ 759:.//FWLIB/src/stm32f4xx_dma2d.c **** {
+ 960              		.loc 1 759 0
+ 961              		.cfi_startproc
+ 962              		@ args = 0, pretend = 0, frame = 0
+ 963              		@ frame_needed = 0, uses_anonymous_args = 0
+ 964              		@ link register save eliminated.
+ 965              	.LVL81:
+ 760:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Check the parameters */
+ 761:.//FWLIB/src/stm32f4xx_dma2d.c ****   assert_param(IS_DMA2D_IT(DMA2D_IT));
+ 762:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D_IT = DMA2D_IT >> 8;
+ 966              		.loc 1 762 0
+ 967 0000 000A     		lsrs	r0, r0, #8
+ 968              	.LVL82:
+ 763:.//FWLIB/src/stm32f4xx_dma2d.c ****     
+ 764:.//FWLIB/src/stm32f4xx_dma2d.c ****   /* Clear the corresponding DMA2D Interrupt */
+ 765:.//FWLIB/src/stm32f4xx_dma2d.c ****   DMA2D->IFCR = (uint32_t)DMA2D_IT;
+ 969              		.loc 1 765 0
+ 970 0002 014B     		ldr	r3, .L74
+ 971 0004 9860     		str	r0, [r3, #8]
+ 972 0006 7047     		bx	lr
+ 973              	.L75:
+ 974              		.align	2
+ 975              	.L74:
+ 976 0008 00B00240 		.word	1073917952
+ 977              		.cfi_endproc
+ 978              	.LFE130:
+ 980              		.text
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 31
+
+
+ 981              	.Letext0:
+ 982              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 983              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 984              		.file 4 "USER/stm32f4xx.h"
+ 985              		.file 5 "FWLIB/inc/stm32f4xx_dma2d.h"
+ 986              		.file 6 "CORE/core_cm4.h"
+ 987              		.file 7 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 32
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_dma2d.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:22     .text.DMA2D_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:27     .text.DMA2D_DeInit:0000000000000000 DMA2D_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:54     .text.DMA2D_Init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:59     .text.DMA2D_Init:0000000000000000 DMA2D_Init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:225    .text.DMA2D_Init:00000000000000bc $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:230    .text.DMA2D_StructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:235    .text.DMA2D_StructInit:0000000000000000 DMA2D_StructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:269    .text.DMA2D_StartTransfer:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:274    .text.DMA2D_StartTransfer:0000000000000000 DMA2D_StartTransfer
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:290    .text.DMA2D_StartTransfer:000000000000000c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:295    .text.DMA2D_AbortTransfer:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:300    .text.DMA2D_AbortTransfer:0000000000000000 DMA2D_AbortTransfer
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:316    .text.DMA2D_AbortTransfer:000000000000000c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:321    .text.DMA2D_Suspend:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:326    .text.DMA2D_Suspend:0000000000000000 DMA2D_Suspend
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:352    .text.DMA2D_Suspend:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:357    .text.DMA2D_FGConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:362    .text.DMA2D_FGConfig:0000000000000000 DMA2D_FGConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:458    .text.DMA2D_FGConfig:0000000000000068 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:464    .text.DMA2D_FG_StructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:469    .text.DMA2D_FG_StructInit:0000000000000000 DMA2D_FG_StructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:505    .text.DMA2D_BGConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:510    .text.DMA2D_BGConfig:0000000000000000 DMA2D_BGConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:606    .text.DMA2D_BGConfig:0000000000000068 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:612    .text.DMA2D_BG_StructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:617    .text.DMA2D_BG_StructInit:0000000000000000 DMA2D_BG_StructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:653    .text.DMA2D_FGStart:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:658    .text.DMA2D_FGStart:0000000000000000 DMA2D_FGStart
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:684    .text.DMA2D_FGStart:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:689    .text.DMA2D_BGStart:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:694    .text.DMA2D_BGStart:0000000000000000 DMA2D_BGStart
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:720    .text.DMA2D_BGStart:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:725    .text.DMA2D_DeadTimeConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:730    .text.DMA2D_DeadTimeConfig:0000000000000000 DMA2D_DeadTimeConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:765    .text.DMA2D_DeadTimeConfig:000000000000002c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:770    .text.DMA2D_LineWatermarkConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:775    .text.DMA2D_LineWatermarkConfig:0000000000000000 DMA2D_LineWatermarkConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:790    .text.DMA2D_LineWatermarkConfig:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:795    .text.DMA2D_ITConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:800    .text.DMA2D_ITConfig:0000000000000000 DMA2D_ITConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:829    .text.DMA2D_ITConfig:0000000000000018 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:834    .text.DMA2D_GetFlagStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:839    .text.DMA2D_GetFlagStatus:0000000000000000 DMA2D_GetFlagStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:866    .text.DMA2D_GetFlagStatus:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:871    .text.DMA2D_ClearFlag:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:876    .text.DMA2D_ClearFlag:0000000000000000 DMA2D_ClearFlag
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:891    .text.DMA2D_ClearFlag:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:896    .text.DMA2D_GetITStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:901    .text.DMA2D_GetITStatus:0000000000000000 DMA2D_GetITStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:948    .text.DMA2D_GetITStatus:0000000000000028 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:953    .text.DMA2D_ClearITPendingBit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:958    .text.DMA2D_ClearITPendingBit:0000000000000000 DMA2D_ClearITPendingBit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s:976    .text.DMA2D_ClearITPendingBit:0000000000000008 $d
+                     .debug_frame:0000000000000010 $d
+
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccfWpNYg.s 			page 33
+
+
+UNDEFINED SYMBOLS
+RCC_AHB1PeriphResetCmd

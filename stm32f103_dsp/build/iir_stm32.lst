@@ -1,0 +1,333 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccEBYPvJ.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"iir_stm32.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.iir_biquad_stm32,"ax",%progbits
+  20              		.align	2
+  21              		.global	iir_biquad_stm32
+  22              		.thumb
+  23              		.thumb_func
+  25              	iir_biquad_stm32:
+  26              	.LFB29:
+  27              		.file 1 ".//FWLIB/src/iir_stm32.c"
+   1:.//FWLIB/src/iir_stm32.c **** /**
+   2:.//FWLIB/src/iir_stm32.c ****   ******************************************************************************
+   3:.//FWLIB/src/iir_stm32.c ****   * @file STM32F10x_DSP_Lib/src/iir_stm32.c 
+   4:.//FWLIB/src/iir_stm32.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/iir_stm32.c ****   * @version  V2.0.0
+   6:.//FWLIB/src/iir_stm32.c ****   * @date  04/27/2009
+   7:.//FWLIB/src/iir_stm32.c ****   * @brief  This source file contains IIR functions in C
+   8:.//FWLIB/src/iir_stm32.c ****   ******************************************************************************
+   9:.//FWLIB/src/iir_stm32.c ****   * @copy
+  10:.//FWLIB/src/iir_stm32.c ****   *
+  11:.//FWLIB/src/iir_stm32.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:.//FWLIB/src/iir_stm32.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:.//FWLIB/src/iir_stm32.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:.//FWLIB/src/iir_stm32.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:.//FWLIB/src/iir_stm32.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:.//FWLIB/src/iir_stm32.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:.//FWLIB/src/iir_stm32.c ****   *
+  18:.//FWLIB/src/iir_stm32.c ****   * <h2><center>&copy; COPYRIGHT 2009 STMicroelectronics</center></h2>
+  19:.//FWLIB/src/iir_stm32.c ****   */ 
+  20:.//FWLIB/src/iir_stm32.c **** 
+  21:.//FWLIB/src/iir_stm32.c **** 
+  22:.//FWLIB/src/iir_stm32.c **** /* Includes ------------------------------------------------------------------*/
+  23:.//FWLIB/src/iir_stm32.c **** #include "stm32_dsp.h"
+  24:.//FWLIB/src/iir_stm32.c **** #include "stm32f10x.h"
+  25:.//FWLIB/src/iir_stm32.c **** 
+  26:.//FWLIB/src/iir_stm32.c **** 
+  27:.//FWLIB/src/iir_stm32.c **** /** @addtogroup STM32F10x_DSP_Lib
+  28:.//FWLIB/src/iir_stm32.c ****   * @{
+  29:.//FWLIB/src/iir_stm32.c ****   */ 
+  30:.//FWLIB/src/iir_stm32.c **** 
+  31:.//FWLIB/src/iir_stm32.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccEBYPvJ.s 			page 2
+
+
+  32:.//FWLIB/src/iir_stm32.c **** /* Private typedef -----------------------------------------------------------*/
+  33:.//FWLIB/src/iir_stm32.c **** /* Private define ------------------------------------------------------------*/
+  34:.//FWLIB/src/iir_stm32.c **** /* Private macro -------------------------------------------------------------*/
+  35:.//FWLIB/src/iir_stm32.c **** /* Private variables ---------------------------------------------------------*/
+  36:.//FWLIB/src/iir_stm32.c **** /* Private function prototypes -----------------------------------------------*/
+  37:.//FWLIB/src/iir_stm32.c **** /* Private functions ---------------------------------------------------------*/
+  38:.//FWLIB/src/iir_stm32.c **** 
+  39:.//FWLIB/src/iir_stm32.c **** 
+  40:.//FWLIB/src/iir_stm32.c **** /**
+  41:.//FWLIB/src/iir_stm32.c ****   * @brief  Canonique Form of 8th order IIR filter, factorized in 
+  42:.//FWLIB/src/iir_stm32.c ****   *   4 biquads sections in series.
+  43:.//FWLIB/src/iir_stm32.c ****   * @param y: Output array .
+  44:.//FWLIB/src/iir_stm32.c ****   * @param x: Input array 
+  45:.//FWLIB/src/iir_stm32.c ****   * @param IIRCoeff: IIR Filter Coefficients, an array of 20 shorts
+  46:.//FWLIB/src/iir_stm32.c ****   * @param ny: the number of output samples
+  47:.//FWLIB/src/iir_stm32.c ****   * @retval : None
+  48:.//FWLIB/src/iir_stm32.c ****   */
+  49:.//FWLIB/src/iir_stm32.c **** void iir_biquad_stm32(uint16_t *y, uint16_t *x, int16_t *IIRCoeff, uint16_t ny)
+  50:.//FWLIB/src/iir_stm32.c **** {
+  28              		.loc 1 50 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 28
+  36              		.cfi_offset 4, -28
+  37              		.cfi_offset 5, -24
+  38              		.cfi_offset 6, -20
+  39              		.cfi_offset 7, -16
+  40              		.cfi_offset 8, -12
+  41              		.cfi_offset 9, -8
+  42              		.cfi_offset 14, -4
+  43              	.LVL1:
+  51:.//FWLIB/src/iir_stm32.c ****   uint32_t i;
+  52:.//FWLIB/src/iir_stm32.c ****   uint32_t w1_2 = 0, w1_1 = 0, w1;
+  44              		.loc 1 52 0
+  45 0004 0025     		movs	r5, #0
+  46 0006 A846     		mov	r8, r5
+  53:.//FWLIB/src/iir_stm32.c ****   uint32_t w2_2 = 0, w2_1 = 0, w2;
+  54:.//FWLIB/src/iir_stm32.c ****   uint32_t w3_2 = 0, w3_1 = 0, w3;
+  55:.//FWLIB/src/iir_stm32.c ****   uint32_t w4_2 = 0, w4_1 = 0, w4;
+  56:.//FWLIB/src/iir_stm32.c **** 
+  57:.//FWLIB/src/iir_stm32.c ****   /** Canonic form **/
+  58:.//FWLIB/src/iir_stm32.c ****   /* 1st section */
+  59:.//FWLIB/src/iir_stm32.c ****   for (i=0; i<ny-2; i++)
+  47              		.loc 1 59 0
+  48 0008 2E46     		mov	r6, r5
+  49 000a 1CE0     		b	.L2
+  50              	.LVL2:
+  51              	.L3:
+  60:.//FWLIB/src/iir_stm32.c ****   {
+  61:.//FWLIB/src/iir_stm32.c ****     w1 = x[2+i] - IIRCoeff[0]*w1_1 - IIRCoeff[1]*w1_2;
+  52              		.loc 1 61 0 discriminator 3
+  53 000c 06F10209 		add	r9, r6, #2
+  54 0010 31F81970 		ldrh	r7, [r1, r9, lsl #1]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccEBYPvJ.s 			page 3
+
+
+  55 0014 B2F90040 		ldrsh	r4, [r2]
+  56 0018 05FB1474 		mls	r4, r5, r4, r7
+  57 001c B2F90270 		ldrsh	r7, [r2, #2]
+  58 0020 08FB1744 		mls	r4, r8, r7, r4
+  59              	.LVL3:
+  62:.//FWLIB/src/iir_stm32.c ****     y[2+i] = (IIRCoeff[2]*w1 + IIRCoeff[3]*w1_1 + IIRCoeff[4]*w1_2);
+  60              		.loc 1 62 0 discriminator 3
+  61 0024 B2F904C0 		ldrsh	ip, [r2, #4]
+  62 0028 B2F90670 		ldrsh	r7, [r2, #6]
+  63 002c B2F908E0 		ldrsh	lr, [r2, #8]
+  64 0030 07FB05F7 		mul	r7, r7, r5
+  65 0034 0CFB0477 		mla	r7, ip, r4, r7
+  66 0038 0EFB0877 		mla	r7, lr, r8, r7
+  67 003c 20F81970 		strh	r7, [r0, r9, lsl #1]	@ movhi
+  68              	.LVL4:
+  59:.//FWLIB/src/iir_stm32.c ****   {
+  69              		.loc 1 59 0 discriminator 3
+  70 0040 0136     		adds	r6, r6, #1
+  71              	.LVL5:
+  63:.//FWLIB/src/iir_stm32.c ****     w1_2 = w1_1;
+  72              		.loc 1 63 0 discriminator 3
+  73 0042 A846     		mov	r8, r5
+  64:.//FWLIB/src/iir_stm32.c ****     w1_1 = w1;
+  74              		.loc 1 64 0 discriminator 3
+  75 0044 2546     		mov	r5, r4
+  76              	.LVL6:
+  77              	.L2:
+  59:.//FWLIB/src/iir_stm32.c ****   {
+  78              		.loc 1 59 0 discriminator 1
+  79 0046 9C1E     		subs	r4, r3, #2
+  80 0048 A642     		cmp	r6, r4
+  81 004a DFD3     		bcc	.L3
+  82 004c 0021     		movs	r1, #0
+  83              	.LVL7:
+  84 004e 8846     		mov	r8, r1
+  85              	.LVL8:
+  86 0050 0D46     		mov	r5, r1
+  87              	.LVL9:
+  88 0052 1CE0     		b	.L4
+  89              	.LVL10:
+  90              	.L5:
+  65:.//FWLIB/src/iir_stm32.c ****   }
+  66:.//FWLIB/src/iir_stm32.c **** 
+  67:.//FWLIB/src/iir_stm32.c ****   /* 2nd section */
+  68:.//FWLIB/src/iir_stm32.c ****   for (i=0; i<ny-2; i++)
+  69:.//FWLIB/src/iir_stm32.c ****   {
+  70:.//FWLIB/src/iir_stm32.c ****     w2 = y[2+i] - IIRCoeff[5]*w2_1 - IIRCoeff[6]*w2_2;
+  91              		.loc 1 70 0 discriminator 3
+  92 0054 05F1020C 		add	ip, r5, #2
+  93 0058 30F81C60 		ldrh	r6, [r0, ip, lsl #1]
+  94 005c B2F90A30 		ldrsh	r3, [r2, #10]
+  95 0060 01FB1366 		mls	r6, r1, r3, r6
+  96 0064 B2F90C30 		ldrsh	r3, [r2, #12]
+  97 0068 08FB1363 		mls	r3, r8, r3, r6
+  98              	.LVL11:
+  71:.//FWLIB/src/iir_stm32.c ****     y[2+i] = (IIRCoeff[7]*w2 + IIRCoeff[8]*w2_1 + IIRCoeff[9]*w2_2);
+  99              		.loc 1 71 0 discriminator 3
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccEBYPvJ.s 			page 4
+
+
+ 100 006c B2F90EE0 		ldrsh	lr, [r2, #14]
+ 101 0070 B2F91060 		ldrsh	r6, [r2, #16]
+ 102 0074 B2F91270 		ldrsh	r7, [r2, #18]
+ 103 0078 06FB01F6 		mul	r6, r6, r1
+ 104 007c 0EFB0366 		mla	r6, lr, r3, r6
+ 105 0080 07FB0866 		mla	r6, r7, r8, r6
+ 106 0084 20F81C60 		strh	r6, [r0, ip, lsl #1]	@ movhi
+ 107              	.LVL12:
+  68:.//FWLIB/src/iir_stm32.c ****   {
+ 108              		.loc 1 68 0 discriminator 3
+ 109 0088 0135     		adds	r5, r5, #1
+ 110              	.LVL13:
+  72:.//FWLIB/src/iir_stm32.c ****     w2_2 = w2_1;
+ 111              		.loc 1 72 0 discriminator 3
+ 112 008a 8846     		mov	r8, r1
+  73:.//FWLIB/src/iir_stm32.c ****     w2_1 = w2;
+ 113              		.loc 1 73 0 discriminator 3
+ 114 008c 1946     		mov	r1, r3
+ 115              	.LVL14:
+ 116              	.L4:
+  68:.//FWLIB/src/iir_stm32.c ****   {
+ 117              		.loc 1 68 0 discriminator 1
+ 118 008e A542     		cmp	r5, r4
+ 119 0090 E0D3     		bcc	.L5
+ 120 0092 0021     		movs	r1, #0
+ 121              	.LVL15:
+ 122 0094 8846     		mov	r8, r1
+ 123              	.LVL16:
+ 124 0096 0D46     		mov	r5, r1
+ 125              	.LVL17:
+ 126 0098 1CE0     		b	.L6
+ 127              	.LVL18:
+ 128              	.L7:
+  74:.//FWLIB/src/iir_stm32.c ****   }
+  75:.//FWLIB/src/iir_stm32.c **** 
+  76:.//FWLIB/src/iir_stm32.c ****   /* 3rd section */
+  77:.//FWLIB/src/iir_stm32.c ****   for (i=0; i<ny-2; i++)
+  78:.//FWLIB/src/iir_stm32.c ****   {
+  79:.//FWLIB/src/iir_stm32.c ****     w3 = y[2+i] - IIRCoeff[10]*w3_1 - IIRCoeff[11]*w3_2;
+ 129              		.loc 1 79 0 discriminator 3
+ 130 009a 05F1020C 		add	ip, r5, #2
+ 131 009e 30F81C60 		ldrh	r6, [r0, ip, lsl #1]
+ 132 00a2 B2F91430 		ldrsh	r3, [r2, #20]
+ 133 00a6 01FB1366 		mls	r6, r1, r3, r6
+ 134 00aa B2F91630 		ldrsh	r3, [r2, #22]
+ 135 00ae 08FB1363 		mls	r3, r8, r3, r6
+ 136              	.LVL19:
+  80:.//FWLIB/src/iir_stm32.c ****     y[2+i] = (IIRCoeff[12]*w3 + IIRCoeff[13]*w3_1 + IIRCoeff[14]*w3_2);
+ 137              		.loc 1 80 0 discriminator 3
+ 138 00b2 B2F918E0 		ldrsh	lr, [r2, #24]
+ 139 00b6 B2F91A60 		ldrsh	r6, [r2, #26]
+ 140 00ba B2F91C70 		ldrsh	r7, [r2, #28]
+ 141 00be 06FB01F6 		mul	r6, r6, r1
+ 142 00c2 0EFB0366 		mla	r6, lr, r3, r6
+ 143 00c6 07FB0866 		mla	r6, r7, r8, r6
+ 144 00ca 20F81C60 		strh	r6, [r0, ip, lsl #1]	@ movhi
+ 145              	.LVL20:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccEBYPvJ.s 			page 5
+
+
+  77:.//FWLIB/src/iir_stm32.c ****   {
+ 146              		.loc 1 77 0 discriminator 3
+ 147 00ce 0135     		adds	r5, r5, #1
+ 148              	.LVL21:
+  81:.//FWLIB/src/iir_stm32.c ****     w3_2 = w3_1;
+ 149              		.loc 1 81 0 discriminator 3
+ 150 00d0 8846     		mov	r8, r1
+  82:.//FWLIB/src/iir_stm32.c ****     w3_1 = w3;
+ 151              		.loc 1 82 0 discriminator 3
+ 152 00d2 1946     		mov	r1, r3
+ 153              	.LVL22:
+ 154              	.L6:
+  77:.//FWLIB/src/iir_stm32.c ****   {
+ 155              		.loc 1 77 0 discriminator 1
+ 156 00d4 A542     		cmp	r5, r4
+ 157 00d6 E0D3     		bcc	.L7
+ 158 00d8 0021     		movs	r1, #0
+ 159              	.LVL23:
+ 160 00da 8846     		mov	r8, r1
+ 161              	.LVL24:
+ 162 00dc 0D46     		mov	r5, r1
+ 163              	.LVL25:
+ 164 00de 1CE0     		b	.L8
+ 165              	.LVL26:
+ 166              	.L9:
+  83:.//FWLIB/src/iir_stm32.c ****   }
+  84:.//FWLIB/src/iir_stm32.c **** 
+  85:.//FWLIB/src/iir_stm32.c ****   /* 4th section */
+  86:.//FWLIB/src/iir_stm32.c ****   for (i=0; i<ny-2; i++)
+  87:.//FWLIB/src/iir_stm32.c ****   {
+  88:.//FWLIB/src/iir_stm32.c ****     w4 = y[2+i] - IIRCoeff[15]*w4_1 - IIRCoeff[16]*w4_2;
+ 167              		.loc 1 88 0 discriminator 3
+ 168 00e0 05F1020C 		add	ip, r5, #2
+ 169 00e4 30F81C60 		ldrh	r6, [r0, ip, lsl #1]
+ 170 00e8 B2F91E30 		ldrsh	r3, [r2, #30]
+ 171 00ec 01FB1366 		mls	r6, r1, r3, r6
+ 172 00f0 B2F92030 		ldrsh	r3, [r2, #32]
+ 173 00f4 08FB1363 		mls	r3, r8, r3, r6
+ 174              	.LVL27:
+  89:.//FWLIB/src/iir_stm32.c ****     y[2+i] = (IIRCoeff[17]*w4 + IIRCoeff[18]*w4_1 + IIRCoeff[19]*w4_2);
+ 175              		.loc 1 89 0 discriminator 3
+ 176 00f8 B2F922E0 		ldrsh	lr, [r2, #34]
+ 177 00fc B2F92460 		ldrsh	r6, [r2, #36]
+ 178 0100 B2F92670 		ldrsh	r7, [r2, #38]
+ 179 0104 06FB01F6 		mul	r6, r6, r1
+ 180 0108 0EFB0366 		mla	r6, lr, r3, r6
+ 181 010c 07FB0866 		mla	r6, r7, r8, r6
+ 182 0110 20F81C60 		strh	r6, [r0, ip, lsl #1]	@ movhi
+ 183              	.LVL28:
+  86:.//FWLIB/src/iir_stm32.c ****   {
+ 184              		.loc 1 86 0 discriminator 3
+ 185 0114 0135     		adds	r5, r5, #1
+ 186              	.LVL29:
+  90:.//FWLIB/src/iir_stm32.c ****     w4_2 = w4_1;
+ 187              		.loc 1 90 0 discriminator 3
+ 188 0116 8846     		mov	r8, r1
+  91:.//FWLIB/src/iir_stm32.c ****     w4_1 = w4;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccEBYPvJ.s 			page 6
+
+
+ 189              		.loc 1 91 0 discriminator 3
+ 190 0118 1946     		mov	r1, r3
+ 191              	.LVL30:
+ 192              	.L8:
+  86:.//FWLIB/src/iir_stm32.c ****   {
+ 193              		.loc 1 86 0 discriminator 1
+ 194 011a A542     		cmp	r5, r4
+ 195 011c E0D3     		bcc	.L9
+  92:.//FWLIB/src/iir_stm32.c ****   }
+  93:.//FWLIB/src/iir_stm32.c **** 
+  94:.//FWLIB/src/iir_stm32.c **** }
+ 196              		.loc 1 94 0
+ 197 011e BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 198              		.cfi_endproc
+ 199              	.LFE29:
+ 201 0122 00BF     		.text
+ 202              	.Letext0:
+ 203              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 204              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 205              		.file 4 "CORE/core_cm3.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccEBYPvJ.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 iir_stm32.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccEBYPvJ.s:20     .text.iir_biquad_stm32:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccEBYPvJ.s:25     .text.iir_biquad_stm32:0000000000000000 iir_biquad_stm32
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

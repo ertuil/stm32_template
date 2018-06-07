@@ -1,0 +1,1054 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"stm32f10x_dac.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.DAC_DeInit,"ax",%progbits
+  20              		.align	2
+  21              		.global	DAC_DeInit
+  22              		.thumb
+  23              		.thumb_func
+  25              	DAC_DeInit:
+  26              	.LFB29:
+  27              		.file 1 ".//FWLIB/src/stm32f10x_dac.c"
+   1:.//FWLIB/src/stm32f10x_dac.c **** /**
+   2:.//FWLIB/src/stm32f10x_dac.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f10x_dac.c ****   * @file    stm32f10x_dac.c
+   4:.//FWLIB/src/stm32f10x_dac.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f10x_dac.c ****   * @version V3.5.0
+   6:.//FWLIB/src/stm32f10x_dac.c ****   * @date    11-March-2011
+   7:.//FWLIB/src/stm32f10x_dac.c ****   * @brief   This file provides all the DAC firmware functions.
+   8:.//FWLIB/src/stm32f10x_dac.c ****   ******************************************************************************
+   9:.//FWLIB/src/stm32f10x_dac.c ****   * @attention
+  10:.//FWLIB/src/stm32f10x_dac.c ****   *
+  11:.//FWLIB/src/stm32f10x_dac.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:.//FWLIB/src/stm32f10x_dac.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:.//FWLIB/src/stm32f10x_dac.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:.//FWLIB/src/stm32f10x_dac.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:.//FWLIB/src/stm32f10x_dac.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:.//FWLIB/src/stm32f10x_dac.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:.//FWLIB/src/stm32f10x_dac.c ****   *
+  18:.//FWLIB/src/stm32f10x_dac.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:.//FWLIB/src/stm32f10x_dac.c ****   ******************************************************************************
+  20:.//FWLIB/src/stm32f10x_dac.c ****   */
+  21:.//FWLIB/src/stm32f10x_dac.c **** 
+  22:.//FWLIB/src/stm32f10x_dac.c **** /* Includes ------------------------------------------------------------------*/
+  23:.//FWLIB/src/stm32f10x_dac.c **** #include "stm32f10x_dac.h"
+  24:.//FWLIB/src/stm32f10x_dac.c **** #include "stm32f10x_rcc.h"
+  25:.//FWLIB/src/stm32f10x_dac.c **** 
+  26:.//FWLIB/src/stm32f10x_dac.c **** /** @addtogroup STM32F10x_StdPeriph_Driver
+  27:.//FWLIB/src/stm32f10x_dac.c ****   * @{
+  28:.//FWLIB/src/stm32f10x_dac.c ****   */
+  29:.//FWLIB/src/stm32f10x_dac.c **** 
+  30:.//FWLIB/src/stm32f10x_dac.c **** /** @defgroup DAC 
+  31:.//FWLIB/src/stm32f10x_dac.c ****   * @brief DAC driver modules
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 2
+
+
+  32:.//FWLIB/src/stm32f10x_dac.c ****   * @{
+  33:.//FWLIB/src/stm32f10x_dac.c ****   */ 
+  34:.//FWLIB/src/stm32f10x_dac.c **** 
+  35:.//FWLIB/src/stm32f10x_dac.c **** /** @defgroup DAC_Private_TypesDefinitions
+  36:.//FWLIB/src/stm32f10x_dac.c ****   * @{
+  37:.//FWLIB/src/stm32f10x_dac.c ****   */
+  38:.//FWLIB/src/stm32f10x_dac.c **** 
+  39:.//FWLIB/src/stm32f10x_dac.c **** /**
+  40:.//FWLIB/src/stm32f10x_dac.c ****   * @}
+  41:.//FWLIB/src/stm32f10x_dac.c ****   */
+  42:.//FWLIB/src/stm32f10x_dac.c **** 
+  43:.//FWLIB/src/stm32f10x_dac.c **** /** @defgroup DAC_Private_Defines
+  44:.//FWLIB/src/stm32f10x_dac.c ****   * @{
+  45:.//FWLIB/src/stm32f10x_dac.c ****   */
+  46:.//FWLIB/src/stm32f10x_dac.c **** 
+  47:.//FWLIB/src/stm32f10x_dac.c **** /* CR register Mask */
+  48:.//FWLIB/src/stm32f10x_dac.c **** #define CR_CLEAR_MASK              ((uint32_t)0x00000FFE)
+  49:.//FWLIB/src/stm32f10x_dac.c **** 
+  50:.//FWLIB/src/stm32f10x_dac.c **** /* DAC Dual Channels SWTRIG masks */
+  51:.//FWLIB/src/stm32f10x_dac.c **** #define DUAL_SWTRIG_SET            ((uint32_t)0x00000003)
+  52:.//FWLIB/src/stm32f10x_dac.c **** #define DUAL_SWTRIG_RESET          ((uint32_t)0xFFFFFFFC)
+  53:.//FWLIB/src/stm32f10x_dac.c **** 
+  54:.//FWLIB/src/stm32f10x_dac.c **** /* DHR registers offsets */
+  55:.//FWLIB/src/stm32f10x_dac.c **** #define DHR12R1_OFFSET             ((uint32_t)0x00000008)
+  56:.//FWLIB/src/stm32f10x_dac.c **** #define DHR12R2_OFFSET             ((uint32_t)0x00000014)
+  57:.//FWLIB/src/stm32f10x_dac.c **** #define DHR12RD_OFFSET             ((uint32_t)0x00000020)
+  58:.//FWLIB/src/stm32f10x_dac.c **** 
+  59:.//FWLIB/src/stm32f10x_dac.c **** /* DOR register offset */
+  60:.//FWLIB/src/stm32f10x_dac.c **** #define DOR_OFFSET                 ((uint32_t)0x0000002C)
+  61:.//FWLIB/src/stm32f10x_dac.c **** /**
+  62:.//FWLIB/src/stm32f10x_dac.c ****   * @}
+  63:.//FWLIB/src/stm32f10x_dac.c ****   */
+  64:.//FWLIB/src/stm32f10x_dac.c **** 
+  65:.//FWLIB/src/stm32f10x_dac.c **** /** @defgroup DAC_Private_Macros
+  66:.//FWLIB/src/stm32f10x_dac.c ****   * @{
+  67:.//FWLIB/src/stm32f10x_dac.c ****   */
+  68:.//FWLIB/src/stm32f10x_dac.c **** 
+  69:.//FWLIB/src/stm32f10x_dac.c **** /**
+  70:.//FWLIB/src/stm32f10x_dac.c ****   * @}
+  71:.//FWLIB/src/stm32f10x_dac.c ****   */
+  72:.//FWLIB/src/stm32f10x_dac.c **** 
+  73:.//FWLIB/src/stm32f10x_dac.c **** /** @defgroup DAC_Private_Variables
+  74:.//FWLIB/src/stm32f10x_dac.c ****   * @{
+  75:.//FWLIB/src/stm32f10x_dac.c ****   */
+  76:.//FWLIB/src/stm32f10x_dac.c **** 
+  77:.//FWLIB/src/stm32f10x_dac.c **** /**
+  78:.//FWLIB/src/stm32f10x_dac.c ****   * @}
+  79:.//FWLIB/src/stm32f10x_dac.c ****   */
+  80:.//FWLIB/src/stm32f10x_dac.c **** 
+  81:.//FWLIB/src/stm32f10x_dac.c **** /** @defgroup DAC_Private_FunctionPrototypes
+  82:.//FWLIB/src/stm32f10x_dac.c ****   * @{
+  83:.//FWLIB/src/stm32f10x_dac.c ****   */
+  84:.//FWLIB/src/stm32f10x_dac.c **** 
+  85:.//FWLIB/src/stm32f10x_dac.c **** /**
+  86:.//FWLIB/src/stm32f10x_dac.c ****   * @}
+  87:.//FWLIB/src/stm32f10x_dac.c ****   */
+  88:.//FWLIB/src/stm32f10x_dac.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 3
+
+
+  89:.//FWLIB/src/stm32f10x_dac.c **** /** @defgroup DAC_Private_Functions
+  90:.//FWLIB/src/stm32f10x_dac.c ****   * @{
+  91:.//FWLIB/src/stm32f10x_dac.c ****   */
+  92:.//FWLIB/src/stm32f10x_dac.c **** 
+  93:.//FWLIB/src/stm32f10x_dac.c **** /**
+  94:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Deinitializes the DAC peripheral registers to their default reset values.
+  95:.//FWLIB/src/stm32f10x_dac.c ****   * @param  None
+  96:.//FWLIB/src/stm32f10x_dac.c ****   * @retval None
+  97:.//FWLIB/src/stm32f10x_dac.c ****   */
+  98:.//FWLIB/src/stm32f10x_dac.c **** void DAC_DeInit(void)
+  99:.//FWLIB/src/stm32f10x_dac.c **** {
+  28              		.loc 1 99 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+ 100:.//FWLIB/src/stm32f10x_dac.c ****   /* Enable DAC reset state */
+ 101:.//FWLIB/src/stm32f10x_dac.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC, ENABLE);
+  37              		.loc 1 101 0
+  38 0002 0121     		movs	r1, #1
+  39 0004 4FF00050 		mov	r0, #536870912
+  40 0008 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  41              	.LVL0:
+ 102:.//FWLIB/src/stm32f10x_dac.c ****   /* Release DAC from reset state */
+ 103:.//FWLIB/src/stm32f10x_dac.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC, DISABLE);
+  42              		.loc 1 103 0
+  43 000c 0021     		movs	r1, #0
+  44 000e 4FF00050 		mov	r0, #536870912
+  45 0012 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  46              	.LVL1:
+  47 0016 08BD     		pop	{r3, pc}
+  48              		.cfi_endproc
+  49              	.LFE29:
+  51              		.section	.text.DAC_Init,"ax",%progbits
+  52              		.align	2
+  53              		.global	DAC_Init
+  54              		.thumb
+  55              		.thumb_func
+  57              	DAC_Init:
+  58              	.LFB30:
+ 104:.//FWLIB/src/stm32f10x_dac.c **** }
+ 105:.//FWLIB/src/stm32f10x_dac.c **** 
+ 106:.//FWLIB/src/stm32f10x_dac.c **** /**
+ 107:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Initializes the DAC peripheral according to the specified 
+ 108:.//FWLIB/src/stm32f10x_dac.c ****   *         parameters in the DAC_InitStruct.
+ 109:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 110:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 111:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 112:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 113:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_InitStruct: pointer to a DAC_InitTypeDef structure that
+ 114:.//FWLIB/src/stm32f10x_dac.c ****   *        contains the configuration information for the specified DAC channel.
+ 115:.//FWLIB/src/stm32f10x_dac.c ****   * @retval None
+ 116:.//FWLIB/src/stm32f10x_dac.c ****   */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 4
+
+
+ 117:.//FWLIB/src/stm32f10x_dac.c **** void DAC_Init(uint32_t DAC_Channel, DAC_InitTypeDef* DAC_InitStruct)
+ 118:.//FWLIB/src/stm32f10x_dac.c **** {
+  59              		.loc 1 118 0
+  60              		.cfi_startproc
+  61              		@ args = 0, pretend = 0, frame = 0
+  62              		@ frame_needed = 0, uses_anonymous_args = 0
+  63              		@ link register save eliminated.
+  64              	.LVL2:
+  65 0000 30B4     		push	{r4, r5}
+  66              	.LCFI1:
+  67              		.cfi_def_cfa_offset 8
+  68              		.cfi_offset 4, -8
+  69              		.cfi_offset 5, -4
+  70              	.LVL3:
+ 119:.//FWLIB/src/stm32f10x_dac.c ****   uint32_t tmpreg1 = 0, tmpreg2 = 0;
+ 120:.//FWLIB/src/stm32f10x_dac.c ****   /* Check the DAC parameters */
+ 121:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_TRIGGER(DAC_InitStruct->DAC_Trigger));
+ 122:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_GENERATE_WAVE(DAC_InitStruct->DAC_WaveGeneration));
+ 123:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_LFSR_UNMASK_TRIANGLE_AMPLITUDE(DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitu
+ 124:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_OUTPUT_BUFFER_STATE(DAC_InitStruct->DAC_OutputBuffer));
+ 125:.//FWLIB/src/stm32f10x_dac.c **** /*---------------------------- DAC CR Configuration --------------------------*/
+ 126:.//FWLIB/src/stm32f10x_dac.c ****   /* Get the DAC CR value */
+ 127:.//FWLIB/src/stm32f10x_dac.c ****   tmpreg1 = DAC->CR;
+  71              		.loc 1 127 0
+  72 0002 0A4D     		ldr	r5, .L5
+  73 0004 2B68     		ldr	r3, [r5]
+  74              	.LVL4:
+ 128:.//FWLIB/src/stm32f10x_dac.c ****   /* Clear BOFFx, TENx, TSELx, WAVEx and MAMPx bits */
+ 129:.//FWLIB/src/stm32f10x_dac.c ****   tmpreg1 &= ~(CR_CLEAR_MASK << DAC_Channel);
+  75              		.loc 1 129 0
+  76 0006 40F6FE72 		movw	r2, #4094
+  77 000a 8240     		lsls	r2, r2, r0
+  78 000c 23EA0202 		bic	r2, r3, r2
+  79              	.LVL5:
+ 130:.//FWLIB/src/stm32f10x_dac.c ****   /* Configure for the selected DAC channel: buffer output, trigger, wave generation,
+ 131:.//FWLIB/src/stm32f10x_dac.c ****      mask/amplitude for wave generation */
+ 132:.//FWLIB/src/stm32f10x_dac.c ****   /* Set TSELx and TENx bits according to DAC_Trigger value */
+ 133:.//FWLIB/src/stm32f10x_dac.c ****   /* Set WAVEx bits according to DAC_WaveGeneration value */
+ 134:.//FWLIB/src/stm32f10x_dac.c ****   /* Set MAMPx bits according to DAC_LFSRUnmask_TriangleAmplitude value */ 
+ 135:.//FWLIB/src/stm32f10x_dac.c ****   /* Set BOFFx bit according to DAC_OutputBuffer value */   
+ 136:.//FWLIB/src/stm32f10x_dac.c ****   tmpreg2 = (DAC_InitStruct->DAC_Trigger | DAC_InitStruct->DAC_WaveGeneration |
+  80              		.loc 1 136 0
+  81 0010 0C68     		ldr	r4, [r1]
+  82 0012 4B68     		ldr	r3, [r1, #4]
+  83 0014 1C43     		orrs	r4, r4, r3
+ 137:.//FWLIB/src/stm32f10x_dac.c ****              DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude | DAC_InitStruct->DAC_OutputBuffer);
+  84              		.loc 1 137 0
+  85 0016 8B68     		ldr	r3, [r1, #8]
+ 136:.//FWLIB/src/stm32f10x_dac.c ****              DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude | DAC_InitStruct->DAC_OutputBuffer);
+  86              		.loc 1 136 0
+  87 0018 1C43     		orrs	r4, r4, r3
+  88              		.loc 1 137 0
+  89 001a CB68     		ldr	r3, [r1, #12]
+ 136:.//FWLIB/src/stm32f10x_dac.c ****              DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude | DAC_InitStruct->DAC_OutputBuffer);
+  90              		.loc 1 136 0
+  91 001c 2343     		orrs	r3, r3, r4
+  92              	.LVL6:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 5
+
+
+ 138:.//FWLIB/src/stm32f10x_dac.c ****   /* Calculate CR register value depending on DAC_Channel */
+ 139:.//FWLIB/src/stm32f10x_dac.c ****   tmpreg1 |= tmpreg2 << DAC_Channel;
+  93              		.loc 1 139 0
+  94 001e 03FA00F0 		lsl	r0, r3, r0
+  95              	.LVL7:
+  96 0022 1043     		orrs	r0, r0, r2
+  97              	.LVL8:
+ 140:.//FWLIB/src/stm32f10x_dac.c ****   /* Write to DAC CR */
+ 141:.//FWLIB/src/stm32f10x_dac.c ****   DAC->CR = tmpreg1;
+  98              		.loc 1 141 0
+  99 0024 2860     		str	r0, [r5]
+ 142:.//FWLIB/src/stm32f10x_dac.c **** }
+ 100              		.loc 1 142 0
+ 101 0026 30BC     		pop	{r4, r5}
+ 102              	.LCFI2:
+ 103              		.cfi_restore 5
+ 104              		.cfi_restore 4
+ 105              		.cfi_def_cfa_offset 0
+ 106 0028 7047     		bx	lr
+ 107              	.L6:
+ 108 002a 00BF     		.align	2
+ 109              	.L5:
+ 110 002c 00740040 		.word	1073771520
+ 111              		.cfi_endproc
+ 112              	.LFE30:
+ 114              		.section	.text.DAC_StructInit,"ax",%progbits
+ 115              		.align	2
+ 116              		.global	DAC_StructInit
+ 117              		.thumb
+ 118              		.thumb_func
+ 120              	DAC_StructInit:
+ 121              	.LFB31:
+ 143:.//FWLIB/src/stm32f10x_dac.c **** 
+ 144:.//FWLIB/src/stm32f10x_dac.c **** /**
+ 145:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Fills each DAC_InitStruct member with its default value.
+ 146:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_InitStruct : pointer to a DAC_InitTypeDef structure which will
+ 147:.//FWLIB/src/stm32f10x_dac.c ****   *         be initialized.
+ 148:.//FWLIB/src/stm32f10x_dac.c ****   * @retval None
+ 149:.//FWLIB/src/stm32f10x_dac.c ****   */
+ 150:.//FWLIB/src/stm32f10x_dac.c **** void DAC_StructInit(DAC_InitTypeDef* DAC_InitStruct)
+ 151:.//FWLIB/src/stm32f10x_dac.c **** {
+ 122              		.loc 1 151 0
+ 123              		.cfi_startproc
+ 124              		@ args = 0, pretend = 0, frame = 0
+ 125              		@ frame_needed = 0, uses_anonymous_args = 0
+ 126              		@ link register save eliminated.
+ 127              	.LVL9:
+ 152:.//FWLIB/src/stm32f10x_dac.c **** /*--------------- Reset DAC init structure parameters values -----------------*/
+ 153:.//FWLIB/src/stm32f10x_dac.c ****   /* Initialize the DAC_Trigger member */
+ 154:.//FWLIB/src/stm32f10x_dac.c ****   DAC_InitStruct->DAC_Trigger = DAC_Trigger_None;
+ 128              		.loc 1 154 0
+ 129 0000 0023     		movs	r3, #0
+ 130 0002 0360     		str	r3, [r0]
+ 155:.//FWLIB/src/stm32f10x_dac.c ****   /* Initialize the DAC_WaveGeneration member */
+ 156:.//FWLIB/src/stm32f10x_dac.c ****   DAC_InitStruct->DAC_WaveGeneration = DAC_WaveGeneration_None;
+ 131              		.loc 1 156 0
+ 132 0004 4360     		str	r3, [r0, #4]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 6
+
+
+ 157:.//FWLIB/src/stm32f10x_dac.c ****   /* Initialize the DAC_LFSRUnmask_TriangleAmplitude member */
+ 158:.//FWLIB/src/stm32f10x_dac.c ****   DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude = DAC_LFSRUnmask_Bit0;
+ 133              		.loc 1 158 0
+ 134 0006 8360     		str	r3, [r0, #8]
+ 159:.//FWLIB/src/stm32f10x_dac.c ****   /* Initialize the DAC_OutputBuffer member */
+ 160:.//FWLIB/src/stm32f10x_dac.c ****   DAC_InitStruct->DAC_OutputBuffer = DAC_OutputBuffer_Enable;
+ 135              		.loc 1 160 0
+ 136 0008 C360     		str	r3, [r0, #12]
+ 137 000a 7047     		bx	lr
+ 138              		.cfi_endproc
+ 139              	.LFE31:
+ 141              		.section	.text.DAC_Cmd,"ax",%progbits
+ 142              		.align	2
+ 143              		.global	DAC_Cmd
+ 144              		.thumb
+ 145              		.thumb_func
+ 147              	DAC_Cmd:
+ 148              	.LFB32:
+ 161:.//FWLIB/src/stm32f10x_dac.c **** }
+ 162:.//FWLIB/src/stm32f10x_dac.c **** 
+ 163:.//FWLIB/src/stm32f10x_dac.c **** /**
+ 164:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Enables or disables the specified DAC channel.
+ 165:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 166:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 167:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 168:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 169:.//FWLIB/src/stm32f10x_dac.c ****   * @param  NewState: new state of the DAC channel. 
+ 170:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 171:.//FWLIB/src/stm32f10x_dac.c ****   * @retval None
+ 172:.//FWLIB/src/stm32f10x_dac.c ****   */
+ 173:.//FWLIB/src/stm32f10x_dac.c **** void DAC_Cmd(uint32_t DAC_Channel, FunctionalState NewState)
+ 174:.//FWLIB/src/stm32f10x_dac.c **** {
+ 149              		.loc 1 174 0
+ 150              		.cfi_startproc
+ 151              		@ args = 0, pretend = 0, frame = 0
+ 152              		@ frame_needed = 0, uses_anonymous_args = 0
+ 153              		@ link register save eliminated.
+ 154              	.LVL10:
+ 175:.//FWLIB/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 176:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
+ 177:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 178:.//FWLIB/src/stm32f10x_dac.c ****   if (NewState != DISABLE)
+ 155              		.loc 1 178 0
+ 156 0000 39B1     		cbz	r1, .L9
+ 179:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 180:.//FWLIB/src/stm32f10x_dac.c ****     /* Enable the selected DAC channel */
+ 181:.//FWLIB/src/stm32f10x_dac.c ****     DAC->CR |= (DAC_CR_EN1 << DAC_Channel);
+ 157              		.loc 1 181 0
+ 158 0002 084A     		ldr	r2, .L11
+ 159 0004 1168     		ldr	r1, [r2]
+ 160              	.LVL11:
+ 161 0006 0123     		movs	r3, #1
+ 162 0008 03FA00F0 		lsl	r0, r3, r0
+ 163              	.LVL12:
+ 164 000c 0843     		orrs	r0, r0, r1
+ 165 000e 1060     		str	r0, [r2]
+ 166 0010 7047     		bx	lr
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 7
+
+
+ 167              	.LVL13:
+ 168              	.L9:
+ 182:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 183:.//FWLIB/src/stm32f10x_dac.c ****   else
+ 184:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 185:.//FWLIB/src/stm32f10x_dac.c ****     /* Disable the selected DAC channel */
+ 186:.//FWLIB/src/stm32f10x_dac.c ****     DAC->CR &= ~(DAC_CR_EN1 << DAC_Channel);
+ 169              		.loc 1 186 0
+ 170 0012 0449     		ldr	r1, .L11
+ 171              	.LVL14:
+ 172 0014 0B68     		ldr	r3, [r1]
+ 173 0016 0122     		movs	r2, #1
+ 174 0018 02FA00F0 		lsl	r0, r2, r0
+ 175              	.LVL15:
+ 176 001c 23EA0000 		bic	r0, r3, r0
+ 177 0020 0860     		str	r0, [r1]
+ 178 0022 7047     		bx	lr
+ 179              	.L12:
+ 180              		.align	2
+ 181              	.L11:
+ 182 0024 00740040 		.word	1073771520
+ 183              		.cfi_endproc
+ 184              	.LFE32:
+ 186              		.section	.text.DAC_DMACmd,"ax",%progbits
+ 187              		.align	2
+ 188              		.global	DAC_DMACmd
+ 189              		.thumb
+ 190              		.thumb_func
+ 192              	DAC_DMACmd:
+ 193              	.LFB33:
+ 187:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 188:.//FWLIB/src/stm32f10x_dac.c **** }
+ 189:.//FWLIB/src/stm32f10x_dac.c **** #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || defined (STM32F10X_HD_VL)
+ 190:.//FWLIB/src/stm32f10x_dac.c **** /**
+ 191:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Enables or disables the specified DAC interrupts.
+ 192:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 193:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 194:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 195:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 196:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_IT: specifies the DAC interrupt sources to be enabled or disabled. 
+ 197:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be the following values:
+ 198:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_IT_DMAUDR: DMA underrun interrupt mask                      
+ 199:.//FWLIB/src/stm32f10x_dac.c ****   * @param  NewState: new state of the specified DAC interrupts.
+ 200:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 201:.//FWLIB/src/stm32f10x_dac.c ****   * @retval None
+ 202:.//FWLIB/src/stm32f10x_dac.c ****   */ 
+ 203:.//FWLIB/src/stm32f10x_dac.c **** void DAC_ITConfig(uint32_t DAC_Channel, uint32_t DAC_IT, FunctionalState NewState)  
+ 204:.//FWLIB/src/stm32f10x_dac.c **** {
+ 205:.//FWLIB/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 206:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
+ 207:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 208:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_IT(DAC_IT)); 
+ 209:.//FWLIB/src/stm32f10x_dac.c **** 
+ 210:.//FWLIB/src/stm32f10x_dac.c ****   if (NewState != DISABLE)
+ 211:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 212:.//FWLIB/src/stm32f10x_dac.c ****     /* Enable the selected DAC interrupts */
+ 213:.//FWLIB/src/stm32f10x_dac.c ****     DAC->CR |=  (DAC_IT << DAC_Channel);
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 8
+
+
+ 214:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 215:.//FWLIB/src/stm32f10x_dac.c ****   else
+ 216:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 217:.//FWLIB/src/stm32f10x_dac.c ****     /* Disable the selected DAC interrupts */
+ 218:.//FWLIB/src/stm32f10x_dac.c ****     DAC->CR &= (~(uint32_t)(DAC_IT << DAC_Channel));
+ 219:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 220:.//FWLIB/src/stm32f10x_dac.c **** }
+ 221:.//FWLIB/src/stm32f10x_dac.c **** #endif
+ 222:.//FWLIB/src/stm32f10x_dac.c **** 
+ 223:.//FWLIB/src/stm32f10x_dac.c **** /**
+ 224:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Enables or disables the specified DAC channel DMA request.
+ 225:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 226:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 227:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 228:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 229:.//FWLIB/src/stm32f10x_dac.c ****   * @param  NewState: new state of the selected DAC channel DMA request.
+ 230:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 231:.//FWLIB/src/stm32f10x_dac.c ****   * @retval None
+ 232:.//FWLIB/src/stm32f10x_dac.c ****   */
+ 233:.//FWLIB/src/stm32f10x_dac.c **** void DAC_DMACmd(uint32_t DAC_Channel, FunctionalState NewState)
+ 234:.//FWLIB/src/stm32f10x_dac.c **** {
+ 194              		.loc 1 234 0
+ 195              		.cfi_startproc
+ 196              		@ args = 0, pretend = 0, frame = 0
+ 197              		@ frame_needed = 0, uses_anonymous_args = 0
+ 198              		@ link register save eliminated.
+ 199              	.LVL16:
+ 235:.//FWLIB/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 236:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
+ 237:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 238:.//FWLIB/src/stm32f10x_dac.c ****   if (NewState != DISABLE)
+ 200              		.loc 1 238 0
+ 201 0000 41B1     		cbz	r1, .L14
+ 239:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 240:.//FWLIB/src/stm32f10x_dac.c ****     /* Enable the selected DAC channel DMA request */
+ 241:.//FWLIB/src/stm32f10x_dac.c ****     DAC->CR |= (DAC_CR_DMAEN1 << DAC_Channel);
+ 202              		.loc 1 241 0
+ 203 0002 094A     		ldr	r2, .L16
+ 204 0004 1168     		ldr	r1, [r2]
+ 205              	.LVL17:
+ 206 0006 4FF48053 		mov	r3, #4096
+ 207 000a 03FA00F0 		lsl	r0, r3, r0
+ 208              	.LVL18:
+ 209 000e 0843     		orrs	r0, r0, r1
+ 210 0010 1060     		str	r0, [r2]
+ 211 0012 7047     		bx	lr
+ 212              	.LVL19:
+ 213              	.L14:
+ 242:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 243:.//FWLIB/src/stm32f10x_dac.c ****   else
+ 244:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 245:.//FWLIB/src/stm32f10x_dac.c ****     /* Disable the selected DAC channel DMA request */
+ 246:.//FWLIB/src/stm32f10x_dac.c ****     DAC->CR &= ~(DAC_CR_DMAEN1 << DAC_Channel);
+ 214              		.loc 1 246 0
+ 215 0014 0449     		ldr	r1, .L16
+ 216              	.LVL20:
+ 217 0016 0B68     		ldr	r3, [r1]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 9
+
+
+ 218 0018 4FF48052 		mov	r2, #4096
+ 219 001c 02FA00F0 		lsl	r0, r2, r0
+ 220              	.LVL21:
+ 221 0020 23EA0000 		bic	r0, r3, r0
+ 222 0024 0860     		str	r0, [r1]
+ 223 0026 7047     		bx	lr
+ 224              	.L17:
+ 225              		.align	2
+ 226              	.L16:
+ 227 0028 00740040 		.word	1073771520
+ 228              		.cfi_endproc
+ 229              	.LFE33:
+ 231              		.section	.text.DAC_SoftwareTriggerCmd,"ax",%progbits
+ 232              		.align	2
+ 233              		.global	DAC_SoftwareTriggerCmd
+ 234              		.thumb
+ 235              		.thumb_func
+ 237              	DAC_SoftwareTriggerCmd:
+ 238              	.LFB34:
+ 247:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 248:.//FWLIB/src/stm32f10x_dac.c **** }
+ 249:.//FWLIB/src/stm32f10x_dac.c **** 
+ 250:.//FWLIB/src/stm32f10x_dac.c **** /**
+ 251:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Enables or disables the selected DAC channel software trigger.
+ 252:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 253:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 254:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 255:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 256:.//FWLIB/src/stm32f10x_dac.c ****   * @param  NewState: new state of the selected DAC channel software trigger.
+ 257:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 258:.//FWLIB/src/stm32f10x_dac.c ****   * @retval None
+ 259:.//FWLIB/src/stm32f10x_dac.c ****   */
+ 260:.//FWLIB/src/stm32f10x_dac.c **** void DAC_SoftwareTriggerCmd(uint32_t DAC_Channel, FunctionalState NewState)
+ 261:.//FWLIB/src/stm32f10x_dac.c **** {
+ 239              		.loc 1 261 0
+ 240              		.cfi_startproc
+ 241              		@ args = 0, pretend = 0, frame = 0
+ 242              		@ frame_needed = 0, uses_anonymous_args = 0
+ 243              		@ link register save eliminated.
+ 244              	.LVL22:
+ 262:.//FWLIB/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 263:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
+ 264:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 265:.//FWLIB/src/stm32f10x_dac.c ****   if (NewState != DISABLE)
+ 245              		.loc 1 265 0
+ 246 0000 41B1     		cbz	r1, .L19
+ 266:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 267:.//FWLIB/src/stm32f10x_dac.c ****     /* Enable software trigger for the selected DAC channel */
+ 268:.//FWLIB/src/stm32f10x_dac.c ****     DAC->SWTRIGR |= (uint32_t)DAC_SWTRIGR_SWTRIG1 << (DAC_Channel >> 4);
+ 247              		.loc 1 268 0
+ 248 0002 094A     		ldr	r2, .L21
+ 249 0004 5168     		ldr	r1, [r2, #4]
+ 250              	.LVL23:
+ 251 0006 0009     		lsrs	r0, r0, #4
+ 252              	.LVL24:
+ 253 0008 0123     		movs	r3, #1
+ 254 000a 03FA00F0 		lsl	r0, r3, r0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 10
+
+
+ 255 000e 0843     		orrs	r0, r0, r1
+ 256 0010 5060     		str	r0, [r2, #4]
+ 257 0012 7047     		bx	lr
+ 258              	.LVL25:
+ 259              	.L19:
+ 269:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 270:.//FWLIB/src/stm32f10x_dac.c ****   else
+ 271:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 272:.//FWLIB/src/stm32f10x_dac.c ****     /* Disable software trigger for the selected DAC channel */
+ 273:.//FWLIB/src/stm32f10x_dac.c ****     DAC->SWTRIGR &= ~((uint32_t)DAC_SWTRIGR_SWTRIG1 << (DAC_Channel >> 4));
+ 260              		.loc 1 273 0
+ 261 0014 0449     		ldr	r1, .L21
+ 262              	.LVL26:
+ 263 0016 4B68     		ldr	r3, [r1, #4]
+ 264 0018 0009     		lsrs	r0, r0, #4
+ 265              	.LVL27:
+ 266 001a 0122     		movs	r2, #1
+ 267 001c 02FA00F0 		lsl	r0, r2, r0
+ 268 0020 23EA0000 		bic	r0, r3, r0
+ 269 0024 4860     		str	r0, [r1, #4]
+ 270 0026 7047     		bx	lr
+ 271              	.L22:
+ 272              		.align	2
+ 273              	.L21:
+ 274 0028 00740040 		.word	1073771520
+ 275              		.cfi_endproc
+ 276              	.LFE34:
+ 278              		.section	.text.DAC_DualSoftwareTriggerCmd,"ax",%progbits
+ 279              		.align	2
+ 280              		.global	DAC_DualSoftwareTriggerCmd
+ 281              		.thumb
+ 282              		.thumb_func
+ 284              	DAC_DualSoftwareTriggerCmd:
+ 285              	.LFB35:
+ 274:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 275:.//FWLIB/src/stm32f10x_dac.c **** }
+ 276:.//FWLIB/src/stm32f10x_dac.c **** 
+ 277:.//FWLIB/src/stm32f10x_dac.c **** /**
+ 278:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Enables or disables simultaneously the two DAC channels software
+ 279:.//FWLIB/src/stm32f10x_dac.c ****   *   triggers.
+ 280:.//FWLIB/src/stm32f10x_dac.c ****   * @param  NewState: new state of the DAC channels software triggers.
+ 281:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 282:.//FWLIB/src/stm32f10x_dac.c ****   * @retval None
+ 283:.//FWLIB/src/stm32f10x_dac.c ****   */
+ 284:.//FWLIB/src/stm32f10x_dac.c **** void DAC_DualSoftwareTriggerCmd(FunctionalState NewState)
+ 285:.//FWLIB/src/stm32f10x_dac.c **** {
+ 286              		.loc 1 285 0
+ 287              		.cfi_startproc
+ 288              		@ args = 0, pretend = 0, frame = 0
+ 289              		@ frame_needed = 0, uses_anonymous_args = 0
+ 290              		@ link register save eliminated.
+ 291              	.LVL28:
+ 286:.//FWLIB/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 287:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 288:.//FWLIB/src/stm32f10x_dac.c ****   if (NewState != DISABLE)
+ 292              		.loc 1 288 0
+ 293 0000 28B1     		cbz	r0, .L24
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 11
+
+
+ 289:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 290:.//FWLIB/src/stm32f10x_dac.c ****     /* Enable software trigger for both DAC channels */
+ 291:.//FWLIB/src/stm32f10x_dac.c ****     DAC->SWTRIGR |= DUAL_SWTRIG_SET ;
+ 294              		.loc 1 291 0
+ 295 0002 064A     		ldr	r2, .L26
+ 296 0004 5368     		ldr	r3, [r2, #4]
+ 297 0006 43F00303 		orr	r3, r3, #3
+ 298 000a 5360     		str	r3, [r2, #4]
+ 299 000c 7047     		bx	lr
+ 300              	.L24:
+ 292:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 293:.//FWLIB/src/stm32f10x_dac.c ****   else
+ 294:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 295:.//FWLIB/src/stm32f10x_dac.c ****     /* Disable software trigger for both DAC channels */
+ 296:.//FWLIB/src/stm32f10x_dac.c ****     DAC->SWTRIGR &= DUAL_SWTRIG_RESET;
+ 301              		.loc 1 296 0
+ 302 000e 034A     		ldr	r2, .L26
+ 303 0010 5368     		ldr	r3, [r2, #4]
+ 304 0012 23F00303 		bic	r3, r3, #3
+ 305 0016 5360     		str	r3, [r2, #4]
+ 306 0018 7047     		bx	lr
+ 307              	.L27:
+ 308 001a 00BF     		.align	2
+ 309              	.L26:
+ 310 001c 00740040 		.word	1073771520
+ 311              		.cfi_endproc
+ 312              	.LFE35:
+ 314              		.section	.text.DAC_WaveGenerationCmd,"ax",%progbits
+ 315              		.align	2
+ 316              		.global	DAC_WaveGenerationCmd
+ 317              		.thumb
+ 318              		.thumb_func
+ 320              	DAC_WaveGenerationCmd:
+ 321              	.LFB36:
+ 297:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 298:.//FWLIB/src/stm32f10x_dac.c **** }
+ 299:.//FWLIB/src/stm32f10x_dac.c **** 
+ 300:.//FWLIB/src/stm32f10x_dac.c **** /**
+ 301:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Enables or disables the selected DAC channel wave generation.
+ 302:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 303:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 304:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 305:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 306:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_Wave: Specifies the wave type to enable or disable.
+ 307:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 308:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Wave_Noise: noise wave generation
+ 309:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Wave_Triangle: triangle wave generation
+ 310:.//FWLIB/src/stm32f10x_dac.c ****   * @param  NewState: new state of the selected DAC channel wave generation.
+ 311:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 312:.//FWLIB/src/stm32f10x_dac.c ****   * @retval None
+ 313:.//FWLIB/src/stm32f10x_dac.c ****   */
+ 314:.//FWLIB/src/stm32f10x_dac.c **** void DAC_WaveGenerationCmd(uint32_t DAC_Channel, uint32_t DAC_Wave, FunctionalState NewState)
+ 315:.//FWLIB/src/stm32f10x_dac.c **** {
+ 322              		.loc 1 315 0
+ 323              		.cfi_startproc
+ 324              		@ args = 0, pretend = 0, frame = 0
+ 325              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 12
+
+
+ 326              		@ link register save eliminated.
+ 327              	.LVL29:
+ 316:.//FWLIB/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 317:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
+ 318:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_WAVE(DAC_Wave)); 
+ 319:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 320:.//FWLIB/src/stm32f10x_dac.c ****   if (NewState != DISABLE)
+ 328              		.loc 1 320 0
+ 329 0000 2AB1     		cbz	r2, .L29
+ 321:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 322:.//FWLIB/src/stm32f10x_dac.c ****     /* Enable the selected wave generation for the selected DAC channel */
+ 323:.//FWLIB/src/stm32f10x_dac.c ****     DAC->CR |= DAC_Wave << DAC_Channel;
+ 330              		.loc 1 323 0
+ 331 0002 064B     		ldr	r3, .L31
+ 332 0004 1A68     		ldr	r2, [r3]
+ 333              	.LVL30:
+ 334 0006 8140     		lsls	r1, r1, r0
+ 335              	.LVL31:
+ 336 0008 1143     		orrs	r1, r1, r2
+ 337 000a 1960     		str	r1, [r3]
+ 338 000c 7047     		bx	lr
+ 339              	.LVL32:
+ 340              	.L29:
+ 324:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 325:.//FWLIB/src/stm32f10x_dac.c ****   else
+ 326:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 327:.//FWLIB/src/stm32f10x_dac.c ****     /* Disable the selected wave generation for the selected DAC channel */
+ 328:.//FWLIB/src/stm32f10x_dac.c ****     DAC->CR &= ~(DAC_Wave << DAC_Channel);
+ 341              		.loc 1 328 0
+ 342 000e 034A     		ldr	r2, .L31
+ 343              	.LVL33:
+ 344 0010 1368     		ldr	r3, [r2]
+ 345 0012 8140     		lsls	r1, r1, r0
+ 346              	.LVL34:
+ 347 0014 23EA0101 		bic	r1, r3, r1
+ 348 0018 1160     		str	r1, [r2]
+ 349 001a 7047     		bx	lr
+ 350              	.L32:
+ 351              		.align	2
+ 352              	.L31:
+ 353 001c 00740040 		.word	1073771520
+ 354              		.cfi_endproc
+ 355              	.LFE36:
+ 357              		.section	.text.DAC_SetChannel1Data,"ax",%progbits
+ 358              		.align	2
+ 359              		.global	DAC_SetChannel1Data
+ 360              		.thumb
+ 361              		.thumb_func
+ 363              	DAC_SetChannel1Data:
+ 364              	.LFB37:
+ 329:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 330:.//FWLIB/src/stm32f10x_dac.c **** }
+ 331:.//FWLIB/src/stm32f10x_dac.c **** 
+ 332:.//FWLIB/src/stm32f10x_dac.c **** /**
+ 333:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Set the specified data holding register value for DAC channel1.
+ 334:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_Align: Specifies the data alignment for DAC channel1.
+ 335:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 13
+
+
+ 336:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Align_8b_R: 8bit right data alignment selected
+ 337:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Align_12b_L: 12bit left data alignment selected
+ 338:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Align_12b_R: 12bit right data alignment selected
+ 339:.//FWLIB/src/stm32f10x_dac.c ****   * @param  Data : Data to be loaded in the selected data holding register.
+ 340:.//FWLIB/src/stm32f10x_dac.c ****   * @retval None
+ 341:.//FWLIB/src/stm32f10x_dac.c ****   */
+ 342:.//FWLIB/src/stm32f10x_dac.c **** void DAC_SetChannel1Data(uint32_t DAC_Align, uint16_t Data)
+ 343:.//FWLIB/src/stm32f10x_dac.c **** {  
+ 365              		.loc 1 343 0
+ 366              		.cfi_startproc
+ 367              		@ args = 0, pretend = 0, frame = 8
+ 368              		@ frame_needed = 0, uses_anonymous_args = 0
+ 369              		@ link register save eliminated.
+ 370              	.LVL35:
+ 371 0000 82B0     		sub	sp, sp, #8
+ 372              	.LCFI3:
+ 373              		.cfi_def_cfa_offset 8
+ 344:.//FWLIB/src/stm32f10x_dac.c ****   __IO uint32_t tmp = 0;
+ 374              		.loc 1 344 0
+ 375 0002 0023     		movs	r3, #0
+ 376 0004 0193     		str	r3, [sp, #4]
+ 345:.//FWLIB/src/stm32f10x_dac.c ****   
+ 346:.//FWLIB/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 347:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_ALIGN(DAC_Align));
+ 348:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_DATA(Data));
+ 349:.//FWLIB/src/stm32f10x_dac.c ****   
+ 350:.//FWLIB/src/stm32f10x_dac.c ****   tmp = (uint32_t)DAC_BASE; 
+ 377              		.loc 1 350 0
+ 378 0006 054B     		ldr	r3, .L35
+ 379 0008 0193     		str	r3, [sp, #4]
+ 351:.//FWLIB/src/stm32f10x_dac.c ****   tmp += DHR12R1_OFFSET + DAC_Align;
+ 380              		.loc 1 351 0
+ 381 000a 019B     		ldr	r3, [sp, #4]
+ 382 000c 1844     		add	r0, r0, r3
+ 383              	.LVL36:
+ 384 000e 0830     		adds	r0, r0, #8
+ 385 0010 0190     		str	r0, [sp, #4]
+ 352:.//FWLIB/src/stm32f10x_dac.c **** 
+ 353:.//FWLIB/src/stm32f10x_dac.c ****   /* Set the DAC channel1 selected data holding register */
+ 354:.//FWLIB/src/stm32f10x_dac.c ****   *(__IO uint32_t *) tmp = Data;
+ 386              		.loc 1 354 0
+ 387 0012 019B     		ldr	r3, [sp, #4]
+ 388 0014 1960     		str	r1, [r3]
+ 355:.//FWLIB/src/stm32f10x_dac.c **** }
+ 389              		.loc 1 355 0
+ 390 0016 02B0     		add	sp, sp, #8
+ 391              	.LCFI4:
+ 392              		.cfi_def_cfa_offset 0
+ 393              		@ sp needed
+ 394 0018 7047     		bx	lr
+ 395              	.L36:
+ 396 001a 00BF     		.align	2
+ 397              	.L35:
+ 398 001c 00740040 		.word	1073771520
+ 399              		.cfi_endproc
+ 400              	.LFE37:
+ 402              		.section	.text.DAC_SetChannel2Data,"ax",%progbits
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 14
+
+
+ 403              		.align	2
+ 404              		.global	DAC_SetChannel2Data
+ 405              		.thumb
+ 406              		.thumb_func
+ 408              	DAC_SetChannel2Data:
+ 409              	.LFB38:
+ 356:.//FWLIB/src/stm32f10x_dac.c **** 
+ 357:.//FWLIB/src/stm32f10x_dac.c **** /**
+ 358:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Set the specified data holding register value for DAC channel2.
+ 359:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_Align: Specifies the data alignment for DAC channel2.
+ 360:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 361:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Align_8b_R: 8bit right data alignment selected
+ 362:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Align_12b_L: 12bit left data alignment selected
+ 363:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Align_12b_R: 12bit right data alignment selected
+ 364:.//FWLIB/src/stm32f10x_dac.c ****   * @param  Data : Data to be loaded in the selected data holding register.
+ 365:.//FWLIB/src/stm32f10x_dac.c ****   * @retval None
+ 366:.//FWLIB/src/stm32f10x_dac.c ****   */
+ 367:.//FWLIB/src/stm32f10x_dac.c **** void DAC_SetChannel2Data(uint32_t DAC_Align, uint16_t Data)
+ 368:.//FWLIB/src/stm32f10x_dac.c **** {
+ 410              		.loc 1 368 0
+ 411              		.cfi_startproc
+ 412              		@ args = 0, pretend = 0, frame = 8
+ 413              		@ frame_needed = 0, uses_anonymous_args = 0
+ 414              		@ link register save eliminated.
+ 415              	.LVL37:
+ 416 0000 82B0     		sub	sp, sp, #8
+ 417              	.LCFI5:
+ 418              		.cfi_def_cfa_offset 8
+ 369:.//FWLIB/src/stm32f10x_dac.c ****   __IO uint32_t tmp = 0;
+ 419              		.loc 1 369 0
+ 420 0002 0023     		movs	r3, #0
+ 421 0004 0193     		str	r3, [sp, #4]
+ 370:.//FWLIB/src/stm32f10x_dac.c **** 
+ 371:.//FWLIB/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 372:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_ALIGN(DAC_Align));
+ 373:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_DATA(Data));
+ 374:.//FWLIB/src/stm32f10x_dac.c ****   
+ 375:.//FWLIB/src/stm32f10x_dac.c ****   tmp = (uint32_t)DAC_BASE;
+ 422              		.loc 1 375 0
+ 423 0006 054B     		ldr	r3, .L39
+ 424 0008 0193     		str	r3, [sp, #4]
+ 376:.//FWLIB/src/stm32f10x_dac.c ****   tmp += DHR12R2_OFFSET + DAC_Align;
+ 425              		.loc 1 376 0
+ 426 000a 019B     		ldr	r3, [sp, #4]
+ 427 000c 1844     		add	r0, r0, r3
+ 428              	.LVL38:
+ 429 000e 1430     		adds	r0, r0, #20
+ 430 0010 0190     		str	r0, [sp, #4]
+ 377:.//FWLIB/src/stm32f10x_dac.c **** 
+ 378:.//FWLIB/src/stm32f10x_dac.c ****   /* Set the DAC channel2 selected data holding register */
+ 379:.//FWLIB/src/stm32f10x_dac.c ****   *(__IO uint32_t *)tmp = Data;
+ 431              		.loc 1 379 0
+ 432 0012 019B     		ldr	r3, [sp, #4]
+ 433 0014 1960     		str	r1, [r3]
+ 380:.//FWLIB/src/stm32f10x_dac.c **** }
+ 434              		.loc 1 380 0
+ 435 0016 02B0     		add	sp, sp, #8
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 15
+
+
+ 436              	.LCFI6:
+ 437              		.cfi_def_cfa_offset 0
+ 438              		@ sp needed
+ 439 0018 7047     		bx	lr
+ 440              	.L40:
+ 441 001a 00BF     		.align	2
+ 442              	.L39:
+ 443 001c 00740040 		.word	1073771520
+ 444              		.cfi_endproc
+ 445              	.LFE38:
+ 447              		.section	.text.DAC_SetDualChannelData,"ax",%progbits
+ 448              		.align	2
+ 449              		.global	DAC_SetDualChannelData
+ 450              		.thumb
+ 451              		.thumb_func
+ 453              	DAC_SetDualChannelData:
+ 454              	.LFB39:
+ 381:.//FWLIB/src/stm32f10x_dac.c **** 
+ 382:.//FWLIB/src/stm32f10x_dac.c **** /**
+ 383:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Set the specified data holding register value for dual channel
+ 384:.//FWLIB/src/stm32f10x_dac.c ****   *   DAC.
+ 385:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_Align: Specifies the data alignment for dual channel DAC.
+ 386:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 387:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Align_8b_R: 8bit right data alignment selected
+ 388:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Align_12b_L: 12bit left data alignment selected
+ 389:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Align_12b_R: 12bit right data alignment selected
+ 390:.//FWLIB/src/stm32f10x_dac.c ****   * @param  Data2: Data for DAC Channel2 to be loaded in the selected data 
+ 391:.//FWLIB/src/stm32f10x_dac.c ****   *   holding register.
+ 392:.//FWLIB/src/stm32f10x_dac.c ****   * @param  Data1: Data for DAC Channel1 to be loaded in the selected data 
+ 393:.//FWLIB/src/stm32f10x_dac.c ****   *   holding register.
+ 394:.//FWLIB/src/stm32f10x_dac.c ****   * @retval None
+ 395:.//FWLIB/src/stm32f10x_dac.c ****   */
+ 396:.//FWLIB/src/stm32f10x_dac.c **** void DAC_SetDualChannelData(uint32_t DAC_Align, uint16_t Data2, uint16_t Data1)
+ 397:.//FWLIB/src/stm32f10x_dac.c **** {
+ 455              		.loc 1 397 0
+ 456              		.cfi_startproc
+ 457              		@ args = 0, pretend = 0, frame = 0
+ 458              		@ frame_needed = 0, uses_anonymous_args = 0
+ 459              		@ link register save eliminated.
+ 460              	.LVL39:
+ 398:.//FWLIB/src/stm32f10x_dac.c ****   uint32_t data = 0, tmp = 0;
+ 399:.//FWLIB/src/stm32f10x_dac.c ****   
+ 400:.//FWLIB/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 401:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_ALIGN(DAC_Align));
+ 402:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_DATA(Data1));
+ 403:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_DATA(Data2));
+ 404:.//FWLIB/src/stm32f10x_dac.c ****   
+ 405:.//FWLIB/src/stm32f10x_dac.c ****   /* Calculate and set dual DAC data holding register value */
+ 406:.//FWLIB/src/stm32f10x_dac.c ****   if (DAC_Align == DAC_Align_8b_R)
+ 461              		.loc 1 406 0
+ 462 0000 0828     		cmp	r0, #8
+ 463 0002 02D1     		bne	.L42
+ 407:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 408:.//FWLIB/src/stm32f10x_dac.c ****     data = ((uint32_t)Data2 << 8) | Data1; 
+ 464              		.loc 1 408 0
+ 465 0004 42EA0122 		orr	r2, r2, r1, lsl #8
+ 466              	.LVL40:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 16
+
+
+ 467 0008 01E0     		b	.L43
+ 468              	.LVL41:
+ 469              	.L42:
+ 409:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 410:.//FWLIB/src/stm32f10x_dac.c ****   else
+ 411:.//FWLIB/src/stm32f10x_dac.c ****   {
+ 412:.//FWLIB/src/stm32f10x_dac.c ****     data = ((uint32_t)Data2 << 16) | Data1;
+ 470              		.loc 1 412 0
+ 471 000a 42EA0142 		orr	r2, r2, r1, lsl #16
+ 472              	.LVL42:
+ 473              	.L43:
+ 413:.//FWLIB/src/stm32f10x_dac.c ****   }
+ 414:.//FWLIB/src/stm32f10x_dac.c ****   
+ 415:.//FWLIB/src/stm32f10x_dac.c ****   tmp = (uint32_t)DAC_BASE;
+ 416:.//FWLIB/src/stm32f10x_dac.c ****   tmp += DHR12RD_OFFSET + DAC_Align;
+ 474              		.loc 1 416 0
+ 475 000e 014B     		ldr	r3, .L44
+ 476              	.LVL43:
+ 417:.//FWLIB/src/stm32f10x_dac.c **** 
+ 418:.//FWLIB/src/stm32f10x_dac.c ****   /* Set the dual DAC selected data holding register */
+ 419:.//FWLIB/src/stm32f10x_dac.c ****   *(__IO uint32_t *)tmp = data;
+ 477              		.loc 1 419 0
+ 478 0010 C250     		str	r2, [r0, r3]
+ 479 0012 7047     		bx	lr
+ 480              	.L45:
+ 481              		.align	2
+ 482              	.L44:
+ 483 0014 20740040 		.word	1073771552
+ 484              		.cfi_endproc
+ 485              	.LFE39:
+ 487              		.section	.text.DAC_GetDataOutputValue,"ax",%progbits
+ 488              		.align	2
+ 489              		.global	DAC_GetDataOutputValue
+ 490              		.thumb
+ 491              		.thumb_func
+ 493              	DAC_GetDataOutputValue:
+ 494              	.LFB40:
+ 420:.//FWLIB/src/stm32f10x_dac.c **** }
+ 421:.//FWLIB/src/stm32f10x_dac.c **** 
+ 422:.//FWLIB/src/stm32f10x_dac.c **** /**
+ 423:.//FWLIB/src/stm32f10x_dac.c ****   * @brief  Returns the last data output value of the selected DAC channel.
+ 424:.//FWLIB/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 425:.//FWLIB/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 426:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 427:.//FWLIB/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 428:.//FWLIB/src/stm32f10x_dac.c ****   * @retval The selected DAC channel data output value.
+ 429:.//FWLIB/src/stm32f10x_dac.c ****   */
+ 430:.//FWLIB/src/stm32f10x_dac.c **** uint16_t DAC_GetDataOutputValue(uint32_t DAC_Channel)
+ 431:.//FWLIB/src/stm32f10x_dac.c **** {
+ 495              		.loc 1 431 0
+ 496              		.cfi_startproc
+ 497              		@ args = 0, pretend = 0, frame = 8
+ 498              		@ frame_needed = 0, uses_anonymous_args = 0
+ 499              		@ link register save eliminated.
+ 500              	.LVL44:
+ 501 0000 82B0     		sub	sp, sp, #8
+ 502              	.LCFI7:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 17
+
+
+ 503              		.cfi_def_cfa_offset 8
+ 432:.//FWLIB/src/stm32f10x_dac.c ****   __IO uint32_t tmp = 0;
+ 504              		.loc 1 432 0
+ 505 0002 0023     		movs	r3, #0
+ 506 0004 0193     		str	r3, [sp, #4]
+ 433:.//FWLIB/src/stm32f10x_dac.c ****   
+ 434:.//FWLIB/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 435:.//FWLIB/src/stm32f10x_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
+ 436:.//FWLIB/src/stm32f10x_dac.c ****   
+ 437:.//FWLIB/src/stm32f10x_dac.c ****   tmp = (uint32_t) DAC_BASE ;
+ 507              		.loc 1 437 0
+ 508 0006 064B     		ldr	r3, .L48
+ 509 0008 0193     		str	r3, [sp, #4]
+ 438:.//FWLIB/src/stm32f10x_dac.c ****   tmp += DOR_OFFSET + ((uint32_t)DAC_Channel >> 2);
+ 510              		.loc 1 438 0
+ 511 000a 019B     		ldr	r3, [sp, #4]
+ 512 000c 03EB9000 		add	r0, r3, r0, lsr #2
+ 513              	.LVL45:
+ 514 0010 2C30     		adds	r0, r0, #44
+ 515 0012 0190     		str	r0, [sp, #4]
+ 439:.//FWLIB/src/stm32f10x_dac.c ****   
+ 440:.//FWLIB/src/stm32f10x_dac.c ****   /* Returns the DAC channel data output register value */
+ 441:.//FWLIB/src/stm32f10x_dac.c ****   return (uint16_t) (*(__IO uint32_t*) tmp);
+ 516              		.loc 1 441 0
+ 517 0014 019B     		ldr	r3, [sp, #4]
+ 518 0016 1868     		ldr	r0, [r3]
+ 442:.//FWLIB/src/stm32f10x_dac.c **** }
+ 519              		.loc 1 442 0
+ 520 0018 80B2     		uxth	r0, r0
+ 521 001a 02B0     		add	sp, sp, #8
+ 522              	.LCFI8:
+ 523              		.cfi_def_cfa_offset 0
+ 524              		@ sp needed
+ 525 001c 7047     		bx	lr
+ 526              	.L49:
+ 527 001e 00BF     		.align	2
+ 528              	.L48:
+ 529 0020 00740040 		.word	1073771520
+ 530              		.cfi_endproc
+ 531              	.LFE40:
+ 533              		.text
+ 534              	.Letext0:
+ 535              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 536              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 537              		.file 4 "USER/stm32f10x.h"
+ 538              		.file 5 "FWLIB/inc/stm32f10x_dac.h"
+ 539              		.file 6 "CORE/core_cm3.h"
+ 540              		.file 7 "FWLIB/inc/stm32f10x_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s 			page 18
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f10x_dac.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:20     .text.DAC_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:25     .text.DAC_DeInit:0000000000000000 DAC_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:52     .text.DAC_Init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:57     .text.DAC_Init:0000000000000000 DAC_Init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:110    .text.DAC_Init:000000000000002c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:115    .text.DAC_StructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:120    .text.DAC_StructInit:0000000000000000 DAC_StructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:142    .text.DAC_Cmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:147    .text.DAC_Cmd:0000000000000000 DAC_Cmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:182    .text.DAC_Cmd:0000000000000024 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:187    .text.DAC_DMACmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:192    .text.DAC_DMACmd:0000000000000000 DAC_DMACmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:227    .text.DAC_DMACmd:0000000000000028 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:232    .text.DAC_SoftwareTriggerCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:237    .text.DAC_SoftwareTriggerCmd:0000000000000000 DAC_SoftwareTriggerCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:274    .text.DAC_SoftwareTriggerCmd:0000000000000028 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:279    .text.DAC_DualSoftwareTriggerCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:284    .text.DAC_DualSoftwareTriggerCmd:0000000000000000 DAC_DualSoftwareTriggerCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:310    .text.DAC_DualSoftwareTriggerCmd:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:315    .text.DAC_WaveGenerationCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:320    .text.DAC_WaveGenerationCmd:0000000000000000 DAC_WaveGenerationCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:353    .text.DAC_WaveGenerationCmd:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:358    .text.DAC_SetChannel1Data:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:363    .text.DAC_SetChannel1Data:0000000000000000 DAC_SetChannel1Data
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:398    .text.DAC_SetChannel1Data:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:403    .text.DAC_SetChannel2Data:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:408    .text.DAC_SetChannel2Data:0000000000000000 DAC_SetChannel2Data
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:443    .text.DAC_SetChannel2Data:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:448    .text.DAC_SetDualChannelData:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:453    .text.DAC_SetDualChannelData:0000000000000000 DAC_SetDualChannelData
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:483    .text.DAC_SetDualChannelData:0000000000000014 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:488    .text.DAC_GetDataOutputValue:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:493    .text.DAC_GetDataOutputValue:0000000000000000 DAC_GetDataOutputValue
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNs13XT.s:529    .text.DAC_GetDataOutputValue:0000000000000020 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphResetCmd

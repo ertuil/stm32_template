@@ -1,0 +1,2103 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"stm32f4xx_sdio.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.SDIO_DeInit,"ax",%progbits
+  22              		.align	2
+  23              		.global	SDIO_DeInit
+  24              		.thumb
+  25              		.thumb_func
+  27              	SDIO_DeInit:
+  28              	.LFB112:
+  29              		.file 1 ".//FWLIB/src/stm32f4xx_sdio.c"
+   1:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+   2:.//FWLIB/src/stm32f4xx_sdio.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f4xx_sdio.c ****   * @file    stm32f4xx_sdio.c
+   4:.//FWLIB/src/stm32f4xx_sdio.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f4xx_sdio.c ****   * @version V1.4.0
+   6:.//FWLIB/src/stm32f4xx_sdio.c ****   * @date    04-August-2014
+   7:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:.//FWLIB/src/stm32f4xx_sdio.c ****   *          functionalities of the Secure digital input/output interface (SDIO) 
+   9:.//FWLIB/src/stm32f4xx_sdio.c ****   *          peripheral:
+  10:.//FWLIB/src/stm32f4xx_sdio.c ****   *           + Initialization and Configuration
+  11:.//FWLIB/src/stm32f4xx_sdio.c ****   *           + Command path state machine (CPSM) management
+  12:.//FWLIB/src/stm32f4xx_sdio.c ****   *           + Data path state machine (DPSM) management
+  13:.//FWLIB/src/stm32f4xx_sdio.c ****   *           + SDIO IO Cards mode management
+  14:.//FWLIB/src/stm32f4xx_sdio.c ****   *           + CE-ATA mode management
+  15:.//FWLIB/src/stm32f4xx_sdio.c ****   *           + DMA transfers management
+  16:.//FWLIB/src/stm32f4xx_sdio.c ****   *           + Interrupts and flags management
+  17:.//FWLIB/src/stm32f4xx_sdio.c ****   *
+  18:.//FWLIB/src/stm32f4xx_sdio.c **** @verbatim
+  19:.//FWLIB/src/stm32f4xx_sdio.c **** 
+  20:.//FWLIB/src/stm32f4xx_sdio.c ****  ===================================================================
+  21:.//FWLIB/src/stm32f4xx_sdio.c ****                  ##### How to use this driver #####
+  22:.//FWLIB/src/stm32f4xx_sdio.c ****  ===================================================================
+  23:.//FWLIB/src/stm32f4xx_sdio.c ****  [..]
+  24:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) The SDIO clock (SDIOCLK = 48 MHz) is coming from a specific output of PLL 
+  25:.//FWLIB/src/stm32f4xx_sdio.c ****        (PLL48CLK). Before to start working with SDIO peripheral make sure that the
+  26:.//FWLIB/src/stm32f4xx_sdio.c ****        PLL is well configured.
+  27:.//FWLIB/src/stm32f4xx_sdio.c ****        The SDIO peripheral uses two clock signals:
+  28:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) SDIO adapter clock (SDIOCLK = 48 MHz)
+  29:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) APB2 bus clock (PCLK2)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 2
+
+
+  30:.//FWLIB/src/stm32f4xx_sdio.c ****        
+  31:.//FWLIB/src/stm32f4xx_sdio.c ****        -@@- PCLK2 and SDIO_CK clock frequencies must respect the following condition:
+  32:.//FWLIB/src/stm32f4xx_sdio.c ****            Frequency(PCLK2) >= (3 / 8 x Frequency(SDIO_CK))
+  33:.//FWLIB/src/stm32f4xx_sdio.c ****   
+  34:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) Enable peripheral clock using RCC_APB2PeriphClockCmd(RCC_APB2Periph_SDIO, ENABLE).
+  35:.//FWLIB/src/stm32f4xx_sdio.c ****   
+  36:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) According to the SDIO mode, enable the GPIO clocks using 
+  37:.//FWLIB/src/stm32f4xx_sdio.c ****        RCC_AHB1PeriphClockCmd() function. 
+  38:.//FWLIB/src/stm32f4xx_sdio.c ****        The I/O can be one of the following configurations:
+  39:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) 1-bit data length: SDIO_CMD, SDIO_CK and D0.
+  40:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) 4-bit data length: SDIO_CMD, SDIO_CK and D[3:0].
+  41:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) 8-bit data length: SDIO_CMD, SDIO_CK and D[7:0].      
+  42:.//FWLIB/src/stm32f4xx_sdio.c ****   
+  43:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) Peripheral alternate function: 
+  44:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Connect the pin to the desired peripherals' Alternate Function (AF) 
+  45:.//FWLIB/src/stm32f4xx_sdio.c ****            using GPIO_PinAFConfig() function
+  46:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Configure the desired pin in alternate function by: 
+  47:.//FWLIB/src/stm32f4xx_sdio.c ****            GPIO_InitStruct->GPIO_Mode = GPIO_Mode_AF
+  48:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Select the type, pull-up/pull-down and output speed via GPIO_PuPd, 
+  49:.//FWLIB/src/stm32f4xx_sdio.c ****            GPIO_OType and GPIO_Speed members
+  50:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Call GPIO_Init() function
+  51:.//FWLIB/src/stm32f4xx_sdio.c ****   
+  52:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) Program the Clock Edge, Clock Bypass, Clock Power Save, Bus Wide, 
+  53:.//FWLIB/src/stm32f4xx_sdio.c ****        hardware, flow control and the Clock Divider using the SDIO_Init()
+  54:.//FWLIB/src/stm32f4xx_sdio.c ****        function.
+  55:.//FWLIB/src/stm32f4xx_sdio.c ****   
+  56:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) Enable the Power ON State using the SDIO_SetPowerState(SDIO_PowerState_ON) 
+  57:.//FWLIB/src/stm32f4xx_sdio.c ****        function.
+  58:.//FWLIB/src/stm32f4xx_sdio.c ****                 
+  59:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) Enable the clock using the SDIO_ClockCmd() function.
+  60:.//FWLIB/src/stm32f4xx_sdio.c ****   
+  61:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) Enable the NVIC and the corresponding interrupt using the function 
+  62:.//FWLIB/src/stm32f4xx_sdio.c ****        SDIO_ITConfig() if you need to use interrupt mode. 
+  63:.//FWLIB/src/stm32f4xx_sdio.c ****   
+  64:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) When using the DMA mode 
+  65:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Configure the DMA using DMA_Init() function
+  66:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Active the needed channel Request using SDIO_DMACmd() function
+  67:.//FWLIB/src/stm32f4xx_sdio.c ****   
+  68:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) Enable the DMA using the DMA_Cmd() function, when using DMA mode. 
+  69:.//FWLIB/src/stm32f4xx_sdio.c ****   
+  70:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) To control the CPSM (Command Path State Machine) and send 
+  71:.//FWLIB/src/stm32f4xx_sdio.c ****        commands to the card use the SDIO_SendCommand(), 
+  72:.//FWLIB/src/stm32f4xx_sdio.c ****        SDIO_GetCommandResponse() and SDIO_GetResponse() functions. First, user has
+  73:.//FWLIB/src/stm32f4xx_sdio.c ****        to fill the command structure (pointer to SDIO_CmdInitTypeDef) according 
+  74:.//FWLIB/src/stm32f4xx_sdio.c ****        to the selected command to be sent.
+  75:.//FWLIB/src/stm32f4xx_sdio.c ****        The parameters that should be filled are:
+  76:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Command Argument
+  77:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Command Index
+  78:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Command Response type
+  79:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Command Wait
+  80:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) CPSM Status (Enable or Disable).
+  81:.//FWLIB/src/stm32f4xx_sdio.c ****   
+  82:.//FWLIB/src/stm32f4xx_sdio.c ****        -@@- To check if the command is well received, read the SDIO_CMDRESP
+  83:.//FWLIB/src/stm32f4xx_sdio.c ****            register using the SDIO_GetCommandResponse().
+  84:.//FWLIB/src/stm32f4xx_sdio.c ****            The SDIO responses registers (SDIO_RESP1 to SDIO_RESP2), use the
+  85:.//FWLIB/src/stm32f4xx_sdio.c ****            SDIO_GetResponse() function.
+  86:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 3
+
+
+  87:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) To control the DPSM (Data Path State Machine) and send/receive 
+  88:.//FWLIB/src/stm32f4xx_sdio.c ****        data to/from the card use the SDIO_DataConfig(), SDIO_GetDataCounter(), 
+  89:.//FWLIB/src/stm32f4xx_sdio.c ****        SDIO_ReadData(), SDIO_WriteData() and SDIO_GetFIFOCount() functions.
+  90:.//FWLIB/src/stm32f4xx_sdio.c ****   
+  91:.//FWLIB/src/stm32f4xx_sdio.c ****  *** Read Operations ***
+  92:.//FWLIB/src/stm32f4xx_sdio.c ****  =======================
+  93:.//FWLIB/src/stm32f4xx_sdio.c ****  [..]
+  94:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) First, user has to fill the data structure (pointer to
+  95:.//FWLIB/src/stm32f4xx_sdio.c ****        SDIO_DataInitTypeDef) according to the selected data type to be received.
+  96:.//FWLIB/src/stm32f4xx_sdio.c ****        The parameters that should be filled are:
+  97:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Data TimeOut
+  98:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Data Length
+  99:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Data Block size
+ 100:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Data Transfer direction: should be from card (To SDIO)
+ 101:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Data Transfer mode
+ 102:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) DPSM Status (Enable or Disable)
+ 103:.//FWLIB/src/stm32f4xx_sdio.c ****                                      
+ 104:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) Configure the SDIO resources to receive the data from the card
+ 105:.//FWLIB/src/stm32f4xx_sdio.c ****        according to selected transfer mode (Refer to Step 8, 9 and 10).
+ 106:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 107:.//FWLIB/src/stm32f4xx_sdio.c ****    (#)  Send the selected Read command (refer to step 11).
+ 108:.//FWLIB/src/stm32f4xx_sdio.c ****                     
+ 109:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) Use the SDIO flags/interrupts to check the transfer status.
+ 110:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 111:.//FWLIB/src/stm32f4xx_sdio.c ****  *** Write Operations ***
+ 112:.//FWLIB/src/stm32f4xx_sdio.c ****  ========================
+ 113:.//FWLIB/src/stm32f4xx_sdio.c ****  [..]
+ 114:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) First, user has to fill the data structure (pointer to
+ 115:.//FWLIB/src/stm32f4xx_sdio.c ****        SDIO_DataInitTypeDef) according to the selected data type to be received.
+ 116:.//FWLIB/src/stm32f4xx_sdio.c ****        The parameters that should be filled are:
+ 117:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Data TimeOut
+ 118:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Data Length
+ 119:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Data Block size
+ 120:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Data Transfer direction:  should be to card (To CARD)
+ 121:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) Data Transfer mode
+ 122:.//FWLIB/src/stm32f4xx_sdio.c ****        (++) DPSM Status (Enable or Disable)
+ 123:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 124:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) Configure the SDIO resources to send the data to the card according to 
+ 125:.//FWLIB/src/stm32f4xx_sdio.c ****        selected transfer mode (Refer to Step 8, 9 and 10).
+ 126:.//FWLIB/src/stm32f4xx_sdio.c ****                      
+ 127:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) Send the selected Write command (refer to step 11).
+ 128:.//FWLIB/src/stm32f4xx_sdio.c ****                     
+ 129:.//FWLIB/src/stm32f4xx_sdio.c ****    (#) Use the SDIO flags/interrupts to check the transfer status.
+ 130:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 131:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 132:.//FWLIB/src/stm32f4xx_sdio.c **** @endverbatim
+ 133:.//FWLIB/src/stm32f4xx_sdio.c ****   *
+ 134:.//FWLIB/src/stm32f4xx_sdio.c ****   *
+ 135:.//FWLIB/src/stm32f4xx_sdio.c ****   ******************************************************************************
+ 136:.//FWLIB/src/stm32f4xx_sdio.c ****   * @attention
+ 137:.//FWLIB/src/stm32f4xx_sdio.c ****   *
+ 138:.//FWLIB/src/stm32f4xx_sdio.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+ 139:.//FWLIB/src/stm32f4xx_sdio.c ****   *
+ 140:.//FWLIB/src/stm32f4xx_sdio.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+ 141:.//FWLIB/src/stm32f4xx_sdio.c ****   * You may not use this file except in compliance with the License.
+ 142:.//FWLIB/src/stm32f4xx_sdio.c ****   * You may obtain a copy of the License at:
+ 143:.//FWLIB/src/stm32f4xx_sdio.c ****   *
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 4
+
+
+ 144:.//FWLIB/src/stm32f4xx_sdio.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+ 145:.//FWLIB/src/stm32f4xx_sdio.c ****   *
+ 146:.//FWLIB/src/stm32f4xx_sdio.c ****   * Unless required by applicable law or agreed to in writing, software 
+ 147:.//FWLIB/src/stm32f4xx_sdio.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+ 148:.//FWLIB/src/stm32f4xx_sdio.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ 149:.//FWLIB/src/stm32f4xx_sdio.c ****   * See the License for the specific language governing permissions and
+ 150:.//FWLIB/src/stm32f4xx_sdio.c ****   * limitations under the License.
+ 151:.//FWLIB/src/stm32f4xx_sdio.c ****   *
+ 152:.//FWLIB/src/stm32f4xx_sdio.c ****   ******************************************************************************
+ 153:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 154:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 155:.//FWLIB/src/stm32f4xx_sdio.c **** /* Includes ------------------------------------------------------------------*/
+ 156:.//FWLIB/src/stm32f4xx_sdio.c **** #include "stm32f4xx_sdio.h"
+ 157:.//FWLIB/src/stm32f4xx_sdio.c **** #include "stm32f4xx_rcc.h"
+ 158:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 159:.//FWLIB/src/stm32f4xx_sdio.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+ 160:.//FWLIB/src/stm32f4xx_sdio.c ****   * @{
+ 161:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 162:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 163:.//FWLIB/src/stm32f4xx_sdio.c **** /** @defgroup SDIO 
+ 164:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief SDIO driver modules
+ 165:.//FWLIB/src/stm32f4xx_sdio.c ****   * @{
+ 166:.//FWLIB/src/stm32f4xx_sdio.c ****   */ 
+ 167:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 168:.//FWLIB/src/stm32f4xx_sdio.c **** /* Private typedef -----------------------------------------------------------*/
+ 169:.//FWLIB/src/stm32f4xx_sdio.c **** /* Private define ------------------------------------------------------------*/
+ 170:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 171:.//FWLIB/src/stm32f4xx_sdio.c **** /* ------------ SDIO registers bit address in the alias region ----------- */
+ 172:.//FWLIB/src/stm32f4xx_sdio.c **** #define SDIO_OFFSET                (SDIO_BASE - PERIPH_BASE)
+ 173:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 174:.//FWLIB/src/stm32f4xx_sdio.c **** /* --- CLKCR Register ---*/
+ 175:.//FWLIB/src/stm32f4xx_sdio.c **** /* Alias word address of CLKEN bit */
+ 176:.//FWLIB/src/stm32f4xx_sdio.c **** #define CLKCR_OFFSET              (SDIO_OFFSET + 0x04)
+ 177:.//FWLIB/src/stm32f4xx_sdio.c **** #define CLKEN_BitNumber           0x08
+ 178:.//FWLIB/src/stm32f4xx_sdio.c **** #define CLKCR_CLKEN_BB            (PERIPH_BB_BASE + (CLKCR_OFFSET * 32) + (CLKEN_BitNumber * 4))
+ 179:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 180:.//FWLIB/src/stm32f4xx_sdio.c **** /* --- CMD Register ---*/
+ 181:.//FWLIB/src/stm32f4xx_sdio.c **** /* Alias word address of SDIOSUSPEND bit */
+ 182:.//FWLIB/src/stm32f4xx_sdio.c **** #define CMD_OFFSET                (SDIO_OFFSET + 0x0C)
+ 183:.//FWLIB/src/stm32f4xx_sdio.c **** #define SDIOSUSPEND_BitNumber     0x0B
+ 184:.//FWLIB/src/stm32f4xx_sdio.c **** #define CMD_SDIOSUSPEND_BB        (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (SDIOSUSPEND_BitNumber * 4)
+ 185:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 186:.//FWLIB/src/stm32f4xx_sdio.c **** /* Alias word address of ENCMDCOMPL bit */
+ 187:.//FWLIB/src/stm32f4xx_sdio.c **** #define ENCMDCOMPL_BitNumber      0x0C
+ 188:.//FWLIB/src/stm32f4xx_sdio.c **** #define CMD_ENCMDCOMPL_BB         (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (ENCMDCOMPL_BitNumber * 4))
+ 189:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 190:.//FWLIB/src/stm32f4xx_sdio.c **** /* Alias word address of NIEN bit */
+ 191:.//FWLIB/src/stm32f4xx_sdio.c **** #define NIEN_BitNumber            0x0D
+ 192:.//FWLIB/src/stm32f4xx_sdio.c **** #define CMD_NIEN_BB               (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (NIEN_BitNumber * 4))
+ 193:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 194:.//FWLIB/src/stm32f4xx_sdio.c **** /* Alias word address of ATACMD bit */
+ 195:.//FWLIB/src/stm32f4xx_sdio.c **** #define ATACMD_BitNumber          0x0E
+ 196:.//FWLIB/src/stm32f4xx_sdio.c **** #define CMD_ATACMD_BB             (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (ATACMD_BitNumber * 4))
+ 197:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 198:.//FWLIB/src/stm32f4xx_sdio.c **** /* --- DCTRL Register ---*/
+ 199:.//FWLIB/src/stm32f4xx_sdio.c **** /* Alias word address of DMAEN bit */
+ 200:.//FWLIB/src/stm32f4xx_sdio.c **** #define DCTRL_OFFSET              (SDIO_OFFSET + 0x2C)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 5
+
+
+ 201:.//FWLIB/src/stm32f4xx_sdio.c **** #define DMAEN_BitNumber           0x03
+ 202:.//FWLIB/src/stm32f4xx_sdio.c **** #define DCTRL_DMAEN_BB            (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (DMAEN_BitNumber * 4))
+ 203:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 204:.//FWLIB/src/stm32f4xx_sdio.c **** /* Alias word address of RWSTART bit */
+ 205:.//FWLIB/src/stm32f4xx_sdio.c **** #define RWSTART_BitNumber         0x08
+ 206:.//FWLIB/src/stm32f4xx_sdio.c **** #define DCTRL_RWSTART_BB          (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (RWSTART_BitNumber * 4))
+ 207:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 208:.//FWLIB/src/stm32f4xx_sdio.c **** /* Alias word address of RWSTOP bit */
+ 209:.//FWLIB/src/stm32f4xx_sdio.c **** #define RWSTOP_BitNumber          0x09
+ 210:.//FWLIB/src/stm32f4xx_sdio.c **** #define DCTRL_RWSTOP_BB           (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (RWSTOP_BitNumber * 4))
+ 211:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 212:.//FWLIB/src/stm32f4xx_sdio.c **** /* Alias word address of RWMOD bit */
+ 213:.//FWLIB/src/stm32f4xx_sdio.c **** #define RWMOD_BitNumber           0x0A
+ 214:.//FWLIB/src/stm32f4xx_sdio.c **** #define DCTRL_RWMOD_BB            (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (RWMOD_BitNumber * 4))
+ 215:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 216:.//FWLIB/src/stm32f4xx_sdio.c **** /* Alias word address of SDIOEN bit */
+ 217:.//FWLIB/src/stm32f4xx_sdio.c **** #define SDIOEN_BitNumber          0x0B
+ 218:.//FWLIB/src/stm32f4xx_sdio.c **** #define DCTRL_SDIOEN_BB           (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (SDIOEN_BitNumber * 4))
+ 219:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 220:.//FWLIB/src/stm32f4xx_sdio.c **** /* ---------------------- SDIO registers bit mask ------------------------ */
+ 221:.//FWLIB/src/stm32f4xx_sdio.c **** /* --- CLKCR Register ---*/
+ 222:.//FWLIB/src/stm32f4xx_sdio.c **** /* CLKCR register clear mask */
+ 223:.//FWLIB/src/stm32f4xx_sdio.c **** #define CLKCR_CLEAR_MASK         ((uint32_t)0xFFFF8100) 
+ 224:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 225:.//FWLIB/src/stm32f4xx_sdio.c **** /* --- PWRCTRL Register ---*/
+ 226:.//FWLIB/src/stm32f4xx_sdio.c **** /* SDIO PWRCTRL Mask */
+ 227:.//FWLIB/src/stm32f4xx_sdio.c **** #define PWR_PWRCTRL_MASK         ((uint32_t)0xFFFFFFFC)
+ 228:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 229:.//FWLIB/src/stm32f4xx_sdio.c **** /* --- DCTRL Register ---*/
+ 230:.//FWLIB/src/stm32f4xx_sdio.c **** /* SDIO DCTRL Clear Mask */
+ 231:.//FWLIB/src/stm32f4xx_sdio.c **** #define DCTRL_CLEAR_MASK         ((uint32_t)0xFFFFFF08)
+ 232:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 233:.//FWLIB/src/stm32f4xx_sdio.c **** /* --- CMD Register ---*/
+ 234:.//FWLIB/src/stm32f4xx_sdio.c **** /* CMD Register clear mask */
+ 235:.//FWLIB/src/stm32f4xx_sdio.c **** #define CMD_CLEAR_MASK           ((uint32_t)0xFFFFF800)
+ 236:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 237:.//FWLIB/src/stm32f4xx_sdio.c **** /* SDIO RESP Registers Address */
+ 238:.//FWLIB/src/stm32f4xx_sdio.c **** #define SDIO_RESP_ADDR           ((uint32_t)(SDIO_BASE + 0x14))
+ 239:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 240:.//FWLIB/src/stm32f4xx_sdio.c **** /* Private macro -------------------------------------------------------------*/
+ 241:.//FWLIB/src/stm32f4xx_sdio.c **** /* Private variables ---------------------------------------------------------*/
+ 242:.//FWLIB/src/stm32f4xx_sdio.c **** /* Private function prototypes -----------------------------------------------*/
+ 243:.//FWLIB/src/stm32f4xx_sdio.c **** /* Private functions ---------------------------------------------------------*/
+ 244:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 245:.//FWLIB/src/stm32f4xx_sdio.c **** /** @defgroup SDIO_Private_Functions
+ 246:.//FWLIB/src/stm32f4xx_sdio.c ****   * @{
+ 247:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 248:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 249:.//FWLIB/src/stm32f4xx_sdio.c **** /** @defgroup SDIO_Group1 Initialization and Configuration functions
+ 250:.//FWLIB/src/stm32f4xx_sdio.c ****  *  @brief   Initialization and Configuration functions 
+ 251:.//FWLIB/src/stm32f4xx_sdio.c ****  *
+ 252:.//FWLIB/src/stm32f4xx_sdio.c **** @verbatim   
+ 253:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================
+ 254:.//FWLIB/src/stm32f4xx_sdio.c ****               ##### Initialization and Configuration functions #####
+ 255:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================
+ 256:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 257:.//FWLIB/src/stm32f4xx_sdio.c **** @endverbatim
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 6
+
+
+ 258:.//FWLIB/src/stm32f4xx_sdio.c ****   * @{
+ 259:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 260:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 261:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 262:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Deinitializes the SDIO peripheral registers to their default reset values.
+ 263:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  None
+ 264:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 265:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 266:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_DeInit(void)
+ 267:.//FWLIB/src/stm32f4xx_sdio.c **** {
+  30              		.loc 1 267 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+ 268:.//FWLIB/src/stm32f4xx_sdio.c ****   RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDIO, ENABLE);
+  39              		.loc 1 268 0
+  40 0002 0121     		movs	r1, #1
+  41 0004 4FF40060 		mov	r0, #2048
+  42 0008 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  43              	.LVL0:
+ 269:.//FWLIB/src/stm32f4xx_sdio.c ****   RCC_APB2PeriphResetCmd(RCC_APB2Periph_SDIO, DISABLE);
+  44              		.loc 1 269 0
+  45 000c 0021     		movs	r1, #0
+  46 000e 4FF40060 		mov	r0, #2048
+  47 0012 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  48              	.LVL1:
+  49 0016 08BD     		pop	{r3, pc}
+  50              		.cfi_endproc
+  51              	.LFE112:
+  53              		.section	.text.SDIO_Init,"ax",%progbits
+  54              		.align	2
+  55              		.global	SDIO_Init
+  56              		.thumb
+  57              		.thumb_func
+  59              	SDIO_Init:
+  60              	.LFB113:
+ 270:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 271:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 272:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 273:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Initializes the SDIO peripheral according to the specified 
+ 274:.//FWLIB/src/stm32f4xx_sdio.c ****   *         parameters in the SDIO_InitStruct.
+ 275:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_InitStruct : pointer to a SDIO_InitTypeDef structure 
+ 276:.//FWLIB/src/stm32f4xx_sdio.c ****   *         that contains the configuration information for the SDIO peripheral.
+ 277:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 278:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 279:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_Init(SDIO_InitTypeDef* SDIO_InitStruct)
+ 280:.//FWLIB/src/stm32f4xx_sdio.c **** {
+  61              		.loc 1 280 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 7
+
+
+  66              	.LVL2:
+  67 0000 10B4     		push	{r4}
+  68              	.LCFI1:
+  69              		.cfi_def_cfa_offset 4
+  70              		.cfi_offset 4, -4
+  71              	.LVL3:
+ 281:.//FWLIB/src/stm32f4xx_sdio.c ****   uint32_t tmpreg = 0;
+ 282:.//FWLIB/src/stm32f4xx_sdio.c ****     
+ 283:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 284:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_CLOCK_EDGE(SDIO_InitStruct->SDIO_ClockEdge));
+ 285:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_CLOCK_BYPASS(SDIO_InitStruct->SDIO_ClockBypass));
+ 286:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_CLOCK_POWER_SAVE(SDIO_InitStruct->SDIO_ClockPowerSave));
+ 287:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_BUS_WIDE(SDIO_InitStruct->SDIO_BusWide));
+ 288:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_HARDWARE_FLOW_CONTROL(SDIO_InitStruct->SDIO_HardwareFlowControl)); 
+ 289:.//FWLIB/src/stm32f4xx_sdio.c ****    
+ 290:.//FWLIB/src/stm32f4xx_sdio.c **** /*---------------------------- SDIO CLKCR Configuration ------------------------*/  
+ 291:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Get the SDIO CLKCR value */
+ 292:.//FWLIB/src/stm32f4xx_sdio.c ****   tmpreg = SDIO->CLKCR;
+  72              		.loc 1 292 0
+  73 0002 0B4C     		ldr	r4, .L5
+  74 0004 6368     		ldr	r3, [r4, #4]
+  75              	.LVL4:
+ 293:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 294:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Clear CLKDIV, PWRSAV, BYPASS, WIDBUS, NEGEDGE, HWFC_EN bits */
+ 295:.//FWLIB/src/stm32f4xx_sdio.c ****   tmpreg &= CLKCR_CLEAR_MASK;
+  76              		.loc 1 295 0
+  77 0006 23F4FD41 		bic	r1, r3, #32384
+  78 000a 21F07F01 		bic	r1, r1, #127
+  79              	.LVL5:
+ 296:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 297:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set CLKDIV bits according to SDIO_ClockDiv value */
+ 298:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set PWRSAV bit according to SDIO_ClockPowerSave value */
+ 299:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set BYPASS bit according to SDIO_ClockBypass value */
+ 300:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set WIDBUS bits according to SDIO_BusWide value */
+ 301:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set NEGEDGE bits according to SDIO_ClockEdge value */
+ 302:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set HWFC_EN bits according to SDIO_HardwareFlowControl value */
+ 303:.//FWLIB/src/stm32f4xx_sdio.c ****   tmpreg |= (SDIO_InitStruct->SDIO_ClockDiv  | SDIO_InitStruct->SDIO_ClockPowerSave |
+  80              		.loc 1 303 0
+  81 000e 027D     		ldrb	r2, [r0, #20]	@ zero_extendqisi2
+  82 0010 8368     		ldr	r3, [r0, #8]
+  83 0012 1A43     		orrs	r2, r2, r3
+ 304:.//FWLIB/src/stm32f4xx_sdio.c ****              SDIO_InitStruct->SDIO_ClockBypass | SDIO_InitStruct->SDIO_BusWide |
+  84              		.loc 1 304 0
+  85 0014 4368     		ldr	r3, [r0, #4]
+ 303:.//FWLIB/src/stm32f4xx_sdio.c ****              SDIO_InitStruct->SDIO_ClockBypass | SDIO_InitStruct->SDIO_BusWide |
+  86              		.loc 1 303 0
+  87 0016 1A43     		orrs	r2, r2, r3
+  88              		.loc 1 304 0
+  89 0018 C368     		ldr	r3, [r0, #12]
+  90 001a 1A43     		orrs	r2, r2, r3
+ 305:.//FWLIB/src/stm32f4xx_sdio.c ****              SDIO_InitStruct->SDIO_ClockEdge | SDIO_InitStruct->SDIO_HardwareFlowControl); 
+  91              		.loc 1 305 0
+  92 001c 0368     		ldr	r3, [r0]
+ 304:.//FWLIB/src/stm32f4xx_sdio.c ****              SDIO_InitStruct->SDIO_ClockBypass | SDIO_InitStruct->SDIO_BusWide |
+  93              		.loc 1 304 0
+  94 001e 1343     		orrs	r3, r3, r2
+  95              		.loc 1 305 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 8
+
+
+  96 0020 0269     		ldr	r2, [r0, #16]
+  97 0022 1343     		orrs	r3, r3, r2
+ 303:.//FWLIB/src/stm32f4xx_sdio.c ****              SDIO_InitStruct->SDIO_ClockBypass | SDIO_InitStruct->SDIO_BusWide |
+  98              		.loc 1 303 0
+  99 0024 0B43     		orrs	r3, r3, r1
+ 100              	.LVL6:
+ 306:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 307:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Write to SDIO CLKCR */
+ 308:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO->CLKCR = tmpreg;
+ 101              		.loc 1 308 0
+ 102 0026 6360     		str	r3, [r4, #4]
+ 309:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 103              		.loc 1 309 0
+ 104 0028 5DF8044B 		ldr	r4, [sp], #4
+ 105              	.LCFI2:
+ 106              		.cfi_restore 4
+ 107              		.cfi_def_cfa_offset 0
+ 108 002c 7047     		bx	lr
+ 109              	.L6:
+ 110 002e 00BF     		.align	2
+ 111              	.L5:
+ 112 0030 002C0140 		.word	1073818624
+ 113              		.cfi_endproc
+ 114              	.LFE113:
+ 116              		.section	.text.SDIO_StructInit,"ax",%progbits
+ 117              		.align	2
+ 118              		.global	SDIO_StructInit
+ 119              		.thumb
+ 120              		.thumb_func
+ 122              	SDIO_StructInit:
+ 123              	.LFB114:
+ 310:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 311:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 312:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Fills each SDIO_InitStruct member with its default value.
+ 313:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_InitStruct: pointer to an SDIO_InitTypeDef structure which 
+ 314:.//FWLIB/src/stm32f4xx_sdio.c ****   *         will be initialized.
+ 315:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 316:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 317:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_StructInit(SDIO_InitTypeDef* SDIO_InitStruct)
+ 318:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ 124              		.loc 1 318 0
+ 125              		.cfi_startproc
+ 126              		@ args = 0, pretend = 0, frame = 0
+ 127              		@ frame_needed = 0, uses_anonymous_args = 0
+ 128              		@ link register save eliminated.
+ 129              	.LVL7:
+ 319:.//FWLIB/src/stm32f4xx_sdio.c ****   /* SDIO_InitStruct members default value */
+ 320:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_InitStruct->SDIO_ClockDiv = 0x00;
+ 130              		.loc 1 320 0
+ 131 0000 0023     		movs	r3, #0
+ 132 0002 0375     		strb	r3, [r0, #20]
+ 321:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_InitStruct->SDIO_ClockEdge = SDIO_ClockEdge_Rising;
+ 133              		.loc 1 321 0
+ 134 0004 0360     		str	r3, [r0]
+ 322:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_InitStruct->SDIO_ClockBypass = SDIO_ClockBypass_Disable;
+ 135              		.loc 1 322 0
+ 136 0006 4360     		str	r3, [r0, #4]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 9
+
+
+ 323:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_InitStruct->SDIO_ClockPowerSave = SDIO_ClockPowerSave_Disable;
+ 137              		.loc 1 323 0
+ 138 0008 8360     		str	r3, [r0, #8]
+ 324:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_InitStruct->SDIO_BusWide = SDIO_BusWide_1b;
+ 139              		.loc 1 324 0
+ 140 000a C360     		str	r3, [r0, #12]
+ 325:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_InitStruct->SDIO_HardwareFlowControl = SDIO_HardwareFlowControl_Disable;
+ 141              		.loc 1 325 0
+ 142 000c 0361     		str	r3, [r0, #16]
+ 143 000e 7047     		bx	lr
+ 144              		.cfi_endproc
+ 145              	.LFE114:
+ 147              		.section	.text.SDIO_ClockCmd,"ax",%progbits
+ 148              		.align	2
+ 149              		.global	SDIO_ClockCmd
+ 150              		.thumb
+ 151              		.thumb_func
+ 153              	SDIO_ClockCmd:
+ 154              	.LFB115:
+ 326:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 327:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 328:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 329:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Enables or disables the SDIO Clock.
+ 330:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  NewState: new state of the SDIO Clock. 
+ 331:.//FWLIB/src/stm32f4xx_sdio.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 332:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 333:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 334:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_ClockCmd(FunctionalState NewState)
+ 335:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ 155              		.loc 1 335 0
+ 156              		.cfi_startproc
+ 157              		@ args = 0, pretend = 0, frame = 0
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 159              		@ link register save eliminated.
+ 160              	.LVL8:
+ 336:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 337:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 338:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 339:.//FWLIB/src/stm32f4xx_sdio.c ****   *(__IO uint32_t *) CLKCR_CLKEN_BB = (uint32_t)NewState;
+ 161              		.loc 1 339 0
+ 162 0000 014B     		ldr	r3, .L9
+ 163 0002 1860     		str	r0, [r3]
+ 164 0004 7047     		bx	lr
+ 165              	.L10:
+ 166 0006 00BF     		.align	2
+ 167              	.L9:
+ 168 0008 A0802542 		.word	1109754016
+ 169              		.cfi_endproc
+ 170              	.LFE115:
+ 172              		.section	.text.SDIO_SetPowerState,"ax",%progbits
+ 173              		.align	2
+ 174              		.global	SDIO_SetPowerState
+ 175              		.thumb
+ 176              		.thumb_func
+ 178              	SDIO_SetPowerState:
+ 179              	.LFB116:
+ 340:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 10
+
+
+ 341:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 342:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 343:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Sets the power status of the controller.
+ 344:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_PowerState: new state of the Power state. 
+ 345:.//FWLIB/src/stm32f4xx_sdio.c ****   *          This parameter can be one of the following values:
+ 346:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_PowerState_OFF: SDIO Power OFF
+ 347:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_PowerState_ON: SDIO Power ON
+ 348:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 349:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 350:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_SetPowerState(uint32_t SDIO_PowerState)
+ 351:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ 180              		.loc 1 351 0
+ 181              		.cfi_startproc
+ 182              		@ args = 0, pretend = 0, frame = 0
+ 183              		@ frame_needed = 0, uses_anonymous_args = 0
+ 184              		@ link register save eliminated.
+ 185              	.LVL9:
+ 352:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 353:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_POWER_STATE(SDIO_PowerState));
+ 354:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 355:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO->POWER = SDIO_PowerState;
+ 186              		.loc 1 355 0
+ 187 0000 014B     		ldr	r3, .L12
+ 188 0002 1860     		str	r0, [r3]
+ 189 0004 7047     		bx	lr
+ 190              	.L13:
+ 191 0006 00BF     		.align	2
+ 192              	.L12:
+ 193 0008 002C0140 		.word	1073818624
+ 194              		.cfi_endproc
+ 195              	.LFE116:
+ 197              		.section	.text.SDIO_GetPowerState,"ax",%progbits
+ 198              		.align	2
+ 199              		.global	SDIO_GetPowerState
+ 200              		.thumb
+ 201              		.thumb_func
+ 203              	SDIO_GetPowerState:
+ 204              	.LFB117:
+ 356:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 357:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 358:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 359:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Gets the power status of the controller.
+ 360:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  None
+ 361:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval Power status of the controller. The returned value can be one of the 
+ 362:.//FWLIB/src/stm32f4xx_sdio.c ****   *         following values:
+ 363:.//FWLIB/src/stm32f4xx_sdio.c ****   *            - 0x00: Power OFF
+ 364:.//FWLIB/src/stm32f4xx_sdio.c ****   *            - 0x02: Power UP
+ 365:.//FWLIB/src/stm32f4xx_sdio.c ****   *            - 0x03: Power ON 
+ 366:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 367:.//FWLIB/src/stm32f4xx_sdio.c **** uint32_t SDIO_GetPowerState(void)
+ 368:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ 205              		.loc 1 368 0
+ 206              		.cfi_startproc
+ 207              		@ args = 0, pretend = 0, frame = 0
+ 208              		@ frame_needed = 0, uses_anonymous_args = 0
+ 209              		@ link register save eliminated.
+ 369:.//FWLIB/src/stm32f4xx_sdio.c ****   return (SDIO->POWER & (~PWR_PWRCTRL_MASK));
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 11
+
+
+ 210              		.loc 1 369 0
+ 211 0000 024B     		ldr	r3, .L15
+ 212 0002 1868     		ldr	r0, [r3]
+ 370:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 213              		.loc 1 370 0
+ 214 0004 00F00300 		and	r0, r0, #3
+ 215 0008 7047     		bx	lr
+ 216              	.L16:
+ 217 000a 00BF     		.align	2
+ 218              	.L15:
+ 219 000c 002C0140 		.word	1073818624
+ 220              		.cfi_endproc
+ 221              	.LFE117:
+ 223              		.section	.text.SDIO_SendCommand,"ax",%progbits
+ 224              		.align	2
+ 225              		.global	SDIO_SendCommand
+ 226              		.thumb
+ 227              		.thumb_func
+ 229              	SDIO_SendCommand:
+ 230              	.LFB118:
+ 371:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 372:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 373:.//FWLIB/src/stm32f4xx_sdio.c ****   * @}
+ 374:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 375:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 376:.//FWLIB/src/stm32f4xx_sdio.c **** /** @defgroup SDIO_Group2 Command path state machine (CPSM) management functions
+ 377:.//FWLIB/src/stm32f4xx_sdio.c ****  *  @brief   Command path state machine (CPSM) management functions 
+ 378:.//FWLIB/src/stm32f4xx_sdio.c ****  *
+ 379:.//FWLIB/src/stm32f4xx_sdio.c **** @verbatim   
+ 380:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================
+ 381:.//FWLIB/src/stm32f4xx_sdio.c ****         ##### Command path state machine (CPSM) management functions #####
+ 382:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================  
+ 383:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 384:.//FWLIB/src/stm32f4xx_sdio.c ****   This section provide functions allowing to program and read the Command path 
+ 385:.//FWLIB/src/stm32f4xx_sdio.c ****   state machine (CPSM).
+ 386:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 387:.//FWLIB/src/stm32f4xx_sdio.c **** @endverbatim
+ 388:.//FWLIB/src/stm32f4xx_sdio.c ****   * @{
+ 389:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 390:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 391:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 392:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Initializes the SDIO Command according to the specified 
+ 393:.//FWLIB/src/stm32f4xx_sdio.c ****   *         parameters in the SDIO_CmdInitStruct and send the command.
+ 394:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_CmdInitStruct : pointer to a SDIO_CmdInitTypeDef 
+ 395:.//FWLIB/src/stm32f4xx_sdio.c ****   *         structure that contains the configuration information for the SDIO 
+ 396:.//FWLIB/src/stm32f4xx_sdio.c ****   *         command.
+ 397:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 398:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 399:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_SendCommand(SDIO_CmdInitTypeDef *SDIO_CmdInitStruct)
+ 400:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ 231              		.loc 1 400 0
+ 232              		.cfi_startproc
+ 233              		@ args = 0, pretend = 0, frame = 0
+ 234              		@ frame_needed = 0, uses_anonymous_args = 0
+ 235              		@ link register save eliminated.
+ 236              	.LVL10:
+ 237 0000 10B4     		push	{r4}
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 12
+
+
+ 238              	.LCFI3:
+ 239              		.cfi_def_cfa_offset 4
+ 240              		.cfi_offset 4, -4
+ 241              	.LVL11:
+ 401:.//FWLIB/src/stm32f4xx_sdio.c ****   uint32_t tmpreg = 0;
+ 402:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 403:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 404:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_CMD_INDEX(SDIO_CmdInitStruct->SDIO_CmdIndex));
+ 405:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_RESPONSE(SDIO_CmdInitStruct->SDIO_Response));
+ 406:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_WAIT(SDIO_CmdInitStruct->SDIO_Wait));
+ 407:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_CPSM(SDIO_CmdInitStruct->SDIO_CPSM));
+ 408:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 409:.//FWLIB/src/stm32f4xx_sdio.c **** /*---------------------------- SDIO ARG Configuration ------------------------*/
+ 410:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set the SDIO Argument value */
+ 411:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO->ARG = SDIO_CmdInitStruct->SDIO_Argument;
+ 242              		.loc 1 411 0
+ 243 0002 0368     		ldr	r3, [r0]
+ 244 0004 094C     		ldr	r4, .L19
+ 245 0006 A360     		str	r3, [r4, #8]
+ 412:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 413:.//FWLIB/src/stm32f4xx_sdio.c **** /*---------------------------- SDIO CMD Configuration ------------------------*/  
+ 414:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Get the SDIO CMD value */
+ 415:.//FWLIB/src/stm32f4xx_sdio.c ****   tmpreg = SDIO->CMD;
+ 246              		.loc 1 415 0
+ 247 0008 E368     		ldr	r3, [r4, #12]
+ 248              	.LVL12:
+ 416:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Clear CMDINDEX, WAITRESP, WAITINT, WAITPEND, CPSMEN bits */
+ 417:.//FWLIB/src/stm32f4xx_sdio.c ****   tmpreg &= CMD_CLEAR_MASK;
+ 249              		.loc 1 417 0
+ 250 000a 23F4FF61 		bic	r1, r3, #2040
+ 251 000e 21F00701 		bic	r1, r1, #7
+ 252              	.LVL13:
+ 418:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set CMDINDEX bits according to SDIO_CmdIndex value */
+ 419:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set WAITRESP bits according to SDIO_Response value */
+ 420:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set WAITINT and WAITPEND bits according to SDIO_Wait value */
+ 421:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set CPSMEN bits according to SDIO_CPSM value */
+ 422:.//FWLIB/src/stm32f4xx_sdio.c ****   tmpreg |= (uint32_t)SDIO_CmdInitStruct->SDIO_CmdIndex | SDIO_CmdInitStruct->SDIO_Response
+ 253              		.loc 1 422 0
+ 254 0012 4268     		ldr	r2, [r0, #4]
+ 255 0014 8368     		ldr	r3, [r0, #8]
+ 256 0016 1A43     		orrs	r2, r2, r3
+ 423:.//FWLIB/src/stm32f4xx_sdio.c ****            | SDIO_CmdInitStruct->SDIO_Wait | SDIO_CmdInitStruct->SDIO_CPSM;
+ 257              		.loc 1 423 0
+ 258 0018 C368     		ldr	r3, [r0, #12]
+ 259 001a 1343     		orrs	r3, r3, r2
+ 260 001c 0269     		ldr	r2, [r0, #16]
+ 261 001e 1343     		orrs	r3, r3, r2
+ 422:.//FWLIB/src/stm32f4xx_sdio.c ****            | SDIO_CmdInitStruct->SDIO_Wait | SDIO_CmdInitStruct->SDIO_CPSM;
+ 262              		.loc 1 422 0
+ 263 0020 0B43     		orrs	r3, r3, r1
+ 264              	.LVL14:
+ 424:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 425:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Write to SDIO CMD */
+ 426:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO->CMD = tmpreg;
+ 265              		.loc 1 426 0
+ 266 0022 E360     		str	r3, [r4, #12]
+ 427:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 13
+
+
+ 267              		.loc 1 427 0
+ 268 0024 5DF8044B 		ldr	r4, [sp], #4
+ 269              	.LCFI4:
+ 270              		.cfi_restore 4
+ 271              		.cfi_def_cfa_offset 0
+ 272 0028 7047     		bx	lr
+ 273              	.L20:
+ 274 002a 00BF     		.align	2
+ 275              	.L19:
+ 276 002c 002C0140 		.word	1073818624
+ 277              		.cfi_endproc
+ 278              	.LFE118:
+ 280              		.section	.text.SDIO_CmdStructInit,"ax",%progbits
+ 281              		.align	2
+ 282              		.global	SDIO_CmdStructInit
+ 283              		.thumb
+ 284              		.thumb_func
+ 286              	SDIO_CmdStructInit:
+ 287              	.LFB119:
+ 428:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 429:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 430:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Fills each SDIO_CmdInitStruct member with its default value.
+ 431:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_CmdInitStruct: pointer to an SDIO_CmdInitTypeDef 
+ 432:.//FWLIB/src/stm32f4xx_sdio.c ****   *         structure which will be initialized.
+ 433:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 434:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 435:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_CmdStructInit(SDIO_CmdInitTypeDef* SDIO_CmdInitStruct)
+ 436:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ 288              		.loc 1 436 0
+ 289              		.cfi_startproc
+ 290              		@ args = 0, pretend = 0, frame = 0
+ 291              		@ frame_needed = 0, uses_anonymous_args = 0
+ 292              		@ link register save eliminated.
+ 293              	.LVL15:
+ 437:.//FWLIB/src/stm32f4xx_sdio.c ****   /* SDIO_CmdInitStruct members default value */
+ 438:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_CmdInitStruct->SDIO_Argument = 0x00;
+ 294              		.loc 1 438 0
+ 295 0000 0023     		movs	r3, #0
+ 296 0002 0360     		str	r3, [r0]
+ 439:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_CmdInitStruct->SDIO_CmdIndex = 0x00;
+ 297              		.loc 1 439 0
+ 298 0004 4360     		str	r3, [r0, #4]
+ 440:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_CmdInitStruct->SDIO_Response = SDIO_Response_No;
+ 299              		.loc 1 440 0
+ 300 0006 8360     		str	r3, [r0, #8]
+ 441:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_CmdInitStruct->SDIO_Wait = SDIO_Wait_No;
+ 301              		.loc 1 441 0
+ 302 0008 C360     		str	r3, [r0, #12]
+ 442:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_CmdInitStruct->SDIO_CPSM = SDIO_CPSM_Disable;
+ 303              		.loc 1 442 0
+ 304 000a 0361     		str	r3, [r0, #16]
+ 305 000c 7047     		bx	lr
+ 306              		.cfi_endproc
+ 307              	.LFE119:
+ 309 000e 00BF     		.section	.text.SDIO_GetCommandResponse,"ax",%progbits
+ 310              		.align	2
+ 311              		.global	SDIO_GetCommandResponse
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 14
+
+
+ 312              		.thumb
+ 313              		.thumb_func
+ 315              	SDIO_GetCommandResponse:
+ 316              	.LFB120:
+ 443:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 444:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 445:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 446:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Returns command index of last command for which response received.
+ 447:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  None
+ 448:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval Returns the command index of the last command response received.
+ 449:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 450:.//FWLIB/src/stm32f4xx_sdio.c **** uint8_t SDIO_GetCommandResponse(void)
+ 451:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ 317              		.loc 1 451 0
+ 318              		.cfi_startproc
+ 319              		@ args = 0, pretend = 0, frame = 0
+ 320              		@ frame_needed = 0, uses_anonymous_args = 0
+ 321              		@ link register save eliminated.
+ 452:.//FWLIB/src/stm32f4xx_sdio.c ****   return (uint8_t)(SDIO->RESPCMD);
+ 322              		.loc 1 452 0
+ 323 0000 014B     		ldr	r3, .L23
+ 324 0002 1869     		ldr	r0, [r3, #16]
+ 453:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 325              		.loc 1 453 0
+ 326 0004 C0B2     		uxtb	r0, r0
+ 327 0006 7047     		bx	lr
+ 328              	.L24:
+ 329              		.align	2
+ 330              	.L23:
+ 331 0008 002C0140 		.word	1073818624
+ 332              		.cfi_endproc
+ 333              	.LFE120:
+ 335              		.section	.text.SDIO_GetResponse,"ax",%progbits
+ 336              		.align	2
+ 337              		.global	SDIO_GetResponse
+ 338              		.thumb
+ 339              		.thumb_func
+ 341              	SDIO_GetResponse:
+ 342              	.LFB121:
+ 454:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 455:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 456:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Returns response received from the card for the last command.
+ 457:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_RESP: Specifies the SDIO response register. 
+ 458:.//FWLIB/src/stm32f4xx_sdio.c ****   *          This parameter can be one of the following values:
+ 459:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_RESP1: Response Register 1
+ 460:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_RESP2: Response Register 2
+ 461:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_RESP3: Response Register 3
+ 462:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_RESP4: Response Register 4
+ 463:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval The Corresponding response register value.
+ 464:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 465:.//FWLIB/src/stm32f4xx_sdio.c **** uint32_t SDIO_GetResponse(uint32_t SDIO_RESP)
+ 466:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ 343              		.loc 1 466 0
+ 344              		.cfi_startproc
+ 345              		@ args = 0, pretend = 0, frame = 8
+ 346              		@ frame_needed = 0, uses_anonymous_args = 0
+ 347              		@ link register save eliminated.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 15
+
+
+ 348              	.LVL16:
+ 349 0000 82B0     		sub	sp, sp, #8
+ 350              	.LCFI5:
+ 351              		.cfi_def_cfa_offset 8
+ 467:.//FWLIB/src/stm32f4xx_sdio.c ****   __IO uint32_t tmp = 0;
+ 352              		.loc 1 467 0
+ 353 0002 0023     		movs	r3, #0
+ 354 0004 0193     		str	r3, [sp, #4]
+ 468:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 469:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 470:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_RESP(SDIO_RESP));
+ 471:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 472:.//FWLIB/src/stm32f4xx_sdio.c ****   tmp = SDIO_RESP_ADDR + SDIO_RESP;
+ 355              		.loc 1 472 0
+ 356 0006 034B     		ldr	r3, .L27
+ 357 0008 0344     		add	r3, r3, r0
+ 358 000a 0193     		str	r3, [sp, #4]
+ 473:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 474:.//FWLIB/src/stm32f4xx_sdio.c ****   return (*(__IO uint32_t *) tmp); 
+ 359              		.loc 1 474 0
+ 360 000c 019B     		ldr	r3, [sp, #4]
+ 361 000e 1868     		ldr	r0, [r3]
+ 362              	.LVL17:
+ 475:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 363              		.loc 1 475 0
+ 364 0010 02B0     		add	sp, sp, #8
+ 365              	.LCFI6:
+ 366              		.cfi_def_cfa_offset 0
+ 367              		@ sp needed
+ 368 0012 7047     		bx	lr
+ 369              	.L28:
+ 370              		.align	2
+ 371              	.L27:
+ 372 0014 142C0140 		.word	1073818644
+ 373              		.cfi_endproc
+ 374              	.LFE121:
+ 376              		.section	.text.SDIO_DataConfig,"ax",%progbits
+ 377              		.align	2
+ 378              		.global	SDIO_DataConfig
+ 379              		.thumb
+ 380              		.thumb_func
+ 382              	SDIO_DataConfig:
+ 383              	.LFB122:
+ 476:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 477:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 478:.//FWLIB/src/stm32f4xx_sdio.c ****   * @}
+ 479:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 480:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 481:.//FWLIB/src/stm32f4xx_sdio.c **** /** @defgroup SDIO_Group3 Data path state machine (DPSM) management functions
+ 482:.//FWLIB/src/stm32f4xx_sdio.c ****  *  @brief   Data path state machine (DPSM) management functions
+ 483:.//FWLIB/src/stm32f4xx_sdio.c ****  *
+ 484:.//FWLIB/src/stm32f4xx_sdio.c **** @verbatim   
+ 485:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================
+ 486:.//FWLIB/src/stm32f4xx_sdio.c ****          ##### Data path state machine (DPSM) management functions #####
+ 487:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================  
+ 488:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 489:.//FWLIB/src/stm32f4xx_sdio.c ****   This section provide functions allowing to program and read the Data path 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 16
+
+
+ 490:.//FWLIB/src/stm32f4xx_sdio.c ****   state machine (DPSM).
+ 491:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 492:.//FWLIB/src/stm32f4xx_sdio.c **** @endverbatim
+ 493:.//FWLIB/src/stm32f4xx_sdio.c ****   * @{
+ 494:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 495:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 496:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 497:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Initializes the SDIO data path according to the specified 
+ 498:.//FWLIB/src/stm32f4xx_sdio.c ****   *         parameters in the SDIO_DataInitStruct.
+ 499:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_DataInitStruct : pointer to a SDIO_DataInitTypeDef structure 
+ 500:.//FWLIB/src/stm32f4xx_sdio.c ****   *         that contains the configuration information for the SDIO command.
+ 501:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 502:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 503:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_DataConfig(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
+ 504:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ 384              		.loc 1 504 0
+ 385              		.cfi_startproc
+ 386              		@ args = 0, pretend = 0, frame = 0
+ 387              		@ frame_needed = 0, uses_anonymous_args = 0
+ 388              		@ link register save eliminated.
+ 389              	.LVL18:
+ 390 0000 10B4     		push	{r4}
+ 391              	.LCFI7:
+ 392              		.cfi_def_cfa_offset 4
+ 393              		.cfi_offset 4, -4
+ 394              	.LVL19:
+ 505:.//FWLIB/src/stm32f4xx_sdio.c ****   uint32_t tmpreg = 0;
+ 506:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 507:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 508:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_DATA_LENGTH(SDIO_DataInitStruct->SDIO_DataLength));
+ 509:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_BLOCK_SIZE(SDIO_DataInitStruct->SDIO_DataBlockSize));
+ 510:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_TRANSFER_DIR(SDIO_DataInitStruct->SDIO_TransferDir));
+ 511:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_TRANSFER_MODE(SDIO_DataInitStruct->SDIO_TransferMode));
+ 512:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_DPSM(SDIO_DataInitStruct->SDIO_DPSM));
+ 513:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 514:.//FWLIB/src/stm32f4xx_sdio.c **** /*---------------------------- SDIO DTIMER Configuration ---------------------*/
+ 515:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set the SDIO Data TimeOut value */
+ 516:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO->DTIMER = SDIO_DataInitStruct->SDIO_DataTimeOut;
+ 395              		.loc 1 516 0
+ 396 0002 0368     		ldr	r3, [r0]
+ 397 0004 0949     		ldr	r1, .L31
+ 398 0006 4B62     		str	r3, [r1, #36]
+ 517:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 518:.//FWLIB/src/stm32f4xx_sdio.c **** /*---------------------------- SDIO DLEN Configuration -----------------------*/
+ 519:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set the SDIO DataLength value */
+ 520:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO->DLEN = SDIO_DataInitStruct->SDIO_DataLength;
+ 399              		.loc 1 520 0
+ 400 0008 4368     		ldr	r3, [r0, #4]
+ 401 000a 8B62     		str	r3, [r1, #40]
+ 521:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 522:.//FWLIB/src/stm32f4xx_sdio.c **** /*---------------------------- SDIO DCTRL Configuration ----------------------*/  
+ 523:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Get the SDIO DCTRL value */
+ 524:.//FWLIB/src/stm32f4xx_sdio.c ****   tmpreg = SDIO->DCTRL;
+ 402              		.loc 1 524 0
+ 403 000c CB6A     		ldr	r3, [r1, #44]
+ 404              	.LVL20:
+ 525:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Clear DEN, DTMODE, DTDIR and DBCKSIZE bits */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 17
+
+
+ 526:.//FWLIB/src/stm32f4xx_sdio.c ****   tmpreg &= DCTRL_CLEAR_MASK;
+ 405              		.loc 1 526 0
+ 406 000e 23F0F704 		bic	r4, r3, #247
+ 407              	.LVL21:
+ 527:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set DEN bit according to SDIO_DPSM value */
+ 528:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set DTMODE bit according to SDIO_TransferMode value */
+ 529:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set DTDIR bit according to SDIO_TransferDir value */
+ 530:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Set DBCKSIZE bits according to SDIO_DataBlockSize value */
+ 531:.//FWLIB/src/stm32f4xx_sdio.c ****   tmpreg |= (uint32_t)SDIO_DataInitStruct->SDIO_DataBlockSize | SDIO_DataInitStruct->SDIO_TransferD
+ 408              		.loc 1 531 0
+ 409 0012 8268     		ldr	r2, [r0, #8]
+ 410 0014 C368     		ldr	r3, [r0, #12]
+ 411 0016 1A43     		orrs	r2, r2, r3
+ 532:.//FWLIB/src/stm32f4xx_sdio.c ****            | SDIO_DataInitStruct->SDIO_TransferMode | SDIO_DataInitStruct->SDIO_DPSM;
+ 412              		.loc 1 532 0
+ 413 0018 0369     		ldr	r3, [r0, #16]
+ 414 001a 1343     		orrs	r3, r3, r2
+ 415 001c 4269     		ldr	r2, [r0, #20]
+ 416 001e 1343     		orrs	r3, r3, r2
+ 531:.//FWLIB/src/stm32f4xx_sdio.c ****            | SDIO_DataInitStruct->SDIO_TransferMode | SDIO_DataInitStruct->SDIO_DPSM;
+ 417              		.loc 1 531 0
+ 418 0020 2343     		orrs	r3, r3, r4
+ 419              	.LVL22:
+ 533:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 534:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Write to SDIO DCTRL */
+ 535:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO->DCTRL = tmpreg;
+ 420              		.loc 1 535 0
+ 421 0022 CB62     		str	r3, [r1, #44]
+ 536:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 422              		.loc 1 536 0
+ 423 0024 5DF8044B 		ldr	r4, [sp], #4
+ 424              	.LCFI8:
+ 425              		.cfi_restore 4
+ 426              		.cfi_def_cfa_offset 0
+ 427 0028 7047     		bx	lr
+ 428              	.L32:
+ 429 002a 00BF     		.align	2
+ 430              	.L31:
+ 431 002c 002C0140 		.word	1073818624
+ 432              		.cfi_endproc
+ 433              	.LFE122:
+ 435              		.section	.text.SDIO_DataStructInit,"ax",%progbits
+ 436              		.align	2
+ 437              		.global	SDIO_DataStructInit
+ 438              		.thumb
+ 439              		.thumb_func
+ 441              	SDIO_DataStructInit:
+ 442              	.LFB123:
+ 537:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 538:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 539:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Fills each SDIO_DataInitStruct member with its default value.
+ 540:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_DataInitStruct: pointer to an SDIO_DataInitTypeDef structure 
+ 541:.//FWLIB/src/stm32f4xx_sdio.c ****   *         which will be initialized.
+ 542:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 543:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 544:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_DataStructInit(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
+ 545:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 18
+
+
+ 443              		.loc 1 545 0
+ 444              		.cfi_startproc
+ 445              		@ args = 0, pretend = 0, frame = 0
+ 446              		@ frame_needed = 0, uses_anonymous_args = 0
+ 447              		@ link register save eliminated.
+ 448              	.LVL23:
+ 546:.//FWLIB/src/stm32f4xx_sdio.c ****   /* SDIO_DataInitStruct members default value */
+ 547:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_DataInitStruct->SDIO_DataTimeOut = 0xFFFFFFFF;
+ 449              		.loc 1 547 0
+ 450 0000 4FF0FF33 		mov	r3, #-1
+ 451 0004 0360     		str	r3, [r0]
+ 548:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_DataInitStruct->SDIO_DataLength = 0x00;
+ 452              		.loc 1 548 0
+ 453 0006 0023     		movs	r3, #0
+ 454 0008 4360     		str	r3, [r0, #4]
+ 549:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_DataInitStruct->SDIO_DataBlockSize = SDIO_DataBlockSize_1b;
+ 455              		.loc 1 549 0
+ 456 000a 8360     		str	r3, [r0, #8]
+ 550:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_DataInitStruct->SDIO_TransferDir = SDIO_TransferDir_ToCard;
+ 457              		.loc 1 550 0
+ 458 000c C360     		str	r3, [r0, #12]
+ 551:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_DataInitStruct->SDIO_TransferMode = SDIO_TransferMode_Block;  
+ 459              		.loc 1 551 0
+ 460 000e 0361     		str	r3, [r0, #16]
+ 552:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO_DataInitStruct->SDIO_DPSM = SDIO_DPSM_Disable;
+ 461              		.loc 1 552 0
+ 462 0010 4361     		str	r3, [r0, #20]
+ 463 0012 7047     		bx	lr
+ 464              		.cfi_endproc
+ 465              	.LFE123:
+ 467              		.section	.text.SDIO_GetDataCounter,"ax",%progbits
+ 468              		.align	2
+ 469              		.global	SDIO_GetDataCounter
+ 470              		.thumb
+ 471              		.thumb_func
+ 473              	SDIO_GetDataCounter:
+ 474              	.LFB124:
+ 553:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 554:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 555:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 556:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Returns number of remaining data bytes to be transferred.
+ 557:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  None
+ 558:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval Number of remaining data bytes to be transferred
+ 559:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 560:.//FWLIB/src/stm32f4xx_sdio.c **** uint32_t SDIO_GetDataCounter(void)
+ 561:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 475              		.loc 1 561 0
+ 476              		.cfi_startproc
+ 477              		@ args = 0, pretend = 0, frame = 0
+ 478              		@ frame_needed = 0, uses_anonymous_args = 0
+ 479              		@ link register save eliminated.
+ 562:.//FWLIB/src/stm32f4xx_sdio.c ****   return SDIO->DCOUNT;
+ 480              		.loc 1 562 0
+ 481 0000 014B     		ldr	r3, .L35
+ 482 0002 186B     		ldr	r0, [r3, #48]
+ 563:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 483              		.loc 1 563 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 19
+
+
+ 484 0004 7047     		bx	lr
+ 485              	.L36:
+ 486 0006 00BF     		.align	2
+ 487              	.L35:
+ 488 0008 002C0140 		.word	1073818624
+ 489              		.cfi_endproc
+ 490              	.LFE124:
+ 492              		.section	.text.SDIO_ReadData,"ax",%progbits
+ 493              		.align	2
+ 494              		.global	SDIO_ReadData
+ 495              		.thumb
+ 496              		.thumb_func
+ 498              	SDIO_ReadData:
+ 499              	.LFB125:
+ 564:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 565:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 566:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Read one data word from Rx FIFO.
+ 567:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  None
+ 568:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval Data received
+ 569:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 570:.//FWLIB/src/stm32f4xx_sdio.c **** uint32_t SDIO_ReadData(void)
+ 571:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 500              		.loc 1 571 0
+ 501              		.cfi_startproc
+ 502              		@ args = 0, pretend = 0, frame = 0
+ 503              		@ frame_needed = 0, uses_anonymous_args = 0
+ 504              		@ link register save eliminated.
+ 572:.//FWLIB/src/stm32f4xx_sdio.c ****   return SDIO->FIFO;
+ 505              		.loc 1 572 0
+ 506 0000 014B     		ldr	r3, .L38
+ 507 0002 D3F88000 		ldr	r0, [r3, #128]
+ 573:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 508              		.loc 1 573 0
+ 509 0006 7047     		bx	lr
+ 510              	.L39:
+ 511              		.align	2
+ 512              	.L38:
+ 513 0008 002C0140 		.word	1073818624
+ 514              		.cfi_endproc
+ 515              	.LFE125:
+ 517              		.section	.text.SDIO_WriteData,"ax",%progbits
+ 518              		.align	2
+ 519              		.global	SDIO_WriteData
+ 520              		.thumb
+ 521              		.thumb_func
+ 523              	SDIO_WriteData:
+ 524              	.LFB126:
+ 574:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 575:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 576:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Write one data word to Tx FIFO.
+ 577:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  Data: 32-bit data word to write.
+ 578:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 579:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 580:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_WriteData(uint32_t Data)
+ 581:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 525              		.loc 1 581 0
+ 526              		.cfi_startproc
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 20
+
+
+ 527              		@ args = 0, pretend = 0, frame = 0
+ 528              		@ frame_needed = 0, uses_anonymous_args = 0
+ 529              		@ link register save eliminated.
+ 530              	.LVL24:
+ 582:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO->FIFO = Data;
+ 531              		.loc 1 582 0
+ 532 0000 014B     		ldr	r3, .L41
+ 533 0002 C3F88000 		str	r0, [r3, #128]
+ 534 0006 7047     		bx	lr
+ 535              	.L42:
+ 536              		.align	2
+ 537              	.L41:
+ 538 0008 002C0140 		.word	1073818624
+ 539              		.cfi_endproc
+ 540              	.LFE126:
+ 542              		.section	.text.SDIO_GetFIFOCount,"ax",%progbits
+ 543              		.align	2
+ 544              		.global	SDIO_GetFIFOCount
+ 545              		.thumb
+ 546              		.thumb_func
+ 548              	SDIO_GetFIFOCount:
+ 549              	.LFB127:
+ 583:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 584:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 585:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 586:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Returns the number of words left to be written to or read from FIFO.	
+ 587:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  None
+ 588:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval Remaining number of words.
+ 589:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 590:.//FWLIB/src/stm32f4xx_sdio.c **** uint32_t SDIO_GetFIFOCount(void)
+ 591:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 550              		.loc 1 591 0
+ 551              		.cfi_startproc
+ 552              		@ args = 0, pretend = 0, frame = 0
+ 553              		@ frame_needed = 0, uses_anonymous_args = 0
+ 554              		@ link register save eliminated.
+ 592:.//FWLIB/src/stm32f4xx_sdio.c ****   return SDIO->FIFOCNT;
+ 555              		.loc 1 592 0
+ 556 0000 014B     		ldr	r3, .L44
+ 557 0002 986C     		ldr	r0, [r3, #72]
+ 593:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 558              		.loc 1 593 0
+ 559 0004 7047     		bx	lr
+ 560              	.L45:
+ 561 0006 00BF     		.align	2
+ 562              	.L44:
+ 563 0008 002C0140 		.word	1073818624
+ 564              		.cfi_endproc
+ 565              	.LFE127:
+ 567              		.section	.text.SDIO_StartSDIOReadWait,"ax",%progbits
+ 568              		.align	2
+ 569              		.global	SDIO_StartSDIOReadWait
+ 570              		.thumb
+ 571              		.thumb_func
+ 573              	SDIO_StartSDIOReadWait:
+ 574              	.LFB128:
+ 594:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 21
+
+
+ 595:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 596:.//FWLIB/src/stm32f4xx_sdio.c ****   * @}
+ 597:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 598:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 599:.//FWLIB/src/stm32f4xx_sdio.c **** /** @defgroup SDIO_Group4 SDIO IO Cards mode management functions
+ 600:.//FWLIB/src/stm32f4xx_sdio.c ****  *  @brief   SDIO IO Cards mode management functions
+ 601:.//FWLIB/src/stm32f4xx_sdio.c ****  *
+ 602:.//FWLIB/src/stm32f4xx_sdio.c **** @verbatim   
+ 603:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================
+ 604:.//FWLIB/src/stm32f4xx_sdio.c ****                ##### SDIO IO Cards mode management functions #####
+ 605:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================  
+ 606:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 607:.//FWLIB/src/stm32f4xx_sdio.c ****   This section provide functions allowing to program and read the SDIO IO Cards.
+ 608:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 609:.//FWLIB/src/stm32f4xx_sdio.c **** @endverbatim
+ 610:.//FWLIB/src/stm32f4xx_sdio.c ****   * @{
+ 611:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 612:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 613:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 614:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Starts the SD I/O Read Wait operation.	
+ 615:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  NewState: new state of the Start SDIO Read Wait operation. 
+ 616:.//FWLIB/src/stm32f4xx_sdio.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 617:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 618:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 619:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_StartSDIOReadWait(FunctionalState NewState)
+ 620:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 575              		.loc 1 620 0
+ 576              		.cfi_startproc
+ 577              		@ args = 0, pretend = 0, frame = 0
+ 578              		@ frame_needed = 0, uses_anonymous_args = 0
+ 579              		@ link register save eliminated.
+ 580              	.LVL25:
+ 621:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 622:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 623:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 624:.//FWLIB/src/stm32f4xx_sdio.c ****   *(__IO uint32_t *) DCTRL_RWSTART_BB = (uint32_t) NewState;
+ 581              		.loc 1 624 0
+ 582 0000 014B     		ldr	r3, .L47
+ 583 0002 1860     		str	r0, [r3]
+ 584 0004 7047     		bx	lr
+ 585              	.L48:
+ 586 0006 00BF     		.align	2
+ 587              	.L47:
+ 588 0008 A0852542 		.word	1109755296
+ 589              		.cfi_endproc
+ 590              	.LFE128:
+ 592              		.section	.text.SDIO_StopSDIOReadWait,"ax",%progbits
+ 593              		.align	2
+ 594              		.global	SDIO_StopSDIOReadWait
+ 595              		.thumb
+ 596              		.thumb_func
+ 598              	SDIO_StopSDIOReadWait:
+ 599              	.LFB129:
+ 625:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 626:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 627:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 628:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Stops the SD I/O Read Wait operation.	
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 22
+
+
+ 629:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  NewState: new state of the Stop SDIO Read Wait operation. 
+ 630:.//FWLIB/src/stm32f4xx_sdio.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 631:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 632:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 633:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_StopSDIOReadWait(FunctionalState NewState)
+ 634:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 600              		.loc 1 634 0
+ 601              		.cfi_startproc
+ 602              		@ args = 0, pretend = 0, frame = 0
+ 603              		@ frame_needed = 0, uses_anonymous_args = 0
+ 604              		@ link register save eliminated.
+ 605              	.LVL26:
+ 635:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 636:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 637:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 638:.//FWLIB/src/stm32f4xx_sdio.c ****   *(__IO uint32_t *) DCTRL_RWSTOP_BB = (uint32_t) NewState;
+ 606              		.loc 1 638 0
+ 607 0000 014B     		ldr	r3, .L50
+ 608 0002 1860     		str	r0, [r3]
+ 609 0004 7047     		bx	lr
+ 610              	.L51:
+ 611 0006 00BF     		.align	2
+ 612              	.L50:
+ 613 0008 A4852542 		.word	1109755300
+ 614              		.cfi_endproc
+ 615              	.LFE129:
+ 617              		.section	.text.SDIO_SetSDIOReadWaitMode,"ax",%progbits
+ 618              		.align	2
+ 619              		.global	SDIO_SetSDIOReadWaitMode
+ 620              		.thumb
+ 621              		.thumb_func
+ 623              	SDIO_SetSDIOReadWaitMode:
+ 624              	.LFB130:
+ 639:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 640:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 641:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 642:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Sets one of the two options of inserting read wait interval.
+ 643:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_ReadWaitMode: SD I/O Read Wait operation mode.
+ 644:.//FWLIB/src/stm32f4xx_sdio.c ****   *          This parameter can be:
+ 645:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_ReadWaitMode_CLK: Read Wait control by stopping SDIOCLK
+ 646:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_ReadWaitMode_DATA2: Read Wait control using SDIO_DATA2
+ 647:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 648:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 649:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_SetSDIOReadWaitMode(uint32_t SDIO_ReadWaitMode)
+ 650:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ 625              		.loc 1 650 0
+ 626              		.cfi_startproc
+ 627              		@ args = 0, pretend = 0, frame = 0
+ 628              		@ frame_needed = 0, uses_anonymous_args = 0
+ 629              		@ link register save eliminated.
+ 630              	.LVL27:
+ 651:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 652:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_READWAIT_MODE(SDIO_ReadWaitMode));
+ 653:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 654:.//FWLIB/src/stm32f4xx_sdio.c ****   *(__IO uint32_t *) DCTRL_RWMOD_BB = SDIO_ReadWaitMode;
+ 631              		.loc 1 654 0
+ 632 0000 014B     		ldr	r3, .L53
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 23
+
+
+ 633 0002 1860     		str	r0, [r3]
+ 634 0004 7047     		bx	lr
+ 635              	.L54:
+ 636 0006 00BF     		.align	2
+ 637              	.L53:
+ 638 0008 A8852542 		.word	1109755304
+ 639              		.cfi_endproc
+ 640              	.LFE130:
+ 642              		.section	.text.SDIO_SetSDIOOperation,"ax",%progbits
+ 643              		.align	2
+ 644              		.global	SDIO_SetSDIOOperation
+ 645              		.thumb
+ 646              		.thumb_func
+ 648              	SDIO_SetSDIOOperation:
+ 649              	.LFB131:
+ 655:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 656:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 657:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 658:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Enables or disables the SD I/O Mode Operation.
+ 659:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  NewState: new state of SDIO specific operation. 
+ 660:.//FWLIB/src/stm32f4xx_sdio.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 661:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 662:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 663:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_SetSDIOOperation(FunctionalState NewState)
+ 664:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 650              		.loc 1 664 0
+ 651              		.cfi_startproc
+ 652              		@ args = 0, pretend = 0, frame = 0
+ 653              		@ frame_needed = 0, uses_anonymous_args = 0
+ 654              		@ link register save eliminated.
+ 655              	.LVL28:
+ 665:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 666:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 667:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 668:.//FWLIB/src/stm32f4xx_sdio.c ****   *(__IO uint32_t *) DCTRL_SDIOEN_BB = (uint32_t)NewState;
+ 656              		.loc 1 668 0
+ 657 0000 014B     		ldr	r3, .L56
+ 658 0002 1860     		str	r0, [r3]
+ 659 0004 7047     		bx	lr
+ 660              	.L57:
+ 661 0006 00BF     		.align	2
+ 662              	.L56:
+ 663 0008 AC852542 		.word	1109755308
+ 664              		.cfi_endproc
+ 665              	.LFE131:
+ 667              		.section	.text.SDIO_SendSDIOSuspendCmd,"ax",%progbits
+ 668              		.align	2
+ 669              		.global	SDIO_SendSDIOSuspendCmd
+ 670              		.thumb
+ 671              		.thumb_func
+ 673              	SDIO_SendSDIOSuspendCmd:
+ 674              	.LFB132:
+ 669:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 670:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 671:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 672:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Enables or disables the SD I/O Mode suspend command sending.
+ 673:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  NewState: new state of the SD I/O Mode suspend command.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 24
+
+
+ 674:.//FWLIB/src/stm32f4xx_sdio.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 675:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 676:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 677:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_SendSDIOSuspendCmd(FunctionalState NewState)
+ 678:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 675              		.loc 1 678 0
+ 676              		.cfi_startproc
+ 677              		@ args = 0, pretend = 0, frame = 0
+ 678              		@ frame_needed = 0, uses_anonymous_args = 0
+ 679              		@ link register save eliminated.
+ 680              	.LVL29:
+ 679:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 680:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 681:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 682:.//FWLIB/src/stm32f4xx_sdio.c ****   *(__IO uint32_t *) CMD_SDIOSUSPEND_BB = (uint32_t)NewState;
+ 681              		.loc 1 682 0
+ 682 0000 014B     		ldr	r3, .L59
+ 683 0002 1860     		str	r0, [r3]
+ 684 0004 7047     		bx	lr
+ 685              	.L60:
+ 686 0006 00BF     		.align	2
+ 687              	.L59:
+ 688 0008 AC812542 		.word	1109754284
+ 689              		.cfi_endproc
+ 690              	.LFE132:
+ 692              		.section	.text.SDIO_CommandCompletionCmd,"ax",%progbits
+ 693              		.align	2
+ 694              		.global	SDIO_CommandCompletionCmd
+ 695              		.thumb
+ 696              		.thumb_func
+ 698              	SDIO_CommandCompletionCmd:
+ 699              	.LFB133:
+ 683:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 684:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 685:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 686:.//FWLIB/src/stm32f4xx_sdio.c ****   * @}
+ 687:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 688:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 689:.//FWLIB/src/stm32f4xx_sdio.c **** /** @defgroup SDIO_Group5 CE-ATA mode management functions
+ 690:.//FWLIB/src/stm32f4xx_sdio.c ****  *  @brief   CE-ATA mode management functions
+ 691:.//FWLIB/src/stm32f4xx_sdio.c ****  *
+ 692:.//FWLIB/src/stm32f4xx_sdio.c **** @verbatim   
+ 693:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================
+ 694:.//FWLIB/src/stm32f4xx_sdio.c ****                   ##### CE-ATA mode management functions #####
+ 695:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================  
+ 696:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 697:.//FWLIB/src/stm32f4xx_sdio.c ****   This section provide functions allowing to program and read the CE-ATA card.
+ 698:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 699:.//FWLIB/src/stm32f4xx_sdio.c **** @endverbatim
+ 700:.//FWLIB/src/stm32f4xx_sdio.c ****   * @{
+ 701:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 702:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 703:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 704:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Enables or disables the command completion signal.
+ 705:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  NewState: new state of command completion signal. 
+ 706:.//FWLIB/src/stm32f4xx_sdio.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 707:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 25
+
+
+ 708:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 709:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_CommandCompletionCmd(FunctionalState NewState)
+ 710:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 700              		.loc 1 710 0
+ 701              		.cfi_startproc
+ 702              		@ args = 0, pretend = 0, frame = 0
+ 703              		@ frame_needed = 0, uses_anonymous_args = 0
+ 704              		@ link register save eliminated.
+ 705              	.LVL30:
+ 711:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 712:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 713:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 714:.//FWLIB/src/stm32f4xx_sdio.c ****   *(__IO uint32_t *) CMD_ENCMDCOMPL_BB = (uint32_t)NewState;
+ 706              		.loc 1 714 0
+ 707 0000 014B     		ldr	r3, .L62
+ 708 0002 1860     		str	r0, [r3]
+ 709 0004 7047     		bx	lr
+ 710              	.L63:
+ 711 0006 00BF     		.align	2
+ 712              	.L62:
+ 713 0008 B0812542 		.word	1109754288
+ 714              		.cfi_endproc
+ 715              	.LFE133:
+ 717              		.section	.text.SDIO_CEATAITCmd,"ax",%progbits
+ 718              		.align	2
+ 719              		.global	SDIO_CEATAITCmd
+ 720              		.thumb
+ 721              		.thumb_func
+ 723              	SDIO_CEATAITCmd:
+ 724              	.LFB134:
+ 715:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 716:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 717:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 718:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Enables or disables the CE-ATA interrupt.
+ 719:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  NewState: new state of CE-ATA interrupt. 
+ 720:.//FWLIB/src/stm32f4xx_sdio.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 721:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 722:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 723:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_CEATAITCmd(FunctionalState NewState)
+ 724:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 725              		.loc 1 724 0
+ 726              		.cfi_startproc
+ 727              		@ args = 0, pretend = 0, frame = 0
+ 728              		@ frame_needed = 0, uses_anonymous_args = 0
+ 729              		@ link register save eliminated.
+ 730              	.LVL31:
+ 725:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 726:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 727:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 728:.//FWLIB/src/stm32f4xx_sdio.c ****   *(__IO uint32_t *) CMD_NIEN_BB = (uint32_t)((~((uint32_t)NewState)) & ((uint32_t)0x1));
+ 731              		.loc 1 728 0
+ 732 0000 10F0010F 		tst	r0, #1
+ 733 0004 0CBF     		ite	eq
+ 734 0006 0122     		moveq	r2, #1
+ 735 0008 0022     		movne	r2, #0
+ 736 000a 014B     		ldr	r3, .L65
+ 737 000c 1A60     		str	r2, [r3]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 26
+
+
+ 738 000e 7047     		bx	lr
+ 739              	.L66:
+ 740              		.align	2
+ 741              	.L65:
+ 742 0010 B4812542 		.word	1109754292
+ 743              		.cfi_endproc
+ 744              	.LFE134:
+ 746              		.section	.text.SDIO_SendCEATACmd,"ax",%progbits
+ 747              		.align	2
+ 748              		.global	SDIO_SendCEATACmd
+ 749              		.thumb
+ 750              		.thumb_func
+ 752              	SDIO_SendCEATACmd:
+ 753              	.LFB135:
+ 729:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 730:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 731:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 732:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Sends CE-ATA command (CMD61).
+ 733:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  NewState: new state of CE-ATA command. 
+ 734:.//FWLIB/src/stm32f4xx_sdio.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 735:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 736:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 737:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_SendCEATACmd(FunctionalState NewState)
+ 738:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 754              		.loc 1 738 0
+ 755              		.cfi_startproc
+ 756              		@ args = 0, pretend = 0, frame = 0
+ 757              		@ frame_needed = 0, uses_anonymous_args = 0
+ 758              		@ link register save eliminated.
+ 759              	.LVL32:
+ 739:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 740:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 741:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 742:.//FWLIB/src/stm32f4xx_sdio.c ****   *(__IO uint32_t *) CMD_ATACMD_BB = (uint32_t)NewState;
+ 760              		.loc 1 742 0
+ 761 0000 014B     		ldr	r3, .L68
+ 762 0002 1860     		str	r0, [r3]
+ 763 0004 7047     		bx	lr
+ 764              	.L69:
+ 765 0006 00BF     		.align	2
+ 766              	.L68:
+ 767 0008 B8812542 		.word	1109754296
+ 768              		.cfi_endproc
+ 769              	.LFE135:
+ 771              		.section	.text.SDIO_DMACmd,"ax",%progbits
+ 772              		.align	2
+ 773              		.global	SDIO_DMACmd
+ 774              		.thumb
+ 775              		.thumb_func
+ 777              	SDIO_DMACmd:
+ 778              	.LFB136:
+ 743:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 744:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 745:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 746:.//FWLIB/src/stm32f4xx_sdio.c ****   * @}
+ 747:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 748:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 27
+
+
+ 749:.//FWLIB/src/stm32f4xx_sdio.c **** /** @defgroup SDIO_Group6 DMA transfers management functions
+ 750:.//FWLIB/src/stm32f4xx_sdio.c ****  *  @brief   DMA transfers management functions
+ 751:.//FWLIB/src/stm32f4xx_sdio.c ****  *
+ 752:.//FWLIB/src/stm32f4xx_sdio.c **** @verbatim   
+ 753:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================
+ 754:.//FWLIB/src/stm32f4xx_sdio.c ****                   ##### DMA transfers management functions #####
+ 755:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================  
+ 756:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 757:.//FWLIB/src/stm32f4xx_sdio.c ****   This section provide functions allowing to program SDIO DMA transfer.
+ 758:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 759:.//FWLIB/src/stm32f4xx_sdio.c **** @endverbatim
+ 760:.//FWLIB/src/stm32f4xx_sdio.c ****   * @{
+ 761:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 762:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 763:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 764:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Enables or disables the SDIO DMA request.
+ 765:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  NewState: new state of the selected SDIO DMA request.
+ 766:.//FWLIB/src/stm32f4xx_sdio.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 767:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 768:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 769:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_DMACmd(FunctionalState NewState)
+ 770:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ 779              		.loc 1 770 0
+ 780              		.cfi_startproc
+ 781              		@ args = 0, pretend = 0, frame = 0
+ 782              		@ frame_needed = 0, uses_anonymous_args = 0
+ 783              		@ link register save eliminated.
+ 784              	.LVL33:
+ 771:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 772:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 773:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 774:.//FWLIB/src/stm32f4xx_sdio.c ****   *(__IO uint32_t *) DCTRL_DMAEN_BB = (uint32_t)NewState;
+ 785              		.loc 1 774 0
+ 786 0000 014B     		ldr	r3, .L71
+ 787 0002 1860     		str	r0, [r3]
+ 788 0004 7047     		bx	lr
+ 789              	.L72:
+ 790 0006 00BF     		.align	2
+ 791              	.L71:
+ 792 0008 8C852542 		.word	1109755276
+ 793              		.cfi_endproc
+ 794              	.LFE136:
+ 796              		.section	.text.SDIO_ITConfig,"ax",%progbits
+ 797              		.align	2
+ 798              		.global	SDIO_ITConfig
+ 799              		.thumb
+ 800              		.thumb_func
+ 802              	SDIO_ITConfig:
+ 803              	.LFB137:
+ 775:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 776:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 777:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 778:.//FWLIB/src/stm32f4xx_sdio.c ****   * @}
+ 779:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 780:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 781:.//FWLIB/src/stm32f4xx_sdio.c **** /** @defgroup SDIO_Group7 Interrupts and flags management functions
+ 782:.//FWLIB/src/stm32f4xx_sdio.c ****  *  @brief   Interrupts and flags management functions  
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 28
+
+
+ 783:.//FWLIB/src/stm32f4xx_sdio.c ****  *
+ 784:.//FWLIB/src/stm32f4xx_sdio.c **** @verbatim   
+ 785:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================
+ 786:.//FWLIB/src/stm32f4xx_sdio.c ****               ##### Interrupts and flags management functions #####
+ 787:.//FWLIB/src/stm32f4xx_sdio.c ****  ===============================================================================  
+ 788:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 789:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 790:.//FWLIB/src/stm32f4xx_sdio.c **** @endverbatim
+ 791:.//FWLIB/src/stm32f4xx_sdio.c ****   * @{
+ 792:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 793:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 794:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 795:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Enables or disables the SDIO interrupts.
+ 796:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_IT: specifies the SDIO interrupt sources to be enabled or disabled.
+ 797:.//FWLIB/src/stm32f4xx_sdio.c ****   *          This parameter can be one or a combination of the following values:
+ 798:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CCRCFAIL: Command response received (CRC check failed) interrupt
+ 799:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_DCRCFAIL: Data block sent/received (CRC check failed) interrupt
+ 800:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CTIMEOUT: Command response timeout interrupt
+ 801:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_DTIMEOUT: Data timeout interrupt
+ 802:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXUNDERR: Transmit FIFO underrun error interrupt
+ 803:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXOVERR:  Received FIFO overrun error interrupt
+ 804:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CMDREND:  Command response received (CRC check passed) interrupt
+ 805:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CMDSENT:  Command sent (no response required) interrupt
+ 806:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_DATAEND:  Data end (data counter, SDIDCOUNT, is zero) interrupt
+ 807:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_STBITERR: Start bit not detected on all data signals in wide 
+ 808:.//FWLIB/src/stm32f4xx_sdio.c ****   *                                   bus mode interrupt
+ 809:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_DBCKEND:  Data block sent/received (CRC check passed) interrupt
+ 810:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CMDACT:   Command transfer in progress interrupt
+ 811:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXACT:    Data transmit in progress interrupt
+ 812:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXACT:    Data receive in progress interrupt
+ 813:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXFIFOHE: Transmit FIFO Half Empty interrupt
+ 814:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXFIFOHF: Receive FIFO Half Full interrupt
+ 815:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXFIFOF:  Transmit FIFO full interrupt
+ 816:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXFIFOF:  Receive FIFO full interrupt
+ 817:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXFIFOE:  Transmit FIFO empty interrupt
+ 818:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXFIFOE:  Receive FIFO empty interrupt
+ 819:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXDAVL:   Data available in transmit FIFO interrupt
+ 820:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXDAVL:   Data available in receive FIFO interrupt
+ 821:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt
+ 822:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CEATAEND: CE-ATA command completion signal received for CMD61 interrupt
+ 823:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  NewState: new state of the specified SDIO interrupts.
+ 824:.//FWLIB/src/stm32f4xx_sdio.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 825:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None 
+ 826:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 827:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_ITConfig(uint32_t SDIO_IT, FunctionalState NewState)
+ 828:.//FWLIB/src/stm32f4xx_sdio.c **** {
+ 804              		.loc 1 828 0
+ 805              		.cfi_startproc
+ 806              		@ args = 0, pretend = 0, frame = 0
+ 807              		@ frame_needed = 0, uses_anonymous_args = 0
+ 808              		@ link register save eliminated.
+ 809              	.LVL34:
+ 829:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 830:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_IT(SDIO_IT));
+ 831:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 832:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 833:.//FWLIB/src/stm32f4xx_sdio.c ****   if (NewState != DISABLE)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 29
+
+
+ 810              		.loc 1 833 0
+ 811 0000 21B1     		cbz	r1, .L74
+ 834:.//FWLIB/src/stm32f4xx_sdio.c ****   {
+ 835:.//FWLIB/src/stm32f4xx_sdio.c ****     /* Enable the SDIO interrupts */
+ 836:.//FWLIB/src/stm32f4xx_sdio.c ****     SDIO->MASK |= SDIO_IT;
+ 812              		.loc 1 836 0
+ 813 0002 054B     		ldr	r3, .L76
+ 814 0004 DA6B     		ldr	r2, [r3, #60]
+ 815 0006 1043     		orrs	r0, r0, r2
+ 816              	.LVL35:
+ 817 0008 D863     		str	r0, [r3, #60]
+ 818 000a 7047     		bx	lr
+ 819              	.LVL36:
+ 820              	.L74:
+ 837:.//FWLIB/src/stm32f4xx_sdio.c ****   }
+ 838:.//FWLIB/src/stm32f4xx_sdio.c ****   else
+ 839:.//FWLIB/src/stm32f4xx_sdio.c ****   {
+ 840:.//FWLIB/src/stm32f4xx_sdio.c ****     /* Disable the SDIO interrupts */
+ 841:.//FWLIB/src/stm32f4xx_sdio.c ****     SDIO->MASK &= ~SDIO_IT;
+ 821              		.loc 1 841 0
+ 822 000c 024A     		ldr	r2, .L76
+ 823 000e D36B     		ldr	r3, [r2, #60]
+ 824 0010 23EA0000 		bic	r0, r3, r0
+ 825              	.LVL37:
+ 826 0014 D063     		str	r0, [r2, #60]
+ 827 0016 7047     		bx	lr
+ 828              	.L77:
+ 829              		.align	2
+ 830              	.L76:
+ 831 0018 002C0140 		.word	1073818624
+ 832              		.cfi_endproc
+ 833              	.LFE137:
+ 835              		.section	.text.SDIO_GetFlagStatus,"ax",%progbits
+ 836              		.align	2
+ 837              		.global	SDIO_GetFlagStatus
+ 838              		.thumb
+ 839              		.thumb_func
+ 841              	SDIO_GetFlagStatus:
+ 842              	.LFB138:
+ 842:.//FWLIB/src/stm32f4xx_sdio.c ****   } 
+ 843:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 844:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 845:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 846:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Checks whether the specified SDIO flag is set or not.
+ 847:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_FLAG: specifies the flag to check. 
+ 848:.//FWLIB/src/stm32f4xx_sdio.c ****   *          This parameter can be one of the following values:
+ 849:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_CCRCFAIL: Command response received (CRC check failed)
+ 850:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_DCRCFAIL: Data block sent/received (CRC check failed)
+ 851:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_CTIMEOUT: Command response timeout
+ 852:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_DTIMEOUT: Data timeout
+ 853:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_TXUNDERR: Transmit FIFO underrun error
+ 854:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_RXOVERR:  Received FIFO overrun error
+ 855:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_CMDREND:  Command response received (CRC check passed)
+ 856:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_CMDSENT:  Command sent (no response required)
+ 857:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_DATAEND:  Data end (data counter, SDIDCOUNT, is zero)
+ 858:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_STBITERR: Start bit not detected on all data signals in wide bus mode
+ 859:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_DBCKEND:  Data block sent/received (CRC check passed)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 30
+
+
+ 860:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_CMDACT:   Command transfer in progress
+ 861:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_TXACT:    Data transmit in progress
+ 862:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_RXACT:    Data receive in progress
+ 863:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_TXFIFOHE: Transmit FIFO Half Empty
+ 864:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_RXFIFOHF: Receive FIFO Half Full
+ 865:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_TXFIFOF:  Transmit FIFO full
+ 866:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_RXFIFOF:  Receive FIFO full
+ 867:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_TXFIFOE:  Transmit FIFO empty
+ 868:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_RXFIFOE:  Receive FIFO empty
+ 869:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_TXDAVL:   Data available in transmit FIFO
+ 870:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_RXDAVL:   Data available in receive FIFO
+ 871:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_SDIOIT:   SD I/O interrupt received
+ 872:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_CEATAEND: CE-ATA command completion signal received for CMD61
+ 873:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval The new state of SDIO_FLAG (SET or RESET).
+ 874:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 875:.//FWLIB/src/stm32f4xx_sdio.c **** FlagStatus SDIO_GetFlagStatus(uint32_t SDIO_FLAG)
+ 876:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 843              		.loc 1 876 0
+ 844              		.cfi_startproc
+ 845              		@ args = 0, pretend = 0, frame = 0
+ 846              		@ frame_needed = 0, uses_anonymous_args = 0
+ 847              		@ link register save eliminated.
+ 848              	.LVL38:
+ 877:.//FWLIB/src/stm32f4xx_sdio.c ****   FlagStatus bitstatus = RESET;
+ 878:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 879:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 880:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_FLAG(SDIO_FLAG));
+ 881:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 882:.//FWLIB/src/stm32f4xx_sdio.c ****   if ((SDIO->STA & SDIO_FLAG) != (uint32_t)RESET)
+ 849              		.loc 1 882 0
+ 850 0000 034B     		ldr	r3, .L81
+ 851 0002 5B6B     		ldr	r3, [r3, #52]
+ 852 0004 0342     		tst	r3, r0
+ 853 0006 01D0     		beq	.L80
+ 883:.//FWLIB/src/stm32f4xx_sdio.c ****   {
+ 884:.//FWLIB/src/stm32f4xx_sdio.c ****     bitstatus = SET;
+ 854              		.loc 1 884 0
+ 855 0008 0120     		movs	r0, #1
+ 856              	.LVL39:
+ 857 000a 7047     		bx	lr
+ 858              	.LVL40:
+ 859              	.L80:
+ 885:.//FWLIB/src/stm32f4xx_sdio.c ****   }
+ 886:.//FWLIB/src/stm32f4xx_sdio.c ****   else
+ 887:.//FWLIB/src/stm32f4xx_sdio.c ****   {
+ 888:.//FWLIB/src/stm32f4xx_sdio.c ****     bitstatus = RESET;
+ 860              		.loc 1 888 0
+ 861 000c 0020     		movs	r0, #0
+ 862              	.LVL41:
+ 889:.//FWLIB/src/stm32f4xx_sdio.c ****   }
+ 890:.//FWLIB/src/stm32f4xx_sdio.c ****   return bitstatus;
+ 891:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 863              		.loc 1 891 0
+ 864 000e 7047     		bx	lr
+ 865              	.L82:
+ 866              		.align	2
+ 867              	.L81:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 31
+
+
+ 868 0010 002C0140 		.word	1073818624
+ 869              		.cfi_endproc
+ 870              	.LFE138:
+ 872              		.section	.text.SDIO_ClearFlag,"ax",%progbits
+ 873              		.align	2
+ 874              		.global	SDIO_ClearFlag
+ 875              		.thumb
+ 876              		.thumb_func
+ 878              	SDIO_ClearFlag:
+ 879              	.LFB139:
+ 892:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 893:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 894:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Clears the SDIO's pending flags.
+ 895:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_FLAG: specifies the flag to clear.  
+ 896:.//FWLIB/src/stm32f4xx_sdio.c ****   *          This parameter can be one or a combination of the following values:
+ 897:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_CCRCFAIL: Command response received (CRC check failed)
+ 898:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_DCRCFAIL: Data block sent/received (CRC check failed)
+ 899:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_CTIMEOUT: Command response timeout
+ 900:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_DTIMEOUT: Data timeout
+ 901:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_TXUNDERR: Transmit FIFO underrun error
+ 902:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_RXOVERR:  Received FIFO overrun error
+ 903:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_CMDREND:  Command response received (CRC check passed)
+ 904:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_CMDSENT:  Command sent (no response required)
+ 905:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_DATAEND:  Data end (data counter, SDIDCOUNT, is zero)
+ 906:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_STBITERR: Start bit not detected on all data signals in wide bus mode
+ 907:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_DBCKEND:  Data block sent/received (CRC check passed)
+ 908:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_SDIOIT:   SD I/O interrupt received
+ 909:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_FLAG_CEATAEND: CE-ATA command completion signal received for CMD61
+ 910:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 911:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 912:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_ClearFlag(uint32_t SDIO_FLAG)
+ 913:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 880              		.loc 1 913 0
+ 881              		.cfi_startproc
+ 882              		@ args = 0, pretend = 0, frame = 0
+ 883              		@ frame_needed = 0, uses_anonymous_args = 0
+ 884              		@ link register save eliminated.
+ 885              	.LVL42:
+ 914:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 915:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_CLEAR_FLAG(SDIO_FLAG));
+ 916:.//FWLIB/src/stm32f4xx_sdio.c ****    
+ 917:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO->ICR = SDIO_FLAG;
+ 886              		.loc 1 917 0
+ 887 0000 014B     		ldr	r3, .L84
+ 888 0002 9863     		str	r0, [r3, #56]
+ 889 0004 7047     		bx	lr
+ 890              	.L85:
+ 891 0006 00BF     		.align	2
+ 892              	.L84:
+ 893 0008 002C0140 		.word	1073818624
+ 894              		.cfi_endproc
+ 895              	.LFE139:
+ 897              		.section	.text.SDIO_GetITStatus,"ax",%progbits
+ 898              		.align	2
+ 899              		.global	SDIO_GetITStatus
+ 900              		.thumb
+ 901              		.thumb_func
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 32
+
+
+ 903              	SDIO_GetITStatus:
+ 904              	.LFB140:
+ 918:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 919:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 920:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 921:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Checks whether the specified SDIO interrupt has occurred or not.
+ 922:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_IT: specifies the SDIO interrupt source to check. 
+ 923:.//FWLIB/src/stm32f4xx_sdio.c ****   *          This parameter can be one of the following values:
+ 924:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CCRCFAIL: Command response received (CRC check failed) interrupt
+ 925:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_DCRCFAIL: Data block sent/received (CRC check failed) interrupt
+ 926:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CTIMEOUT: Command response timeout interrupt
+ 927:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_DTIMEOUT: Data timeout interrupt
+ 928:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXUNDERR: Transmit FIFO underrun error interrupt
+ 929:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXOVERR:  Received FIFO overrun error interrupt
+ 930:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CMDREND:  Command response received (CRC check passed) interrupt
+ 931:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CMDSENT:  Command sent (no response required) interrupt
+ 932:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_DATAEND:  Data end (data counter, SDIDCOUNT, is zero) interrupt
+ 933:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_STBITERR: Start bit not detected on all data signals in wide 
+ 934:.//FWLIB/src/stm32f4xx_sdio.c ****   *                                   bus mode interrupt
+ 935:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_DBCKEND:  Data block sent/received (CRC check passed) interrupt
+ 936:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CMDACT:   Command transfer in progress interrupt
+ 937:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXACT:    Data transmit in progress interrupt
+ 938:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXACT:    Data receive in progress interrupt
+ 939:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXFIFOHE: Transmit FIFO Half Empty interrupt
+ 940:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXFIFOHF: Receive FIFO Half Full interrupt
+ 941:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXFIFOF:  Transmit FIFO full interrupt
+ 942:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXFIFOF:  Receive FIFO full interrupt
+ 943:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXFIFOE:  Transmit FIFO empty interrupt
+ 944:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXFIFOE:  Receive FIFO empty interrupt
+ 945:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXDAVL:   Data available in transmit FIFO interrupt
+ 946:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXDAVL:   Data available in receive FIFO interrupt
+ 947:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt
+ 948:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CEATAEND: CE-ATA command completion signal received for CMD61 interrupt
+ 949:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval The new state of SDIO_IT (SET or RESET).
+ 950:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 951:.//FWLIB/src/stm32f4xx_sdio.c **** ITStatus SDIO_GetITStatus(uint32_t SDIO_IT)
+ 952:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 905              		.loc 1 952 0
+ 906              		.cfi_startproc
+ 907              		@ args = 0, pretend = 0, frame = 0
+ 908              		@ frame_needed = 0, uses_anonymous_args = 0
+ 909              		@ link register save eliminated.
+ 910              	.LVL43:
+ 953:.//FWLIB/src/stm32f4xx_sdio.c ****   ITStatus bitstatus = RESET;
+ 954:.//FWLIB/src/stm32f4xx_sdio.c ****   
+ 955:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 956:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_GET_IT(SDIO_IT));
+ 957:.//FWLIB/src/stm32f4xx_sdio.c ****   if ((SDIO->STA & SDIO_IT) != (uint32_t)RESET)  
+ 911              		.loc 1 957 0
+ 912 0000 034B     		ldr	r3, .L89
+ 913 0002 5B6B     		ldr	r3, [r3, #52]
+ 914 0004 0342     		tst	r3, r0
+ 915 0006 01D0     		beq	.L88
+ 958:.//FWLIB/src/stm32f4xx_sdio.c ****   {
+ 959:.//FWLIB/src/stm32f4xx_sdio.c ****     bitstatus = SET;
+ 916              		.loc 1 959 0
+ 917 0008 0120     		movs	r0, #1
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 33
+
+
+ 918              	.LVL44:
+ 919 000a 7047     		bx	lr
+ 920              	.LVL45:
+ 921              	.L88:
+ 960:.//FWLIB/src/stm32f4xx_sdio.c ****   }
+ 961:.//FWLIB/src/stm32f4xx_sdio.c ****   else
+ 962:.//FWLIB/src/stm32f4xx_sdio.c ****   {
+ 963:.//FWLIB/src/stm32f4xx_sdio.c ****     bitstatus = RESET;
+ 922              		.loc 1 963 0
+ 923 000c 0020     		movs	r0, #0
+ 924              	.LVL46:
+ 964:.//FWLIB/src/stm32f4xx_sdio.c ****   }
+ 965:.//FWLIB/src/stm32f4xx_sdio.c ****   return bitstatus;
+ 966:.//FWLIB/src/stm32f4xx_sdio.c **** }
+ 925              		.loc 1 966 0
+ 926 000e 7047     		bx	lr
+ 927              	.L90:
+ 928              		.align	2
+ 929              	.L89:
+ 930 0010 002C0140 		.word	1073818624
+ 931              		.cfi_endproc
+ 932              	.LFE140:
+ 934              		.section	.text.SDIO_ClearITPendingBit,"ax",%progbits
+ 935              		.align	2
+ 936              		.global	SDIO_ClearITPendingBit
+ 937              		.thumb
+ 938              		.thumb_func
+ 940              	SDIO_ClearITPendingBit:
+ 941              	.LFB141:
+ 967:.//FWLIB/src/stm32f4xx_sdio.c **** 
+ 968:.//FWLIB/src/stm32f4xx_sdio.c **** /**
+ 969:.//FWLIB/src/stm32f4xx_sdio.c ****   * @brief  Clears the SDIO's interrupt pending bits.
+ 970:.//FWLIB/src/stm32f4xx_sdio.c ****   * @param  SDIO_IT: specifies the interrupt pending bit to clear. 
+ 971:.//FWLIB/src/stm32f4xx_sdio.c ****   *          This parameter can be one or a combination of the following values:
+ 972:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CCRCFAIL: Command response received (CRC check failed) interrupt
+ 973:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_DCRCFAIL: Data block sent/received (CRC check failed) interrupt
+ 974:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CTIMEOUT: Command response timeout interrupt
+ 975:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_DTIMEOUT: Data timeout interrupt
+ 976:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_TXUNDERR: Transmit FIFO underrun error interrupt
+ 977:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_RXOVERR:  Received FIFO overrun error interrupt
+ 978:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CMDREND:  Command response received (CRC check passed) interrupt
+ 979:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CMDSENT:  Command sent (no response required) interrupt
+ 980:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_DATAEND:  Data end (data counter, SDIO_DCOUNT, is zero) interrupt
+ 981:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_STBITERR: Start bit not detected on all data signals in wide 
+ 982:.//FWLIB/src/stm32f4xx_sdio.c ****   *                                   bus mode interrupt
+ 983:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt
+ 984:.//FWLIB/src/stm32f4xx_sdio.c ****   *            @arg SDIO_IT_CEATAEND: CE-ATA command completion signal received for CMD61
+ 985:.//FWLIB/src/stm32f4xx_sdio.c ****   * @retval None
+ 986:.//FWLIB/src/stm32f4xx_sdio.c ****   */
+ 987:.//FWLIB/src/stm32f4xx_sdio.c **** void SDIO_ClearITPendingBit(uint32_t SDIO_IT)
+ 988:.//FWLIB/src/stm32f4xx_sdio.c **** { 
+ 942              		.loc 1 988 0
+ 943              		.cfi_startproc
+ 944              		@ args = 0, pretend = 0, frame = 0
+ 945              		@ frame_needed = 0, uses_anonymous_args = 0
+ 946              		@ link register save eliminated.
+ 947              	.LVL47:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 34
+
+
+ 989:.//FWLIB/src/stm32f4xx_sdio.c ****   /* Check the parameters */
+ 990:.//FWLIB/src/stm32f4xx_sdio.c ****   assert_param(IS_SDIO_CLEAR_IT(SDIO_IT));
+ 991:.//FWLIB/src/stm32f4xx_sdio.c ****    
+ 992:.//FWLIB/src/stm32f4xx_sdio.c ****   SDIO->ICR = SDIO_IT;
+ 948              		.loc 1 992 0
+ 949 0000 014B     		ldr	r3, .L92
+ 950 0002 9863     		str	r0, [r3, #56]
+ 951 0004 7047     		bx	lr
+ 952              	.L93:
+ 953 0006 00BF     		.align	2
+ 954              	.L92:
+ 955 0008 002C0140 		.word	1073818624
+ 956              		.cfi_endproc
+ 957              	.LFE141:
+ 959              		.text
+ 960              	.Letext0:
+ 961              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 962              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 963              		.file 4 "USER/stm32f4xx.h"
+ 964              		.file 5 "FWLIB/inc/stm32f4xx_sdio.h"
+ 965              		.file 6 "CORE/core_cm4.h"
+ 966              		.file 7 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 35
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_sdio.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:22     .text.SDIO_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:27     .text.SDIO_DeInit:0000000000000000 SDIO_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:54     .text.SDIO_Init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:59     .text.SDIO_Init:0000000000000000 SDIO_Init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:112    .text.SDIO_Init:0000000000000030 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:117    .text.SDIO_StructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:122    .text.SDIO_StructInit:0000000000000000 SDIO_StructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:148    .text.SDIO_ClockCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:153    .text.SDIO_ClockCmd:0000000000000000 SDIO_ClockCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:168    .text.SDIO_ClockCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:173    .text.SDIO_SetPowerState:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:178    .text.SDIO_SetPowerState:0000000000000000 SDIO_SetPowerState
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:193    .text.SDIO_SetPowerState:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:198    .text.SDIO_GetPowerState:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:203    .text.SDIO_GetPowerState:0000000000000000 SDIO_GetPowerState
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:219    .text.SDIO_GetPowerState:000000000000000c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:224    .text.SDIO_SendCommand:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:229    .text.SDIO_SendCommand:0000000000000000 SDIO_SendCommand
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:276    .text.SDIO_SendCommand:000000000000002c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:281    .text.SDIO_CmdStructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:286    .text.SDIO_CmdStructInit:0000000000000000 SDIO_CmdStructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:310    .text.SDIO_GetCommandResponse:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:315    .text.SDIO_GetCommandResponse:0000000000000000 SDIO_GetCommandResponse
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:331    .text.SDIO_GetCommandResponse:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:336    .text.SDIO_GetResponse:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:341    .text.SDIO_GetResponse:0000000000000000 SDIO_GetResponse
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:372    .text.SDIO_GetResponse:0000000000000014 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:377    .text.SDIO_DataConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:382    .text.SDIO_DataConfig:0000000000000000 SDIO_DataConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:431    .text.SDIO_DataConfig:000000000000002c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:436    .text.SDIO_DataStructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:441    .text.SDIO_DataStructInit:0000000000000000 SDIO_DataStructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:468    .text.SDIO_GetDataCounter:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:473    .text.SDIO_GetDataCounter:0000000000000000 SDIO_GetDataCounter
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:488    .text.SDIO_GetDataCounter:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:493    .text.SDIO_ReadData:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:498    .text.SDIO_ReadData:0000000000000000 SDIO_ReadData
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:513    .text.SDIO_ReadData:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:518    .text.SDIO_WriteData:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:523    .text.SDIO_WriteData:0000000000000000 SDIO_WriteData
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:538    .text.SDIO_WriteData:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:543    .text.SDIO_GetFIFOCount:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:548    .text.SDIO_GetFIFOCount:0000000000000000 SDIO_GetFIFOCount
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:563    .text.SDIO_GetFIFOCount:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:568    .text.SDIO_StartSDIOReadWait:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:573    .text.SDIO_StartSDIOReadWait:0000000000000000 SDIO_StartSDIOReadWait
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:588    .text.SDIO_StartSDIOReadWait:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:593    .text.SDIO_StopSDIOReadWait:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:598    .text.SDIO_StopSDIOReadWait:0000000000000000 SDIO_StopSDIOReadWait
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:613    .text.SDIO_StopSDIOReadWait:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:618    .text.SDIO_SetSDIOReadWaitMode:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:623    .text.SDIO_SetSDIOReadWaitMode:0000000000000000 SDIO_SetSDIOReadWaitMode
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:638    .text.SDIO_SetSDIOReadWaitMode:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:643    .text.SDIO_SetSDIOOperation:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:648    .text.SDIO_SetSDIOOperation:0000000000000000 SDIO_SetSDIOOperation
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s 			page 36
+
+
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:663    .text.SDIO_SetSDIOOperation:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:668    .text.SDIO_SendSDIOSuspendCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:673    .text.SDIO_SendSDIOSuspendCmd:0000000000000000 SDIO_SendSDIOSuspendCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:688    .text.SDIO_SendSDIOSuspendCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:693    .text.SDIO_CommandCompletionCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:698    .text.SDIO_CommandCompletionCmd:0000000000000000 SDIO_CommandCompletionCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:713    .text.SDIO_CommandCompletionCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:718    .text.SDIO_CEATAITCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:723    .text.SDIO_CEATAITCmd:0000000000000000 SDIO_CEATAITCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:742    .text.SDIO_CEATAITCmd:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:747    .text.SDIO_SendCEATACmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:752    .text.SDIO_SendCEATACmd:0000000000000000 SDIO_SendCEATACmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:767    .text.SDIO_SendCEATACmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:772    .text.SDIO_DMACmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:777    .text.SDIO_DMACmd:0000000000000000 SDIO_DMACmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:792    .text.SDIO_DMACmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:797    .text.SDIO_ITConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:802    .text.SDIO_ITConfig:0000000000000000 SDIO_ITConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:831    .text.SDIO_ITConfig:0000000000000018 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:836    .text.SDIO_GetFlagStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:841    .text.SDIO_GetFlagStatus:0000000000000000 SDIO_GetFlagStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:868    .text.SDIO_GetFlagStatus:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:873    .text.SDIO_ClearFlag:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:878    .text.SDIO_ClearFlag:0000000000000000 SDIO_ClearFlag
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:893    .text.SDIO_ClearFlag:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:898    .text.SDIO_GetITStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:903    .text.SDIO_GetITStatus:0000000000000000 SDIO_GetITStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:930    .text.SDIO_GetITStatus:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:935    .text.SDIO_ClearITPendingBit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:940    .text.SDIO_ClearITPendingBit:0000000000000000 SDIO_ClearITPendingBit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccozKQkB.s:955    .text.SDIO_ClearITPendingBit:0000000000000008 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphResetCmd

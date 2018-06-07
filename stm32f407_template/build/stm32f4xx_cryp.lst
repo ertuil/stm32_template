@@ -1,0 +1,2011 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"stm32f4xx_cryp.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.CRYP_DeInit,"ax",%progbits
+  22              		.align	2
+  23              		.global	CRYP_DeInit
+  24              		.thumb
+  25              		.thumb_func
+  27              	CRYP_DeInit:
+  28              	.LFB112:
+  29              		.file 1 ".//FWLIB/src/stm32f4xx_cryp.c"
+   1:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+   2:.//FWLIB/src/stm32f4xx_cryp.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f4xx_cryp.c ****   * @file    stm32f4xx_cryp.c
+   4:.//FWLIB/src/stm32f4xx_cryp.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f4xx_cryp.c ****   * @version V1.4.0
+   6:.//FWLIB/src/stm32f4xx_cryp.c ****   * @date    04-August-2014
+   7:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:.//FWLIB/src/stm32f4xx_cryp.c ****   *          functionalities of the  Cryptographic processor (CRYP) peripheral:
+   9:.//FWLIB/src/stm32f4xx_cryp.c ****   *           + Initialization and Configuration functions
+  10:.//FWLIB/src/stm32f4xx_cryp.c ****   *           + Data treatment functions 
+  11:.//FWLIB/src/stm32f4xx_cryp.c ****   *           + Context swapping functions     
+  12:.//FWLIB/src/stm32f4xx_cryp.c ****   *           + DMA interface function       
+  13:.//FWLIB/src/stm32f4xx_cryp.c ****   *           + Interrupts and flags management       
+  14:.//FWLIB/src/stm32f4xx_cryp.c ****   *
+  15:.//FWLIB/src/stm32f4xx_cryp.c **** @verbatim
+  16:.//FWLIB/src/stm32f4xx_cryp.c ****  ===================================================================      
+  17:.//FWLIB/src/stm32f4xx_cryp.c ****                  ##### How to use this driver #####
+  18:.//FWLIB/src/stm32f4xx_cryp.c ****  =================================================================== 
+  19:.//FWLIB/src/stm32f4xx_cryp.c ****  [..]
+  20:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) Enable the CRYP controller clock using 
+  21:.//FWLIB/src/stm32f4xx_cryp.c ****        RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_CRYP, ENABLE); function.
+  22:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  23:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) Initialise the CRYP using CRYP_Init(), CRYP_KeyInit() and if needed 
+  24:.//FWLIB/src/stm32f4xx_cryp.c ****        CRYP_IVInit(). 
+  25:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  26:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) Flush the IN and OUT FIFOs by using CRYP_FIFOFlush() function.
+  27:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  28:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) Enable the CRYP controller using the CRYP_Cmd() function. 
+  29:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 2
+
+
+  30:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) If using DMA for Data input and output transfer, activate the needed DMA 
+  31:.//FWLIB/src/stm32f4xx_cryp.c ****        Requests using CRYP_DMACmd() function 
+  32:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  33:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) If DMA is not used for data transfer, use CRYP_DataIn() and  CRYP_DataOut() 
+  34:.//FWLIB/src/stm32f4xx_cryp.c ****        functions to enter data to IN FIFO and get result from OUT FIFO.
+  35:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  36:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) To control CRYP events you can use one of the following two methods:
+  37:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) Check on CRYP flags using the CRYP_GetFlagStatus() function.  
+  38:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) Use CRYP interrupts through the function CRYP_ITConfig() at 
+  39:.//FWLIB/src/stm32f4xx_cryp.c ****             initialization phase and CRYP_GetITStatus() function into interrupt 
+  40:.//FWLIB/src/stm32f4xx_cryp.c ****             routines in processing phase.
+  41:.//FWLIB/src/stm32f4xx_cryp.c ****          
+  42:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) Save and restore Cryptographic processor context using CRYP_SaveContext() 
+  43:.//FWLIB/src/stm32f4xx_cryp.c ****        and CRYP_RestoreContext() functions.     
+  44:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  45:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  46:.//FWLIB/src/stm32f4xx_cryp.c ****  *** Procedure to perform an encryption or a decryption ***
+  47:.//FWLIB/src/stm32f4xx_cryp.c ****  ========================================================== 
+  48:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  49:.//FWLIB/src/stm32f4xx_cryp.c ****  *** Initialization ***
+  50:.//FWLIB/src/stm32f4xx_cryp.c ****  ====================== 
+  51:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] 
+  52:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) Initialize the peripheral using CRYP_Init(), CRYP_KeyInit() and CRYP_IVInit 
+  53:.//FWLIB/src/stm32f4xx_cryp.c ****        functions:
+  54:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) Configure the key size (128-, 192- or 256-bit, in the AES only) 
+  55:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) Enter the symmetric key 
+  56:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) Configure the data type
+  57:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) In case of decryption in AES-ECB or AES-CBC, you must prepare 
+  58:.//FWLIB/src/stm32f4xx_cryp.c ****             the key: configure the key preparation mode. Then Enable the CRYP 
+  59:.//FWLIB/src/stm32f4xx_cryp.c ****             peripheral using CRYP_Cmd() function: the BUSY flag is set. 
+  60:.//FWLIB/src/stm32f4xx_cryp.c ****             Wait until BUSY flag is reset : the key is prepared for decryption
+  61:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) Configure the algorithm and chaining (the DES/TDES in ECB/CBC, the 
+  62:.//FWLIB/src/stm32f4xx_cryp.c ****             AES in ECB/CBC/CTR) 
+  63:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) Configure the direction (encryption/decryption).
+  64:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) Write the initialization vectors (in CBC or CTR modes only)
+  65:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  66:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) Flush the IN and OUT FIFOs using the CRYP_FIFOFlush() function
+  67:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  68:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  69:.//FWLIB/src/stm32f4xx_cryp.c ****   *** Basic Processing mode (polling mode) *** 
+  70:.//FWLIB/src/stm32f4xx_cryp.c ****   ============================================  
+  71:.//FWLIB/src/stm32f4xx_cryp.c ****   [..]
+  72:.//FWLIB/src/stm32f4xx_cryp.c ****     (#) Enable the cryptographic processor using CRYP_Cmd() function.
+  73:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  74:.//FWLIB/src/stm32f4xx_cryp.c ****     (#) Write the first blocks in the input FIFO (2 to 8 words) using 
+  75:.//FWLIB/src/stm32f4xx_cryp.c ****         CRYP_DataIn() function.
+  76:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  77:.//FWLIB/src/stm32f4xx_cryp.c ****     (#) Repeat the following sequence until the complete message has been 
+  78:.//FWLIB/src/stm32f4xx_cryp.c ****         processed:
+  79:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  80:.//FWLIB/src/stm32f4xx_cryp.c ****         (++) Wait for flag CRYP_FLAG_OFNE occurs (using CRYP_GetFlagStatus() 
+  81:.//FWLIB/src/stm32f4xx_cryp.c ****             function), then read the OUT-FIFO using CRYP_DataOut() function
+  82:.//FWLIB/src/stm32f4xx_cryp.c ****             (1 block or until the FIFO is empty)
+  83:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  84:.//FWLIB/src/stm32f4xx_cryp.c ****          (++) Wait for flag CRYP_FLAG_IFNF occurs, (using CRYP_GetFlagStatus() 
+  85:.//FWLIB/src/stm32f4xx_cryp.c ****             function then write the IN FIFO using CRYP_DataIn() function 
+  86:.//FWLIB/src/stm32f4xx_cryp.c ****             (1 block or until the FIFO is full)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 3
+
+
+  87:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  88:.//FWLIB/src/stm32f4xx_cryp.c ****     (#) At the end of the processing, CRYP_FLAG_BUSY flag will be reset and 
+  89:.//FWLIB/src/stm32f4xx_cryp.c ****           both FIFOs are empty (CRYP_FLAG_IFEM is set and CRYP_FLAG_OFNE is 
+  90:.//FWLIB/src/stm32f4xx_cryp.c ****           reset). You can disable the peripheral using CRYP_Cmd() function.
+  91:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  92:.//FWLIB/src/stm32f4xx_cryp.c ****  *** Interrupts Processing mode *** 
+  93:.//FWLIB/src/stm32f4xx_cryp.c ****  ==================================
+  94:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] In this mode, Processing is done when the data are transferred by the 
+  95:.//FWLIB/src/stm32f4xx_cryp.c ****       CPU during interrupts.
+  96:.//FWLIB/src/stm32f4xx_cryp.c ****   
+  97:.//FWLIB/src/stm32f4xx_cryp.c ****     (#) Enable the interrupts CRYP_IT_INI and CRYP_IT_OUTI using CRYP_ITConfig()
+  98:.//FWLIB/src/stm32f4xx_cryp.c ****         function.
+  99:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 100:.//FWLIB/src/stm32f4xx_cryp.c ****     (#) Enable the cryptographic processor using CRYP_Cmd() function.
+ 101:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 102:.//FWLIB/src/stm32f4xx_cryp.c ****     (#) In the CRYP_IT_INI interrupt handler : load the input message into the 
+ 103:.//FWLIB/src/stm32f4xx_cryp.c ****          IN FIFO using CRYP_DataIn() function . You can load 2 or 4 words at a 
+ 104:.//FWLIB/src/stm32f4xx_cryp.c ****          time, or load data until the IN FIFO is full. When the last word of
+ 105:.//FWLIB/src/stm32f4xx_cryp.c ****          the message has been entered into the IN FIFO, disable the CRYP_IT_INI 
+ 106:.//FWLIB/src/stm32f4xx_cryp.c ****          interrupt (using CRYP_ITConfig() function).
+ 107:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 108:.//FWLIB/src/stm32f4xx_cryp.c ****     (#) In the CRYP_IT_OUTI interrupt handler : read the output message from 
+ 109:.//FWLIB/src/stm32f4xx_cryp.c ****          the OUT FIFO using CRYP_DataOut() function. You can read 1 block (2 or 
+ 110:.//FWLIB/src/stm32f4xx_cryp.c ****          4 words) at a time or read data until the FIFO is empty.
+ 111:.//FWLIB/src/stm32f4xx_cryp.c ****          When the last word has been read, INIM=0, BUSY=0 and both FIFOs are 
+ 112:.//FWLIB/src/stm32f4xx_cryp.c ****          empty (CRYP_FLAG_IFEM is set and CRYP_FLAG_OFNE is reset). 
+ 113:.//FWLIB/src/stm32f4xx_cryp.c ****          You can disable the CRYP_IT_OUTI interrupt (using CRYP_ITConfig() 
+ 114:.//FWLIB/src/stm32f4xx_cryp.c ****          function) and you can disable the peripheral using CRYP_Cmd() function.
+ 115:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 116:.//FWLIB/src/stm32f4xx_cryp.c ****  *** DMA Processing mode *** 
+ 117:.//FWLIB/src/stm32f4xx_cryp.c ****  ===========================
+ 118:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] In this mode, Processing is done when the DMA is used to transfer the 
+ 119:.//FWLIB/src/stm32f4xx_cryp.c ****       data from/to the memory.
+ 120:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 121:.//FWLIB/src/stm32f4xx_cryp.c ****     (#) Configure the DMA controller to transfer the input data from the 
+ 122:.//FWLIB/src/stm32f4xx_cryp.c ****          memory using DMA_Init() function. 
+ 123:.//FWLIB/src/stm32f4xx_cryp.c ****          The transfer length is the length of the message. 
+ 124:.//FWLIB/src/stm32f4xx_cryp.c ****          As message padding is not managed by the peripheral, the message 
+ 125:.//FWLIB/src/stm32f4xx_cryp.c ****          length must be an entire number of blocks. The data are transferred 
+ 126:.//FWLIB/src/stm32f4xx_cryp.c ****          in burst mode. The burst length is 4 words in the AES and 2 or 4 
+ 127:.//FWLIB/src/stm32f4xx_cryp.c ****          words in the DES/TDES. The DMA should be configured to set an 
+ 128:.//FWLIB/src/stm32f4xx_cryp.c ****          interrupt on transfer completion of the output data to indicate that 
+ 129:.//FWLIB/src/stm32f4xx_cryp.c ****          the processing is finished. 
+ 130:.//FWLIB/src/stm32f4xx_cryp.c ****          Refer to DMA peripheral driver for more details.  
+ 131:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 132:.//FWLIB/src/stm32f4xx_cryp.c ****      (#) Enable the cryptographic processor using CRYP_Cmd() function. 
+ 133:.//FWLIB/src/stm32f4xx_cryp.c ****          Enable the DMA requests CRYP_DMAReq_DataIN and CRYP_DMAReq_DataOUT 
+ 134:.//FWLIB/src/stm32f4xx_cryp.c ****          using CRYP_DMACmd() function.
+ 135:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 136:.//FWLIB/src/stm32f4xx_cryp.c ****      (#) All the transfers and processing are managed by the DMA and the 
+ 137:.//FWLIB/src/stm32f4xx_cryp.c ****          cryptographic processor. The DMA transfer complete interrupt indicates 
+ 138:.//FWLIB/src/stm32f4xx_cryp.c ****          that the processing is complete. Both FIFOs are normally empty and 
+ 139:.//FWLIB/src/stm32f4xx_cryp.c ****          CRYP_FLAG_BUSY flag is reset.
+ 140:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 141:.//FWLIB/src/stm32f4xx_cryp.c ****     @endverbatim
+ 142:.//FWLIB/src/stm32f4xx_cryp.c ****   *
+ 143:.//FWLIB/src/stm32f4xx_cryp.c ****   ******************************************************************************
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 4
+
+
+ 144:.//FWLIB/src/stm32f4xx_cryp.c ****   * @attention
+ 145:.//FWLIB/src/stm32f4xx_cryp.c ****   *
+ 146:.//FWLIB/src/stm32f4xx_cryp.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+ 147:.//FWLIB/src/stm32f4xx_cryp.c ****   *
+ 148:.//FWLIB/src/stm32f4xx_cryp.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+ 149:.//FWLIB/src/stm32f4xx_cryp.c ****   * You may not use this file except in compliance with the License.
+ 150:.//FWLIB/src/stm32f4xx_cryp.c ****   * You may obtain a copy of the License at:
+ 151:.//FWLIB/src/stm32f4xx_cryp.c ****   *
+ 152:.//FWLIB/src/stm32f4xx_cryp.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+ 153:.//FWLIB/src/stm32f4xx_cryp.c ****   *
+ 154:.//FWLIB/src/stm32f4xx_cryp.c ****   * Unless required by applicable law or agreed to in writing, software 
+ 155:.//FWLIB/src/stm32f4xx_cryp.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+ 156:.//FWLIB/src/stm32f4xx_cryp.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ 157:.//FWLIB/src/stm32f4xx_cryp.c ****   * See the License for the specific language governing permissions and
+ 158:.//FWLIB/src/stm32f4xx_cryp.c ****   * limitations under the License.
+ 159:.//FWLIB/src/stm32f4xx_cryp.c ****   *
+ 160:.//FWLIB/src/stm32f4xx_cryp.c ****   ******************************************************************************  
+ 161:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 162:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 163:.//FWLIB/src/stm32f4xx_cryp.c **** /* Includes ------------------------------------------------------------------*/
+ 164:.//FWLIB/src/stm32f4xx_cryp.c **** #include "stm32f4xx_cryp.h"
+ 165:.//FWLIB/src/stm32f4xx_cryp.c **** #include "stm32f4xx_rcc.h"
+ 166:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 167:.//FWLIB/src/stm32f4xx_cryp.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+ 168:.//FWLIB/src/stm32f4xx_cryp.c ****   * @{
+ 169:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 170:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 171:.//FWLIB/src/stm32f4xx_cryp.c **** /** @defgroup CRYP 
+ 172:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief CRYP driver modules
+ 173:.//FWLIB/src/stm32f4xx_cryp.c ****   * @{
+ 174:.//FWLIB/src/stm32f4xx_cryp.c ****   */ 
+ 175:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 176:.//FWLIB/src/stm32f4xx_cryp.c **** /* Private typedef -----------------------------------------------------------*/
+ 177:.//FWLIB/src/stm32f4xx_cryp.c **** /* Private define ------------------------------------------------------------*/
+ 178:.//FWLIB/src/stm32f4xx_cryp.c **** #define FLAG_MASK     ((uint8_t)0x20)
+ 179:.//FWLIB/src/stm32f4xx_cryp.c **** #define MAX_TIMEOUT   ((uint16_t)0xFFFF)
+ 180:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 181:.//FWLIB/src/stm32f4xx_cryp.c **** /* Private macro -------------------------------------------------------------*/
+ 182:.//FWLIB/src/stm32f4xx_cryp.c **** /* Private variables ---------------------------------------------------------*/
+ 183:.//FWLIB/src/stm32f4xx_cryp.c **** /* Private function prototypes -----------------------------------------------*/
+ 184:.//FWLIB/src/stm32f4xx_cryp.c **** /* Private functions ---------------------------------------------------------*/
+ 185:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 186:.//FWLIB/src/stm32f4xx_cryp.c **** /** @defgroup CRYP_Private_Functions
+ 187:.//FWLIB/src/stm32f4xx_cryp.c ****   * @{
+ 188:.//FWLIB/src/stm32f4xx_cryp.c ****   */ 
+ 189:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 190:.//FWLIB/src/stm32f4xx_cryp.c **** /** @defgroup CRYP_Group1 Initialization and Configuration functions
+ 191:.//FWLIB/src/stm32f4xx_cryp.c ****  *  @brief    Initialization and Configuration functions 
+ 192:.//FWLIB/src/stm32f4xx_cryp.c ****  *
+ 193:.//FWLIB/src/stm32f4xx_cryp.c **** @verbatim    
+ 194:.//FWLIB/src/stm32f4xx_cryp.c ****  ===============================================================================
+ 195:.//FWLIB/src/stm32f4xx_cryp.c ****              ##### Initialization and Configuration functions #####
+ 196:.//FWLIB/src/stm32f4xx_cryp.c ****  ===============================================================================  
+ 197:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] This section provides functions allowing to 
+ 198:.//FWLIB/src/stm32f4xx_cryp.c ****    (+) Initialize the cryptographic Processor using CRYP_Init() function 
+ 199:.//FWLIB/src/stm32f4xx_cryp.c ****        (++)  Encrypt or Decrypt 
+ 200:.//FWLIB/src/stm32f4xx_cryp.c ****        (++)  mode : TDES-ECB, TDES-CBC, 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 5
+
+
+ 201:.//FWLIB/src/stm32f4xx_cryp.c ****                     DES-ECB, DES-CBC, 
+ 202:.//FWLIB/src/stm32f4xx_cryp.c ****                     AES-ECB, AES-CBC, AES-CTR, AES-Key, AES-GCM, AES-CCM 
+ 203:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) DataType :  32-bit data, 16-bit data, bit data or bit-string
+ 204:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) Key Size (only in AES modes)
+ 205:.//FWLIB/src/stm32f4xx_cryp.c ****    (+) Configure the Encrypt or Decrypt Key using CRYP_KeyInit() function 
+ 206:.//FWLIB/src/stm32f4xx_cryp.c ****    (+) Configure the Initialization Vectors(IV) for CBC and CTR modes using 
+ 207:.//FWLIB/src/stm32f4xx_cryp.c ****        CRYP_IVInit() function.  
+ 208:.//FWLIB/src/stm32f4xx_cryp.c ****    (+) Flushes the IN and OUT FIFOs : using CRYP_FIFOFlush() function.                         
+ 209:.//FWLIB/src/stm32f4xx_cryp.c ****    (+) Enable or disable the CRYP Processor using CRYP_Cmd() function 
+ 210:.//FWLIB/src/stm32f4xx_cryp.c ****        
+ 211:.//FWLIB/src/stm32f4xx_cryp.c **** @endverbatim
+ 212:.//FWLIB/src/stm32f4xx_cryp.c ****   * @{
+ 213:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 214:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 215:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Deinitializes the CRYP peripheral registers to their default reset values
+ 216:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  None
+ 217:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 218:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 219:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_DeInit(void)
+ 220:.//FWLIB/src/stm32f4xx_cryp.c **** {
+  30              		.loc 1 220 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+ 221:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Enable CRYP reset state */
+ 222:.//FWLIB/src/stm32f4xx_cryp.c ****   RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_CRYP, ENABLE);
+  39              		.loc 1 222 0
+  40 0002 0121     		movs	r1, #1
+  41 0004 1020     		movs	r0, #16
+  42 0006 FFF7FEFF 		bl	RCC_AHB2PeriphResetCmd
+  43              	.LVL0:
+ 223:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 224:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Release CRYP from reset state */
+ 225:.//FWLIB/src/stm32f4xx_cryp.c ****   RCC_AHB2PeriphResetCmd(RCC_AHB2Periph_CRYP, DISABLE);
+  44              		.loc 1 225 0
+  45 000a 0021     		movs	r1, #0
+  46 000c 1020     		movs	r0, #16
+  47 000e FFF7FEFF 		bl	RCC_AHB2PeriphResetCmd
+  48              	.LVL1:
+  49 0012 08BD     		pop	{r3, pc}
+  50              		.cfi_endproc
+  51              	.LFE112:
+  53              		.section	.text.CRYP_Init,"ax",%progbits
+  54              		.align	2
+  55              		.global	CRYP_Init
+  56              		.thumb
+  57              		.thumb_func
+  59              	CRYP_Init:
+  60              	.LFB113:
+ 226:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 227:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 228:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 6
+
+
+ 229:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Initializes the CRYP peripheral according to the specified parameters
+ 230:.//FWLIB/src/stm32f4xx_cryp.c ****   *         in the CRYP_InitStruct.
+ 231:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_InitStruct: pointer to a CRYP_InitTypeDef structure that contains
+ 232:.//FWLIB/src/stm32f4xx_cryp.c ****   *         the configuration information for the CRYP peripheral.
+ 233:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 234:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 235:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_Init(CRYP_InitTypeDef* CRYP_InitStruct)
+ 236:.//FWLIB/src/stm32f4xx_cryp.c **** {
+  61              		.loc 1 236 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66              	.LVL2:
+ 237:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Check the parameters */
+ 238:.//FWLIB/src/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_ALGOMODE(CRYP_InitStruct->CRYP_AlgoMode));
+ 239:.//FWLIB/src/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_DATATYPE(CRYP_InitStruct->CRYP_DataType));
+ 240:.//FWLIB/src/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_ALGODIR(CRYP_InitStruct->CRYP_AlgoDir));
+ 241:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 242:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Select Algorithm mode*/  
+ 243:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CR &= ~CRYP_CR_ALGOMODE;
+  67              		.loc 1 243 0
+  68 0000 164B     		ldr	r3, .L5
+  69 0002 1A68     		ldr	r2, [r3]
+  70 0004 22F40022 		bic	r2, r2, #524288
+  71 0008 22F03802 		bic	r2, r2, #56
+  72 000c 1A60     		str	r2, [r3]
+ 244:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CR |= CRYP_InitStruct->CRYP_AlgoMode;
+  73              		.loc 1 244 0
+  74 000e 1968     		ldr	r1, [r3]
+  75 0010 4268     		ldr	r2, [r0, #4]
+  76 0012 0A43     		orrs	r2, r2, r1
+  77 0014 1A60     		str	r2, [r3]
+ 245:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 246:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Select dataType */ 
+ 247:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CR &= ~CRYP_CR_DATATYPE;
+  78              		.loc 1 247 0
+  79 0016 1A68     		ldr	r2, [r3]
+  80 0018 22F0C002 		bic	r2, r2, #192
+  81 001c 1A60     		str	r2, [r3]
+ 248:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CR |= CRYP_InitStruct->CRYP_DataType;
+  82              		.loc 1 248 0
+  83 001e 1968     		ldr	r1, [r3]
+  84 0020 8268     		ldr	r2, [r0, #8]
+  85 0022 0A43     		orrs	r2, r2, r1
+  86 0024 1A60     		str	r2, [r3]
+ 249:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 250:.//FWLIB/src/stm32f4xx_cryp.c ****   /* select Key size (used only with AES algorithm) */
+ 251:.//FWLIB/src/stm32f4xx_cryp.c ****   if ((CRYP_InitStruct->CRYP_AlgoMode != CRYP_AlgoMode_TDES_ECB) &&
+  87              		.loc 1 251 0
+  88 0026 4368     		ldr	r3, [r0, #4]
+  89 0028 73B1     		cbz	r3, .L4
+  90              		.loc 1 251 0 is_stmt 0 discriminator 1
+  91 002a 082B     		cmp	r3, #8
+  92 002c 0CD0     		beq	.L4
+ 252:.//FWLIB/src/stm32f4xx_cryp.c ****       (CRYP_InitStruct->CRYP_AlgoMode != CRYP_AlgoMode_TDES_CBC) &&
+  93              		.loc 1 252 0 is_stmt 1
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 7
+
+
+  94 002e 102B     		cmp	r3, #16
+  95 0030 0AD0     		beq	.L4
+ 253:.//FWLIB/src/stm32f4xx_cryp.c ****       (CRYP_InitStruct->CRYP_AlgoMode != CRYP_AlgoMode_DES_ECB) &&
+  96              		.loc 1 253 0
+  97 0032 182B     		cmp	r3, #24
+  98 0034 08D0     		beq	.L4
+ 254:.//FWLIB/src/stm32f4xx_cryp.c ****       (CRYP_InitStruct->CRYP_AlgoMode != CRYP_AlgoMode_DES_CBC))
+ 255:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 256:.//FWLIB/src/stm32f4xx_cryp.c ****     assert_param(IS_CRYP_KEYSIZE(CRYP_InitStruct->CRYP_KeySize));
+ 257:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP->CR &= ~CRYP_CR_KEYSIZE;
+  99              		.loc 1 257 0
+ 100 0036 094B     		ldr	r3, .L5
+ 101 0038 1A68     		ldr	r2, [r3]
+ 102 003a 22F44072 		bic	r2, r2, #768
+ 103 003e 1A60     		str	r2, [r3]
+ 258:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP->CR |= CRYP_InitStruct->CRYP_KeySize; /* Key size and value must be 
+ 104              		.loc 1 258 0
+ 105 0040 1968     		ldr	r1, [r3]
+ 106 0042 C268     		ldr	r2, [r0, #12]
+ 107 0044 0A43     		orrs	r2, r2, r1
+ 108 0046 1A60     		str	r2, [r3]
+ 109              	.L4:
+ 259:.//FWLIB/src/stm32f4xx_cryp.c ****                                                   configured once the key has 
+ 260:.//FWLIB/src/stm32f4xx_cryp.c ****                                                   been prepared */
+ 261:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 262:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 263:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Select data Direction */ 
+ 264:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CR &= ~CRYP_CR_ALGODIR;
+ 110              		.loc 1 264 0
+ 111 0048 044B     		ldr	r3, .L5
+ 112 004a 1A68     		ldr	r2, [r3]
+ 113 004c 22F00402 		bic	r2, r2, #4
+ 114 0050 1A60     		str	r2, [r3]
+ 265:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CR |= CRYP_InitStruct->CRYP_AlgoDir;
+ 115              		.loc 1 265 0
+ 116 0052 1968     		ldr	r1, [r3]
+ 117 0054 0268     		ldr	r2, [r0]
+ 118 0056 0A43     		orrs	r2, r2, r1
+ 119 0058 1A60     		str	r2, [r3]
+ 120 005a 7047     		bx	lr
+ 121              	.L6:
+ 122              		.align	2
+ 123              	.L5:
+ 124 005c 00000650 		.word	1342570496
+ 125              		.cfi_endproc
+ 126              	.LFE113:
+ 128              		.section	.text.CRYP_StructInit,"ax",%progbits
+ 129              		.align	2
+ 130              		.global	CRYP_StructInit
+ 131              		.thumb
+ 132              		.thumb_func
+ 134              	CRYP_StructInit:
+ 135              	.LFB114:
+ 266:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 267:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 268:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 269:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Fills each CRYP_InitStruct member with its default value.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 8
+
+
+ 270:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_InitStruct: pointer to a CRYP_InitTypeDef structure which will
+ 271:.//FWLIB/src/stm32f4xx_cryp.c ****   *         be initialized.
+ 272:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 273:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 274:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_StructInit(CRYP_InitTypeDef* CRYP_InitStruct)
+ 275:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 136              		.loc 1 275 0
+ 137              		.cfi_startproc
+ 138              		@ args = 0, pretend = 0, frame = 0
+ 139              		@ frame_needed = 0, uses_anonymous_args = 0
+ 140              		@ link register save eliminated.
+ 141              	.LVL3:
+ 276:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Initialize the CRYP_AlgoDir member */
+ 277:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_InitStruct->CRYP_AlgoDir = CRYP_AlgoDir_Encrypt;
+ 142              		.loc 1 277 0
+ 143 0000 0023     		movs	r3, #0
+ 144 0002 0360     		str	r3, [r0]
+ 278:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 279:.//FWLIB/src/stm32f4xx_cryp.c ****   /* initialize the CRYP_AlgoMode member */
+ 280:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_InitStruct->CRYP_AlgoMode = CRYP_AlgoMode_TDES_ECB;
+ 145              		.loc 1 280 0
+ 146 0004 4360     		str	r3, [r0, #4]
+ 281:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 282:.//FWLIB/src/stm32f4xx_cryp.c ****   /* initialize the CRYP_DataType member */
+ 283:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_InitStruct->CRYP_DataType = CRYP_DataType_32b;
+ 147              		.loc 1 283 0
+ 148 0006 8360     		str	r3, [r0, #8]
+ 284:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 285:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Initialize the CRYP_KeySize member */
+ 286:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_InitStruct->CRYP_KeySize = CRYP_KeySize_128b;
+ 149              		.loc 1 286 0
+ 150 0008 C360     		str	r3, [r0, #12]
+ 151 000a 7047     		bx	lr
+ 152              		.cfi_endproc
+ 153              	.LFE114:
+ 155              		.section	.text.CRYP_KeyInit,"ax",%progbits
+ 156              		.align	2
+ 157              		.global	CRYP_KeyInit
+ 158              		.thumb
+ 159              		.thumb_func
+ 161              	CRYP_KeyInit:
+ 162              	.LFB115:
+ 287:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 288:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 289:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 290:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Initializes the CRYP Keys according to the specified parameters in
+ 291:.//FWLIB/src/stm32f4xx_cryp.c ****   *         the CRYP_KeyInitStruct.
+ 292:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_KeyInitStruct: pointer to a CRYP_KeyInitTypeDef structure that
+ 293:.//FWLIB/src/stm32f4xx_cryp.c ****   *         contains the configuration information for the CRYP Keys.
+ 294:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 295:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 296:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_KeyInit(CRYP_KeyInitTypeDef* CRYP_KeyInitStruct)
+ 297:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 163              		.loc 1 297 0
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 9
+
+
+ 167              		@ link register save eliminated.
+ 168              	.LVL4:
+ 298:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Key Initialisation */
+ 299:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K0LR = CRYP_KeyInitStruct->CRYP_Key0Left;
+ 169              		.loc 1 299 0
+ 170 0000 0268     		ldr	r2, [r0]
+ 171 0002 084B     		ldr	r3, .L9
+ 172 0004 1A62     		str	r2, [r3, #32]
+ 300:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K0RR = CRYP_KeyInitStruct->CRYP_Key0Right;
+ 173              		.loc 1 300 0
+ 174 0006 4268     		ldr	r2, [r0, #4]
+ 175 0008 5A62     		str	r2, [r3, #36]
+ 301:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K1LR = CRYP_KeyInitStruct->CRYP_Key1Left;
+ 176              		.loc 1 301 0
+ 177 000a 8268     		ldr	r2, [r0, #8]
+ 178 000c 9A62     		str	r2, [r3, #40]
+ 302:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K1RR = CRYP_KeyInitStruct->CRYP_Key1Right;
+ 179              		.loc 1 302 0
+ 180 000e C268     		ldr	r2, [r0, #12]
+ 181 0010 DA62     		str	r2, [r3, #44]
+ 303:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K2LR = CRYP_KeyInitStruct->CRYP_Key2Left;
+ 182              		.loc 1 303 0
+ 183 0012 0269     		ldr	r2, [r0, #16]
+ 184 0014 1A63     		str	r2, [r3, #48]
+ 304:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K2RR = CRYP_KeyInitStruct->CRYP_Key2Right;
+ 185              		.loc 1 304 0
+ 186 0016 4269     		ldr	r2, [r0, #20]
+ 187 0018 5A63     		str	r2, [r3, #52]
+ 305:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K3LR = CRYP_KeyInitStruct->CRYP_Key3Left;
+ 188              		.loc 1 305 0
+ 189 001a 8269     		ldr	r2, [r0, #24]
+ 190 001c 9A63     		str	r2, [r3, #56]
+ 306:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K3RR = CRYP_KeyInitStruct->CRYP_Key3Right;
+ 191              		.loc 1 306 0
+ 192 001e C269     		ldr	r2, [r0, #28]
+ 193 0020 DA63     		str	r2, [r3, #60]
+ 194 0022 7047     		bx	lr
+ 195              	.L10:
+ 196              		.align	2
+ 197              	.L9:
+ 198 0024 00000650 		.word	1342570496
+ 199              		.cfi_endproc
+ 200              	.LFE115:
+ 202              		.section	.text.CRYP_KeyStructInit,"ax",%progbits
+ 203              		.align	2
+ 204              		.global	CRYP_KeyStructInit
+ 205              		.thumb
+ 206              		.thumb_func
+ 208              	CRYP_KeyStructInit:
+ 209              	.LFB116:
+ 307:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 308:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 309:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 310:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Fills each CRYP_KeyInitStruct member with its default value.
+ 311:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_KeyInitStruct: pointer to a CRYP_KeyInitTypeDef structure 
+ 312:.//FWLIB/src/stm32f4xx_cryp.c ****   *         which will be initialized.
+ 313:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 10
+
+
+ 314:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 315:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_KeyStructInit(CRYP_KeyInitTypeDef* CRYP_KeyInitStruct)
+ 316:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 210              		.loc 1 316 0
+ 211              		.cfi_startproc
+ 212              		@ args = 0, pretend = 0, frame = 0
+ 213              		@ frame_needed = 0, uses_anonymous_args = 0
+ 214              		@ link register save eliminated.
+ 215              	.LVL5:
+ 317:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key0Left  = 0;
+ 216              		.loc 1 317 0
+ 217 0000 0023     		movs	r3, #0
+ 218 0002 0360     		str	r3, [r0]
+ 318:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key0Right = 0;
+ 219              		.loc 1 318 0
+ 220 0004 4360     		str	r3, [r0, #4]
+ 319:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key1Left  = 0;
+ 221              		.loc 1 319 0
+ 222 0006 8360     		str	r3, [r0, #8]
+ 320:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key1Right = 0;
+ 223              		.loc 1 320 0
+ 224 0008 C360     		str	r3, [r0, #12]
+ 321:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key2Left  = 0;
+ 225              		.loc 1 321 0
+ 226 000a 0361     		str	r3, [r0, #16]
+ 322:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key2Right = 0;
+ 227              		.loc 1 322 0
+ 228 000c 4361     		str	r3, [r0, #20]
+ 323:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key3Left  = 0;
+ 229              		.loc 1 323 0
+ 230 000e 8361     		str	r3, [r0, #24]
+ 324:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_KeyInitStruct->CRYP_Key3Right = 0;
+ 231              		.loc 1 324 0
+ 232 0010 C361     		str	r3, [r0, #28]
+ 233 0012 7047     		bx	lr
+ 234              		.cfi_endproc
+ 235              	.LFE116:
+ 237              		.section	.text.CRYP_IVInit,"ax",%progbits
+ 238              		.align	2
+ 239              		.global	CRYP_IVInit
+ 240              		.thumb
+ 241              		.thumb_func
+ 243              	CRYP_IVInit:
+ 244              	.LFB117:
+ 325:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 326:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 327:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Initializes the CRYP Initialization Vectors(IV) according to the
+ 328:.//FWLIB/src/stm32f4xx_cryp.c ****   *         specified parameters in the CRYP_IVInitStruct.
+ 329:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_IVInitStruct: pointer to a CRYP_IVInitTypeDef structure that contains
+ 330:.//FWLIB/src/stm32f4xx_cryp.c ****   *         the configuration information for the CRYP Initialization Vectors(IV).
+ 331:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 332:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 333:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_IVInit(CRYP_IVInitTypeDef* CRYP_IVInitStruct)
+ 334:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 245              		.loc 1 334 0
+ 246              		.cfi_startproc
+ 247              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 11
+
+
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249              		@ link register save eliminated.
+ 250              	.LVL6:
+ 335:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->IV0LR = CRYP_IVInitStruct->CRYP_IV0Left;
+ 251              		.loc 1 335 0
+ 252 0000 0268     		ldr	r2, [r0]
+ 253 0002 044B     		ldr	r3, .L13
+ 254 0004 1A64     		str	r2, [r3, #64]
+ 336:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->IV0RR = CRYP_IVInitStruct->CRYP_IV0Right;
+ 255              		.loc 1 336 0
+ 256 0006 4268     		ldr	r2, [r0, #4]
+ 257 0008 5A64     		str	r2, [r3, #68]
+ 337:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->IV1LR = CRYP_IVInitStruct->CRYP_IV1Left;
+ 258              		.loc 1 337 0
+ 259 000a 8268     		ldr	r2, [r0, #8]
+ 260 000c 9A64     		str	r2, [r3, #72]
+ 338:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->IV1RR = CRYP_IVInitStruct->CRYP_IV1Right;
+ 261              		.loc 1 338 0
+ 262 000e C268     		ldr	r2, [r0, #12]
+ 263 0010 DA64     		str	r2, [r3, #76]
+ 264 0012 7047     		bx	lr
+ 265              	.L14:
+ 266              		.align	2
+ 267              	.L13:
+ 268 0014 00000650 		.word	1342570496
+ 269              		.cfi_endproc
+ 270              	.LFE117:
+ 272              		.section	.text.CRYP_IVStructInit,"ax",%progbits
+ 273              		.align	2
+ 274              		.global	CRYP_IVStructInit
+ 275              		.thumb
+ 276              		.thumb_func
+ 278              	CRYP_IVStructInit:
+ 279              	.LFB118:
+ 339:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 340:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 341:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 342:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Fills each CRYP_IVInitStruct member with its default value.
+ 343:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_IVInitStruct: pointer to a CRYP_IVInitTypeDef Initialization 
+ 344:.//FWLIB/src/stm32f4xx_cryp.c ****   *         Vectors(IV) structure which will be initialized.
+ 345:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 346:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 347:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_IVStructInit(CRYP_IVInitTypeDef* CRYP_IVInitStruct)
+ 348:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 280              		.loc 1 348 0
+ 281              		.cfi_startproc
+ 282              		@ args = 0, pretend = 0, frame = 0
+ 283              		@ frame_needed = 0, uses_anonymous_args = 0
+ 284              		@ link register save eliminated.
+ 285              	.LVL7:
+ 349:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_IVInitStruct->CRYP_IV0Left  = 0;
+ 286              		.loc 1 349 0
+ 287 0000 0023     		movs	r3, #0
+ 288 0002 0360     		str	r3, [r0]
+ 350:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_IVInitStruct->CRYP_IV0Right = 0;
+ 289              		.loc 1 350 0
+ 290 0004 4360     		str	r3, [r0, #4]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 12
+
+
+ 351:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_IVInitStruct->CRYP_IV1Left  = 0;
+ 291              		.loc 1 351 0
+ 292 0006 8360     		str	r3, [r0, #8]
+ 352:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP_IVInitStruct->CRYP_IV1Right = 0;
+ 293              		.loc 1 352 0
+ 294 0008 C360     		str	r3, [r0, #12]
+ 295 000a 7047     		bx	lr
+ 296              		.cfi_endproc
+ 297              	.LFE118:
+ 299              		.section	.text.CRYP_PhaseConfig,"ax",%progbits
+ 300              		.align	2
+ 301              		.global	CRYP_PhaseConfig
+ 302              		.thumb
+ 303              		.thumb_func
+ 305              	CRYP_PhaseConfig:
+ 306              	.LFB119:
+ 353:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 354:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 355:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 356:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Configures the AES-CCM and AES-GCM phases
+ 357:.//FWLIB/src/stm32f4xx_cryp.c ****   * @note   This function is used only with AES-CCM or AES-GCM Algorithms  
+ 358:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_Phase: specifies the CRYP AES-CCM and AES-GCM phase to be configured.
+ 359:.//FWLIB/src/stm32f4xx_cryp.c ****   *           This parameter can be one of the following values:
+ 360:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_Phase_Init: Initialization phase
+ 361:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_Phase_Header: Header phase
+ 362:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_Phase_Payload: Payload phase
+ 363:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_Phase_Final: Final phase 
+ 364:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 365:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 366:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_PhaseConfig(uint32_t CRYP_Phase)
+ 367:.//FWLIB/src/stm32f4xx_cryp.c **** { uint32_t tempcr = 0;
+ 307              		.loc 1 367 0
+ 308              		.cfi_startproc
+ 309              		@ args = 0, pretend = 0, frame = 0
+ 310              		@ frame_needed = 0, uses_anonymous_args = 0
+ 311              		@ link register save eliminated.
+ 312              	.LVL8:
+ 368:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 369:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Check the parameter */
+ 370:.//FWLIB/src/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_PHASE(CRYP_Phase));
+ 371:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 372:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Get the CR register */
+ 373:.//FWLIB/src/stm32f4xx_cryp.c ****   tempcr = CRYP->CR;
+ 313              		.loc 1 373 0
+ 314 0000 034A     		ldr	r2, .L17
+ 315 0002 1368     		ldr	r3, [r2]
+ 316              	.LVL9:
+ 374:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 375:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Reset the phase configuration bits: GCMP_CCMPH */
+ 376:.//FWLIB/src/stm32f4xx_cryp.c ****   tempcr &= (uint32_t)(~CRYP_CR_GCM_CCMPH);
+ 317              		.loc 1 376 0
+ 318 0004 23F44033 		bic	r3, r3, #196608
+ 319              	.LVL10:
+ 377:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Set the selected phase */
+ 378:.//FWLIB/src/stm32f4xx_cryp.c ****   tempcr |= (uint32_t)CRYP_Phase;
+ 320              		.loc 1 378 0
+ 321 0008 1843     		orrs	r0, r0, r3
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 13
+
+
+ 322              	.LVL11:
+ 379:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 380:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Set the CR register */ 
+ 381:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CR = tempcr;    
+ 323              		.loc 1 381 0
+ 324 000a 1060     		str	r0, [r2]
+ 325 000c 7047     		bx	lr
+ 326              	.L18:
+ 327 000e 00BF     		.align	2
+ 328              	.L17:
+ 329 0010 00000650 		.word	1342570496
+ 330              		.cfi_endproc
+ 331              	.LFE119:
+ 333              		.section	.text.CRYP_FIFOFlush,"ax",%progbits
+ 334              		.align	2
+ 335              		.global	CRYP_FIFOFlush
+ 336              		.thumb
+ 337              		.thumb_func
+ 339              	CRYP_FIFOFlush:
+ 340              	.LFB120:
+ 382:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 383:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 384:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 385:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Flushes the IN and OUT FIFOs (that is read and write pointers of the 
+ 386:.//FWLIB/src/stm32f4xx_cryp.c ****   *         FIFOs are reset)
+ 387:.//FWLIB/src/stm32f4xx_cryp.c ****   * @note   The FIFOs must be flushed only when BUSY flag is reset.  
+ 388:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  None
+ 389:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 390:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 391:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_FIFOFlush(void)
+ 392:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 341              		.loc 1 392 0
+ 342              		.cfi_startproc
+ 343              		@ args = 0, pretend = 0, frame = 0
+ 344              		@ frame_needed = 0, uses_anonymous_args = 0
+ 345              		@ link register save eliminated.
+ 393:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Reset the read and write pointers of the FIFOs */
+ 394:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CR |= CRYP_CR_FFLUSH;
+ 346              		.loc 1 394 0
+ 347 0000 024A     		ldr	r2, .L20
+ 348 0002 1368     		ldr	r3, [r2]
+ 349 0004 43F48043 		orr	r3, r3, #16384
+ 350 0008 1360     		str	r3, [r2]
+ 351 000a 7047     		bx	lr
+ 352              	.L21:
+ 353              		.align	2
+ 354              	.L20:
+ 355 000c 00000650 		.word	1342570496
+ 356              		.cfi_endproc
+ 357              	.LFE120:
+ 359              		.section	.text.CRYP_Cmd,"ax",%progbits
+ 360              		.align	2
+ 361              		.global	CRYP_Cmd
+ 362              		.thumb
+ 363              		.thumb_func
+ 365              	CRYP_Cmd:
+ 366              	.LFB121:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 14
+
+
+ 395:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 396:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 397:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 398:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Enables or disables the CRYP peripheral.
+ 399:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  NewState: new state of the CRYP peripheral.
+ 400:.//FWLIB/src/stm32f4xx_cryp.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 401:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 402:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 403:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_Cmd(FunctionalState NewState)
+ 404:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 367              		.loc 1 404 0
+ 368              		.cfi_startproc
+ 369              		@ args = 0, pretend = 0, frame = 0
+ 370              		@ frame_needed = 0, uses_anonymous_args = 0
+ 371              		@ link register save eliminated.
+ 372              	.LVL12:
+ 405:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Check the parameters */
+ 406:.//FWLIB/src/stm32f4xx_cryp.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 407:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 408:.//FWLIB/src/stm32f4xx_cryp.c ****   if (NewState != DISABLE)
+ 373              		.loc 1 408 0
+ 374 0000 28B1     		cbz	r0, .L23
+ 409:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 410:.//FWLIB/src/stm32f4xx_cryp.c ****     /* Enable the Cryptographic processor */
+ 411:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP->CR |= CRYP_CR_CRYPEN;
+ 375              		.loc 1 411 0
+ 376 0002 064A     		ldr	r2, .L25
+ 377 0004 1368     		ldr	r3, [r2]
+ 378 0006 43F40043 		orr	r3, r3, #32768
+ 379 000a 1360     		str	r3, [r2]
+ 380 000c 7047     		bx	lr
+ 381              	.L23:
+ 412:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 413:.//FWLIB/src/stm32f4xx_cryp.c ****   else
+ 414:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 415:.//FWLIB/src/stm32f4xx_cryp.c ****     /* Disable the Cryptographic processor */
+ 416:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP->CR &= ~CRYP_CR_CRYPEN;
+ 382              		.loc 1 416 0
+ 383 000e 034A     		ldr	r2, .L25
+ 384 0010 1368     		ldr	r3, [r2]
+ 385 0012 23F40043 		bic	r3, r3, #32768
+ 386 0016 1360     		str	r3, [r2]
+ 387 0018 7047     		bx	lr
+ 388              	.L26:
+ 389 001a 00BF     		.align	2
+ 390              	.L25:
+ 391 001c 00000650 		.word	1342570496
+ 392              		.cfi_endproc
+ 393              	.LFE121:
+ 395              		.section	.text.CRYP_DataIn,"ax",%progbits
+ 396              		.align	2
+ 397              		.global	CRYP_DataIn
+ 398              		.thumb
+ 399              		.thumb_func
+ 401              	CRYP_DataIn:
+ 402              	.LFB122:
+ 417:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 15
+
+
+ 418:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 419:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 420:.//FWLIB/src/stm32f4xx_cryp.c ****   * @}
+ 421:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 422:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 423:.//FWLIB/src/stm32f4xx_cryp.c **** /** @defgroup CRYP_Group2 CRYP Data processing functions
+ 424:.//FWLIB/src/stm32f4xx_cryp.c ****  *  @brief    CRYP Data processing functions
+ 425:.//FWLIB/src/stm32f4xx_cryp.c ****  *
+ 426:.//FWLIB/src/stm32f4xx_cryp.c **** @verbatim    
+ 427:.//FWLIB/src/stm32f4xx_cryp.c ****  ===============================================================================
+ 428:.//FWLIB/src/stm32f4xx_cryp.c ****                     ##### CRYP Data processing functions #####
+ 429:.//FWLIB/src/stm32f4xx_cryp.c ****  ===============================================================================  
+ 430:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] This section provides functions allowing the encryption and decryption 
+ 431:.//FWLIB/src/stm32f4xx_cryp.c ****       operations: 
+ 432:.//FWLIB/src/stm32f4xx_cryp.c ****    (+) Enter data to be treated in the IN FIFO : using CRYP_DataIn() function.
+ 433:.//FWLIB/src/stm32f4xx_cryp.c ****    (+) Get the data result from the OUT FIFO : using CRYP_DataOut() function.
+ 434:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 435:.//FWLIB/src/stm32f4xx_cryp.c **** @endverbatim
+ 436:.//FWLIB/src/stm32f4xx_cryp.c ****   * @{
+ 437:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 438:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 439:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 440:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Writes data in the Data Input register (DIN).
+ 441:.//FWLIB/src/stm32f4xx_cryp.c ****   * @note   After the DIN register has been read once or several times, 
+ 442:.//FWLIB/src/stm32f4xx_cryp.c ****   *         the FIFO must be flushed (using CRYP_FIFOFlush() function).  
+ 443:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  Data: data to write in Data Input register
+ 444:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 445:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 446:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_DataIn(uint32_t Data)
+ 447:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 403              		.loc 1 447 0
+ 404              		.cfi_startproc
+ 405              		@ args = 0, pretend = 0, frame = 0
+ 406              		@ frame_needed = 0, uses_anonymous_args = 0
+ 407              		@ link register save eliminated.
+ 408              	.LVL13:
+ 448:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->DR = Data;
+ 409              		.loc 1 448 0
+ 410 0000 014B     		ldr	r3, .L28
+ 411 0002 9860     		str	r0, [r3, #8]
+ 412 0004 7047     		bx	lr
+ 413              	.L29:
+ 414 0006 00BF     		.align	2
+ 415              	.L28:
+ 416 0008 00000650 		.word	1342570496
+ 417              		.cfi_endproc
+ 418              	.LFE122:
+ 420              		.section	.text.CRYP_DataOut,"ax",%progbits
+ 421              		.align	2
+ 422              		.global	CRYP_DataOut
+ 423              		.thumb
+ 424              		.thumb_func
+ 426              	CRYP_DataOut:
+ 427              	.LFB123:
+ 449:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 450:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 451:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 16
+
+
+ 452:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Returns the last data entered into the output FIFO.
+ 453:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  None
+ 454:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval Last data entered into the output FIFO.
+ 455:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 456:.//FWLIB/src/stm32f4xx_cryp.c **** uint32_t CRYP_DataOut(void)
+ 457:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 428              		.loc 1 457 0
+ 429              		.cfi_startproc
+ 430              		@ args = 0, pretend = 0, frame = 0
+ 431              		@ frame_needed = 0, uses_anonymous_args = 0
+ 432              		@ link register save eliminated.
+ 458:.//FWLIB/src/stm32f4xx_cryp.c ****   return CRYP->DOUT;
+ 433              		.loc 1 458 0
+ 434 0000 014B     		ldr	r3, .L31
+ 435 0002 D868     		ldr	r0, [r3, #12]
+ 459:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 436              		.loc 1 459 0
+ 437 0004 7047     		bx	lr
+ 438              	.L32:
+ 439 0006 00BF     		.align	2
+ 440              	.L31:
+ 441 0008 00000650 		.word	1342570496
+ 442              		.cfi_endproc
+ 443              	.LFE123:
+ 445              		.section	.text.CRYP_SaveContext,"ax",%progbits
+ 446              		.align	2
+ 447              		.global	CRYP_SaveContext
+ 448              		.thumb
+ 449              		.thumb_func
+ 451              	CRYP_SaveContext:
+ 452              	.LFB124:
+ 460:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 461:.//FWLIB/src/stm32f4xx_cryp.c ****   * @}
+ 462:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 463:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 464:.//FWLIB/src/stm32f4xx_cryp.c **** /** @defgroup CRYP_Group3 Context swapping functions
+ 465:.//FWLIB/src/stm32f4xx_cryp.c ****  *  @brief   Context swapping functions
+ 466:.//FWLIB/src/stm32f4xx_cryp.c ****  *
+ 467:.//FWLIB/src/stm32f4xx_cryp.c **** @verbatim   
+ 468:.//FWLIB/src/stm32f4xx_cryp.c ****  ===============================================================================
+ 469:.//FWLIB/src/stm32f4xx_cryp.c ****                       ##### Context swapping functions #####
+ 470:.//FWLIB/src/stm32f4xx_cryp.c ****  ===============================================================================  
+ 471:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] This section provides functions allowing to save and store CRYP Context
+ 472:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 473:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] It is possible to interrupt an encryption/ decryption/ key generation process 
+ 474:.//FWLIB/src/stm32f4xx_cryp.c ****       to perform another processing with a higher priority, and to complete the 
+ 475:.//FWLIB/src/stm32f4xx_cryp.c ****       interrupted process later on, when the higher-priority task is complete. To do 
+ 476:.//FWLIB/src/stm32f4xx_cryp.c ****       so, the context of the interrupted task must be saved from the CRYP registers 
+ 477:.//FWLIB/src/stm32f4xx_cryp.c ****       to memory, and then be restored from memory to the CRYP registers.
+ 478:.//FWLIB/src/stm32f4xx_cryp.c ****    
+ 479:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) To save the current context, use CRYP_SaveContext() function
+ 480:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) To restore the saved context, use CRYP_RestoreContext() function 
+ 481:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 482:.//FWLIB/src/stm32f4xx_cryp.c **** @endverbatim
+ 483:.//FWLIB/src/stm32f4xx_cryp.c ****   * @{
+ 484:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 485:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 17
+
+
+ 486:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 487:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Saves the CRYP peripheral Context. 
+ 488:.//FWLIB/src/stm32f4xx_cryp.c ****   * @note   This function stops DMA transfer before to save the context. After 
+ 489:.//FWLIB/src/stm32f4xx_cryp.c ****   *         restoring the context, you have to enable the DMA again (if the DMA
+ 490:.//FWLIB/src/stm32f4xx_cryp.c ****   *         was previously used).
+ 491:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_ContextSave: pointer to a CRYP_Context structure that contains
+ 492:.//FWLIB/src/stm32f4xx_cryp.c ****   *         the repository for current context.
+ 493:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_KeyInitStruct: pointer to a CRYP_KeyInitTypeDef structure that 
+ 494:.//FWLIB/src/stm32f4xx_cryp.c ****   *         contains the configuration information for the CRYP Keys.  
+ 495:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 496:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 497:.//FWLIB/src/stm32f4xx_cryp.c **** ErrorStatus CRYP_SaveContext(CRYP_Context* CRYP_ContextSave,
+ 498:.//FWLIB/src/stm32f4xx_cryp.c ****                              CRYP_KeyInitTypeDef* CRYP_KeyInitStruct)
+ 499:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 453              		.loc 1 499 0
+ 454              		.cfi_startproc
+ 455              		@ args = 0, pretend = 0, frame = 8
+ 456              		@ frame_needed = 0, uses_anonymous_args = 0
+ 457              		@ link register save eliminated.
+ 458              	.LVL14:
+ 459 0000 30B4     		push	{r4, r5}
+ 460              	.LCFI1:
+ 461              		.cfi_def_cfa_offset 8
+ 462              		.cfi_offset 4, -8
+ 463              		.cfi_offset 5, -4
+ 464 0002 82B0     		sub	sp, sp, #8
+ 465              	.LCFI2:
+ 466              		.cfi_def_cfa_offset 16
+ 500:.//FWLIB/src/stm32f4xx_cryp.c ****   __IO uint32_t timeout = 0;
+ 467              		.loc 1 500 0
+ 468 0004 0023     		movs	r3, #0
+ 469 0006 0193     		str	r3, [sp, #4]
+ 470              	.LVL15:
+ 501:.//FWLIB/src/stm32f4xx_cryp.c ****   uint32_t ckeckmask = 0, bitstatus;    
+ 502:.//FWLIB/src/stm32f4xx_cryp.c ****   ErrorStatus status = ERROR;
+ 503:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 504:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Stop DMA transfers on the IN FIFO by clearing the DIEN bit in the CRYP_DMACR */
+ 505:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->DMACR &= ~(uint32_t)CRYP_DMACR_DIEN;
+ 471              		.loc 1 505 0
+ 472 0008 394B     		ldr	r3, .L41
+ 473 000a 1A69     		ldr	r2, [r3, #16]
+ 474 000c 22F00102 		bic	r2, r2, #1
+ 475 0010 1A61     		str	r2, [r3, #16]
+ 506:.//FWLIB/src/stm32f4xx_cryp.c ****     
+ 507:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Wait until both the IN and OUT FIFOs are empty  
+ 508:.//FWLIB/src/stm32f4xx_cryp.c ****     (IFEM=1 and OFNE=0 in the CRYP_SR register) and the 
+ 509:.//FWLIB/src/stm32f4xx_cryp.c ****      BUSY bit is cleared. */
+ 510:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 511:.//FWLIB/src/stm32f4xx_cryp.c ****   if ((CRYP->CR & (uint32_t)(CRYP_CR_ALGOMODE_TDES_ECB | CRYP_CR_ALGOMODE_TDES_CBC)) != (uint32_t)0
+ 476              		.loc 1 511 0
+ 477 0012 1B68     		ldr	r3, [r3]
+ 478 0014 13F0080F 		tst	r3, #8
+ 479 0018 01D0     		beq	.L38
+ 512:.//FWLIB/src/stm32f4xx_cryp.c ****   { 
+ 513:.//FWLIB/src/stm32f4xx_cryp.c ****     ckeckmask =  CRYP_SR_IFEM | CRYP_SR_BUSY ;
+ 480              		.loc 1 513 0
+ 481 001a 1125     		movs	r5, #17
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 18
+
+
+ 482 001c 00E0     		b	.L36
+ 483              	.L38:
+ 514:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 515:.//FWLIB/src/stm32f4xx_cryp.c ****   else /* AES or DES */
+ 516:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 517:.//FWLIB/src/stm32f4xx_cryp.c ****     ckeckmask =  CRYP_SR_IFEM | CRYP_SR_BUSY | CRYP_SR_OFNE;
+ 484              		.loc 1 517 0
+ 485 001e 1525     		movs	r5, #21
+ 486              	.LVL16:
+ 487              	.L36:
+ 518:.//FWLIB/src/stm32f4xx_cryp.c ****   }           
+ 519:.//FWLIB/src/stm32f4xx_cryp.c ****    
+ 520:.//FWLIB/src/stm32f4xx_cryp.c ****   do 
+ 521:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 522:.//FWLIB/src/stm32f4xx_cryp.c ****     bitstatus = CRYP->SR & ckeckmask;
+ 488              		.loc 1 522 0 discriminator 2
+ 489 0020 334B     		ldr	r3, .L41
+ 490 0022 5B68     		ldr	r3, [r3, #4]
+ 491 0024 03EA0502 		and	r2, r3, r5
+ 492              	.LVL17:
+ 523:.//FWLIB/src/stm32f4xx_cryp.c ****     timeout++;
+ 493              		.loc 1 523 0 discriminator 2
+ 494 0028 019B     		ldr	r3, [sp, #4]
+ 495 002a 0133     		adds	r3, r3, #1
+ 496 002c 0193     		str	r3, [sp, #4]
+ 524:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 525:.//FWLIB/src/stm32f4xx_cryp.c ****   while ((timeout != MAX_TIMEOUT) && (bitstatus != CRYP_SR_IFEM));
+ 497              		.loc 1 525 0 discriminator 2
+ 498 002e 019C     		ldr	r4, [sp, #4]
+ 499 0030 4FF6FF73 		movw	r3, #65535
+ 500 0034 9C42     		cmp	r4, r3
+ 501 0036 01D0     		beq	.L35
+ 502              		.loc 1 525 0 is_stmt 0 discriminator 1
+ 503 0038 012A     		cmp	r2, #1
+ 504 003a F1D1     		bne	.L36
+ 505              	.L35:
+ 526:.//FWLIB/src/stm32f4xx_cryp.c ****      
+ 527:.//FWLIB/src/stm32f4xx_cryp.c ****   if ((CRYP->SR & ckeckmask) != CRYP_SR_IFEM)
+ 506              		.loc 1 527 0 is_stmt 1
+ 507 003c 2C4B     		ldr	r3, .L41
+ 508 003e 5B68     		ldr	r3, [r3, #4]
+ 509 0040 1D40     		ands	r5, r5, r3
+ 510              	.LVL18:
+ 511 0042 012D     		cmp	r5, #1
+ 512 0044 50D1     		bne	.L39
+ 528:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 529:.//FWLIB/src/stm32f4xx_cryp.c ****     status = ERROR;
+ 530:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 531:.//FWLIB/src/stm32f4xx_cryp.c ****   else
+ 532:.//FWLIB/src/stm32f4xx_cryp.c ****   {      
+ 533:.//FWLIB/src/stm32f4xx_cryp.c ****     /* Stop DMA transfers on the OUT FIFO by 
+ 534:.//FWLIB/src/stm32f4xx_cryp.c ****        - writing the DOEN bit to 0 in the CRYP_DMACR register 
+ 535:.//FWLIB/src/stm32f4xx_cryp.c ****        - and clear the CRYPEN bit. */
+ 536:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 537:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP->DMACR &= ~(uint32_t)CRYP_DMACR_DOEN;
+ 513              		.loc 1 537 0
+ 514 0046 2A4B     		ldr	r3, .L41
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 19
+
+
+ 515 0048 1A69     		ldr	r2, [r3, #16]
+ 516              	.LVL19:
+ 517 004a 22F00202 		bic	r2, r2, #2
+ 518 004e 1A61     		str	r2, [r3, #16]
+ 538:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP->CR &= ~(uint32_t)CRYP_CR_CRYPEN;
+ 519              		.loc 1 538 0
+ 520 0050 1A68     		ldr	r2, [r3]
+ 521 0052 22F40042 		bic	r2, r2, #32768
+ 522 0056 1A60     		str	r2, [r3]
+ 539:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 540:.//FWLIB/src/stm32f4xx_cryp.c ****     /* Save the current configuration (bit 19, bit[17:16] and bits [9:2] in the CRYP_CR register) *
+ 541:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CR_CurrentConfig  = CRYP->CR & (CRYP_CR_GCM_CCMPH |
+ 523              		.loc 1 541 0
+ 524 0058 1A68     		ldr	r2, [r3]
+ 525 005a 22F07F42 		bic	r2, r2, #-16777216
+ 526 005e 22F47402 		bic	r2, r2, #15990784
+ 527 0062 22F47C42 		bic	r2, r2, #64512
+ 528 0066 22F00302 		bic	r2, r2, #3
+ 529 006a 0260     		str	r2, [r0]
+ 542:.//FWLIB/src/stm32f4xx_cryp.c ****                                                       CRYP_CR_KEYSIZE  |
+ 543:.//FWLIB/src/stm32f4xx_cryp.c ****                                                       CRYP_CR_DATATYPE |
+ 544:.//FWLIB/src/stm32f4xx_cryp.c ****                                                       CRYP_CR_ALGOMODE |
+ 545:.//FWLIB/src/stm32f4xx_cryp.c ****                                                       CRYP_CR_ALGODIR);
+ 546:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 547:.//FWLIB/src/stm32f4xx_cryp.c ****     /* and, if not in ECB mode, the initialization vectors. */
+ 548:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV0LR = CRYP->IV0LR;
+ 530              		.loc 1 548 0
+ 531 006c 1A6C     		ldr	r2, [r3, #64]
+ 532 006e 4260     		str	r2, [r0, #4]
+ 549:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV0RR = CRYP->IV0RR;
+ 533              		.loc 1 549 0
+ 534 0070 5A6C     		ldr	r2, [r3, #68]
+ 535 0072 8260     		str	r2, [r0, #8]
+ 550:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV1LR = CRYP->IV1LR;
+ 536              		.loc 1 550 0
+ 537 0074 9A6C     		ldr	r2, [r3, #72]
+ 538 0076 C260     		str	r2, [r0, #12]
+ 551:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_IV1RR = CRYP->IV1RR;
+ 539              		.loc 1 551 0
+ 540 0078 DA6C     		ldr	r2, [r3, #76]
+ 541 007a 0261     		str	r2, [r0, #16]
+ 552:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 553:.//FWLIB/src/stm32f4xx_cryp.c ****     /* save The key value */
+ 554:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K0LR = CRYP_KeyInitStruct->CRYP_Key0Left; 
+ 542              		.loc 1 554 0
+ 543 007c 0A68     		ldr	r2, [r1]
+ 544 007e 4261     		str	r2, [r0, #20]
+ 555:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K0RR = CRYP_KeyInitStruct->CRYP_Key0Right; 
+ 545              		.loc 1 555 0
+ 546 0080 4A68     		ldr	r2, [r1, #4]
+ 547 0082 8261     		str	r2, [r0, #24]
+ 556:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K1LR = CRYP_KeyInitStruct->CRYP_Key1Left; 
+ 548              		.loc 1 556 0
+ 549 0084 8A68     		ldr	r2, [r1, #8]
+ 550 0086 C261     		str	r2, [r0, #28]
+ 557:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K1RR = CRYP_KeyInitStruct->CRYP_Key1Right; 
+ 551              		.loc 1 557 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 20
+
+
+ 552 0088 CA68     		ldr	r2, [r1, #12]
+ 553 008a 0262     		str	r2, [r0, #32]
+ 558:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K2LR = CRYP_KeyInitStruct->CRYP_Key2Left; 
+ 554              		.loc 1 558 0
+ 555 008c 0A69     		ldr	r2, [r1, #16]
+ 556 008e 4262     		str	r2, [r0, #36]
+ 559:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K2RR = CRYP_KeyInitStruct->CRYP_Key2Right; 
+ 557              		.loc 1 559 0
+ 558 0090 4A69     		ldr	r2, [r1, #20]
+ 559 0092 8262     		str	r2, [r0, #40]
+ 560:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K3LR = CRYP_KeyInitStruct->CRYP_Key3Left; 
+ 560              		.loc 1 560 0
+ 561 0094 8A69     		ldr	r2, [r1, #24]
+ 562 0096 C262     		str	r2, [r0, #44]
+ 561:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_K3RR = CRYP_KeyInitStruct->CRYP_Key3Right; 
+ 563              		.loc 1 561 0
+ 564 0098 CA69     		ldr	r2, [r1, #28]
+ 565 009a 0263     		str	r2, [r0, #48]
+ 562:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 563:.//FWLIB/src/stm32f4xx_cryp.c ****     /* Save the content of context swap registers */
+ 564:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[0] = CRYP->CSGCMCCM0R;
+ 566              		.loc 1 564 0
+ 567 009c 1A6D     		ldr	r2, [r3, #80]
+ 568 009e 4263     		str	r2, [r0, #52]
+ 565:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[1] = CRYP->CSGCMCCM1R;
+ 569              		.loc 1 565 0
+ 570 00a0 5A6D     		ldr	r2, [r3, #84]
+ 571 00a2 8263     		str	r2, [r0, #56]
+ 566:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[2] = CRYP->CSGCMCCM2R;
+ 572              		.loc 1 566 0
+ 573 00a4 9A6D     		ldr	r2, [r3, #88]
+ 574 00a6 C263     		str	r2, [r0, #60]
+ 567:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[3] = CRYP->CSGCMCCM3R;
+ 575              		.loc 1 567 0
+ 576 00a8 DA6D     		ldr	r2, [r3, #92]
+ 577 00aa 0264     		str	r2, [r0, #64]
+ 568:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[4] = CRYP->CSGCMCCM4R;
+ 578              		.loc 1 568 0
+ 579 00ac 1A6E     		ldr	r2, [r3, #96]
+ 580 00ae 4264     		str	r2, [r0, #68]
+ 569:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[5] = CRYP->CSGCMCCM5R;
+ 581              		.loc 1 569 0
+ 582 00b0 5A6E     		ldr	r2, [r3, #100]
+ 583 00b2 8264     		str	r2, [r0, #72]
+ 570:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[6] = CRYP->CSGCMCCM6R;
+ 584              		.loc 1 570 0
+ 585 00b4 9A6E     		ldr	r2, [r3, #104]
+ 586 00b6 C264     		str	r2, [r0, #76]
+ 571:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMCCMR[7] = CRYP->CSGCMCCM7R;
+ 587              		.loc 1 571 0
+ 588 00b8 DA6E     		ldr	r2, [r3, #108]
+ 589 00ba 0265     		str	r2, [r0, #80]
+ 572:.//FWLIB/src/stm32f4xx_cryp.c ****     
+ 573:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[0] = CRYP->CSGCM0R;
+ 590              		.loc 1 573 0
+ 591 00bc 1A6F     		ldr	r2, [r3, #112]
+ 592 00be 4265     		str	r2, [r0, #84]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 21
+
+
+ 574:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[1] = CRYP->CSGCM1R;
+ 593              		.loc 1 574 0
+ 594 00c0 5A6F     		ldr	r2, [r3, #116]
+ 595 00c2 8265     		str	r2, [r0, #88]
+ 575:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[2] = CRYP->CSGCM2R;
+ 596              		.loc 1 575 0
+ 597 00c4 9A6F     		ldr	r2, [r3, #120]
+ 598 00c6 C265     		str	r2, [r0, #92]
+ 576:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[3] = CRYP->CSGCM3R;
+ 599              		.loc 1 576 0
+ 600 00c8 DA6F     		ldr	r2, [r3, #124]
+ 601 00ca 0266     		str	r2, [r0, #96]
+ 577:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[4] = CRYP->CSGCM4R;
+ 602              		.loc 1 577 0
+ 603 00cc D3F88020 		ldr	r2, [r3, #128]
+ 604 00d0 4266     		str	r2, [r0, #100]
+ 578:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[5] = CRYP->CSGCM5R;
+ 605              		.loc 1 578 0
+ 606 00d2 D3F88420 		ldr	r2, [r3, #132]
+ 607 00d6 8266     		str	r2, [r0, #104]
+ 579:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[6] = CRYP->CSGCM6R;
+ 608              		.loc 1 579 0
+ 609 00d8 D3F88820 		ldr	r2, [r3, #136]
+ 610 00dc C266     		str	r2, [r0, #108]
+ 580:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP_ContextSave->CRYP_CSGCMR[7] = CRYP->CSGCM7R;
+ 611              		.loc 1 580 0
+ 612 00de D3F88C30 		ldr	r3, [r3, #140]
+ 613 00e2 0367     		str	r3, [r0, #112]
+ 614              	.LVL20:
+ 581:.//FWLIB/src/stm32f4xx_cryp.c ****     
+ 582:.//FWLIB/src/stm32f4xx_cryp.c ****    /* When needed, save the DMA status (pointers for IN and OUT messages, 
+ 583:.//FWLIB/src/stm32f4xx_cryp.c ****       number of remaining bytes, etc.) */
+ 584:.//FWLIB/src/stm32f4xx_cryp.c ****      
+ 585:.//FWLIB/src/stm32f4xx_cryp.c ****     status = SUCCESS;
+ 615              		.loc 1 585 0
+ 616 00e4 0120     		movs	r0, #1
+ 617              	.LVL21:
+ 618 00e6 00E0     		b	.L37
+ 619              	.LVL22:
+ 620              	.L39:
+ 529:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 621              		.loc 1 529 0
+ 622 00e8 0020     		movs	r0, #0
+ 623              	.LVL23:
+ 624              	.L37:
+ 586:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 587:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 588:.//FWLIB/src/stm32f4xx_cryp.c ****    return status;
+ 589:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 625              		.loc 1 589 0
+ 626 00ea 02B0     		add	sp, sp, #8
+ 627              	.LCFI3:
+ 628              		.cfi_def_cfa_offset 8
+ 629              		@ sp needed
+ 630 00ec 30BC     		pop	{r4, r5}
+ 631              	.LCFI4:
+ 632              		.cfi_restore 5
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 22
+
+
+ 633              		.cfi_restore 4
+ 634              		.cfi_def_cfa_offset 0
+ 635 00ee 7047     		bx	lr
+ 636              	.L42:
+ 637              		.align	2
+ 638              	.L41:
+ 639 00f0 00000650 		.word	1342570496
+ 640              		.cfi_endproc
+ 641              	.LFE124:
+ 643              		.section	.text.CRYP_RestoreContext,"ax",%progbits
+ 644              		.align	2
+ 645              		.global	CRYP_RestoreContext
+ 646              		.thumb
+ 647              		.thumb_func
+ 649              	CRYP_RestoreContext:
+ 650              	.LFB125:
+ 590:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 591:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 592:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Restores the CRYP peripheral Context.
+ 593:.//FWLIB/src/stm32f4xx_cryp.c ****   * @note   Since teh DMA transfer is stopped in CRYP_SaveContext() function,
+ 594:.//FWLIB/src/stm32f4xx_cryp.c ****   *         after restoring the context, you have to enable the DMA again (if the
+ 595:.//FWLIB/src/stm32f4xx_cryp.c ****   *         DMA was previously used).  
+ 596:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_ContextRestore: pointer to a CRYP_Context structure that contains
+ 597:.//FWLIB/src/stm32f4xx_cryp.c ****   *         the repository for saved context.
+ 598:.//FWLIB/src/stm32f4xx_cryp.c ****   * @note   The data that were saved during context saving must be rewrited into
+ 599:.//FWLIB/src/stm32f4xx_cryp.c ****   *         the IN FIFO.
+ 600:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 601:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 602:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_RestoreContext(CRYP_Context* CRYP_ContextRestore)  
+ 603:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 651              		.loc 1 603 0
+ 652              		.cfi_startproc
+ 653              		@ args = 0, pretend = 0, frame = 0
+ 654              		@ frame_needed = 0, uses_anonymous_args = 0
+ 655              		@ link register save eliminated.
+ 656              	.LVL24:
+ 604:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 605:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Configure the processor with the saved configuration */
+ 606:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CR = CRYP_ContextRestore->CR_CurrentConfig;
+ 657              		.loc 1 606 0
+ 658 0000 0268     		ldr	r2, [r0]
+ 659 0002 214B     		ldr	r3, .L44
+ 660 0004 1A60     		str	r2, [r3]
+ 607:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 608:.//FWLIB/src/stm32f4xx_cryp.c ****   /* restore The key value */
+ 609:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K0LR = CRYP_ContextRestore->CRYP_K0LR; 
+ 661              		.loc 1 609 0
+ 662 0006 4269     		ldr	r2, [r0, #20]
+ 663 0008 1A62     		str	r2, [r3, #32]
+ 610:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K0RR = CRYP_ContextRestore->CRYP_K0RR;
+ 664              		.loc 1 610 0
+ 665 000a 8269     		ldr	r2, [r0, #24]
+ 666 000c 5A62     		str	r2, [r3, #36]
+ 611:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K1LR = CRYP_ContextRestore->CRYP_K1LR;
+ 667              		.loc 1 611 0
+ 668 000e C269     		ldr	r2, [r0, #28]
+ 669 0010 9A62     		str	r2, [r3, #40]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 23
+
+
+ 612:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K1RR = CRYP_ContextRestore->CRYP_K1RR;
+ 670              		.loc 1 612 0
+ 671 0012 026A     		ldr	r2, [r0, #32]
+ 672 0014 DA62     		str	r2, [r3, #44]
+ 613:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K2LR = CRYP_ContextRestore->CRYP_K2LR;
+ 673              		.loc 1 613 0
+ 674 0016 426A     		ldr	r2, [r0, #36]
+ 675 0018 1A63     		str	r2, [r3, #48]
+ 614:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K2RR = CRYP_ContextRestore->CRYP_K2RR;
+ 676              		.loc 1 614 0
+ 677 001a 826A     		ldr	r2, [r0, #40]
+ 678 001c 5A63     		str	r2, [r3, #52]
+ 615:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K3LR = CRYP_ContextRestore->CRYP_K3LR;
+ 679              		.loc 1 615 0
+ 680 001e C26A     		ldr	r2, [r0, #44]
+ 681 0020 9A63     		str	r2, [r3, #56]
+ 616:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->K3RR = CRYP_ContextRestore->CRYP_K3RR;
+ 682              		.loc 1 616 0
+ 683 0022 026B     		ldr	r2, [r0, #48]
+ 684 0024 DA63     		str	r2, [r3, #60]
+ 617:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 618:.//FWLIB/src/stm32f4xx_cryp.c ****   /* and the initialization vectors. */
+ 619:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->IV0LR = CRYP_ContextRestore->CRYP_IV0LR;
+ 685              		.loc 1 619 0
+ 686 0026 4268     		ldr	r2, [r0, #4]
+ 687 0028 1A64     		str	r2, [r3, #64]
+ 620:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->IV0RR = CRYP_ContextRestore->CRYP_IV0RR;
+ 688              		.loc 1 620 0
+ 689 002a 8268     		ldr	r2, [r0, #8]
+ 690 002c 5A64     		str	r2, [r3, #68]
+ 621:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->IV1LR = CRYP_ContextRestore->CRYP_IV1LR;
+ 691              		.loc 1 621 0
+ 692 002e C268     		ldr	r2, [r0, #12]
+ 693 0030 9A64     		str	r2, [r3, #72]
+ 622:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->IV1RR = CRYP_ContextRestore->CRYP_IV1RR;
+ 694              		.loc 1 622 0
+ 695 0032 0269     		ldr	r2, [r0, #16]
+ 696 0034 DA64     		str	r2, [r3, #76]
+ 623:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 624:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Restore the content of context swap registers */
+ 625:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM0R = CRYP_ContextRestore->CRYP_CSGCMCCMR[0];
+ 697              		.loc 1 625 0
+ 698 0036 426B     		ldr	r2, [r0, #52]
+ 699 0038 1A65     		str	r2, [r3, #80]
+ 626:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM1R = CRYP_ContextRestore->CRYP_CSGCMCCMR[1];
+ 700              		.loc 1 626 0
+ 701 003a 826B     		ldr	r2, [r0, #56]
+ 702 003c 5A65     		str	r2, [r3, #84]
+ 627:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM2R = CRYP_ContextRestore->CRYP_CSGCMCCMR[2];
+ 703              		.loc 1 627 0
+ 704 003e C26B     		ldr	r2, [r0, #60]
+ 705 0040 9A65     		str	r2, [r3, #88]
+ 628:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM3R = CRYP_ContextRestore->CRYP_CSGCMCCMR[3];
+ 706              		.loc 1 628 0
+ 707 0042 026C     		ldr	r2, [r0, #64]
+ 708 0044 DA65     		str	r2, [r3, #92]
+ 629:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM4R = CRYP_ContextRestore->CRYP_CSGCMCCMR[4];
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 24
+
+
+ 709              		.loc 1 629 0
+ 710 0046 426C     		ldr	r2, [r0, #68]
+ 711 0048 1A66     		str	r2, [r3, #96]
+ 630:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM5R = CRYP_ContextRestore->CRYP_CSGCMCCMR[5];
+ 712              		.loc 1 630 0
+ 713 004a 826C     		ldr	r2, [r0, #72]
+ 714 004c 5A66     		str	r2, [r3, #100]
+ 631:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM6R = CRYP_ContextRestore->CRYP_CSGCMCCMR[6];
+ 715              		.loc 1 631 0
+ 716 004e C26C     		ldr	r2, [r0, #76]
+ 717 0050 9A66     		str	r2, [r3, #104]
+ 632:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCMCCM7R = CRYP_ContextRestore->CRYP_CSGCMCCMR[7];
+ 718              		.loc 1 632 0
+ 719 0052 026D     		ldr	r2, [r0, #80]
+ 720 0054 DA66     		str	r2, [r3, #108]
+ 633:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 634:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCM0R = CRYP_ContextRestore->CRYP_CSGCMR[0];
+ 721              		.loc 1 634 0
+ 722 0056 426D     		ldr	r2, [r0, #84]
+ 723 0058 1A67     		str	r2, [r3, #112]
+ 635:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCM1R = CRYP_ContextRestore->CRYP_CSGCMR[1];
+ 724              		.loc 1 635 0
+ 725 005a 826D     		ldr	r2, [r0, #88]
+ 726 005c 5A67     		str	r2, [r3, #116]
+ 636:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCM2R = CRYP_ContextRestore->CRYP_CSGCMR[2];
+ 727              		.loc 1 636 0
+ 728 005e C26D     		ldr	r2, [r0, #92]
+ 729 0060 9A67     		str	r2, [r3, #120]
+ 637:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCM3R = CRYP_ContextRestore->CRYP_CSGCMR[3];
+ 730              		.loc 1 637 0
+ 731 0062 026E     		ldr	r2, [r0, #96]
+ 732 0064 DA67     		str	r2, [r3, #124]
+ 638:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCM4R = CRYP_ContextRestore->CRYP_CSGCMR[4];
+ 733              		.loc 1 638 0
+ 734 0066 426E     		ldr	r2, [r0, #100]
+ 735 0068 C3F88020 		str	r2, [r3, #128]
+ 639:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCM5R = CRYP_ContextRestore->CRYP_CSGCMR[5];
+ 736              		.loc 1 639 0
+ 737 006c 826E     		ldr	r2, [r0, #104]
+ 738 006e C3F88420 		str	r2, [r3, #132]
+ 640:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCM6R = CRYP_ContextRestore->CRYP_CSGCMR[6];
+ 739              		.loc 1 640 0
+ 740 0072 C26E     		ldr	r2, [r0, #108]
+ 741 0074 C3F88820 		str	r2, [r3, #136]
+ 641:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CSGCM7R = CRYP_ContextRestore->CRYP_CSGCMR[7];
+ 742              		.loc 1 641 0
+ 743 0078 026F     		ldr	r2, [r0, #112]
+ 744 007a C3F88C20 		str	r2, [r3, #140]
+ 642:.//FWLIB/src/stm32f4xx_cryp.c ****   
+ 643:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Enable the cryptographic processor */
+ 644:.//FWLIB/src/stm32f4xx_cryp.c ****   CRYP->CR |= CRYP_CR_CRYPEN;
+ 745              		.loc 1 644 0
+ 746 007e 1A68     		ldr	r2, [r3]
+ 747 0080 42F40042 		orr	r2, r2, #32768
+ 748 0084 1A60     		str	r2, [r3]
+ 749 0086 7047     		bx	lr
+ 750              	.L45:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 25
+
+
+ 751              		.align	2
+ 752              	.L44:
+ 753 0088 00000650 		.word	1342570496
+ 754              		.cfi_endproc
+ 755              	.LFE125:
+ 757              		.section	.text.CRYP_DMACmd,"ax",%progbits
+ 758              		.align	2
+ 759              		.global	CRYP_DMACmd
+ 760              		.thumb
+ 761              		.thumb_func
+ 763              	CRYP_DMACmd:
+ 764              	.LFB126:
+ 645:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 646:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 647:.//FWLIB/src/stm32f4xx_cryp.c ****   * @}
+ 648:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 649:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 650:.//FWLIB/src/stm32f4xx_cryp.c **** /** @defgroup CRYP_Group4 CRYP's DMA interface Configuration function
+ 651:.//FWLIB/src/stm32f4xx_cryp.c ****  *  @brief   CRYP's DMA interface Configuration function 
+ 652:.//FWLIB/src/stm32f4xx_cryp.c ****  *
+ 653:.//FWLIB/src/stm32f4xx_cryp.c **** @verbatim   
+ 654:.//FWLIB/src/stm32f4xx_cryp.c ****  ===============================================================================
+ 655:.//FWLIB/src/stm32f4xx_cryp.c ****              ##### CRYP's DMA interface Configuration function #####
+ 656:.//FWLIB/src/stm32f4xx_cryp.c ****  ===============================================================================  
+ 657:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] This section provides functions allowing to configure the DMA interface for 
+ 658:.//FWLIB/src/stm32f4xx_cryp.c ****       CRYP data input and output transfer.
+ 659:.//FWLIB/src/stm32f4xx_cryp.c ****    
+ 660:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] When the DMA mode is enabled (using the CRYP_DMACmd() function), data can be 
+ 661:.//FWLIB/src/stm32f4xx_cryp.c ****       transferred:
+ 662:.//FWLIB/src/stm32f4xx_cryp.c ****    (+) From memory to the CRYP IN FIFO using the DMA peripheral by enabling 
+ 663:.//FWLIB/src/stm32f4xx_cryp.c ****        the CRYP_DMAReq_DataIN request.
+ 664:.//FWLIB/src/stm32f4xx_cryp.c ****    (+) From the CRYP OUT FIFO to the memory using the DMA peripheral by enabling 
+ 665:.//FWLIB/src/stm32f4xx_cryp.c ****        the CRYP_DMAReq_DataOUT request.
+ 666:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 667:.//FWLIB/src/stm32f4xx_cryp.c **** @endverbatim
+ 668:.//FWLIB/src/stm32f4xx_cryp.c ****   * @{
+ 669:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 670:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 671:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 672:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Enables or disables the CRYP DMA interface.
+ 673:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_DMAReq: specifies the CRYP DMA transfer request to be enabled or disabled.
+ 674:.//FWLIB/src/stm32f4xx_cryp.c ****   *           This parameter can be any combination of the following values:
+ 675:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_DMAReq_DataOUT: DMA for outgoing(Tx) data transfer
+ 676:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_DMAReq_DataIN: DMA for incoming(Rx) data transfer
+ 677:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  NewState: new state of the selected CRYP DMA transfer request.
+ 678:.//FWLIB/src/stm32f4xx_cryp.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 679:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 680:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 681:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_DMACmd(uint8_t CRYP_DMAReq, FunctionalState NewState)
+ 682:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 765              		.loc 1 682 0
+ 766              		.cfi_startproc
+ 767              		@ args = 0, pretend = 0, frame = 0
+ 768              		@ frame_needed = 0, uses_anonymous_args = 0
+ 769              		@ link register save eliminated.
+ 770              	.LVL25:
+ 683:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Check the parameters */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 26
+
+
+ 684:.//FWLIB/src/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_DMAREQ(CRYP_DMAReq));
+ 685:.//FWLIB/src/stm32f4xx_cryp.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 686:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 687:.//FWLIB/src/stm32f4xx_cryp.c ****   if (NewState != DISABLE)
+ 771              		.loc 1 687 0
+ 772 0000 21B1     		cbz	r1, .L47
+ 688:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 689:.//FWLIB/src/stm32f4xx_cryp.c ****     /* Enable the selected CRYP DMA request */
+ 690:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP->DMACR |= CRYP_DMAReq;
+ 773              		.loc 1 690 0
+ 774 0002 064A     		ldr	r2, .L49
+ 775 0004 1369     		ldr	r3, [r2, #16]
+ 776 0006 1843     		orrs	r0, r0, r3
+ 777              	.LVL26:
+ 778 0008 1061     		str	r0, [r2, #16]
+ 779 000a 7047     		bx	lr
+ 780              	.LVL27:
+ 781              	.L47:
+ 691:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 692:.//FWLIB/src/stm32f4xx_cryp.c ****   else
+ 693:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 694:.//FWLIB/src/stm32f4xx_cryp.c ****     /* Disable the selected CRYP DMA request */
+ 695:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP->DMACR &= (uint8_t)~CRYP_DMAReq;
+ 782              		.loc 1 695 0
+ 783 000c 034A     		ldr	r2, .L49
+ 784 000e 1369     		ldr	r3, [r2, #16]
+ 785 0010 C043     		mvns	r0, r0
+ 786              	.LVL28:
+ 787 0012 C0B2     		uxtb	r0, r0
+ 788 0014 1840     		ands	r0, r0, r3
+ 789 0016 1061     		str	r0, [r2, #16]
+ 790 0018 7047     		bx	lr
+ 791              	.L50:
+ 792 001a 00BF     		.align	2
+ 793              	.L49:
+ 794 001c 00000650 		.word	1342570496
+ 795              		.cfi_endproc
+ 796              	.LFE126:
+ 798              		.section	.text.CRYP_ITConfig,"ax",%progbits
+ 799              		.align	2
+ 800              		.global	CRYP_ITConfig
+ 801              		.thumb
+ 802              		.thumb_func
+ 804              	CRYP_ITConfig:
+ 805              	.LFB127:
+ 696:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 697:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 698:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 699:.//FWLIB/src/stm32f4xx_cryp.c ****   * @}
+ 700:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 701:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 702:.//FWLIB/src/stm32f4xx_cryp.c **** /** @defgroup CRYP_Group5 Interrupts and flags management functions
+ 703:.//FWLIB/src/stm32f4xx_cryp.c ****  *  @brief   Interrupts and flags management functions
+ 704:.//FWLIB/src/stm32f4xx_cryp.c ****  *
+ 705:.//FWLIB/src/stm32f4xx_cryp.c **** @verbatim   
+ 706:.//FWLIB/src/stm32f4xx_cryp.c ****  ===============================================================================
+ 707:.//FWLIB/src/stm32f4xx_cryp.c ****               ##### Interrupts and flags management functions #####
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 27
+
+
+ 708:.//FWLIB/src/stm32f4xx_cryp.c ****  ===============================================================================  
+ 709:.//FWLIB/src/stm32f4xx_cryp.c ****  
+ 710:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] This section provides functions allowing to configure the CRYP Interrupts and 
+ 711:.//FWLIB/src/stm32f4xx_cryp.c ****       to get the status and Interrupts pending bits.
+ 712:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 713:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] The CRYP provides 2 Interrupts sources and 7 Flags:
+ 714:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 715:.//FWLIB/src/stm32f4xx_cryp.c ****  *** Flags : ***
+ 716:.//FWLIB/src/stm32f4xx_cryp.c ****  ===============
+ 717:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] 
+ 718:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_IFEM :  Set when Input FIFO is empty. This Flag is cleared only
+ 719:.//FWLIB/src/stm32f4xx_cryp.c ****        by hardware.
+ 720:.//FWLIB/src/stm32f4xx_cryp.c ****       
+ 721:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_IFNF :  Set when Input FIFO is not full. This Flag is cleared 
+ 722:.//FWLIB/src/stm32f4xx_cryp.c ****        only by hardware.
+ 723:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 724:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 725:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_INRIS  : Set when Input FIFO Raw interrupt is pending it gives 
+ 726:.//FWLIB/src/stm32f4xx_cryp.c ****        the raw interrupt state prior to masking of the input FIFO service interrupt.
+ 727:.//FWLIB/src/stm32f4xx_cryp.c ****        This Flag is cleared only by hardware.
+ 728:.//FWLIB/src/stm32f4xx_cryp.c ****      
+ 729:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_OFNE   : Set when Output FIFO not empty. This Flag is cleared 
+ 730:.//FWLIB/src/stm32f4xx_cryp.c ****        only by hardware.
+ 731:.//FWLIB/src/stm32f4xx_cryp.c ****         
+ 732:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_OFFU   : Set when Output FIFO is full. This Flag is cleared only 
+ 733:.//FWLIB/src/stm32f4xx_cryp.c ****        by hardware.
+ 734:.//FWLIB/src/stm32f4xx_cryp.c ****                            
+ 735:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_OUTRIS : Set when Output FIFO Raw interrupt is pending it gives 
+ 736:.//FWLIB/src/stm32f4xx_cryp.c ****        the raw interrupt state prior to masking of the output FIFO service interrupt.
+ 737:.//FWLIB/src/stm32f4xx_cryp.c ****        This Flag is cleared only by hardware.
+ 738:.//FWLIB/src/stm32f4xx_cryp.c ****                                
+ 739:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) CRYP_FLAG_BUSY   : Set when the CRYP core is currently processing a block 
+ 740:.//FWLIB/src/stm32f4xx_cryp.c ****        of data or a key preparation (for AES decryption). This Flag is cleared 
+ 741:.//FWLIB/src/stm32f4xx_cryp.c ****        only by hardware. To clear it, the CRYP core must be disabled and the last
+ 742:.//FWLIB/src/stm32f4xx_cryp.c ****        processing has completed. 
+ 743:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 744:.//FWLIB/src/stm32f4xx_cryp.c ****  *** Interrupts : ***
+ 745:.//FWLIB/src/stm32f4xx_cryp.c ****  ====================
+ 746:.//FWLIB/src/stm32f4xx_cryp.c ****  [..]
+ 747:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) CRYP_IT_INI   : The input FIFO service interrupt is asserted when there 
+ 748:.//FWLIB/src/stm32f4xx_cryp.c ****       are less than 4 words in the input FIFO. This interrupt is associated to 
+ 749:.//FWLIB/src/stm32f4xx_cryp.c ****       CRYP_FLAG_INRIS flag.
+ 750:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 751:.//FWLIB/src/stm32f4xx_cryp.c ****       -@- This interrupt is cleared by performing write operations to the input FIFO 
+ 752:.//FWLIB/src/stm32f4xx_cryp.c ****           until it holds 4 or more words. The input FIFO service interrupt INMIS is 
+ 753:.//FWLIB/src/stm32f4xx_cryp.c ****           enabled with the CRYP enable bit. Consequently, when CRYP is disabled, the 
+ 754:.//FWLIB/src/stm32f4xx_cryp.c ****           INMIS signal is low even if the input FIFO is empty.
+ 755:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 756:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 757:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 758:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) CRYP_IT_OUTI  : The output FIFO service interrupt is asserted when there 
+ 759:.//FWLIB/src/stm32f4xx_cryp.c ****        is one or more (32-bit word) data items in the output FIFO. This interrupt 
+ 760:.//FWLIB/src/stm32f4xx_cryp.c ****        is associated to CRYP_FLAG_OUTRIS flag.
+ 761:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 762:.//FWLIB/src/stm32f4xx_cryp.c ****        -@- This interrupt is cleared by reading data from the output FIFO until there 
+ 763:.//FWLIB/src/stm32f4xx_cryp.c ****            is no valid (32-bit) word left (that is, the interrupt follows the state 
+ 764:.//FWLIB/src/stm32f4xx_cryp.c ****            of the OFNE (output FIFO not empty) flag).
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 28
+
+
+ 765:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 766:.//FWLIB/src/stm32f4xx_cryp.c ****  *** Managing the CRYP controller events : ***
+ 767:.//FWLIB/src/stm32f4xx_cryp.c ****  =============================================
+ 768:.//FWLIB/src/stm32f4xx_cryp.c ****  [..] The user should identify which mode will be used in his application to manage 
+ 769:.//FWLIB/src/stm32f4xx_cryp.c ****       the CRYP controller events: Polling mode or Interrupt mode.
+ 770:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 771:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) In the Polling Mode it is advised to use the following functions:
+ 772:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) CRYP_GetFlagStatus() : to check if flags events occur. 
+ 773:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 774:.//FWLIB/src/stm32f4xx_cryp.c ****        -@@- The CRYPT flags do not need to be cleared since they are cleared as 
+ 775:.//FWLIB/src/stm32f4xx_cryp.c ****             soon as the associated event are reset.   
+ 776:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 777:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 778:.//FWLIB/src/stm32f4xx_cryp.c ****    (#) In the Interrupt Mode it is advised to use the following functions:
+ 779:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) CRYP_ITConfig()       : to enable or disable the interrupt source.
+ 780:.//FWLIB/src/stm32f4xx_cryp.c ****        (++) CRYP_GetITStatus()    : to check if Interrupt occurs.
+ 781:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 782:.//FWLIB/src/stm32f4xx_cryp.c ****        -@@- The CRYPT interrupts have no pending bits, the interrupt is cleared as 
+ 783:.//FWLIB/src/stm32f4xx_cryp.c ****              soon as the associated event is reset. 
+ 784:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 785:.//FWLIB/src/stm32f4xx_cryp.c **** @endverbatim
+ 786:.//FWLIB/src/stm32f4xx_cryp.c ****   * @{
+ 787:.//FWLIB/src/stm32f4xx_cryp.c ****   */ 
+ 788:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 789:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 790:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Enables or disables the specified CRYP interrupts.
+ 791:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_IT: specifies the CRYP interrupt source to be enabled or disabled.
+ 792:.//FWLIB/src/stm32f4xx_cryp.c ****   *          This parameter can be any combination of the following values:
+ 793:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_IT_INI: Input FIFO interrupt
+ 794:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_IT_OUTI: Output FIFO interrupt
+ 795:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  NewState: new state of the specified CRYP interrupt.
+ 796:.//FWLIB/src/stm32f4xx_cryp.c ****   *           This parameter can be: ENABLE or DISABLE.
+ 797:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval None
+ 798:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 799:.//FWLIB/src/stm32f4xx_cryp.c **** void CRYP_ITConfig(uint8_t CRYP_IT, FunctionalState NewState)
+ 800:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 806              		.loc 1 800 0
+ 807              		.cfi_startproc
+ 808              		@ args = 0, pretend = 0, frame = 0
+ 809              		@ frame_needed = 0, uses_anonymous_args = 0
+ 810              		@ link register save eliminated.
+ 811              	.LVL29:
+ 801:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Check the parameters */
+ 802:.//FWLIB/src/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_CONFIG_IT(CRYP_IT));
+ 803:.//FWLIB/src/stm32f4xx_cryp.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 804:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 805:.//FWLIB/src/stm32f4xx_cryp.c ****   if (NewState != DISABLE)
+ 812              		.loc 1 805 0
+ 813 0000 21B1     		cbz	r1, .L52
+ 806:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 807:.//FWLIB/src/stm32f4xx_cryp.c ****     /* Enable the selected CRYP interrupt */
+ 808:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP->IMSCR |= CRYP_IT;
+ 814              		.loc 1 808 0
+ 815 0002 064A     		ldr	r2, .L54
+ 816 0004 5369     		ldr	r3, [r2, #20]
+ 817 0006 1843     		orrs	r0, r0, r3
+ 818              	.LVL30:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 29
+
+
+ 819 0008 5061     		str	r0, [r2, #20]
+ 820 000a 7047     		bx	lr
+ 821              	.LVL31:
+ 822              	.L52:
+ 809:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 810:.//FWLIB/src/stm32f4xx_cryp.c ****   else
+ 811:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 812:.//FWLIB/src/stm32f4xx_cryp.c ****     /* Disable the selected CRYP interrupt */
+ 813:.//FWLIB/src/stm32f4xx_cryp.c ****     CRYP->IMSCR &= (uint8_t)~CRYP_IT;
+ 823              		.loc 1 813 0
+ 824 000c 034A     		ldr	r2, .L54
+ 825 000e 5369     		ldr	r3, [r2, #20]
+ 826 0010 C043     		mvns	r0, r0
+ 827              	.LVL32:
+ 828 0012 C0B2     		uxtb	r0, r0
+ 829 0014 1840     		ands	r0, r0, r3
+ 830 0016 5061     		str	r0, [r2, #20]
+ 831 0018 7047     		bx	lr
+ 832              	.L55:
+ 833 001a 00BF     		.align	2
+ 834              	.L54:
+ 835 001c 00000650 		.word	1342570496
+ 836              		.cfi_endproc
+ 837              	.LFE127:
+ 839              		.section	.text.CRYP_GetITStatus,"ax",%progbits
+ 840              		.align	2
+ 841              		.global	CRYP_GetITStatus
+ 842              		.thumb
+ 843              		.thumb_func
+ 845              	CRYP_GetITStatus:
+ 846              	.LFB128:
+ 814:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 815:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 816:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 817:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 818:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Checks whether the specified CRYP interrupt has occurred or not.
+ 819:.//FWLIB/src/stm32f4xx_cryp.c ****   * @note   This function checks the status of the masked interrupt (i.e the 
+ 820:.//FWLIB/src/stm32f4xx_cryp.c ****   *         interrupt should be previously enabled).     
+ 821:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_IT: specifies the CRYP (masked) interrupt source to check.
+ 822:.//FWLIB/src/stm32f4xx_cryp.c ****   *           This parameter can be one of the following values:
+ 823:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_IT_INI: Input FIFO interrupt
+ 824:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_IT_OUTI: Output FIFO interrupt
+ 825:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval The new state of CRYP_IT (SET or RESET).
+ 826:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 827:.//FWLIB/src/stm32f4xx_cryp.c **** ITStatus CRYP_GetITStatus(uint8_t CRYP_IT)
+ 828:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 847              		.loc 1 828 0
+ 848              		.cfi_startproc
+ 849              		@ args = 0, pretend = 0, frame = 0
+ 850              		@ frame_needed = 0, uses_anonymous_args = 0
+ 851              		@ link register save eliminated.
+ 852              	.LVL33:
+ 829:.//FWLIB/src/stm32f4xx_cryp.c ****   ITStatus bitstatus = RESET;
+ 830:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Check the parameters */
+ 831:.//FWLIB/src/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_GET_IT(CRYP_IT));
+ 832:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 833:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Check the status of the specified CRYP interrupt */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 30
+
+
+ 834:.//FWLIB/src/stm32f4xx_cryp.c ****   if ((CRYP->MISR &  CRYP_IT) != (uint8_t)RESET)
+ 853              		.loc 1 834 0
+ 854 0000 034B     		ldr	r3, .L59
+ 855 0002 DB69     		ldr	r3, [r3, #28]
+ 856 0004 1842     		tst	r0, r3
+ 857 0006 01D0     		beq	.L58
+ 835:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 836:.//FWLIB/src/stm32f4xx_cryp.c ****     /* CRYP_IT is set */
+ 837:.//FWLIB/src/stm32f4xx_cryp.c ****     bitstatus = SET;
+ 858              		.loc 1 837 0
+ 859 0008 0120     		movs	r0, #1
+ 860              	.LVL34:
+ 861 000a 7047     		bx	lr
+ 862              	.LVL35:
+ 863              	.L58:
+ 838:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 839:.//FWLIB/src/stm32f4xx_cryp.c ****   else
+ 840:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 841:.//FWLIB/src/stm32f4xx_cryp.c ****     /* CRYP_IT is reset */
+ 842:.//FWLIB/src/stm32f4xx_cryp.c ****     bitstatus = RESET;
+ 864              		.loc 1 842 0
+ 865 000c 0020     		movs	r0, #0
+ 866              	.LVL36:
+ 843:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 844:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Return the CRYP_IT status */
+ 845:.//FWLIB/src/stm32f4xx_cryp.c ****   return bitstatus;
+ 846:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 867              		.loc 1 846 0
+ 868 000e 7047     		bx	lr
+ 869              	.L60:
+ 870              		.align	2
+ 871              	.L59:
+ 872 0010 00000650 		.word	1342570496
+ 873              		.cfi_endproc
+ 874              	.LFE128:
+ 876              		.section	.text.CRYP_GetCmdStatus,"ax",%progbits
+ 877              		.align	2
+ 878              		.global	CRYP_GetCmdStatus
+ 879              		.thumb
+ 880              		.thumb_func
+ 882              	CRYP_GetCmdStatus:
+ 883              	.LFB129:
+ 847:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 848:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 849:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Returns whether CRYP peripheral is enabled or disabled.
+ 850:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  none.
+ 851:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval Current state of the CRYP peripheral (ENABLE or DISABLE).
+ 852:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 853:.//FWLIB/src/stm32f4xx_cryp.c **** FunctionalState CRYP_GetCmdStatus(void)
+ 854:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 884              		.loc 1 854 0
+ 885              		.cfi_startproc
+ 886              		@ args = 0, pretend = 0, frame = 0
+ 887              		@ frame_needed = 0, uses_anonymous_args = 0
+ 888              		@ link register save eliminated.
+ 889              	.LVL37:
+ 855:.//FWLIB/src/stm32f4xx_cryp.c ****   FunctionalState state = DISABLE;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 31
+
+
+ 856:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 857:.//FWLIB/src/stm32f4xx_cryp.c ****   if ((CRYP->CR & CRYP_CR_CRYPEN) != 0)
+ 890              		.loc 1 857 0
+ 891 0000 044B     		ldr	r3, .L64
+ 892 0002 1B68     		ldr	r3, [r3]
+ 893 0004 13F4004F 		tst	r3, #32768
+ 894 0008 01D0     		beq	.L63
+ 858:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 859:.//FWLIB/src/stm32f4xx_cryp.c ****     /* CRYPEN bit is set */
+ 860:.//FWLIB/src/stm32f4xx_cryp.c ****     state = ENABLE;
+ 895              		.loc 1 860 0
+ 896 000a 0120     		movs	r0, #1
+ 897 000c 7047     		bx	lr
+ 898              	.L63:
+ 861:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 862:.//FWLIB/src/stm32f4xx_cryp.c ****   else
+ 863:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 864:.//FWLIB/src/stm32f4xx_cryp.c ****     /* CRYPEN bit is reset */
+ 865:.//FWLIB/src/stm32f4xx_cryp.c ****     state = DISABLE;
+ 899              		.loc 1 865 0
+ 900 000e 0020     		movs	r0, #0
+ 901              	.LVL38:
+ 866:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 867:.//FWLIB/src/stm32f4xx_cryp.c ****   return state;
+ 868:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 902              		.loc 1 868 0
+ 903 0010 7047     		bx	lr
+ 904              	.L65:
+ 905 0012 00BF     		.align	2
+ 906              	.L64:
+ 907 0014 00000650 		.word	1342570496
+ 908              		.cfi_endproc
+ 909              	.LFE129:
+ 911              		.section	.text.CRYP_GetFlagStatus,"ax",%progbits
+ 912              		.align	2
+ 913              		.global	CRYP_GetFlagStatus
+ 914              		.thumb
+ 915              		.thumb_func
+ 917              	CRYP_GetFlagStatus:
+ 918              	.LFB130:
+ 869:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 870:.//FWLIB/src/stm32f4xx_cryp.c **** /**
+ 871:.//FWLIB/src/stm32f4xx_cryp.c ****   * @brief  Checks whether the specified CRYP flag is set or not.
+ 872:.//FWLIB/src/stm32f4xx_cryp.c ****   * @param  CRYP_FLAG: specifies the CRYP flag to check.
+ 873:.//FWLIB/src/stm32f4xx_cryp.c ****   *          This parameter can be one of the following values:
+ 874:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_IFEM: Input FIFO Empty flag.
+ 875:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_IFNF: Input FIFO Not Full flag.
+ 876:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_OFNE: Output FIFO Not Empty flag.
+ 877:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_OFFU: Output FIFO Full flag.
+ 878:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_BUSY: Busy flag.
+ 879:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_OUTRIS: Output FIFO raw interrupt flag.
+ 880:.//FWLIB/src/stm32f4xx_cryp.c ****   *            @arg CRYP_FLAG_INRIS: Input FIFO raw interrupt flag.
+ 881:.//FWLIB/src/stm32f4xx_cryp.c ****   * @retval The new state of CRYP_FLAG (SET or RESET).
+ 882:.//FWLIB/src/stm32f4xx_cryp.c ****   */
+ 883:.//FWLIB/src/stm32f4xx_cryp.c **** FlagStatus CRYP_GetFlagStatus(uint8_t CRYP_FLAG)
+ 884:.//FWLIB/src/stm32f4xx_cryp.c **** {
+ 919              		.loc 1 884 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 32
+
+
+ 920              		.cfi_startproc
+ 921              		@ args = 0, pretend = 0, frame = 0
+ 922              		@ frame_needed = 0, uses_anonymous_args = 0
+ 923              		@ link register save eliminated.
+ 924              	.LVL39:
+ 885:.//FWLIB/src/stm32f4xx_cryp.c ****   FlagStatus bitstatus = RESET;
+ 886:.//FWLIB/src/stm32f4xx_cryp.c ****   uint32_t tempreg = 0;
+ 887:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 888:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Check the parameters */
+ 889:.//FWLIB/src/stm32f4xx_cryp.c ****   assert_param(IS_CRYP_GET_FLAG(CRYP_FLAG));
+ 890:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 891:.//FWLIB/src/stm32f4xx_cryp.c ****   /* check if the FLAG is in RISR register */
+ 892:.//FWLIB/src/stm32f4xx_cryp.c ****   if ((CRYP_FLAG & FLAG_MASK) != 0x00) 
+ 925              		.loc 1 892 0
+ 926 0000 10F0200F 		tst	r0, #32
+ 927 0004 02D0     		beq	.L67
+ 893:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 894:.//FWLIB/src/stm32f4xx_cryp.c ****     tempreg = CRYP->RISR;
+ 928              		.loc 1 894 0
+ 929 0006 054B     		ldr	r3, .L71
+ 930 0008 9B69     		ldr	r3, [r3, #24]
+ 931              	.LVL40:
+ 932 000a 01E0     		b	.L68
+ 933              	.LVL41:
+ 934              	.L67:
+ 895:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 896:.//FWLIB/src/stm32f4xx_cryp.c ****   else  /* The FLAG is in SR register */
+ 897:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 898:.//FWLIB/src/stm32f4xx_cryp.c ****     tempreg = CRYP->SR;
+ 935              		.loc 1 898 0
+ 936 000c 034B     		ldr	r3, .L71
+ 937 000e 5B68     		ldr	r3, [r3, #4]
+ 938              	.LVL42:
+ 939              	.L68:
+ 899:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 900:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 901:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 902:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Check the status of the specified CRYP flag */
+ 903:.//FWLIB/src/stm32f4xx_cryp.c ****   if ((tempreg & CRYP_FLAG ) != (uint8_t)RESET)
+ 940              		.loc 1 903 0
+ 941 0010 1842     		tst	r0, r3
+ 942 0012 01D0     		beq	.L70
+ 904:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 905:.//FWLIB/src/stm32f4xx_cryp.c ****     /* CRYP_FLAG is set */
+ 906:.//FWLIB/src/stm32f4xx_cryp.c ****     bitstatus = SET;
+ 943              		.loc 1 906 0
+ 944 0014 0120     		movs	r0, #1
+ 945              	.LVL43:
+ 946 0016 7047     		bx	lr
+ 947              	.LVL44:
+ 948              	.L70:
+ 907:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 908:.//FWLIB/src/stm32f4xx_cryp.c ****   else
+ 909:.//FWLIB/src/stm32f4xx_cryp.c ****   {
+ 910:.//FWLIB/src/stm32f4xx_cryp.c ****     /* CRYP_FLAG is reset */
+ 911:.//FWLIB/src/stm32f4xx_cryp.c ****     bitstatus = RESET;
+ 949              		.loc 1 911 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 33
+
+
+ 950 0018 0020     		movs	r0, #0
+ 951              	.LVL45:
+ 912:.//FWLIB/src/stm32f4xx_cryp.c ****   }
+ 913:.//FWLIB/src/stm32f4xx_cryp.c **** 
+ 914:.//FWLIB/src/stm32f4xx_cryp.c ****   /* Return the CRYP_FLAG status */
+ 915:.//FWLIB/src/stm32f4xx_cryp.c ****   return  bitstatus;
+ 916:.//FWLIB/src/stm32f4xx_cryp.c **** }
+ 952              		.loc 1 916 0
+ 953 001a 7047     		bx	lr
+ 954              	.L72:
+ 955              		.align	2
+ 956              	.L71:
+ 957 001c 00000650 		.word	1342570496
+ 958              		.cfi_endproc
+ 959              	.LFE130:
+ 961              		.text
+ 962              	.Letext0:
+ 963              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 964              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 965              		.file 4 "USER/stm32f4xx.h"
+ 966              		.file 5 "FWLIB/inc/stm32f4xx_cryp.h"
+ 967              		.file 6 "CORE/core_cm4.h"
+ 968              		.file 7 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 34
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_cryp.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:22     .text.CRYP_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:27     .text.CRYP_DeInit:0000000000000000 CRYP_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:54     .text.CRYP_Init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:59     .text.CRYP_Init:0000000000000000 CRYP_Init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:124    .text.CRYP_Init:000000000000005c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:129    .text.CRYP_StructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:134    .text.CRYP_StructInit:0000000000000000 CRYP_StructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:156    .text.CRYP_KeyInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:161    .text.CRYP_KeyInit:0000000000000000 CRYP_KeyInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:198    .text.CRYP_KeyInit:0000000000000024 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:203    .text.CRYP_KeyStructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:208    .text.CRYP_KeyStructInit:0000000000000000 CRYP_KeyStructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:238    .text.CRYP_IVInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:243    .text.CRYP_IVInit:0000000000000000 CRYP_IVInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:268    .text.CRYP_IVInit:0000000000000014 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:273    .text.CRYP_IVStructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:278    .text.CRYP_IVStructInit:0000000000000000 CRYP_IVStructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:300    .text.CRYP_PhaseConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:305    .text.CRYP_PhaseConfig:0000000000000000 CRYP_PhaseConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:329    .text.CRYP_PhaseConfig:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:334    .text.CRYP_FIFOFlush:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:339    .text.CRYP_FIFOFlush:0000000000000000 CRYP_FIFOFlush
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:355    .text.CRYP_FIFOFlush:000000000000000c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:360    .text.CRYP_Cmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:365    .text.CRYP_Cmd:0000000000000000 CRYP_Cmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:391    .text.CRYP_Cmd:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:396    .text.CRYP_DataIn:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:401    .text.CRYP_DataIn:0000000000000000 CRYP_DataIn
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:416    .text.CRYP_DataIn:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:421    .text.CRYP_DataOut:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:426    .text.CRYP_DataOut:0000000000000000 CRYP_DataOut
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:441    .text.CRYP_DataOut:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:446    .text.CRYP_SaveContext:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:451    .text.CRYP_SaveContext:0000000000000000 CRYP_SaveContext
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:639    .text.CRYP_SaveContext:00000000000000f0 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:644    .text.CRYP_RestoreContext:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:649    .text.CRYP_RestoreContext:0000000000000000 CRYP_RestoreContext
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:753    .text.CRYP_RestoreContext:0000000000000088 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:758    .text.CRYP_DMACmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:763    .text.CRYP_DMACmd:0000000000000000 CRYP_DMACmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:794    .text.CRYP_DMACmd:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:799    .text.CRYP_ITConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:804    .text.CRYP_ITConfig:0000000000000000 CRYP_ITConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:835    .text.CRYP_ITConfig:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:840    .text.CRYP_GetITStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:845    .text.CRYP_GetITStatus:0000000000000000 CRYP_GetITStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:872    .text.CRYP_GetITStatus:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:877    .text.CRYP_GetCmdStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:882    .text.CRYP_GetCmdStatus:0000000000000000 CRYP_GetCmdStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:907    .text.CRYP_GetCmdStatus:0000000000000014 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:912    .text.CRYP_GetFlagStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:917    .text.CRYP_GetFlagStatus:0000000000000000 CRYP_GetFlagStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s:957    .text.CRYP_GetFlagStatus:000000000000001c $d
+                     .debug_frame:0000000000000010 $d
+
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccNj3DYz.s 			page 35
+
+
+UNDEFINED SYMBOLS
+RCC_AHB2PeriphResetCmd

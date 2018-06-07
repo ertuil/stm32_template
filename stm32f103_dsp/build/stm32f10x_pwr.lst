@@ -1,0 +1,1972 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"stm32f10x_pwr.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.PWR_DeInit,"ax",%progbits
+  20              		.align	2
+  21              		.global	PWR_DeInit
+  22              		.thumb
+  23              		.thumb_func
+  25              	PWR_DeInit:
+  26              	.LFB29:
+  27              		.file 1 ".//FWLIB/src/stm32f10x_pwr.c"
+   1:.//FWLIB/src/stm32f10x_pwr.c **** /**
+   2:.//FWLIB/src/stm32f10x_pwr.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f10x_pwr.c ****   * @file    stm32f10x_pwr.c
+   4:.//FWLIB/src/stm32f10x_pwr.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f10x_pwr.c ****   * @version V3.5.0
+   6:.//FWLIB/src/stm32f10x_pwr.c ****   * @date    11-March-2011
+   7:.//FWLIB/src/stm32f10x_pwr.c ****   * @brief   This file provides all the PWR firmware functions.
+   8:.//FWLIB/src/stm32f10x_pwr.c ****   ******************************************************************************
+   9:.//FWLIB/src/stm32f10x_pwr.c ****   * @attention
+  10:.//FWLIB/src/stm32f10x_pwr.c ****   *
+  11:.//FWLIB/src/stm32f10x_pwr.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:.//FWLIB/src/stm32f10x_pwr.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:.//FWLIB/src/stm32f10x_pwr.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:.//FWLIB/src/stm32f10x_pwr.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:.//FWLIB/src/stm32f10x_pwr.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:.//FWLIB/src/stm32f10x_pwr.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:.//FWLIB/src/stm32f10x_pwr.c ****   *
+  18:.//FWLIB/src/stm32f10x_pwr.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:.//FWLIB/src/stm32f10x_pwr.c ****   ******************************************************************************
+  20:.//FWLIB/src/stm32f10x_pwr.c ****   */
+  21:.//FWLIB/src/stm32f10x_pwr.c **** 
+  22:.//FWLIB/src/stm32f10x_pwr.c **** /* Includes ------------------------------------------------------------------*/
+  23:.//FWLIB/src/stm32f10x_pwr.c **** #include "stm32f10x_pwr.h"
+  24:.//FWLIB/src/stm32f10x_pwr.c **** #include "stm32f10x_rcc.h"
+  25:.//FWLIB/src/stm32f10x_pwr.c **** 
+  26:.//FWLIB/src/stm32f10x_pwr.c **** /** @addtogroup STM32F10x_StdPeriph_Driver
+  27:.//FWLIB/src/stm32f10x_pwr.c ****   * @{
+  28:.//FWLIB/src/stm32f10x_pwr.c ****   */
+  29:.//FWLIB/src/stm32f10x_pwr.c **** 
+  30:.//FWLIB/src/stm32f10x_pwr.c **** /** @defgroup PWR 
+  31:.//FWLIB/src/stm32f10x_pwr.c ****   * @brief PWR driver modules
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 2
+
+
+  32:.//FWLIB/src/stm32f10x_pwr.c ****   * @{
+  33:.//FWLIB/src/stm32f10x_pwr.c ****   */ 
+  34:.//FWLIB/src/stm32f10x_pwr.c **** 
+  35:.//FWLIB/src/stm32f10x_pwr.c **** /** @defgroup PWR_Private_TypesDefinitions
+  36:.//FWLIB/src/stm32f10x_pwr.c ****   * @{
+  37:.//FWLIB/src/stm32f10x_pwr.c ****   */
+  38:.//FWLIB/src/stm32f10x_pwr.c **** 
+  39:.//FWLIB/src/stm32f10x_pwr.c **** /**
+  40:.//FWLIB/src/stm32f10x_pwr.c ****   * @}
+  41:.//FWLIB/src/stm32f10x_pwr.c ****   */
+  42:.//FWLIB/src/stm32f10x_pwr.c **** 
+  43:.//FWLIB/src/stm32f10x_pwr.c **** /** @defgroup PWR_Private_Defines
+  44:.//FWLIB/src/stm32f10x_pwr.c ****   * @{
+  45:.//FWLIB/src/stm32f10x_pwr.c ****   */
+  46:.//FWLIB/src/stm32f10x_pwr.c **** 
+  47:.//FWLIB/src/stm32f10x_pwr.c **** /* --------- PWR registers bit address in the alias region ---------- */
+  48:.//FWLIB/src/stm32f10x_pwr.c **** #define PWR_OFFSET               (PWR_BASE - PERIPH_BASE)
+  49:.//FWLIB/src/stm32f10x_pwr.c **** 
+  50:.//FWLIB/src/stm32f10x_pwr.c **** /* --- CR Register ---*/
+  51:.//FWLIB/src/stm32f10x_pwr.c **** 
+  52:.//FWLIB/src/stm32f10x_pwr.c **** /* Alias word address of DBP bit */
+  53:.//FWLIB/src/stm32f10x_pwr.c **** #define CR_OFFSET                (PWR_OFFSET + 0x00)
+  54:.//FWLIB/src/stm32f10x_pwr.c **** #define DBP_BitNumber            0x08
+  55:.//FWLIB/src/stm32f10x_pwr.c **** #define CR_DBP_BB                (PERIPH_BB_BASE + (CR_OFFSET * 32) + (DBP_BitNumber * 4))
+  56:.//FWLIB/src/stm32f10x_pwr.c **** 
+  57:.//FWLIB/src/stm32f10x_pwr.c **** /* Alias word address of PVDE bit */
+  58:.//FWLIB/src/stm32f10x_pwr.c **** #define PVDE_BitNumber           0x04
+  59:.//FWLIB/src/stm32f10x_pwr.c **** #define CR_PVDE_BB               (PERIPH_BB_BASE + (CR_OFFSET * 32) + (PVDE_BitNumber * 4))
+  60:.//FWLIB/src/stm32f10x_pwr.c **** 
+  61:.//FWLIB/src/stm32f10x_pwr.c **** /* --- CSR Register ---*/
+  62:.//FWLIB/src/stm32f10x_pwr.c **** 
+  63:.//FWLIB/src/stm32f10x_pwr.c **** /* Alias word address of EWUP bit */
+  64:.//FWLIB/src/stm32f10x_pwr.c **** #define CSR_OFFSET               (PWR_OFFSET + 0x04)
+  65:.//FWLIB/src/stm32f10x_pwr.c **** #define EWUP_BitNumber           0x08
+  66:.//FWLIB/src/stm32f10x_pwr.c **** #define CSR_EWUP_BB              (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (EWUP_BitNumber * 4))
+  67:.//FWLIB/src/stm32f10x_pwr.c **** 
+  68:.//FWLIB/src/stm32f10x_pwr.c **** /* ------------------ PWR registers bit mask ------------------------ */
+  69:.//FWLIB/src/stm32f10x_pwr.c **** 
+  70:.//FWLIB/src/stm32f10x_pwr.c **** /* CR register bit mask */
+  71:.//FWLIB/src/stm32f10x_pwr.c **** #define CR_DS_MASK               ((uint32_t)0xFFFFFFFC)
+  72:.//FWLIB/src/stm32f10x_pwr.c **** #define CR_PLS_MASK              ((uint32_t)0xFFFFFF1F)
+  73:.//FWLIB/src/stm32f10x_pwr.c **** 
+  74:.//FWLIB/src/stm32f10x_pwr.c **** 
+  75:.//FWLIB/src/stm32f10x_pwr.c **** /**
+  76:.//FWLIB/src/stm32f10x_pwr.c ****   * @}
+  77:.//FWLIB/src/stm32f10x_pwr.c ****   */
+  78:.//FWLIB/src/stm32f10x_pwr.c **** 
+  79:.//FWLIB/src/stm32f10x_pwr.c **** /** @defgroup PWR_Private_Macros
+  80:.//FWLIB/src/stm32f10x_pwr.c ****   * @{
+  81:.//FWLIB/src/stm32f10x_pwr.c ****   */
+  82:.//FWLIB/src/stm32f10x_pwr.c **** 
+  83:.//FWLIB/src/stm32f10x_pwr.c **** /**
+  84:.//FWLIB/src/stm32f10x_pwr.c ****   * @}
+  85:.//FWLIB/src/stm32f10x_pwr.c ****   */
+  86:.//FWLIB/src/stm32f10x_pwr.c **** 
+  87:.//FWLIB/src/stm32f10x_pwr.c **** /** @defgroup PWR_Private_Variables
+  88:.//FWLIB/src/stm32f10x_pwr.c ****   * @{
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 3
+
+
+  89:.//FWLIB/src/stm32f10x_pwr.c ****   */
+  90:.//FWLIB/src/stm32f10x_pwr.c **** 
+  91:.//FWLIB/src/stm32f10x_pwr.c **** /**
+  92:.//FWLIB/src/stm32f10x_pwr.c ****   * @}
+  93:.//FWLIB/src/stm32f10x_pwr.c ****   */
+  94:.//FWLIB/src/stm32f10x_pwr.c **** 
+  95:.//FWLIB/src/stm32f10x_pwr.c **** /** @defgroup PWR_Private_FunctionPrototypes
+  96:.//FWLIB/src/stm32f10x_pwr.c ****   * @{
+  97:.//FWLIB/src/stm32f10x_pwr.c ****   */
+  98:.//FWLIB/src/stm32f10x_pwr.c **** 
+  99:.//FWLIB/src/stm32f10x_pwr.c **** /**
+ 100:.//FWLIB/src/stm32f10x_pwr.c ****   * @}
+ 101:.//FWLIB/src/stm32f10x_pwr.c ****   */
+ 102:.//FWLIB/src/stm32f10x_pwr.c **** 
+ 103:.//FWLIB/src/stm32f10x_pwr.c **** /** @defgroup PWR_Private_Functions
+ 104:.//FWLIB/src/stm32f10x_pwr.c ****   * @{
+ 105:.//FWLIB/src/stm32f10x_pwr.c ****   */
+ 106:.//FWLIB/src/stm32f10x_pwr.c **** 
+ 107:.//FWLIB/src/stm32f10x_pwr.c **** /**
+ 108:.//FWLIB/src/stm32f10x_pwr.c ****   * @brief  Deinitializes the PWR peripheral registers to their default reset values.
+ 109:.//FWLIB/src/stm32f10x_pwr.c ****   * @param  None
+ 110:.//FWLIB/src/stm32f10x_pwr.c ****   * @retval None
+ 111:.//FWLIB/src/stm32f10x_pwr.c ****   */
+ 112:.//FWLIB/src/stm32f10x_pwr.c **** void PWR_DeInit(void)
+ 113:.//FWLIB/src/stm32f10x_pwr.c **** {
+  28              		.loc 1 113 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+ 114:.//FWLIB/src/stm32f10x_pwr.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_PWR, ENABLE);
+  37              		.loc 1 114 0
+  38 0002 0121     		movs	r1, #1
+  39 0004 4FF08050 		mov	r0, #268435456
+  40 0008 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  41              	.LVL0:
+ 115:.//FWLIB/src/stm32f10x_pwr.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_PWR, DISABLE);
+  42              		.loc 1 115 0
+  43 000c 0021     		movs	r1, #0
+  44 000e 4FF08050 		mov	r0, #268435456
+  45 0012 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  46              	.LVL1:
+  47 0016 08BD     		pop	{r3, pc}
+  48              		.cfi_endproc
+  49              	.LFE29:
+  51              		.section	.text.PWR_BackupAccessCmd,"ax",%progbits
+  52              		.align	2
+  53              		.global	PWR_BackupAccessCmd
+  54              		.thumb
+  55              		.thumb_func
+  57              	PWR_BackupAccessCmd:
+  58              	.LFB30:
+ 116:.//FWLIB/src/stm32f10x_pwr.c **** }
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 4
+
+
+ 117:.//FWLIB/src/stm32f10x_pwr.c **** 
+ 118:.//FWLIB/src/stm32f10x_pwr.c **** /**
+ 119:.//FWLIB/src/stm32f10x_pwr.c ****   * @brief  Enables or disables access to the RTC and backup registers.
+ 120:.//FWLIB/src/stm32f10x_pwr.c ****   * @param  NewState: new state of the access to the RTC and backup registers.
+ 121:.//FWLIB/src/stm32f10x_pwr.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 122:.//FWLIB/src/stm32f10x_pwr.c ****   * @retval None
+ 123:.//FWLIB/src/stm32f10x_pwr.c ****   */
+ 124:.//FWLIB/src/stm32f10x_pwr.c **** void PWR_BackupAccessCmd(FunctionalState NewState)
+ 125:.//FWLIB/src/stm32f10x_pwr.c **** {
+  59              		.loc 1 125 0
+  60              		.cfi_startproc
+  61              		@ args = 0, pretend = 0, frame = 0
+  62              		@ frame_needed = 0, uses_anonymous_args = 0
+  63              		@ link register save eliminated.
+  64              	.LVL2:
+ 126:.//FWLIB/src/stm32f10x_pwr.c ****   /* Check the parameters */
+ 127:.//FWLIB/src/stm32f10x_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 128:.//FWLIB/src/stm32f10x_pwr.c ****   *(__IO uint32_t *) CR_DBP_BB = (uint32_t)NewState;
+  65              		.loc 1 128 0
+  66 0000 014B     		ldr	r3, .L4
+  67 0002 1860     		str	r0, [r3]
+  68 0004 7047     		bx	lr
+  69              	.L5:
+  70 0006 00BF     		.align	2
+  71              	.L4:
+  72 0008 20000E42 		.word	1108213792
+  73              		.cfi_endproc
+  74              	.LFE30:
+  76              		.section	.text.PWR_PVDCmd,"ax",%progbits
+  77              		.align	2
+  78              		.global	PWR_PVDCmd
+  79              		.thumb
+  80              		.thumb_func
+  82              	PWR_PVDCmd:
+  83              	.LFB31:
+ 129:.//FWLIB/src/stm32f10x_pwr.c **** }
+ 130:.//FWLIB/src/stm32f10x_pwr.c **** 
+ 131:.//FWLIB/src/stm32f10x_pwr.c **** /**
+ 132:.//FWLIB/src/stm32f10x_pwr.c ****   * @brief  Enables or disables the Power Voltage Detector(PVD).
+ 133:.//FWLIB/src/stm32f10x_pwr.c ****   * @param  NewState: new state of the PVD.
+ 134:.//FWLIB/src/stm32f10x_pwr.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 135:.//FWLIB/src/stm32f10x_pwr.c ****   * @retval None
+ 136:.//FWLIB/src/stm32f10x_pwr.c ****   */
+ 137:.//FWLIB/src/stm32f10x_pwr.c **** void PWR_PVDCmd(FunctionalState NewState)
+ 138:.//FWLIB/src/stm32f10x_pwr.c **** {
+  84              		.loc 1 138 0
+  85              		.cfi_startproc
+  86              		@ args = 0, pretend = 0, frame = 0
+  87              		@ frame_needed = 0, uses_anonymous_args = 0
+  88              		@ link register save eliminated.
+  89              	.LVL3:
+ 139:.//FWLIB/src/stm32f10x_pwr.c ****   /* Check the parameters */
+ 140:.//FWLIB/src/stm32f10x_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 141:.//FWLIB/src/stm32f10x_pwr.c ****   *(__IO uint32_t *) CR_PVDE_BB = (uint32_t)NewState;
+  90              		.loc 1 141 0
+  91 0000 014B     		ldr	r3, .L7
+  92 0002 1860     		str	r0, [r3]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 5
+
+
+  93 0004 7047     		bx	lr
+  94              	.L8:
+  95 0006 00BF     		.align	2
+  96              	.L7:
+  97 0008 10000E42 		.word	1108213776
+  98              		.cfi_endproc
+  99              	.LFE31:
+ 101              		.section	.text.PWR_PVDLevelConfig,"ax",%progbits
+ 102              		.align	2
+ 103              		.global	PWR_PVDLevelConfig
+ 104              		.thumb
+ 105              		.thumb_func
+ 107              	PWR_PVDLevelConfig:
+ 108              	.LFB32:
+ 142:.//FWLIB/src/stm32f10x_pwr.c **** }
+ 143:.//FWLIB/src/stm32f10x_pwr.c **** 
+ 144:.//FWLIB/src/stm32f10x_pwr.c **** /**
+ 145:.//FWLIB/src/stm32f10x_pwr.c ****   * @brief  Configures the voltage threshold detected by the Power Voltage Detector(PVD).
+ 146:.//FWLIB/src/stm32f10x_pwr.c ****   * @param  PWR_PVDLevel: specifies the PVD detection level
+ 147:.//FWLIB/src/stm32f10x_pwr.c ****   *   This parameter can be one of the following values:
+ 148:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_PVDLevel_2V2: PVD detection level set to 2.2V
+ 149:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_PVDLevel_2V3: PVD detection level set to 2.3V
+ 150:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_PVDLevel_2V4: PVD detection level set to 2.4V
+ 151:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_PVDLevel_2V5: PVD detection level set to 2.5V
+ 152:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_PVDLevel_2V6: PVD detection level set to 2.6V
+ 153:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_PVDLevel_2V7: PVD detection level set to 2.7V
+ 154:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_PVDLevel_2V8: PVD detection level set to 2.8V
+ 155:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_PVDLevel_2V9: PVD detection level set to 2.9V
+ 156:.//FWLIB/src/stm32f10x_pwr.c ****   * @retval None
+ 157:.//FWLIB/src/stm32f10x_pwr.c ****   */
+ 158:.//FWLIB/src/stm32f10x_pwr.c **** void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel)
+ 159:.//FWLIB/src/stm32f10x_pwr.c **** {
+ 109              		.loc 1 159 0
+ 110              		.cfi_startproc
+ 111              		@ args = 0, pretend = 0, frame = 0
+ 112              		@ frame_needed = 0, uses_anonymous_args = 0
+ 113              		@ link register save eliminated.
+ 114              	.LVL4:
+ 160:.//FWLIB/src/stm32f10x_pwr.c ****   uint32_t tmpreg = 0;
+ 161:.//FWLIB/src/stm32f10x_pwr.c ****   /* Check the parameters */
+ 162:.//FWLIB/src/stm32f10x_pwr.c ****   assert_param(IS_PWR_PVD_LEVEL(PWR_PVDLevel));
+ 163:.//FWLIB/src/stm32f10x_pwr.c ****   tmpreg = PWR->CR;
+ 115              		.loc 1 163 0
+ 116 0000 034A     		ldr	r2, .L10
+ 117 0002 1368     		ldr	r3, [r2]
+ 118              	.LVL5:
+ 164:.//FWLIB/src/stm32f10x_pwr.c ****   /* Clear PLS[7:5] bits */
+ 165:.//FWLIB/src/stm32f10x_pwr.c ****   tmpreg &= CR_PLS_MASK;
+ 119              		.loc 1 165 0
+ 120 0004 23F0E003 		bic	r3, r3, #224
+ 121              	.LVL6:
+ 166:.//FWLIB/src/stm32f10x_pwr.c ****   /* Set PLS[7:5] bits according to PWR_PVDLevel value */
+ 167:.//FWLIB/src/stm32f10x_pwr.c ****   tmpreg |= PWR_PVDLevel;
+ 122              		.loc 1 167 0
+ 123 0008 1843     		orrs	r0, r0, r3
+ 124              	.LVL7:
+ 168:.//FWLIB/src/stm32f10x_pwr.c ****   /* Store the new value */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 6
+
+
+ 169:.//FWLIB/src/stm32f10x_pwr.c ****   PWR->CR = tmpreg;
+ 125              		.loc 1 169 0
+ 126 000a 1060     		str	r0, [r2]
+ 127 000c 7047     		bx	lr
+ 128              	.L11:
+ 129 000e 00BF     		.align	2
+ 130              	.L10:
+ 131 0010 00700040 		.word	1073770496
+ 132              		.cfi_endproc
+ 133              	.LFE32:
+ 135              		.section	.text.PWR_WakeUpPinCmd,"ax",%progbits
+ 136              		.align	2
+ 137              		.global	PWR_WakeUpPinCmd
+ 138              		.thumb
+ 139              		.thumb_func
+ 141              	PWR_WakeUpPinCmd:
+ 142              	.LFB33:
+ 170:.//FWLIB/src/stm32f10x_pwr.c **** }
+ 171:.//FWLIB/src/stm32f10x_pwr.c **** 
+ 172:.//FWLIB/src/stm32f10x_pwr.c **** /**
+ 173:.//FWLIB/src/stm32f10x_pwr.c ****   * @brief  Enables or disables the WakeUp Pin functionality.
+ 174:.//FWLIB/src/stm32f10x_pwr.c ****   * @param  NewState: new state of the WakeUp Pin functionality.
+ 175:.//FWLIB/src/stm32f10x_pwr.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 176:.//FWLIB/src/stm32f10x_pwr.c ****   * @retval None
+ 177:.//FWLIB/src/stm32f10x_pwr.c ****   */
+ 178:.//FWLIB/src/stm32f10x_pwr.c **** void PWR_WakeUpPinCmd(FunctionalState NewState)
+ 179:.//FWLIB/src/stm32f10x_pwr.c **** {
+ 143              		.loc 1 179 0
+ 144              		.cfi_startproc
+ 145              		@ args = 0, pretend = 0, frame = 0
+ 146              		@ frame_needed = 0, uses_anonymous_args = 0
+ 147              		@ link register save eliminated.
+ 148              	.LVL8:
+ 180:.//FWLIB/src/stm32f10x_pwr.c ****   /* Check the parameters */
+ 181:.//FWLIB/src/stm32f10x_pwr.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 182:.//FWLIB/src/stm32f10x_pwr.c ****   *(__IO uint32_t *) CSR_EWUP_BB = (uint32_t)NewState;
+ 149              		.loc 1 182 0
+ 150 0000 014B     		ldr	r3, .L13
+ 151 0002 1860     		str	r0, [r3]
+ 152 0004 7047     		bx	lr
+ 153              	.L14:
+ 154 0006 00BF     		.align	2
+ 155              	.L13:
+ 156 0008 A0000E42 		.word	1108213920
+ 157              		.cfi_endproc
+ 158              	.LFE33:
+ 160              		.section	.text.PWR_EnterSTOPMode,"ax",%progbits
+ 161              		.align	2
+ 162              		.global	PWR_EnterSTOPMode
+ 163              		.thumb
+ 164              		.thumb_func
+ 166              	PWR_EnterSTOPMode:
+ 167              	.LFB34:
+ 183:.//FWLIB/src/stm32f10x_pwr.c **** }
+ 184:.//FWLIB/src/stm32f10x_pwr.c **** 
+ 185:.//FWLIB/src/stm32f10x_pwr.c **** /**
+ 186:.//FWLIB/src/stm32f10x_pwr.c ****   * @brief  Enters STOP mode.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 7
+
+
+ 187:.//FWLIB/src/stm32f10x_pwr.c ****   * @param  PWR_Regulator: specifies the regulator state in STOP mode.
+ 188:.//FWLIB/src/stm32f10x_pwr.c ****   *   This parameter can be one of the following values:
+ 189:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_Regulator_ON: STOP mode with regulator ON
+ 190:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_Regulator_LowPower: STOP mode with regulator in low power mode
+ 191:.//FWLIB/src/stm32f10x_pwr.c ****   * @param  PWR_STOPEntry: specifies if STOP mode in entered with WFI or WFE instruction.
+ 192:.//FWLIB/src/stm32f10x_pwr.c ****   *   This parameter can be one of the following values:
+ 193:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_STOPEntry_WFI: enter STOP mode with WFI instruction
+ 194:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_STOPEntry_WFE: enter STOP mode with WFE instruction
+ 195:.//FWLIB/src/stm32f10x_pwr.c ****   * @retval None
+ 196:.//FWLIB/src/stm32f10x_pwr.c ****   */
+ 197:.//FWLIB/src/stm32f10x_pwr.c **** void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
+ 198:.//FWLIB/src/stm32f10x_pwr.c **** {
+ 168              		.loc 1 198 0
+ 169              		.cfi_startproc
+ 170              		@ args = 0, pretend = 0, frame = 0
+ 171              		@ frame_needed = 0, uses_anonymous_args = 0
+ 172              		@ link register save eliminated.
+ 173              	.LVL9:
+ 199:.//FWLIB/src/stm32f10x_pwr.c ****   uint32_t tmpreg = 0;
+ 200:.//FWLIB/src/stm32f10x_pwr.c ****   /* Check the parameters */
+ 201:.//FWLIB/src/stm32f10x_pwr.c ****   assert_param(IS_PWR_REGULATOR(PWR_Regulator));
+ 202:.//FWLIB/src/stm32f10x_pwr.c ****   assert_param(IS_PWR_STOP_ENTRY(PWR_STOPEntry));
+ 203:.//FWLIB/src/stm32f10x_pwr.c ****   
+ 204:.//FWLIB/src/stm32f10x_pwr.c ****   /* Select the regulator state in STOP mode ---------------------------------*/
+ 205:.//FWLIB/src/stm32f10x_pwr.c ****   tmpreg = PWR->CR;
+ 174              		.loc 1 205 0
+ 175 0000 0A4A     		ldr	r2, .L18
+ 176 0002 1368     		ldr	r3, [r2]
+ 177              	.LVL10:
+ 206:.//FWLIB/src/stm32f10x_pwr.c ****   /* Clear PDDS and LPDS bits */
+ 207:.//FWLIB/src/stm32f10x_pwr.c ****   tmpreg &= CR_DS_MASK;
+ 178              		.loc 1 207 0
+ 179 0004 23F00303 		bic	r3, r3, #3
+ 180              	.LVL11:
+ 208:.//FWLIB/src/stm32f10x_pwr.c ****   /* Set LPDS bit according to PWR_Regulator value */
+ 209:.//FWLIB/src/stm32f10x_pwr.c ****   tmpreg |= PWR_Regulator;
+ 181              		.loc 1 209 0
+ 182 0008 1843     		orrs	r0, r0, r3
+ 183              	.LVL12:
+ 210:.//FWLIB/src/stm32f10x_pwr.c ****   /* Store the new value */
+ 211:.//FWLIB/src/stm32f10x_pwr.c ****   PWR->CR = tmpreg;
+ 184              		.loc 1 211 0
+ 185 000a 1060     		str	r0, [r2]
+ 212:.//FWLIB/src/stm32f10x_pwr.c ****   /* Set SLEEPDEEP bit of Cortex System Control Register */
+ 213:.//FWLIB/src/stm32f10x_pwr.c ****   SCB->SCR |= SCB_SCR_SLEEPDEEP;
+ 186              		.loc 1 213 0
+ 187 000c 084A     		ldr	r2, .L18+4
+ 188 000e 1369     		ldr	r3, [r2, #16]
+ 189 0010 43F00403 		orr	r3, r3, #4
+ 190 0014 1361     		str	r3, [r2, #16]
+ 214:.//FWLIB/src/stm32f10x_pwr.c ****   
+ 215:.//FWLIB/src/stm32f10x_pwr.c ****   /* Select STOP mode entry --------------------------------------------------*/
+ 216:.//FWLIB/src/stm32f10x_pwr.c ****   if(PWR_STOPEntry == PWR_STOPEntry_WFI)
+ 191              		.loc 1 216 0
+ 192 0016 0129     		cmp	r1, #1
+ 193 0018 01D1     		bne	.L16
+ 194              	.LBB8:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 8
+
+
+ 195              	.LBB9:
+ 196              		.file 2 "CORE/core_cm3.h"
+   1:CORE/core_cm3.h **** /**************************************************************************//**
+   2:CORE/core_cm3.h ****  * @file     core_cm3.h
+   3:CORE/core_cm3.h ****  * @brief    CMSIS Cortex-M3 Core Peripheral Access Layer Header File
+   4:CORE/core_cm3.h ****  * @version  V1.30
+   5:CORE/core_cm3.h ****  * @date     30. October 2009
+   6:CORE/core_cm3.h ****  *
+   7:CORE/core_cm3.h ****  * @note
+   8:CORE/core_cm3.h ****  * Copyright (C) 2009 ARM Limited. All rights reserved.
+   9:CORE/core_cm3.h ****  *
+  10:CORE/core_cm3.h ****  * @par
+  11:CORE/core_cm3.h ****  * ARM Limited (ARM) is supplying this software for use with Cortex-M 
+  12:CORE/core_cm3.h ****  * processor based microcontrollers.  This file can be freely distributed 
+  13:CORE/core_cm3.h ****  * within development tools that are supporting such ARM based processors. 
+  14:CORE/core_cm3.h ****  *
+  15:CORE/core_cm3.h ****  * @par
+  16:CORE/core_cm3.h ****  * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
+  17:CORE/core_cm3.h ****  * OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
+  18:CORE/core_cm3.h ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
+  19:CORE/core_cm3.h ****  * ARM SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR
+  20:CORE/core_cm3.h ****  * CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+  21:CORE/core_cm3.h ****  *
+  22:CORE/core_cm3.h ****  ******************************************************************************/
+  23:CORE/core_cm3.h **** 
+  24:CORE/core_cm3.h **** #ifndef __CM3_CORE_H__
+  25:CORE/core_cm3.h **** #define __CM3_CORE_H__
+  26:CORE/core_cm3.h **** 
+  27:CORE/core_cm3.h **** /** @addtogroup CMSIS_CM3_core_LintCinfiguration CMSIS CM3 Core Lint Configuration
+  28:CORE/core_cm3.h ****  *
+  29:CORE/core_cm3.h ****  * List of Lint messages which will be suppressed and not shown:
+  30:CORE/core_cm3.h ****  *   - Error 10: \n
+  31:CORE/core_cm3.h ****  *     register uint32_t __regBasePri         __asm("basepri"); \n
+  32:CORE/core_cm3.h ****  *     Error 10: Expecting ';'
+  33:CORE/core_cm3.h ****  * .
+  34:CORE/core_cm3.h ****  *   - Error 530: \n
+  35:CORE/core_cm3.h ****  *     return(__regBasePri); \n
+  36:CORE/core_cm3.h ****  *     Warning 530: Symbol '__regBasePri' (line 264) not initialized
+  37:CORE/core_cm3.h ****  * . 
+  38:CORE/core_cm3.h ****  *   - Error 550: \n
+  39:CORE/core_cm3.h ****  *     __regBasePri = (basePri & 0x1ff); \n
+  40:CORE/core_cm3.h ****  *     Warning 550: Symbol '__regBasePri' (line 271) not accessed
+  41:CORE/core_cm3.h ****  * .
+  42:CORE/core_cm3.h ****  *   - Error 754: \n
+  43:CORE/core_cm3.h ****  *     uint32_t RESERVED0[24]; \n
+  44:CORE/core_cm3.h ****  *     Info 754: local structure member '<some, not used in the HAL>' (line 109, file ./cm3_core.h)
+  45:CORE/core_cm3.h ****  * .
+  46:CORE/core_cm3.h ****  *   - Error 750: \n
+  47:CORE/core_cm3.h ****  *     #define __CM3_CORE_H__ \n
+  48:CORE/core_cm3.h ****  *     Info 750: local macro '__CM3_CORE_H__' (line 43, file./cm3_core.h) not referenced
+  49:CORE/core_cm3.h ****  * .
+  50:CORE/core_cm3.h ****  *   - Error 528: \n
+  51:CORE/core_cm3.h ****  *     static __INLINE void NVIC_DisableIRQ(uint32_t IRQn) \n
+  52:CORE/core_cm3.h ****  *     Warning 528: Symbol 'NVIC_DisableIRQ(unsigned int)' (line 419, file ./cm3_core.h) not refere
+  53:CORE/core_cm3.h ****  * .
+  54:CORE/core_cm3.h ****  *   - Error 751: \n
+  55:CORE/core_cm3.h ****  *     } InterruptType_Type; \n
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 9
+
+
+  56:CORE/core_cm3.h ****  *     Info 751: local typedef 'InterruptType_Type' (line 170, file ./cm3_core.h) not referenced
+  57:CORE/core_cm3.h ****  * .
+  58:CORE/core_cm3.h ****  * Note:  To re-enable a Message, insert a space before 'lint' *
+  59:CORE/core_cm3.h ****  *
+  60:CORE/core_cm3.h ****  */
+  61:CORE/core_cm3.h **** 
+  62:CORE/core_cm3.h **** /*lint -save */
+  63:CORE/core_cm3.h **** /*lint -e10  */
+  64:CORE/core_cm3.h **** /*lint -e530 */
+  65:CORE/core_cm3.h **** /*lint -e550 */
+  66:CORE/core_cm3.h **** /*lint -e754 */
+  67:CORE/core_cm3.h **** /*lint -e750 */
+  68:CORE/core_cm3.h **** /*lint -e528 */
+  69:CORE/core_cm3.h **** /*lint -e751 */
+  70:CORE/core_cm3.h **** 
+  71:CORE/core_cm3.h **** 
+  72:CORE/core_cm3.h **** /** @addtogroup CMSIS_CM3_core_definitions CM3 Core Definitions
+  73:CORE/core_cm3.h ****   This file defines all structures and symbols for CMSIS core:
+  74:CORE/core_cm3.h ****     - CMSIS version number
+  75:CORE/core_cm3.h ****     - Cortex-M core registers and bitfields
+  76:CORE/core_cm3.h ****     - Cortex-M core peripheral base address
+  77:CORE/core_cm3.h ****   @{
+  78:CORE/core_cm3.h ****  */
+  79:CORE/core_cm3.h **** 
+  80:CORE/core_cm3.h **** #ifdef __cplusplus
+  81:CORE/core_cm3.h ****  extern "C" {
+  82:CORE/core_cm3.h **** #endif 
+  83:CORE/core_cm3.h **** 
+  84:CORE/core_cm3.h **** #define __CM3_CMSIS_VERSION_MAIN  (0x01)                                                       /*!<
+  85:CORE/core_cm3.h **** #define __CM3_CMSIS_VERSION_SUB   (0x30)                                                       /*!<
+  86:CORE/core_cm3.h **** #define __CM3_CMSIS_VERSION       ((__CM3_CMSIS_VERSION_MAIN << 16) | __CM3_CMSIS_VERSION_SUB) /*!<
+  87:CORE/core_cm3.h **** 
+  88:CORE/core_cm3.h **** #define __CORTEX_M                (0x03)                                                       /*!<
+  89:CORE/core_cm3.h **** 
+  90:CORE/core_cm3.h **** #include <stdint.h>                           /* Include standard types */
+  91:CORE/core_cm3.h **** 
+  92:CORE/core_cm3.h **** #if defined (__ICCARM__)
+  93:CORE/core_cm3.h ****   #include <intrinsics.h>                     /* IAR Intrinsics   */
+  94:CORE/core_cm3.h **** #endif
+  95:CORE/core_cm3.h **** 
+  96:CORE/core_cm3.h **** 
+  97:CORE/core_cm3.h **** #ifndef __NVIC_PRIO_BITS
+  98:CORE/core_cm3.h ****   #define __NVIC_PRIO_BITS    4               /*!< standard definition for NVIC Priority Bits */
+  99:CORE/core_cm3.h **** #endif
+ 100:CORE/core_cm3.h **** 
+ 101:CORE/core_cm3.h **** 
+ 102:CORE/core_cm3.h **** 
+ 103:CORE/core_cm3.h **** 
+ 104:CORE/core_cm3.h **** /**
+ 105:CORE/core_cm3.h ****  * IO definitions
+ 106:CORE/core_cm3.h ****  *
+ 107:CORE/core_cm3.h ****  * define access restrictions to peripheral registers
+ 108:CORE/core_cm3.h ****  */
+ 109:CORE/core_cm3.h **** 
+ 110:CORE/core_cm3.h **** #ifdef __cplusplus
+ 111:CORE/core_cm3.h ****   #define     __I     volatile                /*!< defines 'read only' permissions      */
+ 112:CORE/core_cm3.h **** #else
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 10
+
+
+ 113:CORE/core_cm3.h ****   #define     __I     volatile const          /*!< defines 'read only' permissions      */
+ 114:CORE/core_cm3.h **** #endif
+ 115:CORE/core_cm3.h **** #define     __O     volatile                  /*!< defines 'write only' permissions     */
+ 116:CORE/core_cm3.h **** #define     __IO    volatile                  /*!< defines 'read / write' permissions   */
+ 117:CORE/core_cm3.h **** 
+ 118:CORE/core_cm3.h **** 
+ 119:CORE/core_cm3.h **** 
+ 120:CORE/core_cm3.h **** /*******************************************************************************
+ 121:CORE/core_cm3.h ****  *                 Register Abstraction
+ 122:CORE/core_cm3.h ****  ******************************************************************************/
+ 123:CORE/core_cm3.h **** /** @addtogroup CMSIS_CM3_core_register CMSIS CM3 Core Register
+ 124:CORE/core_cm3.h ****  @{
+ 125:CORE/core_cm3.h **** */
+ 126:CORE/core_cm3.h **** 
+ 127:CORE/core_cm3.h **** 
+ 128:CORE/core_cm3.h **** /** @addtogroup CMSIS_CM3_NVIC CMSIS CM3 NVIC
+ 129:CORE/core_cm3.h ****   memory mapped structure for Nested Vectored Interrupt Controller (NVIC)
+ 130:CORE/core_cm3.h ****   @{
+ 131:CORE/core_cm3.h ****  */
+ 132:CORE/core_cm3.h **** typedef struct
+ 133:CORE/core_cm3.h **** {
+ 134:CORE/core_cm3.h ****   __IO uint32_t ISER[8];                      /*!< Offset: 0x000  Interrupt Set Enable Register    
+ 135:CORE/core_cm3.h ****        uint32_t RESERVED0[24];                                   
+ 136:CORE/core_cm3.h ****   __IO uint32_t ICER[8];                      /*!< Offset: 0x080  Interrupt Clear Enable Register  
+ 137:CORE/core_cm3.h ****        uint32_t RSERVED1[24];                                    
+ 138:CORE/core_cm3.h ****   __IO uint32_t ISPR[8];                      /*!< Offset: 0x100  Interrupt Set Pending Register   
+ 139:CORE/core_cm3.h ****        uint32_t RESERVED2[24];                                   
+ 140:CORE/core_cm3.h ****   __IO uint32_t ICPR[8];                      /*!< Offset: 0x180  Interrupt Clear Pending Register 
+ 141:CORE/core_cm3.h ****        uint32_t RESERVED3[24];                                   
+ 142:CORE/core_cm3.h ****   __IO uint32_t IABR[8];                      /*!< Offset: 0x200  Interrupt Active bit Register    
+ 143:CORE/core_cm3.h ****        uint32_t RESERVED4[56];                                   
+ 144:CORE/core_cm3.h ****   __IO uint8_t  IP[240];                      /*!< Offset: 0x300  Interrupt Priority Register (8Bit
+ 145:CORE/core_cm3.h ****        uint32_t RESERVED5[644];                                  
+ 146:CORE/core_cm3.h ****   __O  uint32_t STIR;                         /*!< Offset: 0xE00  Software Trigger Interrupt Regist
+ 147:CORE/core_cm3.h **** }  NVIC_Type;                                               
+ 148:CORE/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_NVIC */
+ 149:CORE/core_cm3.h **** 
+ 150:CORE/core_cm3.h **** 
+ 151:CORE/core_cm3.h **** /** @addtogroup CMSIS_CM3_SCB CMSIS CM3 SCB
+ 152:CORE/core_cm3.h ****   memory mapped structure for System Control Block (SCB)
+ 153:CORE/core_cm3.h ****   @{
+ 154:CORE/core_cm3.h ****  */
+ 155:CORE/core_cm3.h **** typedef struct
+ 156:CORE/core_cm3.h **** {
+ 157:CORE/core_cm3.h ****   __I  uint32_t CPUID;                        /*!< Offset: 0x00  CPU ID Base Register              
+ 158:CORE/core_cm3.h ****   __IO uint32_t ICSR;                         /*!< Offset: 0x04  Interrupt Control State Register  
+ 159:CORE/core_cm3.h ****   __IO uint32_t VTOR;                         /*!< Offset: 0x08  Vector Table Offset Register      
+ 160:CORE/core_cm3.h ****   __IO uint32_t AIRCR;                        /*!< Offset: 0x0C  Application Interrupt / Reset Cont
+ 161:CORE/core_cm3.h ****   __IO uint32_t SCR;                          /*!< Offset: 0x10  System Control Register           
+ 162:CORE/core_cm3.h ****   __IO uint32_t CCR;                          /*!< Offset: 0x14  Configuration Control Register    
+ 163:CORE/core_cm3.h ****   __IO uint8_t  SHP[12];                      /*!< Offset: 0x18  System Handlers Priority Registers
+ 164:CORE/core_cm3.h ****   __IO uint32_t SHCSR;                        /*!< Offset: 0x24  System Handler Control and State R
+ 165:CORE/core_cm3.h ****   __IO uint32_t CFSR;                         /*!< Offset: 0x28  Configurable Fault Status Register
+ 166:CORE/core_cm3.h ****   __IO uint32_t HFSR;                         /*!< Offset: 0x2C  Hard Fault Status Register        
+ 167:CORE/core_cm3.h ****   __IO uint32_t DFSR;                         /*!< Offset: 0x30  Debug Fault Status Register       
+ 168:CORE/core_cm3.h ****   __IO uint32_t MMFAR;                        /*!< Offset: 0x34  Mem Manage Address Register       
+ 169:CORE/core_cm3.h ****   __IO uint32_t BFAR;                         /*!< Offset: 0x38  Bus Fault Address Register        
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 11
+
+
+ 170:CORE/core_cm3.h ****   __IO uint32_t AFSR;                         /*!< Offset: 0x3C  Auxiliary Fault Status Register   
+ 171:CORE/core_cm3.h ****   __I  uint32_t PFR[2];                       /*!< Offset: 0x40  Processor Feature Register        
+ 172:CORE/core_cm3.h ****   __I  uint32_t DFR;                          /*!< Offset: 0x48  Debug Feature Register            
+ 173:CORE/core_cm3.h ****   __I  uint32_t ADR;                          /*!< Offset: 0x4C  Auxiliary Feature Register        
+ 174:CORE/core_cm3.h ****   __I  uint32_t MMFR[4];                      /*!< Offset: 0x50  Memory Model Feature Register     
+ 175:CORE/core_cm3.h ****   __I  uint32_t ISAR[5];                      /*!< Offset: 0x60  ISA Feature Register              
+ 176:CORE/core_cm3.h **** } SCB_Type;                                                
+ 177:CORE/core_cm3.h **** 
+ 178:CORE/core_cm3.h **** /* SCB CPUID Register Definitions */
+ 179:CORE/core_cm3.h **** #define SCB_CPUID_IMPLEMENTER_Pos          24                                             /*!< SCB 
+ 180:CORE/core_cm3.h **** #define SCB_CPUID_IMPLEMENTER_Msk          (0xFFul << SCB_CPUID_IMPLEMENTER_Pos)          /*!< SCB 
+ 181:CORE/core_cm3.h **** 
+ 182:CORE/core_cm3.h **** #define SCB_CPUID_VARIANT_Pos              20                                             /*!< SCB 
+ 183:CORE/core_cm3.h **** #define SCB_CPUID_VARIANT_Msk              (0xFul << SCB_CPUID_VARIANT_Pos)               /*!< SCB 
+ 184:CORE/core_cm3.h **** 
+ 185:CORE/core_cm3.h **** #define SCB_CPUID_PARTNO_Pos                4                                             /*!< SCB 
+ 186:CORE/core_cm3.h **** #define SCB_CPUID_PARTNO_Msk               (0xFFFul << SCB_CPUID_PARTNO_Pos)              /*!< SCB 
+ 187:CORE/core_cm3.h **** 
+ 188:CORE/core_cm3.h **** #define SCB_CPUID_REVISION_Pos              0                                             /*!< SCB 
+ 189:CORE/core_cm3.h **** #define SCB_CPUID_REVISION_Msk             (0xFul << SCB_CPUID_REVISION_Pos)              /*!< SCB 
+ 190:CORE/core_cm3.h **** 
+ 191:CORE/core_cm3.h **** /* SCB Interrupt Control State Register Definitions */
+ 192:CORE/core_cm3.h **** #define SCB_ICSR_NMIPENDSET_Pos            31                                             /*!< SCB 
+ 193:CORE/core_cm3.h **** #define SCB_ICSR_NMIPENDSET_Msk            (1ul << SCB_ICSR_NMIPENDSET_Pos)               /*!< SCB 
+ 194:CORE/core_cm3.h **** 
+ 195:CORE/core_cm3.h **** #define SCB_ICSR_PENDSVSET_Pos             28                                             /*!< SCB 
+ 196:CORE/core_cm3.h **** #define SCB_ICSR_PENDSVSET_Msk             (1ul << SCB_ICSR_PENDSVSET_Pos)                /*!< SCB 
+ 197:CORE/core_cm3.h **** 
+ 198:CORE/core_cm3.h **** #define SCB_ICSR_PENDSVCLR_Pos             27                                             /*!< SCB 
+ 199:CORE/core_cm3.h **** #define SCB_ICSR_PENDSVCLR_Msk             (1ul << SCB_ICSR_PENDSVCLR_Pos)                /*!< SCB 
+ 200:CORE/core_cm3.h **** 
+ 201:CORE/core_cm3.h **** #define SCB_ICSR_PENDSTSET_Pos             26                                             /*!< SCB 
+ 202:CORE/core_cm3.h **** #define SCB_ICSR_PENDSTSET_Msk             (1ul << SCB_ICSR_PENDSTSET_Pos)                /*!< SCB 
+ 203:CORE/core_cm3.h **** 
+ 204:CORE/core_cm3.h **** #define SCB_ICSR_PENDSTCLR_Pos             25                                             /*!< SCB 
+ 205:CORE/core_cm3.h **** #define SCB_ICSR_PENDSTCLR_Msk             (1ul << SCB_ICSR_PENDSTCLR_Pos)                /*!< SCB 
+ 206:CORE/core_cm3.h **** 
+ 207:CORE/core_cm3.h **** #define SCB_ICSR_ISRPREEMPT_Pos            23                                             /*!< SCB 
+ 208:CORE/core_cm3.h **** #define SCB_ICSR_ISRPREEMPT_Msk            (1ul << SCB_ICSR_ISRPREEMPT_Pos)               /*!< SCB 
+ 209:CORE/core_cm3.h **** 
+ 210:CORE/core_cm3.h **** #define SCB_ICSR_ISRPENDING_Pos            22                                             /*!< SCB 
+ 211:CORE/core_cm3.h **** #define SCB_ICSR_ISRPENDING_Msk            (1ul << SCB_ICSR_ISRPENDING_Pos)               /*!< SCB 
+ 212:CORE/core_cm3.h **** 
+ 213:CORE/core_cm3.h **** #define SCB_ICSR_VECTPENDING_Pos           12                                             /*!< SCB 
+ 214:CORE/core_cm3.h **** #define SCB_ICSR_VECTPENDING_Msk           (0x1FFul << SCB_ICSR_VECTPENDING_Pos)          /*!< SCB 
+ 215:CORE/core_cm3.h **** 
+ 216:CORE/core_cm3.h **** #define SCB_ICSR_RETTOBASE_Pos             11                                             /*!< SCB 
+ 217:CORE/core_cm3.h **** #define SCB_ICSR_RETTOBASE_Msk             (1ul << SCB_ICSR_RETTOBASE_Pos)                /*!< SCB 
+ 218:CORE/core_cm3.h **** 
+ 219:CORE/core_cm3.h **** #define SCB_ICSR_VECTACTIVE_Pos             0                                             /*!< SCB 
+ 220:CORE/core_cm3.h **** #define SCB_ICSR_VECTACTIVE_Msk            (0x1FFul << SCB_ICSR_VECTACTIVE_Pos)           /*!< SCB 
+ 221:CORE/core_cm3.h **** 
+ 222:CORE/core_cm3.h **** /* SCB Interrupt Control State Register Definitions */
+ 223:CORE/core_cm3.h **** #define SCB_VTOR_TBLBASE_Pos               29                                             /*!< SCB 
+ 224:CORE/core_cm3.h **** #define SCB_VTOR_TBLBASE_Msk               (0x1FFul << SCB_VTOR_TBLBASE_Pos)              /*!< SCB 
+ 225:CORE/core_cm3.h **** 
+ 226:CORE/core_cm3.h **** #define SCB_VTOR_TBLOFF_Pos                 7                                             /*!< SCB 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 12
+
+
+ 227:CORE/core_cm3.h **** #define SCB_VTOR_TBLOFF_Msk                (0x3FFFFFul << SCB_VTOR_TBLOFF_Pos)            /*!< SCB 
+ 228:CORE/core_cm3.h **** 
+ 229:CORE/core_cm3.h **** /* SCB Application Interrupt and Reset Control Register Definitions */
+ 230:CORE/core_cm3.h **** #define SCB_AIRCR_VECTKEY_Pos              16                                             /*!< SCB 
+ 231:CORE/core_cm3.h **** #define SCB_AIRCR_VECTKEY_Msk              (0xFFFFul << SCB_AIRCR_VECTKEY_Pos)            /*!< SCB 
+ 232:CORE/core_cm3.h **** 
+ 233:CORE/core_cm3.h **** #define SCB_AIRCR_VECTKEYSTAT_Pos          16                                             /*!< SCB 
+ 234:CORE/core_cm3.h **** #define SCB_AIRCR_VECTKEYSTAT_Msk          (0xFFFFul << SCB_AIRCR_VECTKEYSTAT_Pos)        /*!< SCB 
+ 235:CORE/core_cm3.h **** 
+ 236:CORE/core_cm3.h **** #define SCB_AIRCR_ENDIANESS_Pos            15                                             /*!< SCB 
+ 237:CORE/core_cm3.h **** #define SCB_AIRCR_ENDIANESS_Msk            (1ul << SCB_AIRCR_ENDIANESS_Pos)               /*!< SCB 
+ 238:CORE/core_cm3.h **** 
+ 239:CORE/core_cm3.h **** #define SCB_AIRCR_PRIGROUP_Pos              8                                             /*!< SCB 
+ 240:CORE/core_cm3.h **** #define SCB_AIRCR_PRIGROUP_Msk             (7ul << SCB_AIRCR_PRIGROUP_Pos)                /*!< SCB 
+ 241:CORE/core_cm3.h **** 
+ 242:CORE/core_cm3.h **** #define SCB_AIRCR_SYSRESETREQ_Pos           2                                             /*!< SCB 
+ 243:CORE/core_cm3.h **** #define SCB_AIRCR_SYSRESETREQ_Msk          (1ul << SCB_AIRCR_SYSRESETREQ_Pos)             /*!< SCB 
+ 244:CORE/core_cm3.h **** 
+ 245:CORE/core_cm3.h **** #define SCB_AIRCR_VECTCLRACTIVE_Pos         1                                             /*!< SCB 
+ 246:CORE/core_cm3.h **** #define SCB_AIRCR_VECTCLRACTIVE_Msk        (1ul << SCB_AIRCR_VECTCLRACTIVE_Pos)           /*!< SCB 
+ 247:CORE/core_cm3.h **** 
+ 248:CORE/core_cm3.h **** #define SCB_AIRCR_VECTRESET_Pos             0                                             /*!< SCB 
+ 249:CORE/core_cm3.h **** #define SCB_AIRCR_VECTRESET_Msk            (1ul << SCB_AIRCR_VECTRESET_Pos)               /*!< SCB 
+ 250:CORE/core_cm3.h **** 
+ 251:CORE/core_cm3.h **** /* SCB System Control Register Definitions */
+ 252:CORE/core_cm3.h **** #define SCB_SCR_SEVONPEND_Pos               4                                             /*!< SCB 
+ 253:CORE/core_cm3.h **** #define SCB_SCR_SEVONPEND_Msk              (1ul << SCB_SCR_SEVONPEND_Pos)                 /*!< SCB 
+ 254:CORE/core_cm3.h **** 
+ 255:CORE/core_cm3.h **** #define SCB_SCR_SLEEPDEEP_Pos               2                                             /*!< SCB 
+ 256:CORE/core_cm3.h **** #define SCB_SCR_SLEEPDEEP_Msk              (1ul << SCB_SCR_SLEEPDEEP_Pos)                 /*!< SCB 
+ 257:CORE/core_cm3.h **** 
+ 258:CORE/core_cm3.h **** #define SCB_SCR_SLEEPONEXIT_Pos             1                                             /*!< SCB 
+ 259:CORE/core_cm3.h **** #define SCB_SCR_SLEEPONEXIT_Msk            (1ul << SCB_SCR_SLEEPONEXIT_Pos)               /*!< SCB 
+ 260:CORE/core_cm3.h **** 
+ 261:CORE/core_cm3.h **** /* SCB Configuration Control Register Definitions */
+ 262:CORE/core_cm3.h **** #define SCB_CCR_STKALIGN_Pos                9                                             /*!< SCB 
+ 263:CORE/core_cm3.h **** #define SCB_CCR_STKALIGN_Msk               (1ul << SCB_CCR_STKALIGN_Pos)                  /*!< SCB 
+ 264:CORE/core_cm3.h **** 
+ 265:CORE/core_cm3.h **** #define SCB_CCR_BFHFNMIGN_Pos               8                                             /*!< SCB 
+ 266:CORE/core_cm3.h **** #define SCB_CCR_BFHFNMIGN_Msk              (1ul << SCB_CCR_BFHFNMIGN_Pos)                 /*!< SCB 
+ 267:CORE/core_cm3.h **** 
+ 268:CORE/core_cm3.h **** #define SCB_CCR_DIV_0_TRP_Pos               4                                             /*!< SCB 
+ 269:CORE/core_cm3.h **** #define SCB_CCR_DIV_0_TRP_Msk              (1ul << SCB_CCR_DIV_0_TRP_Pos)                 /*!< SCB 
+ 270:CORE/core_cm3.h **** 
+ 271:CORE/core_cm3.h **** #define SCB_CCR_UNALIGN_TRP_Pos             3                                             /*!< SCB 
+ 272:CORE/core_cm3.h **** #define SCB_CCR_UNALIGN_TRP_Msk            (1ul << SCB_CCR_UNALIGN_TRP_Pos)               /*!< SCB 
+ 273:CORE/core_cm3.h **** 
+ 274:CORE/core_cm3.h **** #define SCB_CCR_USERSETMPEND_Pos            1                                             /*!< SCB 
+ 275:CORE/core_cm3.h **** #define SCB_CCR_USERSETMPEND_Msk           (1ul << SCB_CCR_USERSETMPEND_Pos)              /*!< SCB 
+ 276:CORE/core_cm3.h **** 
+ 277:CORE/core_cm3.h **** #define SCB_CCR_NONBASETHRDENA_Pos          0                                             /*!< SCB 
+ 278:CORE/core_cm3.h **** #define SCB_CCR_NONBASETHRDENA_Msk         (1ul << SCB_CCR_NONBASETHRDENA_Pos)            /*!< SCB 
+ 279:CORE/core_cm3.h **** 
+ 280:CORE/core_cm3.h **** /* SCB System Handler Control and State Register Definitions */
+ 281:CORE/core_cm3.h **** #define SCB_SHCSR_USGFAULTENA_Pos          18                                             /*!< SCB 
+ 282:CORE/core_cm3.h **** #define SCB_SHCSR_USGFAULTENA_Msk          (1ul << SCB_SHCSR_USGFAULTENA_Pos)             /*!< SCB 
+ 283:CORE/core_cm3.h **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 13
+
+
+ 284:CORE/core_cm3.h **** #define SCB_SHCSR_BUSFAULTENA_Pos          17                                             /*!< SCB 
+ 285:CORE/core_cm3.h **** #define SCB_SHCSR_BUSFAULTENA_Msk          (1ul << SCB_SHCSR_BUSFAULTENA_Pos)             /*!< SCB 
+ 286:CORE/core_cm3.h **** 
+ 287:CORE/core_cm3.h **** #define SCB_SHCSR_MEMFAULTENA_Pos          16                                             /*!< SCB 
+ 288:CORE/core_cm3.h **** #define SCB_SHCSR_MEMFAULTENA_Msk          (1ul << SCB_SHCSR_MEMFAULTENA_Pos)             /*!< SCB 
+ 289:CORE/core_cm3.h **** 
+ 290:CORE/core_cm3.h **** #define SCB_SHCSR_SVCALLPENDED_Pos         15                                             /*!< SCB 
+ 291:CORE/core_cm3.h **** #define SCB_SHCSR_SVCALLPENDED_Msk         (1ul << SCB_SHCSR_SVCALLPENDED_Pos)            /*!< SCB 
+ 292:CORE/core_cm3.h **** 
+ 293:CORE/core_cm3.h **** #define SCB_SHCSR_BUSFAULTPENDED_Pos       14                                             /*!< SCB 
+ 294:CORE/core_cm3.h **** #define SCB_SHCSR_BUSFAULTPENDED_Msk       (1ul << SCB_SHCSR_BUSFAULTPENDED_Pos)          /*!< SCB 
+ 295:CORE/core_cm3.h **** 
+ 296:CORE/core_cm3.h **** #define SCB_SHCSR_MEMFAULTPENDED_Pos       13                                             /*!< SCB 
+ 297:CORE/core_cm3.h **** #define SCB_SHCSR_MEMFAULTPENDED_Msk       (1ul << SCB_SHCSR_MEMFAULTPENDED_Pos)          /*!< SCB 
+ 298:CORE/core_cm3.h **** 
+ 299:CORE/core_cm3.h **** #define SCB_SHCSR_USGFAULTPENDED_Pos       12                                             /*!< SCB 
+ 300:CORE/core_cm3.h **** #define SCB_SHCSR_USGFAULTPENDED_Msk       (1ul << SCB_SHCSR_USGFAULTPENDED_Pos)          /*!< SCB 
+ 301:CORE/core_cm3.h **** 
+ 302:CORE/core_cm3.h **** #define SCB_SHCSR_SYSTICKACT_Pos           11                                             /*!< SCB 
+ 303:CORE/core_cm3.h **** #define SCB_SHCSR_SYSTICKACT_Msk           (1ul << SCB_SHCSR_SYSTICKACT_Pos)              /*!< SCB 
+ 304:CORE/core_cm3.h **** 
+ 305:CORE/core_cm3.h **** #define SCB_SHCSR_PENDSVACT_Pos            10                                             /*!< SCB 
+ 306:CORE/core_cm3.h **** #define SCB_SHCSR_PENDSVACT_Msk            (1ul << SCB_SHCSR_PENDSVACT_Pos)               /*!< SCB 
+ 307:CORE/core_cm3.h **** 
+ 308:CORE/core_cm3.h **** #define SCB_SHCSR_MONITORACT_Pos            8                                             /*!< SCB 
+ 309:CORE/core_cm3.h **** #define SCB_SHCSR_MONITORACT_Msk           (1ul << SCB_SHCSR_MONITORACT_Pos)              /*!< SCB 
+ 310:CORE/core_cm3.h **** 
+ 311:CORE/core_cm3.h **** #define SCB_SHCSR_SVCALLACT_Pos             7                                             /*!< SCB 
+ 312:CORE/core_cm3.h **** #define SCB_SHCSR_SVCALLACT_Msk            (1ul << SCB_SHCSR_SVCALLACT_Pos)               /*!< SCB 
+ 313:CORE/core_cm3.h ****                                      
+ 314:CORE/core_cm3.h **** #define SCB_SHCSR_USGFAULTACT_Pos           3                                             /*!< SCB 
+ 315:CORE/core_cm3.h **** #define SCB_SHCSR_USGFAULTACT_Msk          (1ul << SCB_SHCSR_USGFAULTACT_Pos)             /*!< SCB 
+ 316:CORE/core_cm3.h **** 
+ 317:CORE/core_cm3.h **** #define SCB_SHCSR_BUSFAULTACT_Pos           1                                             /*!< SCB 
+ 318:CORE/core_cm3.h **** #define SCB_SHCSR_BUSFAULTACT_Msk          (1ul << SCB_SHCSR_BUSFAULTACT_Pos)             /*!< SCB 
+ 319:CORE/core_cm3.h **** 
+ 320:CORE/core_cm3.h **** #define SCB_SHCSR_MEMFAULTACT_Pos           0                                             /*!< SCB 
+ 321:CORE/core_cm3.h **** #define SCB_SHCSR_MEMFAULTACT_Msk          (1ul << SCB_SHCSR_MEMFAULTACT_Pos)             /*!< SCB 
+ 322:CORE/core_cm3.h **** 
+ 323:CORE/core_cm3.h **** /* SCB Configurable Fault Status Registers Definitions */
+ 324:CORE/core_cm3.h **** #define SCB_CFSR_USGFAULTSR_Pos            16                                             /*!< SCB 
+ 325:CORE/core_cm3.h **** #define SCB_CFSR_USGFAULTSR_Msk            (0xFFFFul << SCB_CFSR_USGFAULTSR_Pos)          /*!< SCB 
+ 326:CORE/core_cm3.h **** 
+ 327:CORE/core_cm3.h **** #define SCB_CFSR_BUSFAULTSR_Pos             8                                             /*!< SCB 
+ 328:CORE/core_cm3.h **** #define SCB_CFSR_BUSFAULTSR_Msk            (0xFFul << SCB_CFSR_BUSFAULTSR_Pos)            /*!< SCB 
+ 329:CORE/core_cm3.h **** 
+ 330:CORE/core_cm3.h **** #define SCB_CFSR_MEMFAULTSR_Pos             0                                             /*!< SCB 
+ 331:CORE/core_cm3.h **** #define SCB_CFSR_MEMFAULTSR_Msk            (0xFFul << SCB_CFSR_MEMFAULTSR_Pos)            /*!< SCB 
+ 332:CORE/core_cm3.h **** 
+ 333:CORE/core_cm3.h **** /* SCB Hard Fault Status Registers Definitions */
+ 334:CORE/core_cm3.h **** #define SCB_HFSR_DEBUGEVT_Pos              31                                             /*!< SCB 
+ 335:CORE/core_cm3.h **** #define SCB_HFSR_DEBUGEVT_Msk              (1ul << SCB_HFSR_DEBUGEVT_Pos)                 /*!< SCB 
+ 336:CORE/core_cm3.h **** 
+ 337:CORE/core_cm3.h **** #define SCB_HFSR_FORCED_Pos                30                                             /*!< SCB 
+ 338:CORE/core_cm3.h **** #define SCB_HFSR_FORCED_Msk                (1ul << SCB_HFSR_FORCED_Pos)                   /*!< SCB 
+ 339:CORE/core_cm3.h **** 
+ 340:CORE/core_cm3.h **** #define SCB_HFSR_VECTTBL_Pos                1                                             /*!< SCB 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 14
+
+
+ 341:CORE/core_cm3.h **** #define SCB_HFSR_VECTTBL_Msk               (1ul << SCB_HFSR_VECTTBL_Pos)                  /*!< SCB 
+ 342:CORE/core_cm3.h **** 
+ 343:CORE/core_cm3.h **** /* SCB Debug Fault Status Register Definitions */
+ 344:CORE/core_cm3.h **** #define SCB_DFSR_EXTERNAL_Pos               4                                             /*!< SCB 
+ 345:CORE/core_cm3.h **** #define SCB_DFSR_EXTERNAL_Msk              (1ul << SCB_DFSR_EXTERNAL_Pos)                 /*!< SCB 
+ 346:CORE/core_cm3.h **** 
+ 347:CORE/core_cm3.h **** #define SCB_DFSR_VCATCH_Pos                 3                                             /*!< SCB 
+ 348:CORE/core_cm3.h **** #define SCB_DFSR_VCATCH_Msk                (1ul << SCB_DFSR_VCATCH_Pos)                   /*!< SCB 
+ 349:CORE/core_cm3.h **** 
+ 350:CORE/core_cm3.h **** #define SCB_DFSR_DWTTRAP_Pos                2                                             /*!< SCB 
+ 351:CORE/core_cm3.h **** #define SCB_DFSR_DWTTRAP_Msk               (1ul << SCB_DFSR_DWTTRAP_Pos)                  /*!< SCB 
+ 352:CORE/core_cm3.h **** 
+ 353:CORE/core_cm3.h **** #define SCB_DFSR_BKPT_Pos                   1                                             /*!< SCB 
+ 354:CORE/core_cm3.h **** #define SCB_DFSR_BKPT_Msk                  (1ul << SCB_DFSR_BKPT_Pos)                     /*!< SCB 
+ 355:CORE/core_cm3.h **** 
+ 356:CORE/core_cm3.h **** #define SCB_DFSR_HALTED_Pos                 0                                             /*!< SCB 
+ 357:CORE/core_cm3.h **** #define SCB_DFSR_HALTED_Msk                (1ul << SCB_DFSR_HALTED_Pos)                   /*!< SCB 
+ 358:CORE/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_SCB */
+ 359:CORE/core_cm3.h **** 
+ 360:CORE/core_cm3.h **** 
+ 361:CORE/core_cm3.h **** /** @addtogroup CMSIS_CM3_SysTick CMSIS CM3 SysTick
+ 362:CORE/core_cm3.h ****   memory mapped structure for SysTick
+ 363:CORE/core_cm3.h ****   @{
+ 364:CORE/core_cm3.h ****  */
+ 365:CORE/core_cm3.h **** typedef struct
+ 366:CORE/core_cm3.h **** {
+ 367:CORE/core_cm3.h ****   __IO uint32_t CTRL;                         /*!< Offset: 0x00  SysTick Control and Status Registe
+ 368:CORE/core_cm3.h ****   __IO uint32_t LOAD;                         /*!< Offset: 0x04  SysTick Reload Value Register     
+ 369:CORE/core_cm3.h ****   __IO uint32_t VAL;                          /*!< Offset: 0x08  SysTick Current Value Register    
+ 370:CORE/core_cm3.h ****   __I  uint32_t CALIB;                        /*!< Offset: 0x0C  SysTick Calibration Register      
+ 371:CORE/core_cm3.h **** } SysTick_Type;
+ 372:CORE/core_cm3.h **** 
+ 373:CORE/core_cm3.h **** /* SysTick Control / Status Register Definitions */
+ 374:CORE/core_cm3.h **** #define SysTick_CTRL_COUNTFLAG_Pos         16                                             /*!< SysT
+ 375:CORE/core_cm3.h **** #define SysTick_CTRL_COUNTFLAG_Msk         (1ul << SysTick_CTRL_COUNTFLAG_Pos)            /*!< SysT
+ 376:CORE/core_cm3.h **** 
+ 377:CORE/core_cm3.h **** #define SysTick_CTRL_CLKSOURCE_Pos          2                                             /*!< SysT
+ 378:CORE/core_cm3.h **** #define SysTick_CTRL_CLKSOURCE_Msk         (1ul << SysTick_CTRL_CLKSOURCE_Pos)            /*!< SysT
+ 379:CORE/core_cm3.h **** 
+ 380:CORE/core_cm3.h **** #define SysTick_CTRL_TICKINT_Pos            1                                             /*!< SysT
+ 381:CORE/core_cm3.h **** #define SysTick_CTRL_TICKINT_Msk           (1ul << SysTick_CTRL_TICKINT_Pos)              /*!< SysT
+ 382:CORE/core_cm3.h **** 
+ 383:CORE/core_cm3.h **** #define SysTick_CTRL_ENABLE_Pos             0                                             /*!< SysT
+ 384:CORE/core_cm3.h **** #define SysTick_CTRL_ENABLE_Msk            (1ul << SysTick_CTRL_ENABLE_Pos)               /*!< SysT
+ 385:CORE/core_cm3.h **** 
+ 386:CORE/core_cm3.h **** /* SysTick Reload Register Definitions */
+ 387:CORE/core_cm3.h **** #define SysTick_LOAD_RELOAD_Pos             0                                             /*!< SysT
+ 388:CORE/core_cm3.h **** #define SysTick_LOAD_RELOAD_Msk            (0xFFFFFFul << SysTick_LOAD_RELOAD_Pos)        /*!< SysT
+ 389:CORE/core_cm3.h **** 
+ 390:CORE/core_cm3.h **** /* SysTick Current Register Definitions */
+ 391:CORE/core_cm3.h **** #define SysTick_VAL_CURRENT_Pos             0                                             /*!< SysT
+ 392:CORE/core_cm3.h **** #define SysTick_VAL_CURRENT_Msk            (0xFFFFFFul << SysTick_VAL_CURRENT_Pos)        /*!< SysT
+ 393:CORE/core_cm3.h **** 
+ 394:CORE/core_cm3.h **** /* SysTick Calibration Register Definitions */
+ 395:CORE/core_cm3.h **** #define SysTick_CALIB_NOREF_Pos            31                                             /*!< SysT
+ 396:CORE/core_cm3.h **** #define SysTick_CALIB_NOREF_Msk            (1ul << SysTick_CALIB_NOREF_Pos)               /*!< SysT
+ 397:CORE/core_cm3.h **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 15
+
+
+ 398:CORE/core_cm3.h **** #define SysTick_CALIB_SKEW_Pos             30                                             /*!< SysT
+ 399:CORE/core_cm3.h **** #define SysTick_CALIB_SKEW_Msk             (1ul << SysTick_CALIB_SKEW_Pos)                /*!< SysT
+ 400:CORE/core_cm3.h **** 
+ 401:CORE/core_cm3.h **** #define SysTick_CALIB_TENMS_Pos             0                                             /*!< SysT
+ 402:CORE/core_cm3.h **** #define SysTick_CALIB_TENMS_Msk            (0xFFFFFFul << SysTick_VAL_CURRENT_Pos)        /*!< SysT
+ 403:CORE/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_SysTick */
+ 404:CORE/core_cm3.h **** 
+ 405:CORE/core_cm3.h **** 
+ 406:CORE/core_cm3.h **** /** @addtogroup CMSIS_CM3_ITM CMSIS CM3 ITM
+ 407:CORE/core_cm3.h ****   memory mapped structure for Instrumentation Trace Macrocell (ITM)
+ 408:CORE/core_cm3.h ****   @{
+ 409:CORE/core_cm3.h ****  */
+ 410:CORE/core_cm3.h **** typedef struct
+ 411:CORE/core_cm3.h **** {
+ 412:CORE/core_cm3.h ****   __O  union  
+ 413:CORE/core_cm3.h ****   {
+ 414:CORE/core_cm3.h ****     __O  uint8_t    u8;                       /*!< Offset:       ITM Stimulus Port 8-bit           
+ 415:CORE/core_cm3.h ****     __O  uint16_t   u16;                      /*!< Offset:       ITM Stimulus Port 16-bit          
+ 416:CORE/core_cm3.h ****     __O  uint32_t   u32;                      /*!< Offset:       ITM Stimulus Port 32-bit          
+ 417:CORE/core_cm3.h ****   }  PORT [32];                               /*!< Offset: 0x00  ITM Stimulus Port Registers       
+ 418:CORE/core_cm3.h ****        uint32_t RESERVED0[864];                                 
+ 419:CORE/core_cm3.h ****   __IO uint32_t TER;                          /*!< Offset:       ITM Trace Enable Register         
+ 420:CORE/core_cm3.h ****        uint32_t RESERVED1[15];                                  
+ 421:CORE/core_cm3.h ****   __IO uint32_t TPR;                          /*!< Offset:       ITM Trace Privilege Register      
+ 422:CORE/core_cm3.h ****        uint32_t RESERVED2[15];                                  
+ 423:CORE/core_cm3.h ****   __IO uint32_t TCR;                          /*!< Offset:       ITM Trace Control Register        
+ 424:CORE/core_cm3.h ****        uint32_t RESERVED3[29];                                  
+ 425:CORE/core_cm3.h ****   __IO uint32_t IWR;                          /*!< Offset:       ITM Integration Write Register    
+ 426:CORE/core_cm3.h ****   __IO uint32_t IRR;                          /*!< Offset:       ITM Integration Read Register     
+ 427:CORE/core_cm3.h ****   __IO uint32_t IMCR;                         /*!< Offset:       ITM Integration Mode Control Regis
+ 428:CORE/core_cm3.h ****        uint32_t RESERVED4[43];                                  
+ 429:CORE/core_cm3.h ****   __IO uint32_t LAR;                          /*!< Offset:       ITM Lock Access Register          
+ 430:CORE/core_cm3.h ****   __IO uint32_t LSR;                          /*!< Offset:       ITM Lock Status Register          
+ 431:CORE/core_cm3.h ****        uint32_t RESERVED5[6];                                   
+ 432:CORE/core_cm3.h ****   __I  uint32_t PID4;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 433:CORE/core_cm3.h ****   __I  uint32_t PID5;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 434:CORE/core_cm3.h ****   __I  uint32_t PID6;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 435:CORE/core_cm3.h ****   __I  uint32_t PID7;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 436:CORE/core_cm3.h ****   __I  uint32_t PID0;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 437:CORE/core_cm3.h ****   __I  uint32_t PID1;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 438:CORE/core_cm3.h ****   __I  uint32_t PID2;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 439:CORE/core_cm3.h ****   __I  uint32_t PID3;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 440:CORE/core_cm3.h ****   __I  uint32_t CID0;                         /*!< Offset:       ITM Component  Identification Regi
+ 441:CORE/core_cm3.h ****   __I  uint32_t CID1;                         /*!< Offset:       ITM Component  Identification Regi
+ 442:CORE/core_cm3.h ****   __I  uint32_t CID2;                         /*!< Offset:       ITM Component  Identification Regi
+ 443:CORE/core_cm3.h ****   __I  uint32_t CID3;                         /*!< Offset:       ITM Component  Identification Regi
+ 444:CORE/core_cm3.h **** } ITM_Type;                                                
+ 445:CORE/core_cm3.h **** 
+ 446:CORE/core_cm3.h **** /* ITM Trace Privilege Register Definitions */
+ 447:CORE/core_cm3.h **** #define ITM_TPR_PRIVMASK_Pos                0                                             /*!< ITM 
+ 448:CORE/core_cm3.h **** #define ITM_TPR_PRIVMASK_Msk               (0xFul << ITM_TPR_PRIVMASK_Pos)                /*!< ITM 
+ 449:CORE/core_cm3.h **** 
+ 450:CORE/core_cm3.h **** /* ITM Trace Control Register Definitions */
+ 451:CORE/core_cm3.h **** #define ITM_TCR_BUSY_Pos                   23                                             /*!< ITM 
+ 452:CORE/core_cm3.h **** #define ITM_TCR_BUSY_Msk                   (1ul << ITM_TCR_BUSY_Pos)                      /*!< ITM 
+ 453:CORE/core_cm3.h **** 
+ 454:CORE/core_cm3.h **** #define ITM_TCR_ATBID_Pos                  16                                             /*!< ITM 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 16
+
+
+ 455:CORE/core_cm3.h **** #define ITM_TCR_ATBID_Msk                  (0x7Ful << ITM_TCR_ATBID_Pos)                  /*!< ITM 
+ 456:CORE/core_cm3.h **** 
+ 457:CORE/core_cm3.h **** #define ITM_TCR_TSPrescale_Pos              8                                             /*!< ITM 
+ 458:CORE/core_cm3.h **** #define ITM_TCR_TSPrescale_Msk             (3ul << ITM_TCR_TSPrescale_Pos)                /*!< ITM 
+ 459:CORE/core_cm3.h **** 
+ 460:CORE/core_cm3.h **** #define ITM_TCR_SWOENA_Pos                  4                                             /*!< ITM 
+ 461:CORE/core_cm3.h **** #define ITM_TCR_SWOENA_Msk                 (1ul << ITM_TCR_SWOENA_Pos)                    /*!< ITM 
+ 462:CORE/core_cm3.h **** 
+ 463:CORE/core_cm3.h **** #define ITM_TCR_DWTENA_Pos                  3                                             /*!< ITM 
+ 464:CORE/core_cm3.h **** #define ITM_TCR_DWTENA_Msk                 (1ul << ITM_TCR_DWTENA_Pos)                    /*!< ITM 
+ 465:CORE/core_cm3.h **** 
+ 466:CORE/core_cm3.h **** #define ITM_TCR_SYNCENA_Pos                 2                                             /*!< ITM 
+ 467:CORE/core_cm3.h **** #define ITM_TCR_SYNCENA_Msk                (1ul << ITM_TCR_SYNCENA_Pos)                   /*!< ITM 
+ 468:CORE/core_cm3.h **** 
+ 469:CORE/core_cm3.h **** #define ITM_TCR_TSENA_Pos                   1                                             /*!< ITM 
+ 470:CORE/core_cm3.h **** #define ITM_TCR_TSENA_Msk                  (1ul << ITM_TCR_TSENA_Pos)                     /*!< ITM 
+ 471:CORE/core_cm3.h **** 
+ 472:CORE/core_cm3.h **** #define ITM_TCR_ITMENA_Pos                  0                                             /*!< ITM 
+ 473:CORE/core_cm3.h **** #define ITM_TCR_ITMENA_Msk                 (1ul << ITM_TCR_ITMENA_Pos)                    /*!< ITM 
+ 474:CORE/core_cm3.h **** 
+ 475:CORE/core_cm3.h **** /* ITM Integration Write Register Definitions */
+ 476:CORE/core_cm3.h **** #define ITM_IWR_ATVALIDM_Pos                0                                             /*!< ITM 
+ 477:CORE/core_cm3.h **** #define ITM_IWR_ATVALIDM_Msk               (1ul << ITM_IWR_ATVALIDM_Pos)                  /*!< ITM 
+ 478:CORE/core_cm3.h **** 
+ 479:CORE/core_cm3.h **** /* ITM Integration Read Register Definitions */
+ 480:CORE/core_cm3.h **** #define ITM_IRR_ATREADYM_Pos                0                                             /*!< ITM 
+ 481:CORE/core_cm3.h **** #define ITM_IRR_ATREADYM_Msk               (1ul << ITM_IRR_ATREADYM_Pos)                  /*!< ITM 
+ 482:CORE/core_cm3.h **** 
+ 483:CORE/core_cm3.h **** /* ITM Integration Mode Control Register Definitions */
+ 484:CORE/core_cm3.h **** #define ITM_IMCR_INTEGRATION_Pos            0                                             /*!< ITM 
+ 485:CORE/core_cm3.h **** #define ITM_IMCR_INTEGRATION_Msk           (1ul << ITM_IMCR_INTEGRATION_Pos)              /*!< ITM 
+ 486:CORE/core_cm3.h **** 
+ 487:CORE/core_cm3.h **** /* ITM Lock Status Register Definitions */
+ 488:CORE/core_cm3.h **** #define ITM_LSR_ByteAcc_Pos                 2                                             /*!< ITM 
+ 489:CORE/core_cm3.h **** #define ITM_LSR_ByteAcc_Msk                (1ul << ITM_LSR_ByteAcc_Pos)                   /*!< ITM 
+ 490:CORE/core_cm3.h **** 
+ 491:CORE/core_cm3.h **** #define ITM_LSR_Access_Pos                  1                                             /*!< ITM 
+ 492:CORE/core_cm3.h **** #define ITM_LSR_Access_Msk                 (1ul << ITM_LSR_Access_Pos)                    /*!< ITM 
+ 493:CORE/core_cm3.h **** 
+ 494:CORE/core_cm3.h **** #define ITM_LSR_Present_Pos                 0                                             /*!< ITM 
+ 495:CORE/core_cm3.h **** #define ITM_LSR_Present_Msk                (1ul << ITM_LSR_Present_Pos)                   /*!< ITM 
+ 496:CORE/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_ITM */
+ 497:CORE/core_cm3.h **** 
+ 498:CORE/core_cm3.h **** 
+ 499:CORE/core_cm3.h **** /** @addtogroup CMSIS_CM3_InterruptType CMSIS CM3 Interrupt Type
+ 500:CORE/core_cm3.h ****   memory mapped structure for Interrupt Type
+ 501:CORE/core_cm3.h ****   @{
+ 502:CORE/core_cm3.h ****  */
+ 503:CORE/core_cm3.h **** typedef struct
+ 504:CORE/core_cm3.h **** {
+ 505:CORE/core_cm3.h ****        uint32_t RESERVED0;
+ 506:CORE/core_cm3.h ****   __I  uint32_t ICTR;                         /*!< Offset: 0x04  Interrupt Control Type Register */
+ 507:CORE/core_cm3.h **** #if ((defined __CM3_REV) && (__CM3_REV >= 0x200))
+ 508:CORE/core_cm3.h ****   __IO uint32_t ACTLR;                        /*!< Offset: 0x08  Auxiliary Control Register      */
+ 509:CORE/core_cm3.h **** #else
+ 510:CORE/core_cm3.h ****        uint32_t RESERVED1;
+ 511:CORE/core_cm3.h **** #endif
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 17
+
+
+ 512:CORE/core_cm3.h **** } InterruptType_Type;
+ 513:CORE/core_cm3.h **** 
+ 514:CORE/core_cm3.h **** /* Interrupt Controller Type Register Definitions */
+ 515:CORE/core_cm3.h **** #define InterruptType_ICTR_INTLINESNUM_Pos  0                                             /*!< Inte
+ 516:CORE/core_cm3.h **** #define InterruptType_ICTR_INTLINESNUM_Msk (0x1Ful << InterruptType_ICTR_INTLINESNUM_Pos) /*!< Inte
+ 517:CORE/core_cm3.h **** 
+ 518:CORE/core_cm3.h **** /* Auxiliary Control Register Definitions */
+ 519:CORE/core_cm3.h **** #define InterruptType_ACTLR_DISFOLD_Pos     2                                             /*!< Inte
+ 520:CORE/core_cm3.h **** #define InterruptType_ACTLR_DISFOLD_Msk    (1ul << InterruptType_ACTLR_DISFOLD_Pos)       /*!< Inte
+ 521:CORE/core_cm3.h **** 
+ 522:CORE/core_cm3.h **** #define InterruptType_ACTLR_DISDEFWBUF_Pos  1                                             /*!< Inte
+ 523:CORE/core_cm3.h **** #define InterruptType_ACTLR_DISDEFWBUF_Msk (1ul << InterruptType_ACTLR_DISDEFWBUF_Pos)    /*!< Inte
+ 524:CORE/core_cm3.h **** 
+ 525:CORE/core_cm3.h **** #define InterruptType_ACTLR_DISMCYCINT_Pos  0                                             /*!< Inte
+ 526:CORE/core_cm3.h **** #define InterruptType_ACTLR_DISMCYCINT_Msk (1ul << InterruptType_ACTLR_DISMCYCINT_Pos)    /*!< Inte
+ 527:CORE/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_InterruptType */
+ 528:CORE/core_cm3.h **** 
+ 529:CORE/core_cm3.h **** 
+ 530:CORE/core_cm3.h **** #if defined (__MPU_PRESENT) && (__MPU_PRESENT == 1)
+ 531:CORE/core_cm3.h **** /** @addtogroup CMSIS_CM3_MPU CMSIS CM3 MPU
+ 532:CORE/core_cm3.h ****   memory mapped structure for Memory Protection Unit (MPU)
+ 533:CORE/core_cm3.h ****   @{
+ 534:CORE/core_cm3.h ****  */
+ 535:CORE/core_cm3.h **** typedef struct
+ 536:CORE/core_cm3.h **** {
+ 537:CORE/core_cm3.h ****   __I  uint32_t TYPE;                         /*!< Offset: 0x00  MPU Type Register                 
+ 538:CORE/core_cm3.h ****   __IO uint32_t CTRL;                         /*!< Offset: 0x04  MPU Control Register              
+ 539:CORE/core_cm3.h ****   __IO uint32_t RNR;                          /*!< Offset: 0x08  MPU Region RNRber Register        
+ 540:CORE/core_cm3.h ****   __IO uint32_t RBAR;                         /*!< Offset: 0x0C  MPU Region Base Address Register  
+ 541:CORE/core_cm3.h ****   __IO uint32_t RASR;                         /*!< Offset: 0x10  MPU Region Attribute and Size Regi
+ 542:CORE/core_cm3.h ****   __IO uint32_t RBAR_A1;                      /*!< Offset: 0x14  MPU Alias 1 Region Base Address Re
+ 543:CORE/core_cm3.h ****   __IO uint32_t RASR_A1;                      /*!< Offset: 0x18  MPU Alias 1 Region Attribute and S
+ 544:CORE/core_cm3.h ****   __IO uint32_t RBAR_A2;                      /*!< Offset: 0x1C  MPU Alias 2 Region Base Address Re
+ 545:CORE/core_cm3.h ****   __IO uint32_t RASR_A2;                      /*!< Offset: 0x20  MPU Alias 2 Region Attribute and S
+ 546:CORE/core_cm3.h ****   __IO uint32_t RBAR_A3;                      /*!< Offset: 0x24  MPU Alias 3 Region Base Address Re
+ 547:CORE/core_cm3.h ****   __IO uint32_t RASR_A3;                      /*!< Offset: 0x28  MPU Alias 3 Region Attribute and S
+ 548:CORE/core_cm3.h **** } MPU_Type;                                                
+ 549:CORE/core_cm3.h **** 
+ 550:CORE/core_cm3.h **** /* MPU Type Register */
+ 551:CORE/core_cm3.h **** #define MPU_TYPE_IREGION_Pos               16                                             /*!< MPU 
+ 552:CORE/core_cm3.h **** #define MPU_TYPE_IREGION_Msk               (0xFFul << MPU_TYPE_IREGION_Pos)               /*!< MPU 
+ 553:CORE/core_cm3.h **** 
+ 554:CORE/core_cm3.h **** #define MPU_TYPE_DREGION_Pos                8                                             /*!< MPU 
+ 555:CORE/core_cm3.h **** #define MPU_TYPE_DREGION_Msk               (0xFFul << MPU_TYPE_DREGION_Pos)               /*!< MPU 
+ 556:CORE/core_cm3.h **** 
+ 557:CORE/core_cm3.h **** #define MPU_TYPE_SEPARATE_Pos               0                                             /*!< MPU 
+ 558:CORE/core_cm3.h **** #define MPU_TYPE_SEPARATE_Msk              (1ul << MPU_TYPE_SEPARATE_Pos)                 /*!< MPU 
+ 559:CORE/core_cm3.h **** 
+ 560:CORE/core_cm3.h **** /* MPU Control Register */
+ 561:CORE/core_cm3.h **** #define MPU_CTRL_PRIVDEFENA_Pos             2                                             /*!< MPU 
+ 562:CORE/core_cm3.h **** #define MPU_CTRL_PRIVDEFENA_Msk            (1ul << MPU_CTRL_PRIVDEFENA_Pos)               /*!< MPU 
+ 563:CORE/core_cm3.h **** 
+ 564:CORE/core_cm3.h **** #define MPU_CTRL_HFNMIENA_Pos               1                                             /*!< MPU 
+ 565:CORE/core_cm3.h **** #define MPU_CTRL_HFNMIENA_Msk              (1ul << MPU_CTRL_HFNMIENA_Pos)                 /*!< MPU 
+ 566:CORE/core_cm3.h **** 
+ 567:CORE/core_cm3.h **** #define MPU_CTRL_ENABLE_Pos                 0                                             /*!< MPU 
+ 568:CORE/core_cm3.h **** #define MPU_CTRL_ENABLE_Msk                (1ul << MPU_CTRL_ENABLE_Pos)                   /*!< MPU 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 18
+
+
+ 569:CORE/core_cm3.h **** 
+ 570:CORE/core_cm3.h **** /* MPU Region Number Register */
+ 571:CORE/core_cm3.h **** #define MPU_RNR_REGION_Pos                  0                                             /*!< MPU 
+ 572:CORE/core_cm3.h **** #define MPU_RNR_REGION_Msk                 (0xFFul << MPU_RNR_REGION_Pos)                 /*!< MPU 
+ 573:CORE/core_cm3.h **** 
+ 574:CORE/core_cm3.h **** /* MPU Region Base Address Register */
+ 575:CORE/core_cm3.h **** #define MPU_RBAR_ADDR_Pos                   5                                             /*!< MPU 
+ 576:CORE/core_cm3.h **** #define MPU_RBAR_ADDR_Msk                  (0x7FFFFFFul << MPU_RBAR_ADDR_Pos)             /*!< MPU 
+ 577:CORE/core_cm3.h **** 
+ 578:CORE/core_cm3.h **** #define MPU_RBAR_VALID_Pos                  4                                             /*!< MPU 
+ 579:CORE/core_cm3.h **** #define MPU_RBAR_VALID_Msk                 (1ul << MPU_RBAR_VALID_Pos)                    /*!< MPU 
+ 580:CORE/core_cm3.h **** 
+ 581:CORE/core_cm3.h **** #define MPU_RBAR_REGION_Pos                 0                                             /*!< MPU 
+ 582:CORE/core_cm3.h **** #define MPU_RBAR_REGION_Msk                (0xFul << MPU_RBAR_REGION_Pos)                 /*!< MPU 
+ 583:CORE/core_cm3.h **** 
+ 584:CORE/core_cm3.h **** /* MPU Region Attribute and Size Register */
+ 585:CORE/core_cm3.h **** #define MPU_RASR_XN_Pos                    28                                             /*!< MPU 
+ 586:CORE/core_cm3.h **** #define MPU_RASR_XN_Msk                    (1ul << MPU_RASR_XN_Pos)                       /*!< MPU 
+ 587:CORE/core_cm3.h **** 
+ 588:CORE/core_cm3.h **** #define MPU_RASR_AP_Pos                    24                                             /*!< MPU 
+ 589:CORE/core_cm3.h **** #define MPU_RASR_AP_Msk                    (7ul << MPU_RASR_AP_Pos)                       /*!< MPU 
+ 590:CORE/core_cm3.h **** 
+ 591:CORE/core_cm3.h **** #define MPU_RASR_TEX_Pos                   19                                             /*!< MPU 
+ 592:CORE/core_cm3.h **** #define MPU_RASR_TEX_Msk                   (7ul << MPU_RASR_TEX_Pos)                      /*!< MPU 
+ 593:CORE/core_cm3.h **** 
+ 594:CORE/core_cm3.h **** #define MPU_RASR_S_Pos                     18                                             /*!< MPU 
+ 595:CORE/core_cm3.h **** #define MPU_RASR_S_Msk                     (1ul << MPU_RASR_S_Pos)                        /*!< MPU 
+ 596:CORE/core_cm3.h **** 
+ 597:CORE/core_cm3.h **** #define MPU_RASR_C_Pos                     17                                             /*!< MPU 
+ 598:CORE/core_cm3.h **** #define MPU_RASR_C_Msk                     (1ul << MPU_RASR_C_Pos)                        /*!< MPU 
+ 599:CORE/core_cm3.h **** 
+ 600:CORE/core_cm3.h **** #define MPU_RASR_B_Pos                     16                                             /*!< MPU 
+ 601:CORE/core_cm3.h **** #define MPU_RASR_B_Msk                     (1ul << MPU_RASR_B_Pos)                        /*!< MPU 
+ 602:CORE/core_cm3.h **** 
+ 603:CORE/core_cm3.h **** #define MPU_RASR_SRD_Pos                    8                                             /*!< MPU 
+ 604:CORE/core_cm3.h **** #define MPU_RASR_SRD_Msk                   (0xFFul << MPU_RASR_SRD_Pos)                   /*!< MPU 
+ 605:CORE/core_cm3.h **** 
+ 606:CORE/core_cm3.h **** #define MPU_RASR_SIZE_Pos                   1                                             /*!< MPU 
+ 607:CORE/core_cm3.h **** #define MPU_RASR_SIZE_Msk                  (0x1Ful << MPU_RASR_SIZE_Pos)                  /*!< MPU 
+ 608:CORE/core_cm3.h **** 
+ 609:CORE/core_cm3.h **** #define MPU_RASR_ENA_Pos                     0                                            /*!< MPU 
+ 610:CORE/core_cm3.h **** #define MPU_RASR_ENA_Msk                    (0x1Ful << MPU_RASR_ENA_Pos)                  /*!< MPU 
+ 611:CORE/core_cm3.h **** 
+ 612:CORE/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_MPU */
+ 613:CORE/core_cm3.h **** #endif
+ 614:CORE/core_cm3.h **** 
+ 615:CORE/core_cm3.h **** 
+ 616:CORE/core_cm3.h **** /** @addtogroup CMSIS_CM3_CoreDebug CMSIS CM3 Core Debug
+ 617:CORE/core_cm3.h ****   memory mapped structure for Core Debug Register
+ 618:CORE/core_cm3.h ****   @{
+ 619:CORE/core_cm3.h ****  */
+ 620:CORE/core_cm3.h **** typedef struct
+ 621:CORE/core_cm3.h **** {
+ 622:CORE/core_cm3.h ****   __IO uint32_t DHCSR;                        /*!< Offset: 0x00  Debug Halting Control and Status R
+ 623:CORE/core_cm3.h ****   __O  uint32_t DCRSR;                        /*!< Offset: 0x04  Debug Core Register Selector Regis
+ 624:CORE/core_cm3.h ****   __IO uint32_t DCRDR;                        /*!< Offset: 0x08  Debug Core Register Data Register 
+ 625:CORE/core_cm3.h ****   __IO uint32_t DEMCR;                        /*!< Offset: 0x0C  Debug Exception and Monitor Contro
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 19
+
+
+ 626:CORE/core_cm3.h **** } CoreDebug_Type;
+ 627:CORE/core_cm3.h **** 
+ 628:CORE/core_cm3.h **** /* Debug Halting Control and Status Register */
+ 629:CORE/core_cm3.h **** #define CoreDebug_DHCSR_DBGKEY_Pos         16                                             /*!< Core
+ 630:CORE/core_cm3.h **** #define CoreDebug_DHCSR_DBGKEY_Msk         (0xFFFFul << CoreDebug_DHCSR_DBGKEY_Pos)       /*!< Core
+ 631:CORE/core_cm3.h **** 
+ 632:CORE/core_cm3.h **** #define CoreDebug_DHCSR_S_RESET_ST_Pos     25                                             /*!< Core
+ 633:CORE/core_cm3.h **** #define CoreDebug_DHCSR_S_RESET_ST_Msk     (1ul << CoreDebug_DHCSR_S_RESET_ST_Pos)        /*!< Core
+ 634:CORE/core_cm3.h **** 
+ 635:CORE/core_cm3.h **** #define CoreDebug_DHCSR_S_RETIRE_ST_Pos    24                                             /*!< Core
+ 636:CORE/core_cm3.h **** #define CoreDebug_DHCSR_S_RETIRE_ST_Msk    (1ul << CoreDebug_DHCSR_S_RETIRE_ST_Pos)       /*!< Core
+ 637:CORE/core_cm3.h **** 
+ 638:CORE/core_cm3.h **** #define CoreDebug_DHCSR_S_LOCKUP_Pos       19                                             /*!< Core
+ 639:CORE/core_cm3.h **** #define CoreDebug_DHCSR_S_LOCKUP_Msk       (1ul << CoreDebug_DHCSR_S_LOCKUP_Pos)          /*!< Core
+ 640:CORE/core_cm3.h **** 
+ 641:CORE/core_cm3.h **** #define CoreDebug_DHCSR_S_SLEEP_Pos        18                                             /*!< Core
+ 642:CORE/core_cm3.h **** #define CoreDebug_DHCSR_S_SLEEP_Msk        (1ul << CoreDebug_DHCSR_S_SLEEP_Pos)           /*!< Core
+ 643:CORE/core_cm3.h **** 
+ 644:CORE/core_cm3.h **** #define CoreDebug_DHCSR_S_HALT_Pos         17                                             /*!< Core
+ 645:CORE/core_cm3.h **** #define CoreDebug_DHCSR_S_HALT_Msk         (1ul << CoreDebug_DHCSR_S_HALT_Pos)            /*!< Core
+ 646:CORE/core_cm3.h **** 
+ 647:CORE/core_cm3.h **** #define CoreDebug_DHCSR_S_REGRDY_Pos       16                                             /*!< Core
+ 648:CORE/core_cm3.h **** #define CoreDebug_DHCSR_S_REGRDY_Msk       (1ul << CoreDebug_DHCSR_S_REGRDY_Pos)          /*!< Core
+ 649:CORE/core_cm3.h **** 
+ 650:CORE/core_cm3.h **** #define CoreDebug_DHCSR_C_SNAPSTALL_Pos     5                                             /*!< Core
+ 651:CORE/core_cm3.h **** #define CoreDebug_DHCSR_C_SNAPSTALL_Msk    (1ul << CoreDebug_DHCSR_C_SNAPSTALL_Pos)       /*!< Core
+ 652:CORE/core_cm3.h **** 
+ 653:CORE/core_cm3.h **** #define CoreDebug_DHCSR_C_MASKINTS_Pos      3                                             /*!< Core
+ 654:CORE/core_cm3.h **** #define CoreDebug_DHCSR_C_MASKINTS_Msk     (1ul << CoreDebug_DHCSR_C_MASKINTS_Pos)        /*!< Core
+ 655:CORE/core_cm3.h **** 
+ 656:CORE/core_cm3.h **** #define CoreDebug_DHCSR_C_STEP_Pos          2                                             /*!< Core
+ 657:CORE/core_cm3.h **** #define CoreDebug_DHCSR_C_STEP_Msk         (1ul << CoreDebug_DHCSR_C_STEP_Pos)            /*!< Core
+ 658:CORE/core_cm3.h **** 
+ 659:CORE/core_cm3.h **** #define CoreDebug_DHCSR_C_HALT_Pos          1                                             /*!< Core
+ 660:CORE/core_cm3.h **** #define CoreDebug_DHCSR_C_HALT_Msk         (1ul << CoreDebug_DHCSR_C_HALT_Pos)            /*!< Core
+ 661:CORE/core_cm3.h **** 
+ 662:CORE/core_cm3.h **** #define CoreDebug_DHCSR_C_DEBUGEN_Pos       0                                             /*!< Core
+ 663:CORE/core_cm3.h **** #define CoreDebug_DHCSR_C_DEBUGEN_Msk      (1ul << CoreDebug_DHCSR_C_DEBUGEN_Pos)         /*!< Core
+ 664:CORE/core_cm3.h **** 
+ 665:CORE/core_cm3.h **** /* Debug Core Register Selector Register */
+ 666:CORE/core_cm3.h **** #define CoreDebug_DCRSR_REGWnR_Pos         16                                             /*!< Core
+ 667:CORE/core_cm3.h **** #define CoreDebug_DCRSR_REGWnR_Msk         (1ul << CoreDebug_DCRSR_REGWnR_Pos)            /*!< Core
+ 668:CORE/core_cm3.h **** 
+ 669:CORE/core_cm3.h **** #define CoreDebug_DCRSR_REGSEL_Pos          0                                             /*!< Core
+ 670:CORE/core_cm3.h **** #define CoreDebug_DCRSR_REGSEL_Msk         (0x1Ful << CoreDebug_DCRSR_REGSEL_Pos)         /*!< Core
+ 671:CORE/core_cm3.h **** 
+ 672:CORE/core_cm3.h **** /* Debug Exception and Monitor Control Register */
+ 673:CORE/core_cm3.h **** #define CoreDebug_DEMCR_TRCENA_Pos         24                                             /*!< Core
+ 674:CORE/core_cm3.h **** #define CoreDebug_DEMCR_TRCENA_Msk         (1ul << CoreDebug_DEMCR_TRCENA_Pos)            /*!< Core
+ 675:CORE/core_cm3.h **** 
+ 676:CORE/core_cm3.h **** #define CoreDebug_DEMCR_MON_REQ_Pos        19                                             /*!< Core
+ 677:CORE/core_cm3.h **** #define CoreDebug_DEMCR_MON_REQ_Msk        (1ul << CoreDebug_DEMCR_MON_REQ_Pos)           /*!< Core
+ 678:CORE/core_cm3.h **** 
+ 679:CORE/core_cm3.h **** #define CoreDebug_DEMCR_MON_STEP_Pos       18                                             /*!< Core
+ 680:CORE/core_cm3.h **** #define CoreDebug_DEMCR_MON_STEP_Msk       (1ul << CoreDebug_DEMCR_MON_STEP_Pos)          /*!< Core
+ 681:CORE/core_cm3.h **** 
+ 682:CORE/core_cm3.h **** #define CoreDebug_DEMCR_MON_PEND_Pos       17                                             /*!< Core
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 20
+
+
+ 683:CORE/core_cm3.h **** #define CoreDebug_DEMCR_MON_PEND_Msk       (1ul << CoreDebug_DEMCR_MON_PEND_Pos)          /*!< Core
+ 684:CORE/core_cm3.h **** 
+ 685:CORE/core_cm3.h **** #define CoreDebug_DEMCR_MON_EN_Pos         16                                             /*!< Core
+ 686:CORE/core_cm3.h **** #define CoreDebug_DEMCR_MON_EN_Msk         (1ul << CoreDebug_DEMCR_MON_EN_Pos)            /*!< Core
+ 687:CORE/core_cm3.h **** 
+ 688:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_HARDERR_Pos     10                                             /*!< Core
+ 689:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_HARDERR_Msk     (1ul << CoreDebug_DEMCR_VC_HARDERR_Pos)        /*!< Core
+ 690:CORE/core_cm3.h **** 
+ 691:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_INTERR_Pos       9                                             /*!< Core
+ 692:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_INTERR_Msk      (1ul << CoreDebug_DEMCR_VC_INTERR_Pos)         /*!< Core
+ 693:CORE/core_cm3.h **** 
+ 694:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_BUSERR_Pos       8                                             /*!< Core
+ 695:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_BUSERR_Msk      (1ul << CoreDebug_DEMCR_VC_BUSERR_Pos)         /*!< Core
+ 696:CORE/core_cm3.h **** 
+ 697:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_STATERR_Pos      7                                             /*!< Core
+ 698:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_STATERR_Msk     (1ul << CoreDebug_DEMCR_VC_STATERR_Pos)        /*!< Core
+ 699:CORE/core_cm3.h **** 
+ 700:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_CHKERR_Pos       6                                             /*!< Core
+ 701:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_CHKERR_Msk      (1ul << CoreDebug_DEMCR_VC_CHKERR_Pos)         /*!< Core
+ 702:CORE/core_cm3.h **** 
+ 703:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_NOCPERR_Pos      5                                             /*!< Core
+ 704:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_NOCPERR_Msk     (1ul << CoreDebug_DEMCR_VC_NOCPERR_Pos)        /*!< Core
+ 705:CORE/core_cm3.h **** 
+ 706:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_MMERR_Pos        4                                             /*!< Core
+ 707:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_MMERR_Msk       (1ul << CoreDebug_DEMCR_VC_MMERR_Pos)          /*!< Core
+ 708:CORE/core_cm3.h **** 
+ 709:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_CORERESET_Pos    0                                             /*!< Core
+ 710:CORE/core_cm3.h **** #define CoreDebug_DEMCR_VC_CORERESET_Msk   (1ul << CoreDebug_DEMCR_VC_CORERESET_Pos)      /*!< Core
+ 711:CORE/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_CoreDebug */
+ 712:CORE/core_cm3.h **** 
+ 713:CORE/core_cm3.h **** 
+ 714:CORE/core_cm3.h **** /* Memory mapping of Cortex-M3 Hardware */
+ 715:CORE/core_cm3.h **** #define SCS_BASE            (0xE000E000)                              /*!< System Control Space Bas
+ 716:CORE/core_cm3.h **** #define ITM_BASE            (0xE0000000)                              /*!< ITM Base Address        
+ 717:CORE/core_cm3.h **** #define CoreDebug_BASE      (0xE000EDF0)                              /*!< Core Debug Base Address 
+ 718:CORE/core_cm3.h **** #define SysTick_BASE        (SCS_BASE +  0x0010)                      /*!< SysTick Base Address    
+ 719:CORE/core_cm3.h **** #define NVIC_BASE           (SCS_BASE +  0x0100)                      /*!< NVIC Base Address       
+ 720:CORE/core_cm3.h **** #define SCB_BASE            (SCS_BASE +  0x0D00)                      /*!< System Control Block Bas
+ 721:CORE/core_cm3.h **** 
+ 722:CORE/core_cm3.h **** #define InterruptType       ((InterruptType_Type *) SCS_BASE)         /*!< Interrupt Type Register 
+ 723:CORE/core_cm3.h **** #define SCB                 ((SCB_Type *)           SCB_BASE)         /*!< SCB configuration struct
+ 724:CORE/core_cm3.h **** #define SysTick             ((SysTick_Type *)       SysTick_BASE)     /*!< SysTick configuration st
+ 725:CORE/core_cm3.h **** #define NVIC                ((NVIC_Type *)          NVIC_BASE)        /*!< NVIC configuration struc
+ 726:CORE/core_cm3.h **** #define ITM                 ((ITM_Type *)           ITM_BASE)         /*!< ITM configuration struct
+ 727:CORE/core_cm3.h **** #define CoreDebug           ((CoreDebug_Type *)     CoreDebug_BASE)   /*!< Core Debug configuration
+ 728:CORE/core_cm3.h **** 
+ 729:CORE/core_cm3.h **** #if defined (__MPU_PRESENT) && (__MPU_PRESENT == 1)
+ 730:CORE/core_cm3.h ****   #define MPU_BASE          (SCS_BASE +  0x0D90)                      /*!< Memory Protection Unit  
+ 731:CORE/core_cm3.h ****   #define MPU               ((MPU_Type*)            MPU_BASE)         /*!< Memory Protection Unit  
+ 732:CORE/core_cm3.h **** #endif
+ 733:CORE/core_cm3.h **** 
+ 734:CORE/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_core_register */
+ 735:CORE/core_cm3.h **** 
+ 736:CORE/core_cm3.h **** 
+ 737:CORE/core_cm3.h **** /*******************************************************************************
+ 738:CORE/core_cm3.h ****  *                Hardware Abstraction Layer
+ 739:CORE/core_cm3.h ****  ******************************************************************************/
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 21
+
+
+ 740:CORE/core_cm3.h **** 
+ 741:CORE/core_cm3.h **** #if defined ( __CC_ARM   )
+ 742:CORE/core_cm3.h ****   #define __ASM            __asm                                      /*!< asm keyword for ARM Comp
+ 743:CORE/core_cm3.h ****   #define __INLINE         __inline                                   /*!< inline keyword for ARM C
+ 744:CORE/core_cm3.h **** 
+ 745:CORE/core_cm3.h **** #elif defined ( __ICCARM__ )
+ 746:CORE/core_cm3.h ****   #define __ASM           __asm                                       /*!< asm keyword for IAR Comp
+ 747:CORE/core_cm3.h ****   #define __INLINE        inline                                      /*!< inline keyword for IAR C
+ 748:CORE/core_cm3.h **** 
+ 749:CORE/core_cm3.h **** #elif defined   (  __GNUC__  )
+ 750:CORE/core_cm3.h ****   #define __ASM            __asm                                      /*!< asm keyword for GNU Comp
+ 751:CORE/core_cm3.h ****   #define __INLINE         inline                                     /*!< inline keyword for GNU C
+ 752:CORE/core_cm3.h **** 
+ 753:CORE/core_cm3.h **** #elif defined   (  __TASKING__  )
+ 754:CORE/core_cm3.h ****   #define __ASM            __asm                                      /*!< asm keyword for TASKING 
+ 755:CORE/core_cm3.h ****   #define __INLINE         inline                                     /*!< inline keyword for TASKI
+ 756:CORE/core_cm3.h **** 
+ 757:CORE/core_cm3.h **** #endif
+ 758:CORE/core_cm3.h **** 
+ 759:CORE/core_cm3.h **** 
+ 760:CORE/core_cm3.h **** /* ###################  Compiler specific Intrinsics  ########################### */
+ 761:CORE/core_cm3.h **** 
+ 762:CORE/core_cm3.h **** #if defined ( __CC_ARM   ) /*------------------RealView Compiler -----------------*/
+ 763:CORE/core_cm3.h **** /* ARM armcc specific functions */
+ 764:CORE/core_cm3.h **** 
+ 765:CORE/core_cm3.h **** #define __enable_fault_irq                __enable_fiq
+ 766:CORE/core_cm3.h **** #define __disable_fault_irq               __disable_fiq
+ 767:CORE/core_cm3.h **** 
+ 768:CORE/core_cm3.h **** #define __NOP                             __nop
+ 769:CORE/core_cm3.h **** #define __WFI                             __wfi
+ 770:CORE/core_cm3.h **** #define __WFE                             __wfe
+ 771:CORE/core_cm3.h **** #define __SEV                             __sev
+ 772:CORE/core_cm3.h **** #define __ISB()                           __isb(0)
+ 773:CORE/core_cm3.h **** #define __DSB()                           __dsb(0)
+ 774:CORE/core_cm3.h **** #define __DMB()                           __dmb(0)
+ 775:CORE/core_cm3.h **** #define __REV                             __rev
+ 776:CORE/core_cm3.h **** #define __RBIT                            __rbit
+ 777:CORE/core_cm3.h **** #define __LDREXB(ptr)                     ((unsigned char ) __ldrex(ptr))
+ 778:CORE/core_cm3.h **** #define __LDREXH(ptr)                     ((unsigned short) __ldrex(ptr))
+ 779:CORE/core_cm3.h **** #define __LDREXW(ptr)                     ((unsigned int  ) __ldrex(ptr))
+ 780:CORE/core_cm3.h **** #define __STREXB(value, ptr)              __strex(value, ptr)
+ 781:CORE/core_cm3.h **** #define __STREXH(value, ptr)              __strex(value, ptr)
+ 782:CORE/core_cm3.h **** #define __STREXW(value, ptr)              __strex(value, ptr)
+ 783:CORE/core_cm3.h **** 
+ 784:CORE/core_cm3.h **** 
+ 785:CORE/core_cm3.h **** /* intrinsic unsigned long long __ldrexd(volatile void *ptr) */
+ 786:CORE/core_cm3.h **** /* intrinsic int __strexd(unsigned long long val, volatile void *ptr) */
+ 787:CORE/core_cm3.h **** /* intrinsic void __enable_irq();     */
+ 788:CORE/core_cm3.h **** /* intrinsic void __disable_irq();    */
+ 789:CORE/core_cm3.h **** 
+ 790:CORE/core_cm3.h **** 
+ 791:CORE/core_cm3.h **** /**
+ 792:CORE/core_cm3.h ****  * @brief  Return the Process Stack Pointer
+ 793:CORE/core_cm3.h ****  *
+ 794:CORE/core_cm3.h ****  * @return ProcessStackPointer
+ 795:CORE/core_cm3.h ****  *
+ 796:CORE/core_cm3.h ****  * Return the actual process stack pointer
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 22
+
+
+ 797:CORE/core_cm3.h ****  */
+ 798:CORE/core_cm3.h **** extern uint32_t __get_PSP(void);
+ 799:CORE/core_cm3.h **** 
+ 800:CORE/core_cm3.h **** /**
+ 801:CORE/core_cm3.h ****  * @brief  Set the Process Stack Pointer
+ 802:CORE/core_cm3.h ****  *
+ 803:CORE/core_cm3.h ****  * @param  topOfProcStack  Process Stack Pointer
+ 804:CORE/core_cm3.h ****  *
+ 805:CORE/core_cm3.h ****  * Assign the value ProcessStackPointer to the MSP 
+ 806:CORE/core_cm3.h ****  * (process stack pointer) Cortex processor register
+ 807:CORE/core_cm3.h ****  */
+ 808:CORE/core_cm3.h **** extern void __set_PSP(uint32_t topOfProcStack);
+ 809:CORE/core_cm3.h **** 
+ 810:CORE/core_cm3.h **** /**
+ 811:CORE/core_cm3.h ****  * @brief  Return the Main Stack Pointer
+ 812:CORE/core_cm3.h ****  *
+ 813:CORE/core_cm3.h ****  * @return Main Stack Pointer
+ 814:CORE/core_cm3.h ****  *
+ 815:CORE/core_cm3.h ****  * Return the current value of the MSP (main stack pointer)
+ 816:CORE/core_cm3.h ****  * Cortex processor register
+ 817:CORE/core_cm3.h ****  */
+ 818:CORE/core_cm3.h **** extern uint32_t __get_MSP(void);
+ 819:CORE/core_cm3.h **** 
+ 820:CORE/core_cm3.h **** /**
+ 821:CORE/core_cm3.h ****  * @brief  Set the Main Stack Pointer
+ 822:CORE/core_cm3.h ****  *
+ 823:CORE/core_cm3.h ****  * @param  topOfMainStack  Main Stack Pointer
+ 824:CORE/core_cm3.h ****  *
+ 825:CORE/core_cm3.h ****  * Assign the value mainStackPointer to the MSP 
+ 826:CORE/core_cm3.h ****  * (main stack pointer) Cortex processor register
+ 827:CORE/core_cm3.h ****  */
+ 828:CORE/core_cm3.h **** extern void __set_MSP(uint32_t topOfMainStack);
+ 829:CORE/core_cm3.h **** 
+ 830:CORE/core_cm3.h **** /**
+ 831:CORE/core_cm3.h ****  * @brief  Reverse byte order in unsigned short value
+ 832:CORE/core_cm3.h ****  *
+ 833:CORE/core_cm3.h ****  * @param   value  value to reverse
+ 834:CORE/core_cm3.h ****  * @return         reversed value
+ 835:CORE/core_cm3.h ****  *
+ 836:CORE/core_cm3.h ****  * Reverse byte order in unsigned short value
+ 837:CORE/core_cm3.h ****  */
+ 838:CORE/core_cm3.h **** extern uint32_t __REV16(uint16_t value);
+ 839:CORE/core_cm3.h **** 
+ 840:CORE/core_cm3.h **** /**
+ 841:CORE/core_cm3.h ****  * @brief  Reverse byte order in signed short value with sign extension to integer
+ 842:CORE/core_cm3.h ****  *
+ 843:CORE/core_cm3.h ****  * @param   value  value to reverse
+ 844:CORE/core_cm3.h ****  * @return         reversed value
+ 845:CORE/core_cm3.h ****  *
+ 846:CORE/core_cm3.h ****  * Reverse byte order in signed short value with sign extension to integer
+ 847:CORE/core_cm3.h ****  */
+ 848:CORE/core_cm3.h **** extern int32_t __REVSH(int16_t value);
+ 849:CORE/core_cm3.h **** 
+ 850:CORE/core_cm3.h **** 
+ 851:CORE/core_cm3.h **** #if (__ARMCC_VERSION < 400000)
+ 852:CORE/core_cm3.h **** 
+ 853:CORE/core_cm3.h **** /**
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 23
+
+
+ 854:CORE/core_cm3.h ****  * @brief  Remove the exclusive lock created by ldrex
+ 855:CORE/core_cm3.h ****  *
+ 856:CORE/core_cm3.h ****  * Removes the exclusive lock which is created by ldrex.
+ 857:CORE/core_cm3.h ****  */
+ 858:CORE/core_cm3.h **** extern void __CLREX(void);
+ 859:CORE/core_cm3.h **** 
+ 860:CORE/core_cm3.h **** /**
+ 861:CORE/core_cm3.h ****  * @brief  Return the Base Priority value
+ 862:CORE/core_cm3.h ****  *
+ 863:CORE/core_cm3.h ****  * @return BasePriority
+ 864:CORE/core_cm3.h ****  *
+ 865:CORE/core_cm3.h ****  * Return the content of the base priority register
+ 866:CORE/core_cm3.h ****  */
+ 867:CORE/core_cm3.h **** extern uint32_t __get_BASEPRI(void);
+ 868:CORE/core_cm3.h **** 
+ 869:CORE/core_cm3.h **** /**
+ 870:CORE/core_cm3.h ****  * @brief  Set the Base Priority value
+ 871:CORE/core_cm3.h ****  *
+ 872:CORE/core_cm3.h ****  * @param  basePri  BasePriority
+ 873:CORE/core_cm3.h ****  *
+ 874:CORE/core_cm3.h ****  * Set the base priority register
+ 875:CORE/core_cm3.h ****  */
+ 876:CORE/core_cm3.h **** extern void __set_BASEPRI(uint32_t basePri);
+ 877:CORE/core_cm3.h **** 
+ 878:CORE/core_cm3.h **** /**
+ 879:CORE/core_cm3.h ****  * @brief  Return the Priority Mask value
+ 880:CORE/core_cm3.h ****  *
+ 881:CORE/core_cm3.h ****  * @return PriMask
+ 882:CORE/core_cm3.h ****  *
+ 883:CORE/core_cm3.h ****  * Return state of the priority mask bit from the priority mask register
+ 884:CORE/core_cm3.h ****  */
+ 885:CORE/core_cm3.h **** extern uint32_t __get_PRIMASK(void);
+ 886:CORE/core_cm3.h **** 
+ 887:CORE/core_cm3.h **** /**
+ 888:CORE/core_cm3.h ****  * @brief  Set the Priority Mask value
+ 889:CORE/core_cm3.h ****  *
+ 890:CORE/core_cm3.h ****  * @param   priMask  PriMask
+ 891:CORE/core_cm3.h ****  *
+ 892:CORE/core_cm3.h ****  * Set the priority mask bit in the priority mask register
+ 893:CORE/core_cm3.h ****  */
+ 894:CORE/core_cm3.h **** extern void __set_PRIMASK(uint32_t priMask);
+ 895:CORE/core_cm3.h **** 
+ 896:CORE/core_cm3.h **** /**
+ 897:CORE/core_cm3.h ****  * @brief  Return the Fault Mask value
+ 898:CORE/core_cm3.h ****  *
+ 899:CORE/core_cm3.h ****  * @return FaultMask
+ 900:CORE/core_cm3.h ****  *
+ 901:CORE/core_cm3.h ****  * Return the content of the fault mask register
+ 902:CORE/core_cm3.h ****  */
+ 903:CORE/core_cm3.h **** extern uint32_t __get_FAULTMASK(void);
+ 904:CORE/core_cm3.h **** 
+ 905:CORE/core_cm3.h **** /**
+ 906:CORE/core_cm3.h ****  * @brief  Set the Fault Mask value
+ 907:CORE/core_cm3.h ****  *
+ 908:CORE/core_cm3.h ****  * @param  faultMask faultMask value
+ 909:CORE/core_cm3.h ****  *
+ 910:CORE/core_cm3.h ****  * Set the fault mask register
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 24
+
+
+ 911:CORE/core_cm3.h ****  */
+ 912:CORE/core_cm3.h **** extern void __set_FAULTMASK(uint32_t faultMask);
+ 913:CORE/core_cm3.h **** 
+ 914:CORE/core_cm3.h **** /**
+ 915:CORE/core_cm3.h ****  * @brief  Return the Control Register value
+ 916:CORE/core_cm3.h ****  * 
+ 917:CORE/core_cm3.h ****  * @return Control value
+ 918:CORE/core_cm3.h ****  *
+ 919:CORE/core_cm3.h ****  * Return the content of the control register
+ 920:CORE/core_cm3.h ****  */
+ 921:CORE/core_cm3.h **** extern uint32_t __get_CONTROL(void);
+ 922:CORE/core_cm3.h **** 
+ 923:CORE/core_cm3.h **** /**
+ 924:CORE/core_cm3.h ****  * @brief  Set the Control Register value
+ 925:CORE/core_cm3.h ****  *
+ 926:CORE/core_cm3.h ****  * @param  control  Control value
+ 927:CORE/core_cm3.h ****  *
+ 928:CORE/core_cm3.h ****  * Set the control register
+ 929:CORE/core_cm3.h ****  */
+ 930:CORE/core_cm3.h **** extern void __set_CONTROL(uint32_t control);
+ 931:CORE/core_cm3.h **** 
+ 932:CORE/core_cm3.h **** #else  /* (__ARMCC_VERSION >= 400000)  */
+ 933:CORE/core_cm3.h **** 
+ 934:CORE/core_cm3.h **** /**
+ 935:CORE/core_cm3.h ****  * @brief  Remove the exclusive lock created by ldrex
+ 936:CORE/core_cm3.h ****  *
+ 937:CORE/core_cm3.h ****  * Removes the exclusive lock which is created by ldrex.
+ 938:CORE/core_cm3.h ****  */
+ 939:CORE/core_cm3.h **** #define __CLREX                           __clrex
+ 940:CORE/core_cm3.h **** 
+ 941:CORE/core_cm3.h **** /**
+ 942:CORE/core_cm3.h ****  * @brief  Return the Base Priority value
+ 943:CORE/core_cm3.h ****  *
+ 944:CORE/core_cm3.h ****  * @return BasePriority
+ 945:CORE/core_cm3.h ****  *
+ 946:CORE/core_cm3.h ****  * Return the content of the base priority register
+ 947:CORE/core_cm3.h ****  */
+ 948:CORE/core_cm3.h **** static __INLINE uint32_t  __get_BASEPRI(void)
+ 949:CORE/core_cm3.h **** {
+ 950:CORE/core_cm3.h ****   register uint32_t __regBasePri         __ASM("basepri");
+ 951:CORE/core_cm3.h ****   return(__regBasePri);
+ 952:CORE/core_cm3.h **** }
+ 953:CORE/core_cm3.h **** 
+ 954:CORE/core_cm3.h **** /**
+ 955:CORE/core_cm3.h ****  * @brief  Set the Base Priority value
+ 956:CORE/core_cm3.h ****  *
+ 957:CORE/core_cm3.h ****  * @param  basePri  BasePriority
+ 958:CORE/core_cm3.h ****  *
+ 959:CORE/core_cm3.h ****  * Set the base priority register
+ 960:CORE/core_cm3.h ****  */
+ 961:CORE/core_cm3.h **** static __INLINE void __set_BASEPRI(uint32_t basePri)
+ 962:CORE/core_cm3.h **** {
+ 963:CORE/core_cm3.h ****   register uint32_t __regBasePri         __ASM("basepri");
+ 964:CORE/core_cm3.h ****   __regBasePri = (basePri & 0xff);
+ 965:CORE/core_cm3.h **** }
+ 966:CORE/core_cm3.h **** 
+ 967:CORE/core_cm3.h **** /**
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 25
+
+
+ 968:CORE/core_cm3.h ****  * @brief  Return the Priority Mask value
+ 969:CORE/core_cm3.h ****  *
+ 970:CORE/core_cm3.h ****  * @return PriMask
+ 971:CORE/core_cm3.h ****  *
+ 972:CORE/core_cm3.h ****  * Return state of the priority mask bit from the priority mask register
+ 973:CORE/core_cm3.h ****  */
+ 974:CORE/core_cm3.h **** static __INLINE uint32_t __get_PRIMASK(void)
+ 975:CORE/core_cm3.h **** {
+ 976:CORE/core_cm3.h ****   register uint32_t __regPriMask         __ASM("primask");
+ 977:CORE/core_cm3.h ****   return(__regPriMask);
+ 978:CORE/core_cm3.h **** }
+ 979:CORE/core_cm3.h **** 
+ 980:CORE/core_cm3.h **** /**
+ 981:CORE/core_cm3.h ****  * @brief  Set the Priority Mask value
+ 982:CORE/core_cm3.h ****  *
+ 983:CORE/core_cm3.h ****  * @param  priMask  PriMask
+ 984:CORE/core_cm3.h ****  *
+ 985:CORE/core_cm3.h ****  * Set the priority mask bit in the priority mask register
+ 986:CORE/core_cm3.h ****  */
+ 987:CORE/core_cm3.h **** static __INLINE void __set_PRIMASK(uint32_t priMask)
+ 988:CORE/core_cm3.h **** {
+ 989:CORE/core_cm3.h ****   register uint32_t __regPriMask         __ASM("primask");
+ 990:CORE/core_cm3.h ****   __regPriMask = (priMask);
+ 991:CORE/core_cm3.h **** }
+ 992:CORE/core_cm3.h **** 
+ 993:CORE/core_cm3.h **** /**
+ 994:CORE/core_cm3.h ****  * @brief  Return the Fault Mask value
+ 995:CORE/core_cm3.h ****  *
+ 996:CORE/core_cm3.h ****  * @return FaultMask
+ 997:CORE/core_cm3.h ****  *
+ 998:CORE/core_cm3.h ****  * Return the content of the fault mask register
+ 999:CORE/core_cm3.h ****  */
+1000:CORE/core_cm3.h **** static __INLINE uint32_t __get_FAULTMASK(void)
+1001:CORE/core_cm3.h **** {
+1002:CORE/core_cm3.h ****   register uint32_t __regFaultMask       __ASM("faultmask");
+1003:CORE/core_cm3.h ****   return(__regFaultMask);
+1004:CORE/core_cm3.h **** }
+1005:CORE/core_cm3.h **** 
+1006:CORE/core_cm3.h **** /**
+1007:CORE/core_cm3.h ****  * @brief  Set the Fault Mask value
+1008:CORE/core_cm3.h ****  *
+1009:CORE/core_cm3.h ****  * @param  faultMask  faultMask value
+1010:CORE/core_cm3.h ****  *
+1011:CORE/core_cm3.h ****  * Set the fault mask register
+1012:CORE/core_cm3.h ****  */
+1013:CORE/core_cm3.h **** static __INLINE void __set_FAULTMASK(uint32_t faultMask)
+1014:CORE/core_cm3.h **** {
+1015:CORE/core_cm3.h ****   register uint32_t __regFaultMask       __ASM("faultmask");
+1016:CORE/core_cm3.h ****   __regFaultMask = (faultMask & 1);
+1017:CORE/core_cm3.h **** }
+1018:CORE/core_cm3.h **** 
+1019:CORE/core_cm3.h **** /**
+1020:CORE/core_cm3.h ****  * @brief  Return the Control Register value
+1021:CORE/core_cm3.h ****  * 
+1022:CORE/core_cm3.h ****  * @return Control value
+1023:CORE/core_cm3.h ****  *
+1024:CORE/core_cm3.h ****  * Return the content of the control register
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 26
+
+
+1025:CORE/core_cm3.h ****  */
+1026:CORE/core_cm3.h **** static __INLINE uint32_t __get_CONTROL(void)
+1027:CORE/core_cm3.h **** {
+1028:CORE/core_cm3.h ****   register uint32_t __regControl         __ASM("control");
+1029:CORE/core_cm3.h ****   return(__regControl);
+1030:CORE/core_cm3.h **** }
+1031:CORE/core_cm3.h **** 
+1032:CORE/core_cm3.h **** /**
+1033:CORE/core_cm3.h ****  * @brief  Set the Control Register value
+1034:CORE/core_cm3.h ****  *
+1035:CORE/core_cm3.h ****  * @param  control  Control value
+1036:CORE/core_cm3.h ****  *
+1037:CORE/core_cm3.h ****  * Set the control register
+1038:CORE/core_cm3.h ****  */
+1039:CORE/core_cm3.h **** static __INLINE void __set_CONTROL(uint32_t control)
+1040:CORE/core_cm3.h **** {
+1041:CORE/core_cm3.h ****   register uint32_t __regControl         __ASM("control");
+1042:CORE/core_cm3.h ****   __regControl = control;
+1043:CORE/core_cm3.h **** }
+1044:CORE/core_cm3.h **** 
+1045:CORE/core_cm3.h **** #endif /* __ARMCC_VERSION  */ 
+1046:CORE/core_cm3.h **** 
+1047:CORE/core_cm3.h **** 
+1048:CORE/core_cm3.h **** 
+1049:CORE/core_cm3.h **** #elif (defined (__ICCARM__)) /*------------------ ICC Compiler -------------------*/
+1050:CORE/core_cm3.h **** /* IAR iccarm specific functions */
+1051:CORE/core_cm3.h **** 
+1052:CORE/core_cm3.h **** #define __enable_irq                              __enable_interrupt        /*!< global Interrupt e
+1053:CORE/core_cm3.h **** #define __disable_irq                             __disable_interrupt       /*!< global Interrupt d
+1054:CORE/core_cm3.h **** 
+1055:CORE/core_cm3.h **** static __INLINE void __enable_fault_irq()         { __ASM ("cpsie f"); }
+1056:CORE/core_cm3.h **** static __INLINE void __disable_fault_irq()        { __ASM ("cpsid f"); }
+1057:CORE/core_cm3.h **** 
+1058:CORE/core_cm3.h **** #define __NOP                                     __no_operation            /*!< no operation intri
+1059:CORE/core_cm3.h **** static __INLINE  void __WFI()                     { __ASM ("wfi"); }
+1060:CORE/core_cm3.h **** static __INLINE  void __WFE()                     { __ASM ("wfe"); }
+1061:CORE/core_cm3.h **** static __INLINE  void __SEV()                     { __ASM ("sev"); }
+1062:CORE/core_cm3.h **** static __INLINE  void __CLREX()                   { __ASM ("clrex"); }
+1063:CORE/core_cm3.h **** 
+1064:CORE/core_cm3.h **** /* intrinsic void __ISB(void)                                     */
+1065:CORE/core_cm3.h **** /* intrinsic void __DSB(void)                                     */
+1066:CORE/core_cm3.h **** /* intrinsic void __DMB(void)                                     */
+1067:CORE/core_cm3.h **** /* intrinsic void __set_PRIMASK();                                */
+1068:CORE/core_cm3.h **** /* intrinsic void __get_PRIMASK();                                */
+1069:CORE/core_cm3.h **** /* intrinsic void __set_FAULTMASK();                              */
+1070:CORE/core_cm3.h **** /* intrinsic void __get_FAULTMASK();                              */
+1071:CORE/core_cm3.h **** /* intrinsic uint32_t __REV(uint32_t value);                      */
+1072:CORE/core_cm3.h **** /* intrinsic uint32_t __REVSH(uint32_t value);                    */
+1073:CORE/core_cm3.h **** /* intrinsic unsigned long __STREX(unsigned long, unsigned long); */
+1074:CORE/core_cm3.h **** /* intrinsic unsigned long __LDREX(unsigned long *);              */
+1075:CORE/core_cm3.h **** 
+1076:CORE/core_cm3.h **** 
+1077:CORE/core_cm3.h **** /**
+1078:CORE/core_cm3.h ****  * @brief  Return the Process Stack Pointer
+1079:CORE/core_cm3.h ****  *
+1080:CORE/core_cm3.h ****  * @return ProcessStackPointer
+1081:CORE/core_cm3.h ****  *
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 27
+
+
+1082:CORE/core_cm3.h ****  * Return the actual process stack pointer
+1083:CORE/core_cm3.h ****  */
+1084:CORE/core_cm3.h **** extern uint32_t __get_PSP(void);
+1085:CORE/core_cm3.h **** 
+1086:CORE/core_cm3.h **** /**
+1087:CORE/core_cm3.h ****  * @brief  Set the Process Stack Pointer
+1088:CORE/core_cm3.h ****  *
+1089:CORE/core_cm3.h ****  * @param  topOfProcStack  Process Stack Pointer
+1090:CORE/core_cm3.h ****  *
+1091:CORE/core_cm3.h ****  * Assign the value ProcessStackPointer to the MSP 
+1092:CORE/core_cm3.h ****  * (process stack pointer) Cortex processor register
+1093:CORE/core_cm3.h ****  */
+1094:CORE/core_cm3.h **** extern void __set_PSP(uint32_t topOfProcStack);
+1095:CORE/core_cm3.h **** 
+1096:CORE/core_cm3.h **** /**
+1097:CORE/core_cm3.h ****  * @brief  Return the Main Stack Pointer
+1098:CORE/core_cm3.h ****  *
+1099:CORE/core_cm3.h ****  * @return Main Stack Pointer
+1100:CORE/core_cm3.h ****  *
+1101:CORE/core_cm3.h ****  * Return the current value of the MSP (main stack pointer)
+1102:CORE/core_cm3.h ****  * Cortex processor register
+1103:CORE/core_cm3.h ****  */
+1104:CORE/core_cm3.h **** extern uint32_t __get_MSP(void);
+1105:CORE/core_cm3.h **** 
+1106:CORE/core_cm3.h **** /**
+1107:CORE/core_cm3.h ****  * @brief  Set the Main Stack Pointer
+1108:CORE/core_cm3.h ****  *
+1109:CORE/core_cm3.h ****  * @param  topOfMainStack  Main Stack Pointer
+1110:CORE/core_cm3.h ****  *
+1111:CORE/core_cm3.h ****  * Assign the value mainStackPointer to the MSP 
+1112:CORE/core_cm3.h ****  * (main stack pointer) Cortex processor register
+1113:CORE/core_cm3.h ****  */
+1114:CORE/core_cm3.h **** extern void __set_MSP(uint32_t topOfMainStack);
+1115:CORE/core_cm3.h **** 
+1116:CORE/core_cm3.h **** /**
+1117:CORE/core_cm3.h ****  * @brief  Reverse byte order in unsigned short value
+1118:CORE/core_cm3.h ****  *
+1119:CORE/core_cm3.h ****  * @param  value  value to reverse
+1120:CORE/core_cm3.h ****  * @return        reversed value
+1121:CORE/core_cm3.h ****  *
+1122:CORE/core_cm3.h ****  * Reverse byte order in unsigned short value
+1123:CORE/core_cm3.h ****  */
+1124:CORE/core_cm3.h **** extern uint32_t __REV16(uint16_t value);
+1125:CORE/core_cm3.h **** 
+1126:CORE/core_cm3.h **** /**
+1127:CORE/core_cm3.h ****  * @brief  Reverse bit order of value
+1128:CORE/core_cm3.h ****  *
+1129:CORE/core_cm3.h ****  * @param  value  value to reverse
+1130:CORE/core_cm3.h ****  * @return        reversed value
+1131:CORE/core_cm3.h ****  *
+1132:CORE/core_cm3.h ****  * Reverse bit order of value
+1133:CORE/core_cm3.h ****  */
+1134:CORE/core_cm3.h **** extern uint32_t __RBIT(uint32_t value);
+1135:CORE/core_cm3.h **** 
+1136:CORE/core_cm3.h **** /**
+1137:CORE/core_cm3.h ****  * @brief  LDR Exclusive (8 bit)
+1138:CORE/core_cm3.h ****  *
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 28
+
+
+1139:CORE/core_cm3.h ****  * @param  *addr  address pointer
+1140:CORE/core_cm3.h ****  * @return        value of (*address)
+1141:CORE/core_cm3.h ****  *
+1142:CORE/core_cm3.h ****  * Exclusive LDR command for 8 bit values)
+1143:CORE/core_cm3.h ****  */
+1144:CORE/core_cm3.h **** extern uint8_t __LDREXB(uint8_t *addr);
+1145:CORE/core_cm3.h **** 
+1146:CORE/core_cm3.h **** /**
+1147:CORE/core_cm3.h ****  * @brief  LDR Exclusive (16 bit)
+1148:CORE/core_cm3.h ****  *
+1149:CORE/core_cm3.h ****  * @param  *addr  address pointer
+1150:CORE/core_cm3.h ****  * @return        value of (*address)
+1151:CORE/core_cm3.h ****  *
+1152:CORE/core_cm3.h ****  * Exclusive LDR command for 16 bit values
+1153:CORE/core_cm3.h ****  */
+1154:CORE/core_cm3.h **** extern uint16_t __LDREXH(uint16_t *addr);
+1155:CORE/core_cm3.h **** 
+1156:CORE/core_cm3.h **** /**
+1157:CORE/core_cm3.h ****  * @brief  LDR Exclusive (32 bit)
+1158:CORE/core_cm3.h ****  *
+1159:CORE/core_cm3.h ****  * @param  *addr  address pointer
+1160:CORE/core_cm3.h ****  * @return        value of (*address)
+1161:CORE/core_cm3.h ****  *
+1162:CORE/core_cm3.h ****  * Exclusive LDR command for 32 bit values
+1163:CORE/core_cm3.h ****  */
+1164:CORE/core_cm3.h **** extern uint32_t __LDREXW(uint32_t *addr);
+1165:CORE/core_cm3.h **** 
+1166:CORE/core_cm3.h **** /**
+1167:CORE/core_cm3.h ****  * @brief  STR Exclusive (8 bit)
+1168:CORE/core_cm3.h ****  *
+1169:CORE/core_cm3.h ****  * @param  value  value to store
+1170:CORE/core_cm3.h ****  * @param  *addr  address pointer
+1171:CORE/core_cm3.h ****  * @return        successful / failed
+1172:CORE/core_cm3.h ****  *
+1173:CORE/core_cm3.h ****  * Exclusive STR command for 8 bit values
+1174:CORE/core_cm3.h ****  */
+1175:CORE/core_cm3.h **** extern uint32_t __STREXB(uint8_t value, uint8_t *addr);
+1176:CORE/core_cm3.h **** 
+1177:CORE/core_cm3.h **** /**
+1178:CORE/core_cm3.h ****  * @brief  STR Exclusive (16 bit)
+1179:CORE/core_cm3.h ****  *
+1180:CORE/core_cm3.h ****  * @param  value  value to store
+1181:CORE/core_cm3.h ****  * @param  *addr  address pointer
+1182:CORE/core_cm3.h ****  * @return        successful / failed
+1183:CORE/core_cm3.h ****  *
+1184:CORE/core_cm3.h ****  * Exclusive STR command for 16 bit values
+1185:CORE/core_cm3.h ****  */
+1186:CORE/core_cm3.h **** extern uint32_t __STREXH(uint16_t value, uint16_t *addr);
+1187:CORE/core_cm3.h **** 
+1188:CORE/core_cm3.h **** /**
+1189:CORE/core_cm3.h ****  * @brief  STR Exclusive (32 bit)
+1190:CORE/core_cm3.h ****  *
+1191:CORE/core_cm3.h ****  * @param  value  value to store
+1192:CORE/core_cm3.h ****  * @param  *addr  address pointer
+1193:CORE/core_cm3.h ****  * @return        successful / failed
+1194:CORE/core_cm3.h ****  *
+1195:CORE/core_cm3.h ****  * Exclusive STR command for 32 bit values
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 29
+
+
+1196:CORE/core_cm3.h ****  */
+1197:CORE/core_cm3.h **** extern uint32_t __STREXW(uint32_t value, uint32_t *addr);
+1198:CORE/core_cm3.h **** 
+1199:CORE/core_cm3.h **** 
+1200:CORE/core_cm3.h **** 
+1201:CORE/core_cm3.h **** #elif (defined (__GNUC__)) /*------------------ GNU Compiler ---------------------*/
+1202:CORE/core_cm3.h **** /* GNU gcc specific functions */
+1203:CORE/core_cm3.h **** 
+1204:CORE/core_cm3.h **** static __INLINE void __enable_irq()               { __ASM volatile ("cpsie i"); }
+1205:CORE/core_cm3.h **** static __INLINE void __disable_irq()              { __ASM volatile ("cpsid i"); }
+1206:CORE/core_cm3.h **** 
+1207:CORE/core_cm3.h **** static __INLINE void __enable_fault_irq()         { __ASM volatile ("cpsie f"); }
+1208:CORE/core_cm3.h **** static __INLINE void __disable_fault_irq()        { __ASM volatile ("cpsid f"); }
+1209:CORE/core_cm3.h **** 
+1210:CORE/core_cm3.h **** static __INLINE void __NOP()                      { __ASM volatile ("nop"); }
+1211:CORE/core_cm3.h **** static __INLINE void __WFI()                      { __ASM volatile ("wfi"); }
+ 197              		.loc 2 1211 0
+ 198              		.syntax unified
+ 199              	@ 1211 "CORE/core_cm3.h" 1
+ 200 001a 30BF     		wfi
+ 201              	@ 0 "" 2
+ 202              		.thumb
+ 203              		.syntax unified
+ 204 001c 00E0     		b	.L17
+ 205              	.L16:
+ 206              	.LBE9:
+ 207              	.LBE8:
+ 208              	.LBB10:
+ 209              	.LBB11:
+1212:CORE/core_cm3.h **** static __INLINE void __WFE()                      { __ASM volatile ("wfe"); }
+ 210              		.loc 2 1212 0
+ 211              		.syntax unified
+ 212              	@ 1212 "CORE/core_cm3.h" 1
+ 213 001e 20BF     		wfe
+ 214              	@ 0 "" 2
+ 215              		.thumb
+ 216              		.syntax unified
+ 217              	.L17:
+ 218              	.LBE11:
+ 219              	.LBE10:
+ 217:.//FWLIB/src/stm32f10x_pwr.c ****   {   
+ 218:.//FWLIB/src/stm32f10x_pwr.c ****     /* Request Wait For Interrupt */
+ 219:.//FWLIB/src/stm32f10x_pwr.c ****     __WFI();
+ 220:.//FWLIB/src/stm32f10x_pwr.c ****   }
+ 221:.//FWLIB/src/stm32f10x_pwr.c ****   else
+ 222:.//FWLIB/src/stm32f10x_pwr.c ****   {
+ 223:.//FWLIB/src/stm32f10x_pwr.c ****     /* Request Wait For Event */
+ 224:.//FWLIB/src/stm32f10x_pwr.c ****     __WFE();
+ 225:.//FWLIB/src/stm32f10x_pwr.c ****   }
+ 226:.//FWLIB/src/stm32f10x_pwr.c ****   
+ 227:.//FWLIB/src/stm32f10x_pwr.c ****   /* Reset SLEEPDEEP bit of Cortex System Control Register */
+ 228:.//FWLIB/src/stm32f10x_pwr.c ****   SCB->SCR &= (uint32_t)~((uint32_t)SCB_SCR_SLEEPDEEP);  
+ 220              		.loc 1 228 0
+ 221 0020 034A     		ldr	r2, .L18+4
+ 222 0022 1369     		ldr	r3, [r2, #16]
+ 223 0024 23F00403 		bic	r3, r3, #4
+ 224 0028 1361     		str	r3, [r2, #16]
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 30
+
+
+ 225 002a 7047     		bx	lr
+ 226              	.L19:
+ 227              		.align	2
+ 228              	.L18:
+ 229 002c 00700040 		.word	1073770496
+ 230 0030 00ED00E0 		.word	-536810240
+ 231              		.cfi_endproc
+ 232              	.LFE34:
+ 234              		.section	.text.PWR_EnterSTANDBYMode,"ax",%progbits
+ 235              		.align	2
+ 236              		.global	PWR_EnterSTANDBYMode
+ 237              		.thumb
+ 238              		.thumb_func
+ 240              	PWR_EnterSTANDBYMode:
+ 241              	.LFB35:
+ 229:.//FWLIB/src/stm32f10x_pwr.c **** }
+ 230:.//FWLIB/src/stm32f10x_pwr.c **** 
+ 231:.//FWLIB/src/stm32f10x_pwr.c **** /**
+ 232:.//FWLIB/src/stm32f10x_pwr.c ****   * @brief  Enters STANDBY mode.
+ 233:.//FWLIB/src/stm32f10x_pwr.c ****   * @param  None
+ 234:.//FWLIB/src/stm32f10x_pwr.c ****   * @retval None
+ 235:.//FWLIB/src/stm32f10x_pwr.c ****   */
+ 236:.//FWLIB/src/stm32f10x_pwr.c **** void PWR_EnterSTANDBYMode(void)
+ 237:.//FWLIB/src/stm32f10x_pwr.c **** {
+ 242              		.loc 1 237 0
+ 243              		.cfi_startproc
+ 244              		@ args = 0, pretend = 0, frame = 0
+ 245              		@ frame_needed = 0, uses_anonymous_args = 0
+ 246              		@ link register save eliminated.
+ 238:.//FWLIB/src/stm32f10x_pwr.c ****   /* Clear Wake-up flag */
+ 239:.//FWLIB/src/stm32f10x_pwr.c ****   PWR->CR |= PWR_CR_CWUF;
+ 247              		.loc 1 239 0
+ 248 0000 074B     		ldr	r3, .L21
+ 249 0002 1A68     		ldr	r2, [r3]
+ 250 0004 42F00402 		orr	r2, r2, #4
+ 251 0008 1A60     		str	r2, [r3]
+ 240:.//FWLIB/src/stm32f10x_pwr.c ****   /* Select STANDBY mode */
+ 241:.//FWLIB/src/stm32f10x_pwr.c ****   PWR->CR |= PWR_CR_PDDS;
+ 252              		.loc 1 241 0
+ 253 000a 1A68     		ldr	r2, [r3]
+ 254 000c 42F00202 		orr	r2, r2, #2
+ 255 0010 1A60     		str	r2, [r3]
+ 242:.//FWLIB/src/stm32f10x_pwr.c ****   /* Set SLEEPDEEP bit of Cortex System Control Register */
+ 243:.//FWLIB/src/stm32f10x_pwr.c ****   SCB->SCR |= SCB_SCR_SLEEPDEEP;
+ 256              		.loc 1 243 0
+ 257 0012 044A     		ldr	r2, .L21+4
+ 258 0014 1369     		ldr	r3, [r2, #16]
+ 259 0016 43F00403 		orr	r3, r3, #4
+ 260 001a 1361     		str	r3, [r2, #16]
+ 261              	.LBB12:
+ 262              	.LBB13:
+1211:CORE/core_cm3.h **** static __INLINE void __WFE()                      { __ASM volatile ("wfe"); }
+ 263              		.loc 2 1211 0
+ 264              		.syntax unified
+ 265              	@ 1211 "CORE/core_cm3.h" 1
+ 266 001c 30BF     		wfi
+ 267              	@ 0 "" 2
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 31
+
+
+ 268              		.thumb
+ 269              		.syntax unified
+ 270 001e 7047     		bx	lr
+ 271              	.L22:
+ 272              		.align	2
+ 273              	.L21:
+ 274 0020 00700040 		.word	1073770496
+ 275 0024 00ED00E0 		.word	-536810240
+ 276              	.LBE13:
+ 277              	.LBE12:
+ 278              		.cfi_endproc
+ 279              	.LFE35:
+ 281              		.section	.text.PWR_GetFlagStatus,"ax",%progbits
+ 282              		.align	2
+ 283              		.global	PWR_GetFlagStatus
+ 284              		.thumb
+ 285              		.thumb_func
+ 287              	PWR_GetFlagStatus:
+ 288              	.LFB36:
+ 244:.//FWLIB/src/stm32f10x_pwr.c **** /* This option is used to ensure that store operations are completed */
+ 245:.//FWLIB/src/stm32f10x_pwr.c **** #if defined ( __CC_ARM   )
+ 246:.//FWLIB/src/stm32f10x_pwr.c ****   __force_stores();
+ 247:.//FWLIB/src/stm32f10x_pwr.c **** #endif
+ 248:.//FWLIB/src/stm32f10x_pwr.c ****   /* Request Wait For Interrupt */
+ 249:.//FWLIB/src/stm32f10x_pwr.c ****   __WFI();
+ 250:.//FWLIB/src/stm32f10x_pwr.c **** }
+ 251:.//FWLIB/src/stm32f10x_pwr.c **** 
+ 252:.//FWLIB/src/stm32f10x_pwr.c **** /**
+ 253:.//FWLIB/src/stm32f10x_pwr.c ****   * @brief  Checks whether the specified PWR flag is set or not.
+ 254:.//FWLIB/src/stm32f10x_pwr.c ****   * @param  PWR_FLAG: specifies the flag to check.
+ 255:.//FWLIB/src/stm32f10x_pwr.c ****   *   This parameter can be one of the following values:
+ 256:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_FLAG_WU: Wake Up flag
+ 257:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_FLAG_SB: StandBy flag
+ 258:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_FLAG_PVDO: PVD Output
+ 259:.//FWLIB/src/stm32f10x_pwr.c ****   * @retval The new state of PWR_FLAG (SET or RESET).
+ 260:.//FWLIB/src/stm32f10x_pwr.c ****   */
+ 261:.//FWLIB/src/stm32f10x_pwr.c **** FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG)
+ 262:.//FWLIB/src/stm32f10x_pwr.c **** {
+ 289              		.loc 1 262 0
+ 290              		.cfi_startproc
+ 291              		@ args = 0, pretend = 0, frame = 0
+ 292              		@ frame_needed = 0, uses_anonymous_args = 0
+ 293              		@ link register save eliminated.
+ 294              	.LVL13:
+ 263:.//FWLIB/src/stm32f10x_pwr.c ****   FlagStatus bitstatus = RESET;
+ 264:.//FWLIB/src/stm32f10x_pwr.c ****   /* Check the parameters */
+ 265:.//FWLIB/src/stm32f10x_pwr.c ****   assert_param(IS_PWR_GET_FLAG(PWR_FLAG));
+ 266:.//FWLIB/src/stm32f10x_pwr.c ****   
+ 267:.//FWLIB/src/stm32f10x_pwr.c ****   if ((PWR->CSR & PWR_FLAG) != (uint32_t)RESET)
+ 295              		.loc 1 267 0
+ 296 0000 034B     		ldr	r3, .L26
+ 297 0002 5B68     		ldr	r3, [r3, #4]
+ 298 0004 0342     		tst	r3, r0
+ 299 0006 01D0     		beq	.L25
+ 268:.//FWLIB/src/stm32f10x_pwr.c ****   {
+ 269:.//FWLIB/src/stm32f10x_pwr.c ****     bitstatus = SET;
+ 300              		.loc 1 269 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 32
+
+
+ 301 0008 0120     		movs	r0, #1
+ 302              	.LVL14:
+ 303 000a 7047     		bx	lr
+ 304              	.LVL15:
+ 305              	.L25:
+ 270:.//FWLIB/src/stm32f10x_pwr.c ****   }
+ 271:.//FWLIB/src/stm32f10x_pwr.c ****   else
+ 272:.//FWLIB/src/stm32f10x_pwr.c ****   {
+ 273:.//FWLIB/src/stm32f10x_pwr.c ****     bitstatus = RESET;
+ 306              		.loc 1 273 0
+ 307 000c 0020     		movs	r0, #0
+ 308              	.LVL16:
+ 274:.//FWLIB/src/stm32f10x_pwr.c ****   }
+ 275:.//FWLIB/src/stm32f10x_pwr.c ****   /* Return the flag status */
+ 276:.//FWLIB/src/stm32f10x_pwr.c ****   return bitstatus;
+ 277:.//FWLIB/src/stm32f10x_pwr.c **** }
+ 309              		.loc 1 277 0
+ 310 000e 7047     		bx	lr
+ 311              	.L27:
+ 312              		.align	2
+ 313              	.L26:
+ 314 0010 00700040 		.word	1073770496
+ 315              		.cfi_endproc
+ 316              	.LFE36:
+ 318              		.section	.text.PWR_ClearFlag,"ax",%progbits
+ 319              		.align	2
+ 320              		.global	PWR_ClearFlag
+ 321              		.thumb
+ 322              		.thumb_func
+ 324              	PWR_ClearFlag:
+ 325              	.LFB37:
+ 278:.//FWLIB/src/stm32f10x_pwr.c **** 
+ 279:.//FWLIB/src/stm32f10x_pwr.c **** /**
+ 280:.//FWLIB/src/stm32f10x_pwr.c ****   * @brief  Clears the PWR's pending flags.
+ 281:.//FWLIB/src/stm32f10x_pwr.c ****   * @param  PWR_FLAG: specifies the flag to clear.
+ 282:.//FWLIB/src/stm32f10x_pwr.c ****   *   This parameter can be one of the following values:
+ 283:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_FLAG_WU: Wake Up flag
+ 284:.//FWLIB/src/stm32f10x_pwr.c ****   *     @arg PWR_FLAG_SB: StandBy flag
+ 285:.//FWLIB/src/stm32f10x_pwr.c ****   * @retval None
+ 286:.//FWLIB/src/stm32f10x_pwr.c ****   */
+ 287:.//FWLIB/src/stm32f10x_pwr.c **** void PWR_ClearFlag(uint32_t PWR_FLAG)
+ 288:.//FWLIB/src/stm32f10x_pwr.c **** {
+ 326              		.loc 1 288 0
+ 327              		.cfi_startproc
+ 328              		@ args = 0, pretend = 0, frame = 0
+ 329              		@ frame_needed = 0, uses_anonymous_args = 0
+ 330              		@ link register save eliminated.
+ 331              	.LVL17:
+ 289:.//FWLIB/src/stm32f10x_pwr.c ****   /* Check the parameters */
+ 290:.//FWLIB/src/stm32f10x_pwr.c ****   assert_param(IS_PWR_CLEAR_FLAG(PWR_FLAG));
+ 291:.//FWLIB/src/stm32f10x_pwr.c ****          
+ 292:.//FWLIB/src/stm32f10x_pwr.c ****   PWR->CR |=  PWR_FLAG << 2;
+ 332              		.loc 1 292 0
+ 333 0000 024A     		ldr	r2, .L29
+ 334 0002 1368     		ldr	r3, [r2]
+ 335 0004 43EA8000 		orr	r0, r3, r0, lsl #2
+ 336              	.LVL18:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 33
+
+
+ 337 0008 1060     		str	r0, [r2]
+ 338 000a 7047     		bx	lr
+ 339              	.L30:
+ 340              		.align	2
+ 341              	.L29:
+ 342 000c 00700040 		.word	1073770496
+ 343              		.cfi_endproc
+ 344              	.LFE37:
+ 346              		.text
+ 347              	.Letext0:
+ 348              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 349              		.file 4 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 350              		.file 5 "USER/stm32f10x.h"
+ 351              		.file 6 "FWLIB/inc/stm32f10x_rcc.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s 			page 34
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f10x_pwr.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:20     .text.PWR_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:25     .text.PWR_DeInit:0000000000000000 PWR_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:52     .text.PWR_BackupAccessCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:57     .text.PWR_BackupAccessCmd:0000000000000000 PWR_BackupAccessCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:72     .text.PWR_BackupAccessCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:77     .text.PWR_PVDCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:82     .text.PWR_PVDCmd:0000000000000000 PWR_PVDCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:97     .text.PWR_PVDCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:102    .text.PWR_PVDLevelConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:107    .text.PWR_PVDLevelConfig:0000000000000000 PWR_PVDLevelConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:131    .text.PWR_PVDLevelConfig:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:136    .text.PWR_WakeUpPinCmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:141    .text.PWR_WakeUpPinCmd:0000000000000000 PWR_WakeUpPinCmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:156    .text.PWR_WakeUpPinCmd:0000000000000008 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:161    .text.PWR_EnterSTOPMode:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:166    .text.PWR_EnterSTOPMode:0000000000000000 PWR_EnterSTOPMode
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:229    .text.PWR_EnterSTOPMode:000000000000002c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:235    .text.PWR_EnterSTANDBYMode:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:240    .text.PWR_EnterSTANDBYMode:0000000000000000 PWR_EnterSTANDBYMode
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:274    .text.PWR_EnterSTANDBYMode:0000000000000020 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:282    .text.PWR_GetFlagStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:287    .text.PWR_GetFlagStatus:0000000000000000 PWR_GetFlagStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:314    .text.PWR_GetFlagStatus:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:319    .text.PWR_ClearFlag:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:324    .text.PWR_ClearFlag:0000000000000000 PWR_ClearFlag
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccidY0Au.s:342    .text.PWR_ClearFlag:000000000000000c $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphResetCmd

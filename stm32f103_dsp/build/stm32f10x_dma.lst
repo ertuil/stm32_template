@@ -1,0 +1,1386 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"stm32f10x_dma.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.DMA_DeInit,"ax",%progbits
+  20              		.align	2
+  21              		.global	DMA_DeInit
+  22              		.thumb
+  23              		.thumb_func
+  25              	DMA_DeInit:
+  26              	.LFB29:
+  27              		.file 1 ".//FWLIB/src/stm32f10x_dma.c"
+   1:.//FWLIB/src/stm32f10x_dma.c **** /**
+   2:.//FWLIB/src/stm32f10x_dma.c ****   ******************************************************************************
+   3:.//FWLIB/src/stm32f10x_dma.c ****   * @file    stm32f10x_dma.c
+   4:.//FWLIB/src/stm32f10x_dma.c ****   * @author  MCD Application Team
+   5:.//FWLIB/src/stm32f10x_dma.c ****   * @version V3.5.0
+   6:.//FWLIB/src/stm32f10x_dma.c ****   * @date    11-March-2011
+   7:.//FWLIB/src/stm32f10x_dma.c ****   * @brief   This file provides all the DMA firmware functions.
+   8:.//FWLIB/src/stm32f10x_dma.c ****   ******************************************************************************
+   9:.//FWLIB/src/stm32f10x_dma.c ****   * @attention
+  10:.//FWLIB/src/stm32f10x_dma.c ****   *
+  11:.//FWLIB/src/stm32f10x_dma.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:.//FWLIB/src/stm32f10x_dma.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:.//FWLIB/src/stm32f10x_dma.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:.//FWLIB/src/stm32f10x_dma.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:.//FWLIB/src/stm32f10x_dma.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:.//FWLIB/src/stm32f10x_dma.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:.//FWLIB/src/stm32f10x_dma.c ****   *
+  18:.//FWLIB/src/stm32f10x_dma.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:.//FWLIB/src/stm32f10x_dma.c ****   ******************************************************************************
+  20:.//FWLIB/src/stm32f10x_dma.c ****   */
+  21:.//FWLIB/src/stm32f10x_dma.c **** 
+  22:.//FWLIB/src/stm32f10x_dma.c **** /* Includes ------------------------------------------------------------------*/
+  23:.//FWLIB/src/stm32f10x_dma.c **** #include "stm32f10x_dma.h"
+  24:.//FWLIB/src/stm32f10x_dma.c **** #include "stm32f10x_rcc.h"
+  25:.//FWLIB/src/stm32f10x_dma.c **** 
+  26:.//FWLIB/src/stm32f10x_dma.c **** /** @addtogroup STM32F10x_StdPeriph_Driver
+  27:.//FWLIB/src/stm32f10x_dma.c ****   * @{
+  28:.//FWLIB/src/stm32f10x_dma.c ****   */
+  29:.//FWLIB/src/stm32f10x_dma.c **** 
+  30:.//FWLIB/src/stm32f10x_dma.c **** /** @defgroup DMA 
+  31:.//FWLIB/src/stm32f10x_dma.c ****   * @brief DMA driver modules
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 2
+
+
+  32:.//FWLIB/src/stm32f10x_dma.c ****   * @{
+  33:.//FWLIB/src/stm32f10x_dma.c ****   */ 
+  34:.//FWLIB/src/stm32f10x_dma.c **** 
+  35:.//FWLIB/src/stm32f10x_dma.c **** /** @defgroup DMA_Private_TypesDefinitions
+  36:.//FWLIB/src/stm32f10x_dma.c ****   * @{
+  37:.//FWLIB/src/stm32f10x_dma.c ****   */ 
+  38:.//FWLIB/src/stm32f10x_dma.c **** /**
+  39:.//FWLIB/src/stm32f10x_dma.c ****   * @}
+  40:.//FWLIB/src/stm32f10x_dma.c ****   */
+  41:.//FWLIB/src/stm32f10x_dma.c **** 
+  42:.//FWLIB/src/stm32f10x_dma.c **** /** @defgroup DMA_Private_Defines
+  43:.//FWLIB/src/stm32f10x_dma.c ****   * @{
+  44:.//FWLIB/src/stm32f10x_dma.c ****   */
+  45:.//FWLIB/src/stm32f10x_dma.c **** 
+  46:.//FWLIB/src/stm32f10x_dma.c **** 
+  47:.//FWLIB/src/stm32f10x_dma.c **** /* DMA1 Channelx interrupt pending bit masks */
+  48:.//FWLIB/src/stm32f10x_dma.c **** #define DMA1_Channel1_IT_Mask    ((uint32_t)(DMA_ISR_GIF1 | DMA_ISR_TCIF1 | DMA_ISR_HTIF1 | DMA_ISR
+  49:.//FWLIB/src/stm32f10x_dma.c **** #define DMA1_Channel2_IT_Mask    ((uint32_t)(DMA_ISR_GIF2 | DMA_ISR_TCIF2 | DMA_ISR_HTIF2 | DMA_ISR
+  50:.//FWLIB/src/stm32f10x_dma.c **** #define DMA1_Channel3_IT_Mask    ((uint32_t)(DMA_ISR_GIF3 | DMA_ISR_TCIF3 | DMA_ISR_HTIF3 | DMA_ISR
+  51:.//FWLIB/src/stm32f10x_dma.c **** #define DMA1_Channel4_IT_Mask    ((uint32_t)(DMA_ISR_GIF4 | DMA_ISR_TCIF4 | DMA_ISR_HTIF4 | DMA_ISR
+  52:.//FWLIB/src/stm32f10x_dma.c **** #define DMA1_Channel5_IT_Mask    ((uint32_t)(DMA_ISR_GIF5 | DMA_ISR_TCIF5 | DMA_ISR_HTIF5 | DMA_ISR
+  53:.//FWLIB/src/stm32f10x_dma.c **** #define DMA1_Channel6_IT_Mask    ((uint32_t)(DMA_ISR_GIF6 | DMA_ISR_TCIF6 | DMA_ISR_HTIF6 | DMA_ISR
+  54:.//FWLIB/src/stm32f10x_dma.c **** #define DMA1_Channel7_IT_Mask    ((uint32_t)(DMA_ISR_GIF7 | DMA_ISR_TCIF7 | DMA_ISR_HTIF7 | DMA_ISR
+  55:.//FWLIB/src/stm32f10x_dma.c **** 
+  56:.//FWLIB/src/stm32f10x_dma.c **** /* DMA2 Channelx interrupt pending bit masks */
+  57:.//FWLIB/src/stm32f10x_dma.c **** #define DMA2_Channel1_IT_Mask    ((uint32_t)(DMA_ISR_GIF1 | DMA_ISR_TCIF1 | DMA_ISR_HTIF1 | DMA_ISR
+  58:.//FWLIB/src/stm32f10x_dma.c **** #define DMA2_Channel2_IT_Mask    ((uint32_t)(DMA_ISR_GIF2 | DMA_ISR_TCIF2 | DMA_ISR_HTIF2 | DMA_ISR
+  59:.//FWLIB/src/stm32f10x_dma.c **** #define DMA2_Channel3_IT_Mask    ((uint32_t)(DMA_ISR_GIF3 | DMA_ISR_TCIF3 | DMA_ISR_HTIF3 | DMA_ISR
+  60:.//FWLIB/src/stm32f10x_dma.c **** #define DMA2_Channel4_IT_Mask    ((uint32_t)(DMA_ISR_GIF4 | DMA_ISR_TCIF4 | DMA_ISR_HTIF4 | DMA_ISR
+  61:.//FWLIB/src/stm32f10x_dma.c **** #define DMA2_Channel5_IT_Mask    ((uint32_t)(DMA_ISR_GIF5 | DMA_ISR_TCIF5 | DMA_ISR_HTIF5 | DMA_ISR
+  62:.//FWLIB/src/stm32f10x_dma.c **** 
+  63:.//FWLIB/src/stm32f10x_dma.c **** /* DMA2 FLAG mask */
+  64:.//FWLIB/src/stm32f10x_dma.c **** #define FLAG_Mask                ((uint32_t)0x10000000)
+  65:.//FWLIB/src/stm32f10x_dma.c **** 
+  66:.//FWLIB/src/stm32f10x_dma.c **** /* DMA registers Masks */
+  67:.//FWLIB/src/stm32f10x_dma.c **** #define CCR_CLEAR_Mask           ((uint32_t)0xFFFF800F)
+  68:.//FWLIB/src/stm32f10x_dma.c **** 
+  69:.//FWLIB/src/stm32f10x_dma.c **** /**
+  70:.//FWLIB/src/stm32f10x_dma.c ****   * @}
+  71:.//FWLIB/src/stm32f10x_dma.c ****   */
+  72:.//FWLIB/src/stm32f10x_dma.c **** 
+  73:.//FWLIB/src/stm32f10x_dma.c **** /** @defgroup DMA_Private_Macros
+  74:.//FWLIB/src/stm32f10x_dma.c ****   * @{
+  75:.//FWLIB/src/stm32f10x_dma.c ****   */
+  76:.//FWLIB/src/stm32f10x_dma.c **** 
+  77:.//FWLIB/src/stm32f10x_dma.c **** /**
+  78:.//FWLIB/src/stm32f10x_dma.c ****   * @}
+  79:.//FWLIB/src/stm32f10x_dma.c ****   */
+  80:.//FWLIB/src/stm32f10x_dma.c **** 
+  81:.//FWLIB/src/stm32f10x_dma.c **** /** @defgroup DMA_Private_Variables
+  82:.//FWLIB/src/stm32f10x_dma.c ****   * @{
+  83:.//FWLIB/src/stm32f10x_dma.c ****   */
+  84:.//FWLIB/src/stm32f10x_dma.c **** 
+  85:.//FWLIB/src/stm32f10x_dma.c **** /**
+  86:.//FWLIB/src/stm32f10x_dma.c ****   * @}
+  87:.//FWLIB/src/stm32f10x_dma.c ****   */
+  88:.//FWLIB/src/stm32f10x_dma.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 3
+
+
+  89:.//FWLIB/src/stm32f10x_dma.c **** /** @defgroup DMA_Private_FunctionPrototypes
+  90:.//FWLIB/src/stm32f10x_dma.c ****   * @{
+  91:.//FWLIB/src/stm32f10x_dma.c ****   */
+  92:.//FWLIB/src/stm32f10x_dma.c **** 
+  93:.//FWLIB/src/stm32f10x_dma.c **** /**
+  94:.//FWLIB/src/stm32f10x_dma.c ****   * @}
+  95:.//FWLIB/src/stm32f10x_dma.c ****   */
+  96:.//FWLIB/src/stm32f10x_dma.c **** 
+  97:.//FWLIB/src/stm32f10x_dma.c **** /** @defgroup DMA_Private_Functions
+  98:.//FWLIB/src/stm32f10x_dma.c ****   * @{
+  99:.//FWLIB/src/stm32f10x_dma.c ****   */
+ 100:.//FWLIB/src/stm32f10x_dma.c **** 
+ 101:.//FWLIB/src/stm32f10x_dma.c **** /**
+ 102:.//FWLIB/src/stm32f10x_dma.c ****   * @brief  Deinitializes the DMAy Channelx registers to their default reset
+ 103:.//FWLIB/src/stm32f10x_dma.c ****   *         values.
+ 104:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMAy_Channelx: where y can be 1 or 2 to select the DMA and
+ 105:.//FWLIB/src/stm32f10x_dma.c ****   *   x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 to select the DMA Channel.
+ 106:.//FWLIB/src/stm32f10x_dma.c ****   * @retval None
+ 107:.//FWLIB/src/stm32f10x_dma.c ****   */
+ 108:.//FWLIB/src/stm32f10x_dma.c **** void DMA_DeInit(DMA_Channel_TypeDef* DMAy_Channelx)
+ 109:.//FWLIB/src/stm32f10x_dma.c **** {
+  28              		.loc 1 109 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+ 110:.//FWLIB/src/stm32f10x_dma.c ****   /* Check the parameters */
+ 111:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_ALL_PERIPH(DMAy_Channelx));
+ 112:.//FWLIB/src/stm32f10x_dma.c ****   
+ 113:.//FWLIB/src/stm32f10x_dma.c ****   /* Disable the selected DMAy Channelx */
+ 114:.//FWLIB/src/stm32f10x_dma.c ****   DMAy_Channelx->CCR &= (uint16_t)(~DMA_CCR1_EN);
+  34              		.loc 1 114 0
+  35 0000 0368     		ldr	r3, [r0]
+  36 0002 23F00103 		bic	r3, r3, #1
+  37 0006 1B04     		lsls	r3, r3, #16
+  38 0008 1B0C     		lsrs	r3, r3, #16
+  39 000a 0360     		str	r3, [r0]
+ 115:.//FWLIB/src/stm32f10x_dma.c ****   
+ 116:.//FWLIB/src/stm32f10x_dma.c ****   /* Reset DMAy Channelx control register */
+ 117:.//FWLIB/src/stm32f10x_dma.c ****   DMAy_Channelx->CCR  = 0;
+  40              		.loc 1 117 0
+  41 000c 0023     		movs	r3, #0
+  42 000e 0360     		str	r3, [r0]
+ 118:.//FWLIB/src/stm32f10x_dma.c ****   
+ 119:.//FWLIB/src/stm32f10x_dma.c ****   /* Reset DMAy Channelx remaining bytes register */
+ 120:.//FWLIB/src/stm32f10x_dma.c ****   DMAy_Channelx->CNDTR = 0;
+  43              		.loc 1 120 0
+  44 0010 4360     		str	r3, [r0, #4]
+ 121:.//FWLIB/src/stm32f10x_dma.c ****   
+ 122:.//FWLIB/src/stm32f10x_dma.c ****   /* Reset DMAy Channelx peripheral address register */
+ 123:.//FWLIB/src/stm32f10x_dma.c ****   DMAy_Channelx->CPAR  = 0;
+  45              		.loc 1 123 0
+  46 0012 8360     		str	r3, [r0, #8]
+ 124:.//FWLIB/src/stm32f10x_dma.c ****   
+ 125:.//FWLIB/src/stm32f10x_dma.c ****   /* Reset DMAy Channelx memory address register */
+ 126:.//FWLIB/src/stm32f10x_dma.c ****   DMAy_Channelx->CMAR = 0;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 4
+
+
+  47              		.loc 1 126 0
+  48 0014 C360     		str	r3, [r0, #12]
+ 127:.//FWLIB/src/stm32f10x_dma.c ****   
+ 128:.//FWLIB/src/stm32f10x_dma.c ****   if (DMAy_Channelx == DMA1_Channel1)
+  49              		.loc 1 128 0
+  50 0016 364B     		ldr	r3, .L14
+  51 0018 9842     		cmp	r0, r3
+  52 001a 05D1     		bne	.L2
+ 129:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 130:.//FWLIB/src/stm32f10x_dma.c ****     /* Reset interrupt pending bits for DMA1 Channel1 */
+ 131:.//FWLIB/src/stm32f10x_dma.c ****     DMA1->IFCR |= DMA1_Channel1_IT_Mask;
+  53              		.loc 1 131 0
+  54 001c 354A     		ldr	r2, .L14+4
+  55 001e 5368     		ldr	r3, [r2, #4]
+  56 0020 43F00F03 		orr	r3, r3, #15
+  57 0024 5360     		str	r3, [r2, #4]
+  58 0026 7047     		bx	lr
+  59              	.L2:
+ 132:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 133:.//FWLIB/src/stm32f10x_dma.c ****   else if (DMAy_Channelx == DMA1_Channel2)
+  60              		.loc 1 133 0
+  61 0028 334B     		ldr	r3, .L14+8
+  62 002a 9842     		cmp	r0, r3
+  63 002c 05D1     		bne	.L4
+ 134:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 135:.//FWLIB/src/stm32f10x_dma.c ****     /* Reset interrupt pending bits for DMA1 Channel2 */
+ 136:.//FWLIB/src/stm32f10x_dma.c ****     DMA1->IFCR |= DMA1_Channel2_IT_Mask;
+  64              		.loc 1 136 0
+  65 002e 314A     		ldr	r2, .L14+4
+  66 0030 5368     		ldr	r3, [r2, #4]
+  67 0032 43F0F003 		orr	r3, r3, #240
+  68 0036 5360     		str	r3, [r2, #4]
+  69 0038 7047     		bx	lr
+  70              	.L4:
+ 137:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 138:.//FWLIB/src/stm32f10x_dma.c ****   else if (DMAy_Channelx == DMA1_Channel3)
+  71              		.loc 1 138 0
+  72 003a 304B     		ldr	r3, .L14+12
+  73 003c 9842     		cmp	r0, r3
+  74 003e 05D1     		bne	.L5
+ 139:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 140:.//FWLIB/src/stm32f10x_dma.c ****     /* Reset interrupt pending bits for DMA1 Channel3 */
+ 141:.//FWLIB/src/stm32f10x_dma.c ****     DMA1->IFCR |= DMA1_Channel3_IT_Mask;
+  75              		.loc 1 141 0
+  76 0040 2C4A     		ldr	r2, .L14+4
+  77 0042 5368     		ldr	r3, [r2, #4]
+  78 0044 43F47063 		orr	r3, r3, #3840
+  79 0048 5360     		str	r3, [r2, #4]
+  80 004a 7047     		bx	lr
+  81              	.L5:
+ 142:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 143:.//FWLIB/src/stm32f10x_dma.c ****   else if (DMAy_Channelx == DMA1_Channel4)
+  82              		.loc 1 143 0
+  83 004c 2C4B     		ldr	r3, .L14+16
+  84 004e 9842     		cmp	r0, r3
+  85 0050 05D1     		bne	.L6
+ 144:.//FWLIB/src/stm32f10x_dma.c ****   {
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 5
+
+
+ 145:.//FWLIB/src/stm32f10x_dma.c ****     /* Reset interrupt pending bits for DMA1 Channel4 */
+ 146:.//FWLIB/src/stm32f10x_dma.c ****     DMA1->IFCR |= DMA1_Channel4_IT_Mask;
+  86              		.loc 1 146 0
+  87 0052 284A     		ldr	r2, .L14+4
+  88 0054 5368     		ldr	r3, [r2, #4]
+  89 0056 43F47043 		orr	r3, r3, #61440
+  90 005a 5360     		str	r3, [r2, #4]
+  91 005c 7047     		bx	lr
+  92              	.L6:
+ 147:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 148:.//FWLIB/src/stm32f10x_dma.c ****   else if (DMAy_Channelx == DMA1_Channel5)
+  93              		.loc 1 148 0
+  94 005e 294B     		ldr	r3, .L14+20
+  95 0060 9842     		cmp	r0, r3
+  96 0062 05D1     		bne	.L7
+ 149:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 150:.//FWLIB/src/stm32f10x_dma.c ****     /* Reset interrupt pending bits for DMA1 Channel5 */
+ 151:.//FWLIB/src/stm32f10x_dma.c ****     DMA1->IFCR |= DMA1_Channel5_IT_Mask;
+  97              		.loc 1 151 0
+  98 0064 234A     		ldr	r2, .L14+4
+  99 0066 5368     		ldr	r3, [r2, #4]
+ 100 0068 43F47023 		orr	r3, r3, #983040
+ 101 006c 5360     		str	r3, [r2, #4]
+ 102 006e 7047     		bx	lr
+ 103              	.L7:
+ 152:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 153:.//FWLIB/src/stm32f10x_dma.c ****   else if (DMAy_Channelx == DMA1_Channel6)
+ 104              		.loc 1 153 0
+ 105 0070 254B     		ldr	r3, .L14+24
+ 106 0072 9842     		cmp	r0, r3
+ 107 0074 05D1     		bne	.L8
+ 154:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 155:.//FWLIB/src/stm32f10x_dma.c ****     /* Reset interrupt pending bits for DMA1 Channel6 */
+ 156:.//FWLIB/src/stm32f10x_dma.c ****     DMA1->IFCR |= DMA1_Channel6_IT_Mask;
+ 108              		.loc 1 156 0
+ 109 0076 1F4A     		ldr	r2, .L14+4
+ 110 0078 5368     		ldr	r3, [r2, #4]
+ 111 007a 43F47003 		orr	r3, r3, #15728640
+ 112 007e 5360     		str	r3, [r2, #4]
+ 113 0080 7047     		bx	lr
+ 114              	.L8:
+ 157:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 158:.//FWLIB/src/stm32f10x_dma.c ****   else if (DMAy_Channelx == DMA1_Channel7)
+ 115              		.loc 1 158 0
+ 116 0082 224B     		ldr	r3, .L14+28
+ 117 0084 9842     		cmp	r0, r3
+ 118 0086 05D1     		bne	.L9
+ 159:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 160:.//FWLIB/src/stm32f10x_dma.c ****     /* Reset interrupt pending bits for DMA1 Channel7 */
+ 161:.//FWLIB/src/stm32f10x_dma.c ****     DMA1->IFCR |= DMA1_Channel7_IT_Mask;
+ 119              		.loc 1 161 0
+ 120 0088 1A4A     		ldr	r2, .L14+4
+ 121 008a 5368     		ldr	r3, [r2, #4]
+ 122 008c 43F07063 		orr	r3, r3, #251658240
+ 123 0090 5360     		str	r3, [r2, #4]
+ 124 0092 7047     		bx	lr
+ 125              	.L9:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 6
+
+
+ 162:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 163:.//FWLIB/src/stm32f10x_dma.c ****   else if (DMAy_Channelx == DMA2_Channel1)
+ 126              		.loc 1 163 0
+ 127 0094 1E4B     		ldr	r3, .L14+32
+ 128 0096 9842     		cmp	r0, r3
+ 129 0098 05D1     		bne	.L10
+ 164:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 165:.//FWLIB/src/stm32f10x_dma.c ****     /* Reset interrupt pending bits for DMA2 Channel1 */
+ 166:.//FWLIB/src/stm32f10x_dma.c ****     DMA2->IFCR |= DMA2_Channel1_IT_Mask;
+ 130              		.loc 1 166 0
+ 131 009a 1E4A     		ldr	r2, .L14+36
+ 132 009c 5368     		ldr	r3, [r2, #4]
+ 133 009e 43F00F03 		orr	r3, r3, #15
+ 134 00a2 5360     		str	r3, [r2, #4]
+ 135 00a4 7047     		bx	lr
+ 136              	.L10:
+ 167:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 168:.//FWLIB/src/stm32f10x_dma.c ****   else if (DMAy_Channelx == DMA2_Channel2)
+ 137              		.loc 1 168 0
+ 138 00a6 1C4B     		ldr	r3, .L14+40
+ 139 00a8 9842     		cmp	r0, r3
+ 140 00aa 05D1     		bne	.L11
+ 169:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 170:.//FWLIB/src/stm32f10x_dma.c ****     /* Reset interrupt pending bits for DMA2 Channel2 */
+ 171:.//FWLIB/src/stm32f10x_dma.c ****     DMA2->IFCR |= DMA2_Channel2_IT_Mask;
+ 141              		.loc 1 171 0
+ 142 00ac 194A     		ldr	r2, .L14+36
+ 143 00ae 5368     		ldr	r3, [r2, #4]
+ 144 00b0 43F0F003 		orr	r3, r3, #240
+ 145 00b4 5360     		str	r3, [r2, #4]
+ 146 00b6 7047     		bx	lr
+ 147              	.L11:
+ 172:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 173:.//FWLIB/src/stm32f10x_dma.c ****   else if (DMAy_Channelx == DMA2_Channel3)
+ 148              		.loc 1 173 0
+ 149 00b8 184B     		ldr	r3, .L14+44
+ 150 00ba 9842     		cmp	r0, r3
+ 151 00bc 05D1     		bne	.L12
+ 174:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 175:.//FWLIB/src/stm32f10x_dma.c ****     /* Reset interrupt pending bits for DMA2 Channel3 */
+ 176:.//FWLIB/src/stm32f10x_dma.c ****     DMA2->IFCR |= DMA2_Channel3_IT_Mask;
+ 152              		.loc 1 176 0
+ 153 00be 154A     		ldr	r2, .L14+36
+ 154 00c0 5368     		ldr	r3, [r2, #4]
+ 155 00c2 43F47063 		orr	r3, r3, #3840
+ 156 00c6 5360     		str	r3, [r2, #4]
+ 157 00c8 7047     		bx	lr
+ 158              	.L12:
+ 177:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 178:.//FWLIB/src/stm32f10x_dma.c ****   else if (DMAy_Channelx == DMA2_Channel4)
+ 159              		.loc 1 178 0
+ 160 00ca 154B     		ldr	r3, .L14+48
+ 161 00cc 9842     		cmp	r0, r3
+ 162 00ce 05D1     		bne	.L13
+ 179:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 180:.//FWLIB/src/stm32f10x_dma.c ****     /* Reset interrupt pending bits for DMA2 Channel4 */
+ 181:.//FWLIB/src/stm32f10x_dma.c ****     DMA2->IFCR |= DMA2_Channel4_IT_Mask;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 7
+
+
+ 163              		.loc 1 181 0
+ 164 00d0 104A     		ldr	r2, .L14+36
+ 165 00d2 5368     		ldr	r3, [r2, #4]
+ 166 00d4 43F47043 		orr	r3, r3, #61440
+ 167 00d8 5360     		str	r3, [r2, #4]
+ 168 00da 7047     		bx	lr
+ 169              	.L13:
+ 182:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 183:.//FWLIB/src/stm32f10x_dma.c ****   else
+ 184:.//FWLIB/src/stm32f10x_dma.c ****   { 
+ 185:.//FWLIB/src/stm32f10x_dma.c ****     if (DMAy_Channelx == DMA2_Channel5)
+ 170              		.loc 1 185 0
+ 171 00dc 114B     		ldr	r3, .L14+52
+ 172 00de 9842     		cmp	r0, r3
+ 173 00e0 04D1     		bne	.L1
+ 186:.//FWLIB/src/stm32f10x_dma.c ****     {
+ 187:.//FWLIB/src/stm32f10x_dma.c ****       /* Reset interrupt pending bits for DMA2 Channel5 */
+ 188:.//FWLIB/src/stm32f10x_dma.c ****       DMA2->IFCR |= DMA2_Channel5_IT_Mask;
+ 174              		.loc 1 188 0
+ 175 00e2 0C4A     		ldr	r2, .L14+36
+ 176 00e4 5368     		ldr	r3, [r2, #4]
+ 177 00e6 43F47023 		orr	r3, r3, #983040
+ 178 00ea 5360     		str	r3, [r2, #4]
+ 179              	.L1:
+ 180 00ec 7047     		bx	lr
+ 181              	.L15:
+ 182 00ee 00BF     		.align	2
+ 183              	.L14:
+ 184 00f0 08000240 		.word	1073872904
+ 185 00f4 00000240 		.word	1073872896
+ 186 00f8 1C000240 		.word	1073872924
+ 187 00fc 30000240 		.word	1073872944
+ 188 0100 44000240 		.word	1073872964
+ 189 0104 58000240 		.word	1073872984
+ 190 0108 6C000240 		.word	1073873004
+ 191 010c 80000240 		.word	1073873024
+ 192 0110 08040240 		.word	1073873928
+ 193 0114 00040240 		.word	1073873920
+ 194 0118 1C040240 		.word	1073873948
+ 195 011c 30040240 		.word	1073873968
+ 196 0120 44040240 		.word	1073873988
+ 197 0124 58040240 		.word	1073874008
+ 198              		.cfi_endproc
+ 199              	.LFE29:
+ 201              		.section	.text.DMA_Init,"ax",%progbits
+ 202              		.align	2
+ 203              		.global	DMA_Init
+ 204              		.thumb
+ 205              		.thumb_func
+ 207              	DMA_Init:
+ 208              	.LFB30:
+ 189:.//FWLIB/src/stm32f10x_dma.c ****     }
+ 190:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 191:.//FWLIB/src/stm32f10x_dma.c **** }
+ 192:.//FWLIB/src/stm32f10x_dma.c **** 
+ 193:.//FWLIB/src/stm32f10x_dma.c **** /**
+ 194:.//FWLIB/src/stm32f10x_dma.c ****   * @brief  Initializes the DMAy Channelx according to the specified
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 8
+
+
+ 195:.//FWLIB/src/stm32f10x_dma.c ****   *         parameters in the DMA_InitStruct.
+ 196:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMAy_Channelx: where y can be 1 or 2 to select the DMA and 
+ 197:.//FWLIB/src/stm32f10x_dma.c ****   *   x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 to select the DMA Channel.
+ 198:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMA_InitStruct: pointer to a DMA_InitTypeDef structure that
+ 199:.//FWLIB/src/stm32f10x_dma.c ****   *         contains the configuration information for the specified DMA Channel.
+ 200:.//FWLIB/src/stm32f10x_dma.c ****   * @retval None
+ 201:.//FWLIB/src/stm32f10x_dma.c ****   */
+ 202:.//FWLIB/src/stm32f10x_dma.c **** void DMA_Init(DMA_Channel_TypeDef* DMAy_Channelx, DMA_InitTypeDef* DMA_InitStruct)
+ 203:.//FWLIB/src/stm32f10x_dma.c **** {
+ 209              		.loc 1 203 0
+ 210              		.cfi_startproc
+ 211              		@ args = 0, pretend = 0, frame = 0
+ 212              		@ frame_needed = 0, uses_anonymous_args = 0
+ 213              		@ link register save eliminated.
+ 214              	.LVL1:
+ 215 0000 10B4     		push	{r4}
+ 216              	.LCFI0:
+ 217              		.cfi_def_cfa_offset 4
+ 218              		.cfi_offset 4, -4
+ 219              	.LVL2:
+ 204:.//FWLIB/src/stm32f10x_dma.c ****   uint32_t tmpreg = 0;
+ 205:.//FWLIB/src/stm32f10x_dma.c **** 
+ 206:.//FWLIB/src/stm32f10x_dma.c ****   /* Check the parameters */
+ 207:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_ALL_PERIPH(DMAy_Channelx));
+ 208:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_DIR(DMA_InitStruct->DMA_DIR));
+ 209:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_BUFFER_SIZE(DMA_InitStruct->DMA_BufferSize));
+ 210:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_PERIPHERAL_INC_STATE(DMA_InitStruct->DMA_PeripheralInc));
+ 211:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_MEMORY_INC_STATE(DMA_InitStruct->DMA_MemoryInc));   
+ 212:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_PERIPHERAL_DATA_SIZE(DMA_InitStruct->DMA_PeripheralDataSize));
+ 213:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_MEMORY_DATA_SIZE(DMA_InitStruct->DMA_MemoryDataSize));
+ 214:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_MODE(DMA_InitStruct->DMA_Mode));
+ 215:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_PRIORITY(DMA_InitStruct->DMA_Priority));
+ 216:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_M2M_STATE(DMA_InitStruct->DMA_M2M));
+ 217:.//FWLIB/src/stm32f10x_dma.c **** 
+ 218:.//FWLIB/src/stm32f10x_dma.c **** /*--------------------------- DMAy Channelx CCR Configuration -----------------*/
+ 219:.//FWLIB/src/stm32f10x_dma.c ****   /* Get the DMAy_Channelx CCR value */
+ 220:.//FWLIB/src/stm32f10x_dma.c ****   tmpreg = DMAy_Channelx->CCR;
+ 220              		.loc 1 220 0
+ 221 0002 0368     		ldr	r3, [r0]
+ 222              	.LVL3:
+ 221:.//FWLIB/src/stm32f10x_dma.c ****   /* Clear MEM2MEM, PL, MSIZE, PSIZE, MINC, PINC, CIRC and DIR bits */
+ 222:.//FWLIB/src/stm32f10x_dma.c ****   tmpreg &= CCR_CLEAR_Mask;
+ 223              		.loc 1 222 0
+ 224 0004 23F4FF42 		bic	r2, r3, #32640
+ 225 0008 22F07002 		bic	r2, r2, #112
+ 226              	.LVL4:
+ 223:.//FWLIB/src/stm32f10x_dma.c ****   /* Configure DMAy Channelx: data transfer, data size, priority level and mode */
+ 224:.//FWLIB/src/stm32f10x_dma.c ****   /* Set DIR bit according to DMA_DIR value */
+ 225:.//FWLIB/src/stm32f10x_dma.c ****   /* Set CIRC bit according to DMA_Mode value */
+ 226:.//FWLIB/src/stm32f10x_dma.c ****   /* Set PINC bit according to DMA_PeripheralInc value */
+ 227:.//FWLIB/src/stm32f10x_dma.c ****   /* Set MINC bit according to DMA_MemoryInc value */
+ 228:.//FWLIB/src/stm32f10x_dma.c ****   /* Set PSIZE bits according to DMA_PeripheralDataSize value */
+ 229:.//FWLIB/src/stm32f10x_dma.c ****   /* Set MSIZE bits according to DMA_MemoryDataSize value */
+ 230:.//FWLIB/src/stm32f10x_dma.c ****   /* Set PL bits according to DMA_Priority value */
+ 231:.//FWLIB/src/stm32f10x_dma.c ****   /* Set the MEM2MEM bit according to DMA_M2M value */
+ 232:.//FWLIB/src/stm32f10x_dma.c ****   tmpreg |= DMA_InitStruct->DMA_DIR | DMA_InitStruct->DMA_Mode |
+ 227              		.loc 1 232 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 9
+
+
+ 228 000c 8C68     		ldr	r4, [r1, #8]
+ 229 000e 0B6A     		ldr	r3, [r1, #32]
+ 230 0010 1C43     		orrs	r4, r4, r3
+ 233:.//FWLIB/src/stm32f10x_dma.c ****             DMA_InitStruct->DMA_PeripheralInc | DMA_InitStruct->DMA_MemoryInc |
+ 231              		.loc 1 233 0
+ 232 0012 0B69     		ldr	r3, [r1, #16]
+ 232:.//FWLIB/src/stm32f10x_dma.c ****             DMA_InitStruct->DMA_PeripheralInc | DMA_InitStruct->DMA_MemoryInc |
+ 233              		.loc 1 232 0
+ 234 0014 1C43     		orrs	r4, r4, r3
+ 235              		.loc 1 233 0
+ 236 0016 4B69     		ldr	r3, [r1, #20]
+ 237 0018 1C43     		orrs	r4, r4, r3
+ 234:.//FWLIB/src/stm32f10x_dma.c ****             DMA_InitStruct->DMA_PeripheralDataSize | DMA_InitStruct->DMA_MemoryDataSize |
+ 238              		.loc 1 234 0
+ 239 001a 8B69     		ldr	r3, [r1, #24]
+ 233:.//FWLIB/src/stm32f10x_dma.c ****             DMA_InitStruct->DMA_PeripheralInc | DMA_InitStruct->DMA_MemoryInc |
+ 240              		.loc 1 233 0
+ 241 001c 1C43     		orrs	r4, r4, r3
+ 242              		.loc 1 234 0
+ 243 001e CB69     		ldr	r3, [r1, #28]
+ 244 0020 1C43     		orrs	r4, r4, r3
+ 235:.//FWLIB/src/stm32f10x_dma.c ****             DMA_InitStruct->DMA_Priority | DMA_InitStruct->DMA_M2M;
+ 245              		.loc 1 235 0
+ 246 0022 4B6A     		ldr	r3, [r1, #36]
+ 234:.//FWLIB/src/stm32f10x_dma.c ****             DMA_InitStruct->DMA_PeripheralDataSize | DMA_InitStruct->DMA_MemoryDataSize |
+ 247              		.loc 1 234 0
+ 248 0024 1C43     		orrs	r4, r4, r3
+ 249              		.loc 1 235 0
+ 250 0026 8B6A     		ldr	r3, [r1, #40]
+ 251 0028 2343     		orrs	r3, r3, r4
+ 232:.//FWLIB/src/stm32f10x_dma.c ****             DMA_InitStruct->DMA_PeripheralInc | DMA_InitStruct->DMA_MemoryInc |
+ 252              		.loc 1 232 0
+ 253 002a 1343     		orrs	r3, r3, r2
+ 254              	.LVL5:
+ 236:.//FWLIB/src/stm32f10x_dma.c **** 
+ 237:.//FWLIB/src/stm32f10x_dma.c ****   /* Write to DMAy Channelx CCR */
+ 238:.//FWLIB/src/stm32f10x_dma.c ****   DMAy_Channelx->CCR = tmpreg;
+ 255              		.loc 1 238 0
+ 256 002c 0360     		str	r3, [r0]
+ 239:.//FWLIB/src/stm32f10x_dma.c **** 
+ 240:.//FWLIB/src/stm32f10x_dma.c **** /*--------------------------- DMAy Channelx CNDTR Configuration ---------------*/
+ 241:.//FWLIB/src/stm32f10x_dma.c ****   /* Write to DMAy Channelx CNDTR */
+ 242:.//FWLIB/src/stm32f10x_dma.c ****   DMAy_Channelx->CNDTR = DMA_InitStruct->DMA_BufferSize;
+ 257              		.loc 1 242 0
+ 258 002e CB68     		ldr	r3, [r1, #12]
+ 259              	.LVL6:
+ 260 0030 4360     		str	r3, [r0, #4]
+ 261              	.LVL7:
+ 243:.//FWLIB/src/stm32f10x_dma.c **** 
+ 244:.//FWLIB/src/stm32f10x_dma.c **** /*--------------------------- DMAy Channelx CPAR Configuration ----------------*/
+ 245:.//FWLIB/src/stm32f10x_dma.c ****   /* Write to DMAy Channelx CPAR */
+ 246:.//FWLIB/src/stm32f10x_dma.c ****   DMAy_Channelx->CPAR = DMA_InitStruct->DMA_PeripheralBaseAddr;
+ 262              		.loc 1 246 0
+ 263 0032 0B68     		ldr	r3, [r1]
+ 264 0034 8360     		str	r3, [r0, #8]
+ 247:.//FWLIB/src/stm32f10x_dma.c **** 
+ 248:.//FWLIB/src/stm32f10x_dma.c **** /*--------------------------- DMAy Channelx CMAR Configuration ----------------*/
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 10
+
+
+ 249:.//FWLIB/src/stm32f10x_dma.c ****   /* Write to DMAy Channelx CMAR */
+ 250:.//FWLIB/src/stm32f10x_dma.c ****   DMAy_Channelx->CMAR = DMA_InitStruct->DMA_MemoryBaseAddr;
+ 265              		.loc 1 250 0
+ 266 0036 4B68     		ldr	r3, [r1, #4]
+ 267 0038 C360     		str	r3, [r0, #12]
+ 251:.//FWLIB/src/stm32f10x_dma.c **** }
+ 268              		.loc 1 251 0
+ 269 003a 10BC     		pop	{r4}
+ 270              	.LCFI1:
+ 271              		.cfi_restore 4
+ 272              		.cfi_def_cfa_offset 0
+ 273 003c 7047     		bx	lr
+ 274              		.cfi_endproc
+ 275              	.LFE30:
+ 277 003e 00BF     		.section	.text.DMA_StructInit,"ax",%progbits
+ 278              		.align	2
+ 279              		.global	DMA_StructInit
+ 280              		.thumb
+ 281              		.thumb_func
+ 283              	DMA_StructInit:
+ 284              	.LFB31:
+ 252:.//FWLIB/src/stm32f10x_dma.c **** 
+ 253:.//FWLIB/src/stm32f10x_dma.c **** /**
+ 254:.//FWLIB/src/stm32f10x_dma.c ****   * @brief  Fills each DMA_InitStruct member with its default value.
+ 255:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMA_InitStruct : pointer to a DMA_InitTypeDef structure which will
+ 256:.//FWLIB/src/stm32f10x_dma.c ****   *         be initialized.
+ 257:.//FWLIB/src/stm32f10x_dma.c ****   * @retval None
+ 258:.//FWLIB/src/stm32f10x_dma.c ****   */
+ 259:.//FWLIB/src/stm32f10x_dma.c **** void DMA_StructInit(DMA_InitTypeDef* DMA_InitStruct)
+ 260:.//FWLIB/src/stm32f10x_dma.c **** {
+ 285              		.loc 1 260 0
+ 286              		.cfi_startproc
+ 287              		@ args = 0, pretend = 0, frame = 0
+ 288              		@ frame_needed = 0, uses_anonymous_args = 0
+ 289              		@ link register save eliminated.
+ 290              	.LVL8:
+ 261:.//FWLIB/src/stm32f10x_dma.c **** /*-------------- Reset DMA init structure parameters values ------------------*/
+ 262:.//FWLIB/src/stm32f10x_dma.c ****   /* Initialize the DMA_PeripheralBaseAddr member */
+ 263:.//FWLIB/src/stm32f10x_dma.c ****   DMA_InitStruct->DMA_PeripheralBaseAddr = 0;
+ 291              		.loc 1 263 0
+ 292 0000 0023     		movs	r3, #0
+ 293 0002 0360     		str	r3, [r0]
+ 264:.//FWLIB/src/stm32f10x_dma.c ****   /* Initialize the DMA_MemoryBaseAddr member */
+ 265:.//FWLIB/src/stm32f10x_dma.c ****   DMA_InitStruct->DMA_MemoryBaseAddr = 0;
+ 294              		.loc 1 265 0
+ 295 0004 4360     		str	r3, [r0, #4]
+ 266:.//FWLIB/src/stm32f10x_dma.c ****   /* Initialize the DMA_DIR member */
+ 267:.//FWLIB/src/stm32f10x_dma.c ****   DMA_InitStruct->DMA_DIR = DMA_DIR_PeripheralSRC;
+ 296              		.loc 1 267 0
+ 297 0006 8360     		str	r3, [r0, #8]
+ 268:.//FWLIB/src/stm32f10x_dma.c ****   /* Initialize the DMA_BufferSize member */
+ 269:.//FWLIB/src/stm32f10x_dma.c ****   DMA_InitStruct->DMA_BufferSize = 0;
+ 298              		.loc 1 269 0
+ 299 0008 C360     		str	r3, [r0, #12]
+ 270:.//FWLIB/src/stm32f10x_dma.c ****   /* Initialize the DMA_PeripheralInc member */
+ 271:.//FWLIB/src/stm32f10x_dma.c ****   DMA_InitStruct->DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+ 300              		.loc 1 271 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 11
+
+
+ 301 000a 0361     		str	r3, [r0, #16]
+ 272:.//FWLIB/src/stm32f10x_dma.c ****   /* Initialize the DMA_MemoryInc member */
+ 273:.//FWLIB/src/stm32f10x_dma.c ****   DMA_InitStruct->DMA_MemoryInc = DMA_MemoryInc_Disable;
+ 302              		.loc 1 273 0
+ 303 000c 4361     		str	r3, [r0, #20]
+ 274:.//FWLIB/src/stm32f10x_dma.c ****   /* Initialize the DMA_PeripheralDataSize member */
+ 275:.//FWLIB/src/stm32f10x_dma.c ****   DMA_InitStruct->DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+ 304              		.loc 1 275 0
+ 305 000e 8361     		str	r3, [r0, #24]
+ 276:.//FWLIB/src/stm32f10x_dma.c ****   /* Initialize the DMA_MemoryDataSize member */
+ 277:.//FWLIB/src/stm32f10x_dma.c ****   DMA_InitStruct->DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+ 306              		.loc 1 277 0
+ 307 0010 C361     		str	r3, [r0, #28]
+ 278:.//FWLIB/src/stm32f10x_dma.c ****   /* Initialize the DMA_Mode member */
+ 279:.//FWLIB/src/stm32f10x_dma.c ****   DMA_InitStruct->DMA_Mode = DMA_Mode_Normal;
+ 308              		.loc 1 279 0
+ 309 0012 0362     		str	r3, [r0, #32]
+ 280:.//FWLIB/src/stm32f10x_dma.c ****   /* Initialize the DMA_Priority member */
+ 281:.//FWLIB/src/stm32f10x_dma.c ****   DMA_InitStruct->DMA_Priority = DMA_Priority_Low;
+ 310              		.loc 1 281 0
+ 311 0014 4362     		str	r3, [r0, #36]
+ 282:.//FWLIB/src/stm32f10x_dma.c ****   /* Initialize the DMA_M2M member */
+ 283:.//FWLIB/src/stm32f10x_dma.c ****   DMA_InitStruct->DMA_M2M = DMA_M2M_Disable;
+ 312              		.loc 1 283 0
+ 313 0016 8362     		str	r3, [r0, #40]
+ 314 0018 7047     		bx	lr
+ 315              		.cfi_endproc
+ 316              	.LFE31:
+ 318 001a 00BF     		.section	.text.DMA_Cmd,"ax",%progbits
+ 319              		.align	2
+ 320              		.global	DMA_Cmd
+ 321              		.thumb
+ 322              		.thumb_func
+ 324              	DMA_Cmd:
+ 325              	.LFB32:
+ 284:.//FWLIB/src/stm32f10x_dma.c **** }
+ 285:.//FWLIB/src/stm32f10x_dma.c **** 
+ 286:.//FWLIB/src/stm32f10x_dma.c **** /**
+ 287:.//FWLIB/src/stm32f10x_dma.c ****   * @brief  Enables or disables the specified DMAy Channelx.
+ 288:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMAy_Channelx: where y can be 1 or 2 to select the DMA and 
+ 289:.//FWLIB/src/stm32f10x_dma.c ****   *   x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 to select the DMA Channel.
+ 290:.//FWLIB/src/stm32f10x_dma.c ****   * @param  NewState: new state of the DMAy Channelx. 
+ 291:.//FWLIB/src/stm32f10x_dma.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 292:.//FWLIB/src/stm32f10x_dma.c ****   * @retval None
+ 293:.//FWLIB/src/stm32f10x_dma.c ****   */
+ 294:.//FWLIB/src/stm32f10x_dma.c **** void DMA_Cmd(DMA_Channel_TypeDef* DMAy_Channelx, FunctionalState NewState)
+ 295:.//FWLIB/src/stm32f10x_dma.c **** {
+ 326              		.loc 1 295 0
+ 327              		.cfi_startproc
+ 328              		@ args = 0, pretend = 0, frame = 0
+ 329              		@ frame_needed = 0, uses_anonymous_args = 0
+ 330              		@ link register save eliminated.
+ 331              	.LVL9:
+ 296:.//FWLIB/src/stm32f10x_dma.c ****   /* Check the parameters */
+ 297:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_ALL_PERIPH(DMAy_Channelx));
+ 298:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 299:.//FWLIB/src/stm32f10x_dma.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 12
+
+
+ 300:.//FWLIB/src/stm32f10x_dma.c ****   if (NewState != DISABLE)
+ 332              		.loc 1 300 0
+ 333 0000 21B1     		cbz	r1, .L20
+ 301:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 302:.//FWLIB/src/stm32f10x_dma.c ****     /* Enable the selected DMAy Channelx */
+ 303:.//FWLIB/src/stm32f10x_dma.c ****     DMAy_Channelx->CCR |= DMA_CCR1_EN;
+ 334              		.loc 1 303 0
+ 335 0002 0368     		ldr	r3, [r0]
+ 336 0004 43F00103 		orr	r3, r3, #1
+ 337 0008 0360     		str	r3, [r0]
+ 338 000a 7047     		bx	lr
+ 339              	.L20:
+ 304:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 305:.//FWLIB/src/stm32f10x_dma.c ****   else
+ 306:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 307:.//FWLIB/src/stm32f10x_dma.c ****     /* Disable the selected DMAy Channelx */
+ 308:.//FWLIB/src/stm32f10x_dma.c ****     DMAy_Channelx->CCR &= (uint16_t)(~DMA_CCR1_EN);
+ 340              		.loc 1 308 0
+ 341 000c 0368     		ldr	r3, [r0]
+ 342 000e 23F00103 		bic	r3, r3, #1
+ 343 0012 1B04     		lsls	r3, r3, #16
+ 344 0014 1B0C     		lsrs	r3, r3, #16
+ 345 0016 0360     		str	r3, [r0]
+ 346 0018 7047     		bx	lr
+ 347              		.cfi_endproc
+ 348              	.LFE32:
+ 350 001a 00BF     		.section	.text.DMA_ITConfig,"ax",%progbits
+ 351              		.align	2
+ 352              		.global	DMA_ITConfig
+ 353              		.thumb
+ 354              		.thumb_func
+ 356              	DMA_ITConfig:
+ 357              	.LFB33:
+ 309:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 310:.//FWLIB/src/stm32f10x_dma.c **** }
+ 311:.//FWLIB/src/stm32f10x_dma.c **** 
+ 312:.//FWLIB/src/stm32f10x_dma.c **** /**
+ 313:.//FWLIB/src/stm32f10x_dma.c ****   * @brief  Enables or disables the specified DMAy Channelx interrupts.
+ 314:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMAy_Channelx: where y can be 1 or 2 to select the DMA and 
+ 315:.//FWLIB/src/stm32f10x_dma.c ****   *   x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 to select the DMA Channel.
+ 316:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMA_IT: specifies the DMA interrupts sources to be enabled
+ 317:.//FWLIB/src/stm32f10x_dma.c ****   *   or disabled. 
+ 318:.//FWLIB/src/stm32f10x_dma.c ****   *   This parameter can be any combination of the following values:
+ 319:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA_IT_TC:  Transfer complete interrupt mask
+ 320:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA_IT_HT:  Half transfer interrupt mask
+ 321:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA_IT_TE:  Transfer error interrupt mask
+ 322:.//FWLIB/src/stm32f10x_dma.c ****   * @param  NewState: new state of the specified DMA interrupts.
+ 323:.//FWLIB/src/stm32f10x_dma.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 324:.//FWLIB/src/stm32f10x_dma.c ****   * @retval None
+ 325:.//FWLIB/src/stm32f10x_dma.c ****   */
+ 326:.//FWLIB/src/stm32f10x_dma.c **** void DMA_ITConfig(DMA_Channel_TypeDef* DMAy_Channelx, uint32_t DMA_IT, FunctionalState NewState)
+ 327:.//FWLIB/src/stm32f10x_dma.c **** {
+ 358              		.loc 1 327 0
+ 359              		.cfi_startproc
+ 360              		@ args = 0, pretend = 0, frame = 0
+ 361              		@ frame_needed = 0, uses_anonymous_args = 0
+ 362              		@ link register save eliminated.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 13
+
+
+ 363              	.LVL10:
+ 328:.//FWLIB/src/stm32f10x_dma.c ****   /* Check the parameters */
+ 329:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_ALL_PERIPH(DMAy_Channelx));
+ 330:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_CONFIG_IT(DMA_IT));
+ 331:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 332:.//FWLIB/src/stm32f10x_dma.c ****   if (NewState != DISABLE)
+ 364              		.loc 1 332 0
+ 365 0000 1AB1     		cbz	r2, .L23
+ 333:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 334:.//FWLIB/src/stm32f10x_dma.c ****     /* Enable the selected DMA interrupts */
+ 335:.//FWLIB/src/stm32f10x_dma.c ****     DMAy_Channelx->CCR |= DMA_IT;
+ 366              		.loc 1 335 0
+ 367 0002 0368     		ldr	r3, [r0]
+ 368 0004 1943     		orrs	r1, r1, r3
+ 369              	.LVL11:
+ 370 0006 0160     		str	r1, [r0]
+ 371 0008 7047     		bx	lr
+ 372              	.LVL12:
+ 373              	.L23:
+ 336:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 337:.//FWLIB/src/stm32f10x_dma.c ****   else
+ 338:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 339:.//FWLIB/src/stm32f10x_dma.c ****     /* Disable the selected DMA interrupts */
+ 340:.//FWLIB/src/stm32f10x_dma.c ****     DMAy_Channelx->CCR &= ~DMA_IT;
+ 374              		.loc 1 340 0
+ 375 000a 0368     		ldr	r3, [r0]
+ 376 000c 23EA0101 		bic	r1, r3, r1
+ 377              	.LVL13:
+ 378 0010 0160     		str	r1, [r0]
+ 379 0012 7047     		bx	lr
+ 380              		.cfi_endproc
+ 381              	.LFE33:
+ 383              		.section	.text.DMA_SetCurrDataCounter,"ax",%progbits
+ 384              		.align	2
+ 385              		.global	DMA_SetCurrDataCounter
+ 386              		.thumb
+ 387              		.thumb_func
+ 389              	DMA_SetCurrDataCounter:
+ 390              	.LFB34:
+ 341:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 342:.//FWLIB/src/stm32f10x_dma.c **** }
+ 343:.//FWLIB/src/stm32f10x_dma.c **** 
+ 344:.//FWLIB/src/stm32f10x_dma.c **** /**
+ 345:.//FWLIB/src/stm32f10x_dma.c ****   * @brief  Sets the number of data units in the current DMAy Channelx transfer.
+ 346:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMAy_Channelx: where y can be 1 or 2 to select the DMA and 
+ 347:.//FWLIB/src/stm32f10x_dma.c ****   *         x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 to select the DMA Channel.
+ 348:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DataNumber: The number of data units in the current DMAy Channelx
+ 349:.//FWLIB/src/stm32f10x_dma.c ****   *         transfer.   
+ 350:.//FWLIB/src/stm32f10x_dma.c ****   * @note   This function can only be used when the DMAy_Channelx is disabled.                 
+ 351:.//FWLIB/src/stm32f10x_dma.c ****   * @retval None.
+ 352:.//FWLIB/src/stm32f10x_dma.c ****   */
+ 353:.//FWLIB/src/stm32f10x_dma.c **** void DMA_SetCurrDataCounter(DMA_Channel_TypeDef* DMAy_Channelx, uint16_t DataNumber)
+ 354:.//FWLIB/src/stm32f10x_dma.c **** {
+ 391              		.loc 1 354 0
+ 392              		.cfi_startproc
+ 393              		@ args = 0, pretend = 0, frame = 0
+ 394              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 14
+
+
+ 395              		@ link register save eliminated.
+ 396              	.LVL14:
+ 355:.//FWLIB/src/stm32f10x_dma.c ****   /* Check the parameters */
+ 356:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_ALL_PERIPH(DMAy_Channelx));
+ 357:.//FWLIB/src/stm32f10x_dma.c ****   
+ 358:.//FWLIB/src/stm32f10x_dma.c **** /*--------------------------- DMAy Channelx CNDTR Configuration ---------------*/
+ 359:.//FWLIB/src/stm32f10x_dma.c ****   /* Write to DMAy Channelx CNDTR */
+ 360:.//FWLIB/src/stm32f10x_dma.c ****   DMAy_Channelx->CNDTR = DataNumber;  
+ 397              		.loc 1 360 0
+ 398 0000 4160     		str	r1, [r0, #4]
+ 399 0002 7047     		bx	lr
+ 400              		.cfi_endproc
+ 401              	.LFE34:
+ 403              		.section	.text.DMA_GetCurrDataCounter,"ax",%progbits
+ 404              		.align	2
+ 405              		.global	DMA_GetCurrDataCounter
+ 406              		.thumb
+ 407              		.thumb_func
+ 409              	DMA_GetCurrDataCounter:
+ 410              	.LFB35:
+ 361:.//FWLIB/src/stm32f10x_dma.c **** }
+ 362:.//FWLIB/src/stm32f10x_dma.c **** 
+ 363:.//FWLIB/src/stm32f10x_dma.c **** /**
+ 364:.//FWLIB/src/stm32f10x_dma.c ****   * @brief  Returns the number of remaining data units in the current
+ 365:.//FWLIB/src/stm32f10x_dma.c ****   *         DMAy Channelx transfer.
+ 366:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMAy_Channelx: where y can be 1 or 2 to select the DMA and 
+ 367:.//FWLIB/src/stm32f10x_dma.c ****   *   x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 to select the DMA Channel.
+ 368:.//FWLIB/src/stm32f10x_dma.c ****   * @retval The number of remaining data units in the current DMAy Channelx
+ 369:.//FWLIB/src/stm32f10x_dma.c ****   *         transfer.
+ 370:.//FWLIB/src/stm32f10x_dma.c ****   */
+ 371:.//FWLIB/src/stm32f10x_dma.c **** uint16_t DMA_GetCurrDataCounter(DMA_Channel_TypeDef* DMAy_Channelx)
+ 372:.//FWLIB/src/stm32f10x_dma.c **** {
+ 411              		.loc 1 372 0
+ 412              		.cfi_startproc
+ 413              		@ args = 0, pretend = 0, frame = 0
+ 414              		@ frame_needed = 0, uses_anonymous_args = 0
+ 415              		@ link register save eliminated.
+ 416              	.LVL15:
+ 373:.//FWLIB/src/stm32f10x_dma.c ****   /* Check the parameters */
+ 374:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_ALL_PERIPH(DMAy_Channelx));
+ 375:.//FWLIB/src/stm32f10x_dma.c ****   /* Return the number of remaining data units for DMAy Channelx */
+ 376:.//FWLIB/src/stm32f10x_dma.c ****   return ((uint16_t)(DMAy_Channelx->CNDTR));
+ 417              		.loc 1 376 0
+ 418 0000 4068     		ldr	r0, [r0, #4]
+ 419              	.LVL16:
+ 377:.//FWLIB/src/stm32f10x_dma.c **** }
+ 420              		.loc 1 377 0
+ 421 0002 80B2     		uxth	r0, r0
+ 422 0004 7047     		bx	lr
+ 423              		.cfi_endproc
+ 424              	.LFE35:
+ 426 0006 00BF     		.section	.text.DMA_GetFlagStatus,"ax",%progbits
+ 427              		.align	2
+ 428              		.global	DMA_GetFlagStatus
+ 429              		.thumb
+ 430              		.thumb_func
+ 432              	DMA_GetFlagStatus:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 15
+
+
+ 433              	.LFB36:
+ 378:.//FWLIB/src/stm32f10x_dma.c **** 
+ 379:.//FWLIB/src/stm32f10x_dma.c **** /**
+ 380:.//FWLIB/src/stm32f10x_dma.c ****   * @brief  Checks whether the specified DMAy Channelx flag is set or not.
+ 381:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMAy_FLAG: specifies the flag to check.
+ 382:.//FWLIB/src/stm32f10x_dma.c ****   *   This parameter can be one of the following values:
+ 383:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL1: DMA1 Channel1 global flag.
+ 384:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC1: DMA1 Channel1 transfer complete flag.
+ 385:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT1: DMA1 Channel1 half transfer flag.
+ 386:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE1: DMA1 Channel1 transfer error flag.
+ 387:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL2: DMA1 Channel2 global flag.
+ 388:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC2: DMA1 Channel2 transfer complete flag.
+ 389:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT2: DMA1 Channel2 half transfer flag.
+ 390:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE2: DMA1 Channel2 transfer error flag.
+ 391:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL3: DMA1 Channel3 global flag.
+ 392:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC3: DMA1 Channel3 transfer complete flag.
+ 393:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT3: DMA1 Channel3 half transfer flag.
+ 394:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE3: DMA1 Channel3 transfer error flag.
+ 395:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL4: DMA1 Channel4 global flag.
+ 396:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC4: DMA1 Channel4 transfer complete flag.
+ 397:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT4: DMA1 Channel4 half transfer flag.
+ 398:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE4: DMA1 Channel4 transfer error flag.
+ 399:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL5: DMA1 Channel5 global flag.
+ 400:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC5: DMA1 Channel5 transfer complete flag.
+ 401:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT5: DMA1 Channel5 half transfer flag.
+ 402:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE5: DMA1 Channel5 transfer error flag.
+ 403:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL6: DMA1 Channel6 global flag.
+ 404:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC6: DMA1 Channel6 transfer complete flag.
+ 405:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT6: DMA1 Channel6 half transfer flag.
+ 406:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE6: DMA1 Channel6 transfer error flag.
+ 407:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL7: DMA1 Channel7 global flag.
+ 408:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC7: DMA1 Channel7 transfer complete flag.
+ 409:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT7: DMA1 Channel7 half transfer flag.
+ 410:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE7: DMA1 Channel7 transfer error flag.
+ 411:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_GL1: DMA2 Channel1 global flag.
+ 412:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TC1: DMA2 Channel1 transfer complete flag.
+ 413:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_HT1: DMA2 Channel1 half transfer flag.
+ 414:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TE1: DMA2 Channel1 transfer error flag.
+ 415:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_GL2: DMA2 Channel2 global flag.
+ 416:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TC2: DMA2 Channel2 transfer complete flag.
+ 417:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_HT2: DMA2 Channel2 half transfer flag.
+ 418:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TE2: DMA2 Channel2 transfer error flag.
+ 419:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_GL3: DMA2 Channel3 global flag.
+ 420:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TC3: DMA2 Channel3 transfer complete flag.
+ 421:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_HT3: DMA2 Channel3 half transfer flag.
+ 422:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TE3: DMA2 Channel3 transfer error flag.
+ 423:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_GL4: DMA2 Channel4 global flag.
+ 424:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TC4: DMA2 Channel4 transfer complete flag.
+ 425:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_HT4: DMA2 Channel4 half transfer flag.
+ 426:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TE4: DMA2 Channel4 transfer error flag.
+ 427:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_GL5: DMA2 Channel5 global flag.
+ 428:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TC5: DMA2 Channel5 transfer complete flag.
+ 429:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_HT5: DMA2 Channel5 half transfer flag.
+ 430:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TE5: DMA2 Channel5 transfer error flag.
+ 431:.//FWLIB/src/stm32f10x_dma.c ****   * @retval The new state of DMAy_FLAG (SET or RESET).
+ 432:.//FWLIB/src/stm32f10x_dma.c ****   */
+ 433:.//FWLIB/src/stm32f10x_dma.c **** FlagStatus DMA_GetFlagStatus(uint32_t DMAy_FLAG)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 16
+
+
+ 434:.//FWLIB/src/stm32f10x_dma.c **** {
+ 434              		.loc 1 434 0
+ 435              		.cfi_startproc
+ 436              		@ args = 0, pretend = 0, frame = 0
+ 437              		@ frame_needed = 0, uses_anonymous_args = 0
+ 438              		@ link register save eliminated.
+ 439              	.LVL17:
+ 435:.//FWLIB/src/stm32f10x_dma.c ****   FlagStatus bitstatus = RESET;
+ 436:.//FWLIB/src/stm32f10x_dma.c ****   uint32_t tmpreg = 0;
+ 437:.//FWLIB/src/stm32f10x_dma.c ****   
+ 438:.//FWLIB/src/stm32f10x_dma.c ****   /* Check the parameters */
+ 439:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_GET_FLAG(DMAy_FLAG));
+ 440:.//FWLIB/src/stm32f10x_dma.c **** 
+ 441:.//FWLIB/src/stm32f10x_dma.c ****   /* Calculate the used DMAy */
+ 442:.//FWLIB/src/stm32f10x_dma.c ****   if ((DMAy_FLAG & FLAG_Mask) != (uint32_t)RESET)
+ 440              		.loc 1 442 0
+ 441 0000 10F0805F 		tst	r0, #268435456
+ 442 0004 02D0     		beq	.L28
+ 443:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 444:.//FWLIB/src/stm32f10x_dma.c ****     /* Get DMA2 ISR register value */
+ 445:.//FWLIB/src/stm32f10x_dma.c ****     tmpreg = DMA2->ISR ;
+ 443              		.loc 1 445 0
+ 444 0006 054B     		ldr	r3, .L32
+ 445 0008 1B68     		ldr	r3, [r3]
+ 446              	.LVL18:
+ 447 000a 01E0     		b	.L29
+ 448              	.LVL19:
+ 449              	.L28:
+ 446:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 447:.//FWLIB/src/stm32f10x_dma.c ****   else
+ 448:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 449:.//FWLIB/src/stm32f10x_dma.c ****     /* Get DMA1 ISR register value */
+ 450:.//FWLIB/src/stm32f10x_dma.c ****     tmpreg = DMA1->ISR ;
+ 450              		.loc 1 450 0
+ 451 000c 044B     		ldr	r3, .L32+4
+ 452 000e 1B68     		ldr	r3, [r3]
+ 453              	.LVL20:
+ 454              	.L29:
+ 451:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 452:.//FWLIB/src/stm32f10x_dma.c **** 
+ 453:.//FWLIB/src/stm32f10x_dma.c ****   /* Check the status of the specified DMAy flag */
+ 454:.//FWLIB/src/stm32f10x_dma.c ****   if ((tmpreg & DMAy_FLAG) != (uint32_t)RESET)
+ 455              		.loc 1 454 0
+ 456 0010 0342     		tst	r3, r0
+ 457 0012 01D0     		beq	.L31
+ 455:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 456:.//FWLIB/src/stm32f10x_dma.c ****     /* DMAy_FLAG is set */
+ 457:.//FWLIB/src/stm32f10x_dma.c ****     bitstatus = SET;
+ 458              		.loc 1 457 0
+ 459 0014 0120     		movs	r0, #1
+ 460              	.LVL21:
+ 461 0016 7047     		bx	lr
+ 462              	.LVL22:
+ 463              	.L31:
+ 458:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 459:.//FWLIB/src/stm32f10x_dma.c ****   else
+ 460:.//FWLIB/src/stm32f10x_dma.c ****   {
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 17
+
+
+ 461:.//FWLIB/src/stm32f10x_dma.c ****     /* DMAy_FLAG is reset */
+ 462:.//FWLIB/src/stm32f10x_dma.c ****     bitstatus = RESET;
+ 464              		.loc 1 462 0
+ 465 0018 0020     		movs	r0, #0
+ 466              	.LVL23:
+ 463:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 464:.//FWLIB/src/stm32f10x_dma.c ****   
+ 465:.//FWLIB/src/stm32f10x_dma.c ****   /* Return the DMAy_FLAG status */
+ 466:.//FWLIB/src/stm32f10x_dma.c ****   return  bitstatus;
+ 467:.//FWLIB/src/stm32f10x_dma.c **** }
+ 467              		.loc 1 467 0
+ 468 001a 7047     		bx	lr
+ 469              	.L33:
+ 470              		.align	2
+ 471              	.L32:
+ 472 001c 00040240 		.word	1073873920
+ 473 0020 00000240 		.word	1073872896
+ 474              		.cfi_endproc
+ 475              	.LFE36:
+ 477              		.section	.text.DMA_ClearFlag,"ax",%progbits
+ 478              		.align	2
+ 479              		.global	DMA_ClearFlag
+ 480              		.thumb
+ 481              		.thumb_func
+ 483              	DMA_ClearFlag:
+ 484              	.LFB37:
+ 468:.//FWLIB/src/stm32f10x_dma.c **** 
+ 469:.//FWLIB/src/stm32f10x_dma.c **** /**
+ 470:.//FWLIB/src/stm32f10x_dma.c ****   * @brief  Clears the DMAy Channelx's pending flags.
+ 471:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMAy_FLAG: specifies the flag to clear.
+ 472:.//FWLIB/src/stm32f10x_dma.c ****   *   This parameter can be any combination (for the same DMA) of the following values:
+ 473:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL1: DMA1 Channel1 global flag.
+ 474:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC1: DMA1 Channel1 transfer complete flag.
+ 475:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT1: DMA1 Channel1 half transfer flag.
+ 476:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE1: DMA1 Channel1 transfer error flag.
+ 477:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL2: DMA1 Channel2 global flag.
+ 478:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC2: DMA1 Channel2 transfer complete flag.
+ 479:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT2: DMA1 Channel2 half transfer flag.
+ 480:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE2: DMA1 Channel2 transfer error flag.
+ 481:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL3: DMA1 Channel3 global flag.
+ 482:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC3: DMA1 Channel3 transfer complete flag.
+ 483:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT3: DMA1 Channel3 half transfer flag.
+ 484:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE3: DMA1 Channel3 transfer error flag.
+ 485:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL4: DMA1 Channel4 global flag.
+ 486:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC4: DMA1 Channel4 transfer complete flag.
+ 487:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT4: DMA1 Channel4 half transfer flag.
+ 488:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE4: DMA1 Channel4 transfer error flag.
+ 489:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL5: DMA1 Channel5 global flag.
+ 490:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC5: DMA1 Channel5 transfer complete flag.
+ 491:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT5: DMA1 Channel5 half transfer flag.
+ 492:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE5: DMA1 Channel5 transfer error flag.
+ 493:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL6: DMA1 Channel6 global flag.
+ 494:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC6: DMA1 Channel6 transfer complete flag.
+ 495:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT6: DMA1 Channel6 half transfer flag.
+ 496:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE6: DMA1 Channel6 transfer error flag.
+ 497:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_GL7: DMA1 Channel7 global flag.
+ 498:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TC7: DMA1 Channel7 transfer complete flag.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 18
+
+
+ 499:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_HT7: DMA1 Channel7 half transfer flag.
+ 500:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_FLAG_TE7: DMA1 Channel7 transfer error flag.
+ 501:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_GL1: DMA2 Channel1 global flag.
+ 502:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TC1: DMA2 Channel1 transfer complete flag.
+ 503:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_HT1: DMA2 Channel1 half transfer flag.
+ 504:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TE1: DMA2 Channel1 transfer error flag.
+ 505:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_GL2: DMA2 Channel2 global flag.
+ 506:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TC2: DMA2 Channel2 transfer complete flag.
+ 507:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_HT2: DMA2 Channel2 half transfer flag.
+ 508:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TE2: DMA2 Channel2 transfer error flag.
+ 509:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_GL3: DMA2 Channel3 global flag.
+ 510:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TC3: DMA2 Channel3 transfer complete flag.
+ 511:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_HT3: DMA2 Channel3 half transfer flag.
+ 512:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TE3: DMA2 Channel3 transfer error flag.
+ 513:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_GL4: DMA2 Channel4 global flag.
+ 514:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TC4: DMA2 Channel4 transfer complete flag.
+ 515:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_HT4: DMA2 Channel4 half transfer flag.
+ 516:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TE4: DMA2 Channel4 transfer error flag.
+ 517:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_GL5: DMA2 Channel5 global flag.
+ 518:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TC5: DMA2 Channel5 transfer complete flag.
+ 519:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_HT5: DMA2 Channel5 half transfer flag.
+ 520:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_FLAG_TE5: DMA2 Channel5 transfer error flag.
+ 521:.//FWLIB/src/stm32f10x_dma.c ****   * @retval None
+ 522:.//FWLIB/src/stm32f10x_dma.c ****   */
+ 523:.//FWLIB/src/stm32f10x_dma.c **** void DMA_ClearFlag(uint32_t DMAy_FLAG)
+ 524:.//FWLIB/src/stm32f10x_dma.c **** {
+ 485              		.loc 1 524 0
+ 486              		.cfi_startproc
+ 487              		@ args = 0, pretend = 0, frame = 0
+ 488              		@ frame_needed = 0, uses_anonymous_args = 0
+ 489              		@ link register save eliminated.
+ 490              	.LVL24:
+ 525:.//FWLIB/src/stm32f10x_dma.c ****   /* Check the parameters */
+ 526:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_CLEAR_FLAG(DMAy_FLAG));
+ 527:.//FWLIB/src/stm32f10x_dma.c **** 
+ 528:.//FWLIB/src/stm32f10x_dma.c ****   /* Calculate the used DMAy */
+ 529:.//FWLIB/src/stm32f10x_dma.c ****   if ((DMAy_FLAG & FLAG_Mask) != (uint32_t)RESET)
+ 491              		.loc 1 529 0
+ 492 0000 10F0805F 		tst	r0, #268435456
+ 493 0004 02D0     		beq	.L35
+ 530:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 531:.//FWLIB/src/stm32f10x_dma.c ****     /* Clear the selected DMAy flags */
+ 532:.//FWLIB/src/stm32f10x_dma.c ****     DMA2->IFCR = DMAy_FLAG;
+ 494              		.loc 1 532 0
+ 495 0006 034B     		ldr	r3, .L37
+ 496 0008 5860     		str	r0, [r3, #4]
+ 497 000a 7047     		bx	lr
+ 498              	.L35:
+ 533:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 534:.//FWLIB/src/stm32f10x_dma.c ****   else
+ 535:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 536:.//FWLIB/src/stm32f10x_dma.c ****     /* Clear the selected DMAy flags */
+ 537:.//FWLIB/src/stm32f10x_dma.c ****     DMA1->IFCR = DMAy_FLAG;
+ 499              		.loc 1 537 0
+ 500 000c 024B     		ldr	r3, .L37+4
+ 501 000e 5860     		str	r0, [r3, #4]
+ 502 0010 7047     		bx	lr
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 19
+
+
+ 503              	.L38:
+ 504 0012 00BF     		.align	2
+ 505              	.L37:
+ 506 0014 00040240 		.word	1073873920
+ 507 0018 00000240 		.word	1073872896
+ 508              		.cfi_endproc
+ 509              	.LFE37:
+ 511              		.section	.text.DMA_GetITStatus,"ax",%progbits
+ 512              		.align	2
+ 513              		.global	DMA_GetITStatus
+ 514              		.thumb
+ 515              		.thumb_func
+ 517              	DMA_GetITStatus:
+ 518              	.LFB38:
+ 538:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 539:.//FWLIB/src/stm32f10x_dma.c **** }
+ 540:.//FWLIB/src/stm32f10x_dma.c **** 
+ 541:.//FWLIB/src/stm32f10x_dma.c **** /**
+ 542:.//FWLIB/src/stm32f10x_dma.c ****   * @brief  Checks whether the specified DMAy Channelx interrupt has occurred or not.
+ 543:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMAy_IT: specifies the DMAy interrupt source to check. 
+ 544:.//FWLIB/src/stm32f10x_dma.c ****   *   This parameter can be one of the following values:
+ 545:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL1: DMA1 Channel1 global interrupt.
+ 546:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC1: DMA1 Channel1 transfer complete interrupt.
+ 547:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT1: DMA1 Channel1 half transfer interrupt.
+ 548:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE1: DMA1 Channel1 transfer error interrupt.
+ 549:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL2: DMA1 Channel2 global interrupt.
+ 550:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC2: DMA1 Channel2 transfer complete interrupt.
+ 551:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT2: DMA1 Channel2 half transfer interrupt.
+ 552:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE2: DMA1 Channel2 transfer error interrupt.
+ 553:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL3: DMA1 Channel3 global interrupt.
+ 554:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC3: DMA1 Channel3 transfer complete interrupt.
+ 555:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT3: DMA1 Channel3 half transfer interrupt.
+ 556:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE3: DMA1 Channel3 transfer error interrupt.
+ 557:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL4: DMA1 Channel4 global interrupt.
+ 558:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC4: DMA1 Channel4 transfer complete interrupt.
+ 559:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT4: DMA1 Channel4 half transfer interrupt.
+ 560:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE4: DMA1 Channel4 transfer error interrupt.
+ 561:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL5: DMA1 Channel5 global interrupt.
+ 562:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC5: DMA1 Channel5 transfer complete interrupt.
+ 563:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT5: DMA1 Channel5 half transfer interrupt.
+ 564:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE5: DMA1 Channel5 transfer error interrupt.
+ 565:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL6: DMA1 Channel6 global interrupt.
+ 566:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC6: DMA1 Channel6 transfer complete interrupt.
+ 567:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT6: DMA1 Channel6 half transfer interrupt.
+ 568:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE6: DMA1 Channel6 transfer error interrupt.
+ 569:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL7: DMA1 Channel7 global interrupt.
+ 570:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC7: DMA1 Channel7 transfer complete interrupt.
+ 571:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT7: DMA1 Channel7 half transfer interrupt.
+ 572:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE7: DMA1 Channel7 transfer error interrupt.
+ 573:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_GL1: DMA2 Channel1 global interrupt.
+ 574:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TC1: DMA2 Channel1 transfer complete interrupt.
+ 575:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_HT1: DMA2 Channel1 half transfer interrupt.
+ 576:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TE1: DMA2 Channel1 transfer error interrupt.
+ 577:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_GL2: DMA2 Channel2 global interrupt.
+ 578:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TC2: DMA2 Channel2 transfer complete interrupt.
+ 579:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_HT2: DMA2 Channel2 half transfer interrupt.
+ 580:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TE2: DMA2 Channel2 transfer error interrupt.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 20
+
+
+ 581:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_GL3: DMA2 Channel3 global interrupt.
+ 582:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TC3: DMA2 Channel3 transfer complete interrupt.
+ 583:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_HT3: DMA2 Channel3 half transfer interrupt.
+ 584:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TE3: DMA2 Channel3 transfer error interrupt.
+ 585:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_GL4: DMA2 Channel4 global interrupt.
+ 586:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TC4: DMA2 Channel4 transfer complete interrupt.
+ 587:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_HT4: DMA2 Channel4 half transfer interrupt.
+ 588:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TE4: DMA2 Channel4 transfer error interrupt.
+ 589:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_GL5: DMA2 Channel5 global interrupt.
+ 590:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TC5: DMA2 Channel5 transfer complete interrupt.
+ 591:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_HT5: DMA2 Channel5 half transfer interrupt.
+ 592:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TE5: DMA2 Channel5 transfer error interrupt.
+ 593:.//FWLIB/src/stm32f10x_dma.c ****   * @retval The new state of DMAy_IT (SET or RESET).
+ 594:.//FWLIB/src/stm32f10x_dma.c ****   */
+ 595:.//FWLIB/src/stm32f10x_dma.c **** ITStatus DMA_GetITStatus(uint32_t DMAy_IT)
+ 596:.//FWLIB/src/stm32f10x_dma.c **** {
+ 519              		.loc 1 596 0
+ 520              		.cfi_startproc
+ 521              		@ args = 0, pretend = 0, frame = 0
+ 522              		@ frame_needed = 0, uses_anonymous_args = 0
+ 523              		@ link register save eliminated.
+ 524              	.LVL25:
+ 597:.//FWLIB/src/stm32f10x_dma.c ****   ITStatus bitstatus = RESET;
+ 598:.//FWLIB/src/stm32f10x_dma.c ****   uint32_t tmpreg = 0;
+ 599:.//FWLIB/src/stm32f10x_dma.c **** 
+ 600:.//FWLIB/src/stm32f10x_dma.c ****   /* Check the parameters */
+ 601:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_GET_IT(DMAy_IT));
+ 602:.//FWLIB/src/stm32f10x_dma.c **** 
+ 603:.//FWLIB/src/stm32f10x_dma.c ****   /* Calculate the used DMA */
+ 604:.//FWLIB/src/stm32f10x_dma.c ****   if ((DMAy_IT & FLAG_Mask) != (uint32_t)RESET)
+ 525              		.loc 1 604 0
+ 526 0000 10F0805F 		tst	r0, #268435456
+ 527 0004 02D0     		beq	.L40
+ 605:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 606:.//FWLIB/src/stm32f10x_dma.c ****     /* Get DMA2 ISR register value */
+ 607:.//FWLIB/src/stm32f10x_dma.c ****     tmpreg = DMA2->ISR;
+ 528              		.loc 1 607 0
+ 529 0006 054B     		ldr	r3, .L44
+ 530 0008 1B68     		ldr	r3, [r3]
+ 531              	.LVL26:
+ 532 000a 01E0     		b	.L41
+ 533              	.LVL27:
+ 534              	.L40:
+ 608:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 609:.//FWLIB/src/stm32f10x_dma.c ****   else
+ 610:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 611:.//FWLIB/src/stm32f10x_dma.c ****     /* Get DMA1 ISR register value */
+ 612:.//FWLIB/src/stm32f10x_dma.c ****     tmpreg = DMA1->ISR;
+ 535              		.loc 1 612 0
+ 536 000c 044B     		ldr	r3, .L44+4
+ 537 000e 1B68     		ldr	r3, [r3]
+ 538              	.LVL28:
+ 539              	.L41:
+ 613:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 614:.//FWLIB/src/stm32f10x_dma.c **** 
+ 615:.//FWLIB/src/stm32f10x_dma.c ****   /* Check the status of the specified DMAy interrupt */
+ 616:.//FWLIB/src/stm32f10x_dma.c ****   if ((tmpreg & DMAy_IT) != (uint32_t)RESET)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 21
+
+
+ 540              		.loc 1 616 0
+ 541 0010 0342     		tst	r3, r0
+ 542 0012 01D0     		beq	.L43
+ 617:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 618:.//FWLIB/src/stm32f10x_dma.c ****     /* DMAy_IT is set */
+ 619:.//FWLIB/src/stm32f10x_dma.c ****     bitstatus = SET;
+ 543              		.loc 1 619 0
+ 544 0014 0120     		movs	r0, #1
+ 545              	.LVL29:
+ 546 0016 7047     		bx	lr
+ 547              	.LVL30:
+ 548              	.L43:
+ 620:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 621:.//FWLIB/src/stm32f10x_dma.c ****   else
+ 622:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 623:.//FWLIB/src/stm32f10x_dma.c ****     /* DMAy_IT is reset */
+ 624:.//FWLIB/src/stm32f10x_dma.c ****     bitstatus = RESET;
+ 549              		.loc 1 624 0
+ 550 0018 0020     		movs	r0, #0
+ 551              	.LVL31:
+ 625:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 626:.//FWLIB/src/stm32f10x_dma.c ****   /* Return the DMA_IT status */
+ 627:.//FWLIB/src/stm32f10x_dma.c ****   return  bitstatus;
+ 628:.//FWLIB/src/stm32f10x_dma.c **** }
+ 552              		.loc 1 628 0
+ 553 001a 7047     		bx	lr
+ 554              	.L45:
+ 555              		.align	2
+ 556              	.L44:
+ 557 001c 00040240 		.word	1073873920
+ 558 0020 00000240 		.word	1073872896
+ 559              		.cfi_endproc
+ 560              	.LFE38:
+ 562              		.section	.text.DMA_ClearITPendingBit,"ax",%progbits
+ 563              		.align	2
+ 564              		.global	DMA_ClearITPendingBit
+ 565              		.thumb
+ 566              		.thumb_func
+ 568              	DMA_ClearITPendingBit:
+ 569              	.LFB39:
+ 629:.//FWLIB/src/stm32f10x_dma.c **** 
+ 630:.//FWLIB/src/stm32f10x_dma.c **** /**
+ 631:.//FWLIB/src/stm32f10x_dma.c ****   * @brief  Clears the DMAy Channelx's interrupt pending bits.
+ 632:.//FWLIB/src/stm32f10x_dma.c ****   * @param  DMAy_IT: specifies the DMAy interrupt pending bit to clear.
+ 633:.//FWLIB/src/stm32f10x_dma.c ****   *   This parameter can be any combination (for the same DMA) of the following values:
+ 634:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL1: DMA1 Channel1 global interrupt.
+ 635:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC1: DMA1 Channel1 transfer complete interrupt.
+ 636:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT1: DMA1 Channel1 half transfer interrupt.
+ 637:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE1: DMA1 Channel1 transfer error interrupt.
+ 638:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL2: DMA1 Channel2 global interrupt.
+ 639:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC2: DMA1 Channel2 transfer complete interrupt.
+ 640:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT2: DMA1 Channel2 half transfer interrupt.
+ 641:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE2: DMA1 Channel2 transfer error interrupt.
+ 642:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL3: DMA1 Channel3 global interrupt.
+ 643:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC3: DMA1 Channel3 transfer complete interrupt.
+ 644:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT3: DMA1 Channel3 half transfer interrupt.
+ 645:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE3: DMA1 Channel3 transfer error interrupt.
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 22
+
+
+ 646:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL4: DMA1 Channel4 global interrupt.
+ 647:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC4: DMA1 Channel4 transfer complete interrupt.
+ 648:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT4: DMA1 Channel4 half transfer interrupt.
+ 649:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE4: DMA1 Channel4 transfer error interrupt.
+ 650:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL5: DMA1 Channel5 global interrupt.
+ 651:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC5: DMA1 Channel5 transfer complete interrupt.
+ 652:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT5: DMA1 Channel5 half transfer interrupt.
+ 653:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE5: DMA1 Channel5 transfer error interrupt.
+ 654:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL6: DMA1 Channel6 global interrupt.
+ 655:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC6: DMA1 Channel6 transfer complete interrupt.
+ 656:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT6: DMA1 Channel6 half transfer interrupt.
+ 657:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE6: DMA1 Channel6 transfer error interrupt.
+ 658:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_GL7: DMA1 Channel7 global interrupt.
+ 659:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TC7: DMA1 Channel7 transfer complete interrupt.
+ 660:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_HT7: DMA1 Channel7 half transfer interrupt.
+ 661:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA1_IT_TE7: DMA1 Channel7 transfer error interrupt.
+ 662:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_GL1: DMA2 Channel1 global interrupt.
+ 663:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TC1: DMA2 Channel1 transfer complete interrupt.
+ 664:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_HT1: DMA2 Channel1 half transfer interrupt.
+ 665:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TE1: DMA2 Channel1 transfer error interrupt.
+ 666:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_GL2: DMA2 Channel2 global interrupt.
+ 667:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TC2: DMA2 Channel2 transfer complete interrupt.
+ 668:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_HT2: DMA2 Channel2 half transfer interrupt.
+ 669:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TE2: DMA2 Channel2 transfer error interrupt.
+ 670:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_GL3: DMA2 Channel3 global interrupt.
+ 671:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TC3: DMA2 Channel3 transfer complete interrupt.
+ 672:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_HT3: DMA2 Channel3 half transfer interrupt.
+ 673:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TE3: DMA2 Channel3 transfer error interrupt.
+ 674:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_GL4: DMA2 Channel4 global interrupt.
+ 675:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TC4: DMA2 Channel4 transfer complete interrupt.
+ 676:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_HT4: DMA2 Channel4 half transfer interrupt.
+ 677:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TE4: DMA2 Channel4 transfer error interrupt.
+ 678:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_GL5: DMA2 Channel5 global interrupt.
+ 679:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TC5: DMA2 Channel5 transfer complete interrupt.
+ 680:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_HT5: DMA2 Channel5 half transfer interrupt.
+ 681:.//FWLIB/src/stm32f10x_dma.c ****   *     @arg DMA2_IT_TE5: DMA2 Channel5 transfer error interrupt.
+ 682:.//FWLIB/src/stm32f10x_dma.c ****   * @retval None
+ 683:.//FWLIB/src/stm32f10x_dma.c ****   */
+ 684:.//FWLIB/src/stm32f10x_dma.c **** void DMA_ClearITPendingBit(uint32_t DMAy_IT)
+ 685:.//FWLIB/src/stm32f10x_dma.c **** {
+ 570              		.loc 1 685 0
+ 571              		.cfi_startproc
+ 572              		@ args = 0, pretend = 0, frame = 0
+ 573              		@ frame_needed = 0, uses_anonymous_args = 0
+ 574              		@ link register save eliminated.
+ 575              	.LVL32:
+ 686:.//FWLIB/src/stm32f10x_dma.c ****   /* Check the parameters */
+ 687:.//FWLIB/src/stm32f10x_dma.c ****   assert_param(IS_DMA_CLEAR_IT(DMAy_IT));
+ 688:.//FWLIB/src/stm32f10x_dma.c **** 
+ 689:.//FWLIB/src/stm32f10x_dma.c ****   /* Calculate the used DMAy */
+ 690:.//FWLIB/src/stm32f10x_dma.c ****   if ((DMAy_IT & FLAG_Mask) != (uint32_t)RESET)
+ 576              		.loc 1 690 0
+ 577 0000 10F0805F 		tst	r0, #268435456
+ 578 0004 02D0     		beq	.L47
+ 691:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 692:.//FWLIB/src/stm32f10x_dma.c ****     /* Clear the selected DMAy interrupt pending bits */
+ 693:.//FWLIB/src/stm32f10x_dma.c ****     DMA2->IFCR = DMAy_IT;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 23
+
+
+ 579              		.loc 1 693 0
+ 580 0006 034B     		ldr	r3, .L49
+ 581 0008 5860     		str	r0, [r3, #4]
+ 582 000a 7047     		bx	lr
+ 583              	.L47:
+ 694:.//FWLIB/src/stm32f10x_dma.c ****   }
+ 695:.//FWLIB/src/stm32f10x_dma.c ****   else
+ 696:.//FWLIB/src/stm32f10x_dma.c ****   {
+ 697:.//FWLIB/src/stm32f10x_dma.c ****     /* Clear the selected DMAy interrupt pending bits */
+ 698:.//FWLIB/src/stm32f10x_dma.c ****     DMA1->IFCR = DMAy_IT;
+ 584              		.loc 1 698 0
+ 585 000c 024B     		ldr	r3, .L49+4
+ 586 000e 5860     		str	r0, [r3, #4]
+ 587 0010 7047     		bx	lr
+ 588              	.L50:
+ 589 0012 00BF     		.align	2
+ 590              	.L49:
+ 591 0014 00040240 		.word	1073873920
+ 592 0018 00000240 		.word	1073872896
+ 593              		.cfi_endproc
+ 594              	.LFE39:
+ 596              		.text
+ 597              	.Letext0:
+ 598              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 599              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 600              		.file 4 "USER/stm32f10x.h"
+ 601              		.file 5 "FWLIB/inc/stm32f10x_dma.h"
+ 602              		.file 6 "CORE/core_cm3.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s 			page 24
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f10x_dma.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:20     .text.DMA_DeInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:25     .text.DMA_DeInit:0000000000000000 DMA_DeInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:184    .text.DMA_DeInit:00000000000000f0 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:202    .text.DMA_Init:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:207    .text.DMA_Init:0000000000000000 DMA_Init
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:278    .text.DMA_StructInit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:283    .text.DMA_StructInit:0000000000000000 DMA_StructInit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:319    .text.DMA_Cmd:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:324    .text.DMA_Cmd:0000000000000000 DMA_Cmd
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:351    .text.DMA_ITConfig:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:356    .text.DMA_ITConfig:0000000000000000 DMA_ITConfig
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:384    .text.DMA_SetCurrDataCounter:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:389    .text.DMA_SetCurrDataCounter:0000000000000000 DMA_SetCurrDataCounter
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:404    .text.DMA_GetCurrDataCounter:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:409    .text.DMA_GetCurrDataCounter:0000000000000000 DMA_GetCurrDataCounter
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:427    .text.DMA_GetFlagStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:432    .text.DMA_GetFlagStatus:0000000000000000 DMA_GetFlagStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:472    .text.DMA_GetFlagStatus:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:478    .text.DMA_ClearFlag:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:483    .text.DMA_ClearFlag:0000000000000000 DMA_ClearFlag
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:506    .text.DMA_ClearFlag:0000000000000014 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:512    .text.DMA_GetITStatus:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:517    .text.DMA_GetITStatus:0000000000000000 DMA_GetITStatus
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:557    .text.DMA_GetITStatus:000000000000001c $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:563    .text.DMA_ClearITPendingBit:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:568    .text.DMA_ClearITPendingBit:0000000000000000 DMA_ClearITPendingBit
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cc8Q30ai.s:591    .text.DMA_ClearITPendingBit:0000000000000014 $d
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,202 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cchx2kMc.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.syntax unified
+  17              		.file	"main.c"
+  18              		.text
+  19              	.Ltext0:
+  20              		.cfi_sections	.debug_frame
+  21              		.section	.text.Delay,"ax",%progbits
+  22              		.align	2
+  23              		.global	Delay
+  24              		.thumb
+  25              		.thumb_func
+  27              	Delay:
+  28              	.LFB113:
+  29              		.file 1 ".//USER/main.c"
+   1:.//USER/main.c **** #include "stm32f4xx.h"
+   2:.//USER/main.c **** #include "usart.h"
+   3:.//USER/main.c **** #include "delay.h"
+   4:.//USER/main.c **** 
+   5:.//USER/main.c **** 
+   6:.//USER/main.c **** #include "stm32f4xx.h"
+   7:.//USER/main.c **** 
+   8:.//USER/main.c **** //ALIENTEK 探索者STM32F407开发板 实验0
+   9:.//USER/main.c **** //STM32F4工程模板-库函数版本
+  10:.//USER/main.c **** //技术支持：www.openedv.com
+  11:.//USER/main.c **** //淘宝店铺：http://eboard.taobao.com
+  12:.//USER/main.c **** //广州市星翼电子科技有限公司  
+  13:.//USER/main.c **** //作者：正点原子 @ALIENTEK
+  14:.//USER/main.c ****   
+  15:.//USER/main.c **** void Delay(__IO uint32_t nCount);
+  16:.//USER/main.c **** 
+  17:.//USER/main.c **** void Delay(__IO uint32_t nCount)
+  18:.//USER/main.c **** {
+  30              		.loc 1 18 0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 8
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              	.LVL0:
+  36 0000 82B0     		sub	sp, sp, #8
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 8
+  39 0002 0190     		str	r0, [sp, #4]
+  40              	.L2:
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cchx2kMc.s 			page 2
+
+
+  19:.//USER/main.c ****   while(nCount--){}
+  41              		.loc 1 19 0 discriminator 1
+  42 0004 019B     		ldr	r3, [sp, #4]
+  43 0006 5A1E     		subs	r2, r3, #1
+  44 0008 0192     		str	r2, [sp, #4]
+  45 000a 002B     		cmp	r3, #0
+  46 000c FAD1     		bne	.L2
+  20:.//USER/main.c **** }
+  47              		.loc 1 20 0
+  48 000e 02B0     		add	sp, sp, #8
+  49              	.LCFI1:
+  50              		.cfi_def_cfa_offset 0
+  51              		@ sp needed
+  52 0010 7047     		bx	lr
+  53              		.cfi_endproc
+  54              	.LFE113:
+  56 0012 00BF     		.section	.text.main,"ax",%progbits
+  57              		.align	2
+  58              		.global	main
+  59              		.thumb
+  60              		.thumb_func
+  62              	main:
+  63              	.LFB114:
+  21:.//USER/main.c **** 
+  22:.//USER/main.c **** int main(void)
+  23:.//USER/main.c **** {
+  64              		.loc 1 23 0
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 8
+  67              		@ frame_needed = 0, uses_anonymous_args = 0
+  68 0000 30B5     		push	{r4, r5, lr}
+  69              	.LCFI2:
+  70              		.cfi_def_cfa_offset 12
+  71              		.cfi_offset 4, -12
+  72              		.cfi_offset 5, -8
+  73              		.cfi_offset 14, -4
+  74 0002 83B0     		sub	sp, sp, #12
+  75              	.LCFI3:
+  76              		.cfi_def_cfa_offset 24
+  24:.//USER/main.c **** 
+  25:.//USER/main.c ****   GPIO_InitTypeDef  GPIO_InitStructure;
+  26:.//USER/main.c ****   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOF, ENABLE);
+  77              		.loc 1 26 0
+  78 0004 0121     		movs	r1, #1
+  79 0006 2020     		movs	r0, #32
+  80 0008 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+  81              	.LVL1:
+  27:.//USER/main.c **** 
+  28:.//USER/main.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10;
+  82              		.loc 1 28 0
+  83 000c 4FF4C063 		mov	r3, #1536
+  84 0010 0093     		str	r3, [sp]
+  29:.//USER/main.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  85              		.loc 1 29 0
+  86 0012 0123     		movs	r3, #1
+  87 0014 8DF80430 		strb	r3, [sp, #4]
+  30:.//USER/main.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cchx2kMc.s 			page 3
+
+
+  88              		.loc 1 30 0
+  89 0018 0022     		movs	r2, #0
+  90 001a 8DF80620 		strb	r2, [sp, #6]
+  31:.//USER/main.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+  91              		.loc 1 31 0
+  92 001e 0322     		movs	r2, #3
+  93 0020 8DF80520 		strb	r2, [sp, #5]
+  32:.//USER/main.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+  94              		.loc 1 32 0
+  95 0024 8DF80730 		strb	r3, [sp, #7]
+  33:.//USER/main.c ****   GPIO_Init(GPIOF, &GPIO_InitStructure);
+  96              		.loc 1 33 0
+  97 0028 6946     		mov	r1, sp
+  98 002a 0B48     		ldr	r0, .L7
+  99 002c FFF7FEFF 		bl	GPIO_Init
+ 100              	.LVL2:
+ 101              	.L5:
+  34:.//USER/main.c **** 
+  35:.//USER/main.c ****   while(1){
+  36:.//USER/main.c **** 		GPIO_SetBits(GPIOF,GPIO_Pin_9|GPIO_Pin_10);
+ 102              		.loc 1 36 0 discriminator 1
+ 103 0030 094D     		ldr	r5, .L7
+ 104 0032 4FF4C061 		mov	r1, #1536
+ 105 0036 2846     		mov	r0, r5
+ 106 0038 FFF7FEFF 		bl	GPIO_SetBits
+ 107              	.LVL3:
+  37:.//USER/main.c **** 		Delay(0x7FFFFF);
+ 108              		.loc 1 37 0 discriminator 1
+ 109 003c 074C     		ldr	r4, .L7+4
+ 110 003e 2046     		mov	r0, r4
+ 111 0040 FFF7FEFF 		bl	Delay
+ 112              	.LVL4:
+  38:.//USER/main.c **** 		GPIO_ResetBits(GPIOF,GPIO_Pin_9|GPIO_Pin_10);
+ 113              		.loc 1 38 0 discriminator 1
+ 114 0044 4FF4C061 		mov	r1, #1536
+ 115 0048 2846     		mov	r0, r5
+ 116 004a FFF7FEFF 		bl	GPIO_ResetBits
+ 117              	.LVL5:
+  39:.//USER/main.c **** 		Delay(0x7FFFFF);
+ 118              		.loc 1 39 0 discriminator 1
+ 119 004e 2046     		mov	r0, r4
+ 120 0050 FFF7FEFF 		bl	Delay
+ 121              	.LVL6:
+ 122 0054 ECE7     		b	.L5
+ 123              	.L8:
+ 124 0056 00BF     		.align	2
+ 125              	.L7:
+ 126 0058 00140240 		.word	1073878016
+ 127 005c FFFF7F00 		.word	8388607
+ 128              		.cfi_endproc
+ 129              	.LFE114:
+ 131              		.text
+ 132              	.Letext0:
+ 133              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 134              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 135              		.file 4 ".//USER/stm32f4xx.h"
+ 136              		.file 5 "FWLIB/inc/stm32f4xx_gpio.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cchx2kMc.s 			page 4
+
+
+ 137              		.file 6 "FWLIB/inc/stm32f4xx_rcc.h"
+ 138              		.file 7 "CORE/core_cm4.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cchx2kMc.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cchx2kMc.s:22     .text.Delay:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cchx2kMc.s:27     .text.Delay:0000000000000000 Delay
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cchx2kMc.s:57     .text.main:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cchx2kMc.s:62     .text.main:0000000000000000 main
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//cchx2kMc.s:126    .text.main:0000000000000058 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_AHB1PeriphClockCmd
+GPIO_Init
+GPIO_SetBits
+GPIO_ResetBits

@@ -1,0 +1,1471 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"core_cm3.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.__get_PSP,"ax",%progbits
+  20              		.align	2
+  21              		.global	__get_PSP
+  22              		.thumb
+  23              		.thumb_func
+  25              	__get_PSP:
+  26              	.LFB0:
+  27              		.file 1 ".//CORE/core_cm3.c"
+   1:.//CORE/core_cm3.c **** /**************************************************************************//**
+   2:.//CORE/core_cm3.c ****  * @file     core_cm3.c
+   3:.//CORE/core_cm3.c ****  * @brief    CMSIS Cortex-M3 Core Peripheral Access Layer Source File
+   4:.//CORE/core_cm3.c ****  * @version  V1.30
+   5:.//CORE/core_cm3.c ****  * @date     30. October 2009
+   6:.//CORE/core_cm3.c ****  *
+   7:.//CORE/core_cm3.c ****  * @note
+   8:.//CORE/core_cm3.c ****  * Copyright (C) 2009 ARM Limited. All rights reserved.
+   9:.//CORE/core_cm3.c ****  *
+  10:.//CORE/core_cm3.c ****  * @par
+  11:.//CORE/core_cm3.c ****  * ARM Limited (ARM) is supplying this software for use with Cortex-M 
+  12:.//CORE/core_cm3.c ****  * processor based microcontrollers.  This file can be freely distributed 
+  13:.//CORE/core_cm3.c ****  * within development tools that are supporting such ARM based processors. 
+  14:.//CORE/core_cm3.c ****  *
+  15:.//CORE/core_cm3.c ****  * @par
+  16:.//CORE/core_cm3.c ****  * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
+  17:.//CORE/core_cm3.c ****  * OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
+  18:.//CORE/core_cm3.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
+  19:.//CORE/core_cm3.c ****  * ARM SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR
+  20:.//CORE/core_cm3.c ****  * CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+  21:.//CORE/core_cm3.c ****  *
+  22:.//CORE/core_cm3.c ****  ******************************************************************************/
+  23:.//CORE/core_cm3.c **** 
+  24:.//CORE/core_cm3.c **** #include <stdint.h>
+  25:.//CORE/core_cm3.c **** 
+  26:.//CORE/core_cm3.c **** /* define compiler specific symbols */
+  27:.//CORE/core_cm3.c **** #if defined ( __CC_ARM   )
+  28:.//CORE/core_cm3.c ****   #define __ASM            __asm                                      /*!< asm keyword for ARM Comp
+  29:.//CORE/core_cm3.c ****   #define __INLINE         __inline                                   /*!< inline keyword for ARM C
+  30:.//CORE/core_cm3.c **** 
+  31:.//CORE/core_cm3.c **** #elif defined ( __ICCARM__ )
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 2
+
+
+  32:.//CORE/core_cm3.c ****   #define __ASM           __asm                                       /*!< asm keyword for IAR Comp
+  33:.//CORE/core_cm3.c ****   #define __INLINE        inline                                      /*!< inline keyword for IAR C
+  34:.//CORE/core_cm3.c **** 
+  35:.//CORE/core_cm3.c **** #elif defined   (  __GNUC__  )
+  36:.//CORE/core_cm3.c ****   #define __ASM            __asm                                      /*!< asm keyword for GNU Comp
+  37:.//CORE/core_cm3.c ****   #define __INLINE         inline                                     /*!< inline keyword for GNU C
+  38:.//CORE/core_cm3.c **** 
+  39:.//CORE/core_cm3.c **** #elif defined   (  __TASKING__  )
+  40:.//CORE/core_cm3.c ****   #define __ASM            __asm                                      /*!< asm keyword for TASKING 
+  41:.//CORE/core_cm3.c ****   #define __INLINE         inline                                     /*!< inline keyword for TASKI
+  42:.//CORE/core_cm3.c **** 
+  43:.//CORE/core_cm3.c **** #endif
+  44:.//CORE/core_cm3.c **** 
+  45:.//CORE/core_cm3.c **** 
+  46:.//CORE/core_cm3.c **** /* ###################  Compiler specific Intrinsics  ########################### */
+  47:.//CORE/core_cm3.c **** 
+  48:.//CORE/core_cm3.c **** #if defined ( __CC_ARM   ) /*------------------RealView Compiler -----------------*/
+  49:.//CORE/core_cm3.c **** /* ARM armcc specific functions */
+  50:.//CORE/core_cm3.c **** 
+  51:.//CORE/core_cm3.c **** /**
+  52:.//CORE/core_cm3.c ****  * @brief  Return the Process Stack Pointer
+  53:.//CORE/core_cm3.c ****  *
+  54:.//CORE/core_cm3.c ****  * @return ProcessStackPointer
+  55:.//CORE/core_cm3.c ****  *
+  56:.//CORE/core_cm3.c ****  * Return the actual process stack pointer
+  57:.//CORE/core_cm3.c ****  */
+  58:.//CORE/core_cm3.c **** __ASM uint32_t __get_PSP(void)
+  59:.//CORE/core_cm3.c **** {
+  60:.//CORE/core_cm3.c ****   mrs r0, psp
+  61:.//CORE/core_cm3.c ****   bx lr
+  62:.//CORE/core_cm3.c **** }
+  63:.//CORE/core_cm3.c **** 
+  64:.//CORE/core_cm3.c **** /**
+  65:.//CORE/core_cm3.c ****  * @brief  Set the Process Stack Pointer
+  66:.//CORE/core_cm3.c ****  *
+  67:.//CORE/core_cm3.c ****  * @param  topOfProcStack  Process Stack Pointer
+  68:.//CORE/core_cm3.c ****  *
+  69:.//CORE/core_cm3.c ****  * Assign the value ProcessStackPointer to the MSP 
+  70:.//CORE/core_cm3.c ****  * (process stack pointer) Cortex processor register
+  71:.//CORE/core_cm3.c ****  */
+  72:.//CORE/core_cm3.c **** __ASM void __set_PSP(uint32_t topOfProcStack)
+  73:.//CORE/core_cm3.c **** {
+  74:.//CORE/core_cm3.c ****   msr psp, r0
+  75:.//CORE/core_cm3.c ****   bx lr
+  76:.//CORE/core_cm3.c **** }
+  77:.//CORE/core_cm3.c **** 
+  78:.//CORE/core_cm3.c **** /**
+  79:.//CORE/core_cm3.c ****  * @brief  Return the Main Stack Pointer
+  80:.//CORE/core_cm3.c ****  *
+  81:.//CORE/core_cm3.c ****  * @return Main Stack Pointer
+  82:.//CORE/core_cm3.c ****  *
+  83:.//CORE/core_cm3.c ****  * Return the current value of the MSP (main stack pointer)
+  84:.//CORE/core_cm3.c ****  * Cortex processor register
+  85:.//CORE/core_cm3.c ****  */
+  86:.//CORE/core_cm3.c **** __ASM uint32_t __get_MSP(void)
+  87:.//CORE/core_cm3.c **** {
+  88:.//CORE/core_cm3.c ****   mrs r0, msp
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 3
+
+
+  89:.//CORE/core_cm3.c ****   bx lr
+  90:.//CORE/core_cm3.c **** }
+  91:.//CORE/core_cm3.c **** 
+  92:.//CORE/core_cm3.c **** /**
+  93:.//CORE/core_cm3.c ****  * @brief  Set the Main Stack Pointer
+  94:.//CORE/core_cm3.c ****  *
+  95:.//CORE/core_cm3.c ****  * @param  topOfMainStack  Main Stack Pointer
+  96:.//CORE/core_cm3.c ****  *
+  97:.//CORE/core_cm3.c ****  * Assign the value mainStackPointer to the MSP 
+  98:.//CORE/core_cm3.c ****  * (main stack pointer) Cortex processor register
+  99:.//CORE/core_cm3.c ****  */
+ 100:.//CORE/core_cm3.c **** __ASM void __set_MSP(uint32_t mainStackPointer)
+ 101:.//CORE/core_cm3.c **** {
+ 102:.//CORE/core_cm3.c ****   msr msp, r0
+ 103:.//CORE/core_cm3.c ****   bx lr
+ 104:.//CORE/core_cm3.c **** }
+ 105:.//CORE/core_cm3.c **** 
+ 106:.//CORE/core_cm3.c **** /**
+ 107:.//CORE/core_cm3.c ****  * @brief  Reverse byte order in unsigned short value
+ 108:.//CORE/core_cm3.c ****  *
+ 109:.//CORE/core_cm3.c ****  * @param   value  value to reverse
+ 110:.//CORE/core_cm3.c ****  * @return         reversed value
+ 111:.//CORE/core_cm3.c ****  *
+ 112:.//CORE/core_cm3.c ****  * Reverse byte order in unsigned short value
+ 113:.//CORE/core_cm3.c ****  */
+ 114:.//CORE/core_cm3.c **** __ASM uint32_t __REV16(uint16_t value)
+ 115:.//CORE/core_cm3.c **** {
+ 116:.//CORE/core_cm3.c ****   rev16 r0, r0
+ 117:.//CORE/core_cm3.c ****   bx lr
+ 118:.//CORE/core_cm3.c **** }
+ 119:.//CORE/core_cm3.c **** 
+ 120:.//CORE/core_cm3.c **** /**
+ 121:.//CORE/core_cm3.c ****  * @brief  Reverse byte order in signed short value with sign extension to integer
+ 122:.//CORE/core_cm3.c ****  *
+ 123:.//CORE/core_cm3.c ****  * @param   value  value to reverse
+ 124:.//CORE/core_cm3.c ****  * @return         reversed value
+ 125:.//CORE/core_cm3.c ****  *
+ 126:.//CORE/core_cm3.c ****  * Reverse byte order in signed short value with sign extension to integer
+ 127:.//CORE/core_cm3.c ****  */
+ 128:.//CORE/core_cm3.c **** __ASM int32_t __REVSH(int16_t value)
+ 129:.//CORE/core_cm3.c **** {
+ 130:.//CORE/core_cm3.c ****   revsh r0, r0
+ 131:.//CORE/core_cm3.c ****   bx lr
+ 132:.//CORE/core_cm3.c **** }
+ 133:.//CORE/core_cm3.c **** 
+ 134:.//CORE/core_cm3.c **** 
+ 135:.//CORE/core_cm3.c **** #if (__ARMCC_VERSION < 400000)
+ 136:.//CORE/core_cm3.c **** 
+ 137:.//CORE/core_cm3.c **** /**
+ 138:.//CORE/core_cm3.c ****  * @brief  Remove the exclusive lock created by ldrex
+ 139:.//CORE/core_cm3.c ****  *
+ 140:.//CORE/core_cm3.c ****  * Removes the exclusive lock which is created by ldrex.
+ 141:.//CORE/core_cm3.c ****  */
+ 142:.//CORE/core_cm3.c **** __ASM void __CLREX(void)
+ 143:.//CORE/core_cm3.c **** {
+ 144:.//CORE/core_cm3.c ****   clrex
+ 145:.//CORE/core_cm3.c **** }
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 4
+
+
+ 146:.//CORE/core_cm3.c **** 
+ 147:.//CORE/core_cm3.c **** /**
+ 148:.//CORE/core_cm3.c ****  * @brief  Return the Base Priority value
+ 149:.//CORE/core_cm3.c ****  *
+ 150:.//CORE/core_cm3.c ****  * @return BasePriority
+ 151:.//CORE/core_cm3.c ****  *
+ 152:.//CORE/core_cm3.c ****  * Return the content of the base priority register
+ 153:.//CORE/core_cm3.c ****  */
+ 154:.//CORE/core_cm3.c **** __ASM uint32_t  __get_BASEPRI(void)
+ 155:.//CORE/core_cm3.c **** {
+ 156:.//CORE/core_cm3.c ****   mrs r0, basepri
+ 157:.//CORE/core_cm3.c ****   bx lr
+ 158:.//CORE/core_cm3.c **** }
+ 159:.//CORE/core_cm3.c **** 
+ 160:.//CORE/core_cm3.c **** /**
+ 161:.//CORE/core_cm3.c ****  * @brief  Set the Base Priority value
+ 162:.//CORE/core_cm3.c ****  *
+ 163:.//CORE/core_cm3.c ****  * @param  basePri  BasePriority
+ 164:.//CORE/core_cm3.c ****  *
+ 165:.//CORE/core_cm3.c ****  * Set the base priority register
+ 166:.//CORE/core_cm3.c ****  */
+ 167:.//CORE/core_cm3.c **** __ASM void __set_BASEPRI(uint32_t basePri)
+ 168:.//CORE/core_cm3.c **** {
+ 169:.//CORE/core_cm3.c ****   msr basepri, r0
+ 170:.//CORE/core_cm3.c ****   bx lr
+ 171:.//CORE/core_cm3.c **** }
+ 172:.//CORE/core_cm3.c **** 
+ 173:.//CORE/core_cm3.c **** /**
+ 174:.//CORE/core_cm3.c ****  * @brief  Return the Priority Mask value
+ 175:.//CORE/core_cm3.c ****  *
+ 176:.//CORE/core_cm3.c ****  * @return PriMask
+ 177:.//CORE/core_cm3.c ****  *
+ 178:.//CORE/core_cm3.c ****  * Return state of the priority mask bit from the priority mask register
+ 179:.//CORE/core_cm3.c ****  */
+ 180:.//CORE/core_cm3.c **** __ASM uint32_t __get_PRIMASK(void)
+ 181:.//CORE/core_cm3.c **** {
+ 182:.//CORE/core_cm3.c ****   mrs r0, primask
+ 183:.//CORE/core_cm3.c ****   bx lr
+ 184:.//CORE/core_cm3.c **** }
+ 185:.//CORE/core_cm3.c **** 
+ 186:.//CORE/core_cm3.c **** /**
+ 187:.//CORE/core_cm3.c ****  * @brief  Set the Priority Mask value
+ 188:.//CORE/core_cm3.c ****  *
+ 189:.//CORE/core_cm3.c ****  * @param  priMask  PriMask
+ 190:.//CORE/core_cm3.c ****  *
+ 191:.//CORE/core_cm3.c ****  * Set the priority mask bit in the priority mask register
+ 192:.//CORE/core_cm3.c ****  */
+ 193:.//CORE/core_cm3.c **** __ASM void __set_PRIMASK(uint32_t priMask)
+ 194:.//CORE/core_cm3.c **** {
+ 195:.//CORE/core_cm3.c ****   msr primask, r0
+ 196:.//CORE/core_cm3.c ****   bx lr
+ 197:.//CORE/core_cm3.c **** }
+ 198:.//CORE/core_cm3.c **** 
+ 199:.//CORE/core_cm3.c **** /**
+ 200:.//CORE/core_cm3.c ****  * @brief  Return the Fault Mask value
+ 201:.//CORE/core_cm3.c ****  *
+ 202:.//CORE/core_cm3.c ****  * @return FaultMask
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 5
+
+
+ 203:.//CORE/core_cm3.c ****  *
+ 204:.//CORE/core_cm3.c ****  * Return the content of the fault mask register
+ 205:.//CORE/core_cm3.c ****  */
+ 206:.//CORE/core_cm3.c **** __ASM uint32_t  __get_FAULTMASK(void)
+ 207:.//CORE/core_cm3.c **** {
+ 208:.//CORE/core_cm3.c ****   mrs r0, faultmask
+ 209:.//CORE/core_cm3.c ****   bx lr
+ 210:.//CORE/core_cm3.c **** }
+ 211:.//CORE/core_cm3.c **** 
+ 212:.//CORE/core_cm3.c **** /**
+ 213:.//CORE/core_cm3.c ****  * @brief  Set the Fault Mask value
+ 214:.//CORE/core_cm3.c ****  *
+ 215:.//CORE/core_cm3.c ****  * @param  faultMask  faultMask value
+ 216:.//CORE/core_cm3.c ****  *
+ 217:.//CORE/core_cm3.c ****  * Set the fault mask register
+ 218:.//CORE/core_cm3.c ****  */
+ 219:.//CORE/core_cm3.c **** __ASM void __set_FAULTMASK(uint32_t faultMask)
+ 220:.//CORE/core_cm3.c **** {
+ 221:.//CORE/core_cm3.c ****   msr faultmask, r0
+ 222:.//CORE/core_cm3.c ****   bx lr
+ 223:.//CORE/core_cm3.c **** }
+ 224:.//CORE/core_cm3.c **** 
+ 225:.//CORE/core_cm3.c **** /**
+ 226:.//CORE/core_cm3.c ****  * @brief  Return the Control Register value
+ 227:.//CORE/core_cm3.c ****  * 
+ 228:.//CORE/core_cm3.c ****  * @return Control value
+ 229:.//CORE/core_cm3.c ****  *
+ 230:.//CORE/core_cm3.c ****  * Return the content of the control register
+ 231:.//CORE/core_cm3.c ****  */
+ 232:.//CORE/core_cm3.c **** __ASM uint32_t __get_CONTROL(void)
+ 233:.//CORE/core_cm3.c **** {
+ 234:.//CORE/core_cm3.c ****   mrs r0, control
+ 235:.//CORE/core_cm3.c ****   bx lr
+ 236:.//CORE/core_cm3.c **** }
+ 237:.//CORE/core_cm3.c **** 
+ 238:.//CORE/core_cm3.c **** /**
+ 239:.//CORE/core_cm3.c ****  * @brief  Set the Control Register value
+ 240:.//CORE/core_cm3.c ****  *
+ 241:.//CORE/core_cm3.c ****  * @param  control  Control value
+ 242:.//CORE/core_cm3.c ****  *
+ 243:.//CORE/core_cm3.c ****  * Set the control register
+ 244:.//CORE/core_cm3.c ****  */
+ 245:.//CORE/core_cm3.c **** __ASM void __set_CONTROL(uint32_t control)
+ 246:.//CORE/core_cm3.c **** {
+ 247:.//CORE/core_cm3.c ****   msr control, r0
+ 248:.//CORE/core_cm3.c ****   bx lr
+ 249:.//CORE/core_cm3.c **** }
+ 250:.//CORE/core_cm3.c **** 
+ 251:.//CORE/core_cm3.c **** #endif /* __ARMCC_VERSION  */ 
+ 252:.//CORE/core_cm3.c **** 
+ 253:.//CORE/core_cm3.c **** 
+ 254:.//CORE/core_cm3.c **** 
+ 255:.//CORE/core_cm3.c **** #elif (defined (__ICCARM__)) /*------------------ ICC Compiler -------------------*/
+ 256:.//CORE/core_cm3.c **** /* IAR iccarm specific functions */
+ 257:.//CORE/core_cm3.c **** #pragma diag_suppress=Pe940
+ 258:.//CORE/core_cm3.c **** 
+ 259:.//CORE/core_cm3.c **** /**
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 6
+
+
+ 260:.//CORE/core_cm3.c ****  * @brief  Return the Process Stack Pointer
+ 261:.//CORE/core_cm3.c ****  *
+ 262:.//CORE/core_cm3.c ****  * @return ProcessStackPointer
+ 263:.//CORE/core_cm3.c ****  *
+ 264:.//CORE/core_cm3.c ****  * Return the actual process stack pointer
+ 265:.//CORE/core_cm3.c ****  */
+ 266:.//CORE/core_cm3.c **** uint32_t __get_PSP(void)
+ 267:.//CORE/core_cm3.c **** {
+ 268:.//CORE/core_cm3.c ****   __ASM("mrs r0, psp");
+ 269:.//CORE/core_cm3.c ****   __ASM("bx lr");
+ 270:.//CORE/core_cm3.c **** }
+ 271:.//CORE/core_cm3.c **** 
+ 272:.//CORE/core_cm3.c **** /**
+ 273:.//CORE/core_cm3.c ****  * @brief  Set the Process Stack Pointer
+ 274:.//CORE/core_cm3.c ****  *
+ 275:.//CORE/core_cm3.c ****  * @param  topOfProcStack  Process Stack Pointer
+ 276:.//CORE/core_cm3.c ****  *
+ 277:.//CORE/core_cm3.c ****  * Assign the value ProcessStackPointer to the MSP 
+ 278:.//CORE/core_cm3.c ****  * (process stack pointer) Cortex processor register
+ 279:.//CORE/core_cm3.c ****  */
+ 280:.//CORE/core_cm3.c **** void __set_PSP(uint32_t topOfProcStack)
+ 281:.//CORE/core_cm3.c **** {
+ 282:.//CORE/core_cm3.c ****   __ASM("msr psp, r0");
+ 283:.//CORE/core_cm3.c ****   __ASM("bx lr");
+ 284:.//CORE/core_cm3.c **** }
+ 285:.//CORE/core_cm3.c **** 
+ 286:.//CORE/core_cm3.c **** /**
+ 287:.//CORE/core_cm3.c ****  * @brief  Return the Main Stack Pointer
+ 288:.//CORE/core_cm3.c ****  *
+ 289:.//CORE/core_cm3.c ****  * @return Main Stack Pointer
+ 290:.//CORE/core_cm3.c ****  *
+ 291:.//CORE/core_cm3.c ****  * Return the current value of the MSP (main stack pointer)
+ 292:.//CORE/core_cm3.c ****  * Cortex processor register
+ 293:.//CORE/core_cm3.c ****  */
+ 294:.//CORE/core_cm3.c **** uint32_t __get_MSP(void)
+ 295:.//CORE/core_cm3.c **** {
+ 296:.//CORE/core_cm3.c ****   __ASM("mrs r0, msp");
+ 297:.//CORE/core_cm3.c ****   __ASM("bx lr");
+ 298:.//CORE/core_cm3.c **** }
+ 299:.//CORE/core_cm3.c **** 
+ 300:.//CORE/core_cm3.c **** /**
+ 301:.//CORE/core_cm3.c ****  * @brief  Set the Main Stack Pointer
+ 302:.//CORE/core_cm3.c ****  *
+ 303:.//CORE/core_cm3.c ****  * @param  topOfMainStack  Main Stack Pointer
+ 304:.//CORE/core_cm3.c ****  *
+ 305:.//CORE/core_cm3.c ****  * Assign the value mainStackPointer to the MSP 
+ 306:.//CORE/core_cm3.c ****  * (main stack pointer) Cortex processor register
+ 307:.//CORE/core_cm3.c ****  */
+ 308:.//CORE/core_cm3.c **** void __set_MSP(uint32_t topOfMainStack)
+ 309:.//CORE/core_cm3.c **** {
+ 310:.//CORE/core_cm3.c ****   __ASM("msr msp, r0");
+ 311:.//CORE/core_cm3.c ****   __ASM("bx lr");
+ 312:.//CORE/core_cm3.c **** }
+ 313:.//CORE/core_cm3.c **** 
+ 314:.//CORE/core_cm3.c **** /**
+ 315:.//CORE/core_cm3.c ****  * @brief  Reverse byte order in unsigned short value
+ 316:.//CORE/core_cm3.c ****  *
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 7
+
+
+ 317:.//CORE/core_cm3.c ****  * @param  value  value to reverse
+ 318:.//CORE/core_cm3.c ****  * @return        reversed value
+ 319:.//CORE/core_cm3.c ****  *
+ 320:.//CORE/core_cm3.c ****  * Reverse byte order in unsigned short value
+ 321:.//CORE/core_cm3.c ****  */
+ 322:.//CORE/core_cm3.c **** uint32_t __REV16(uint16_t value)
+ 323:.//CORE/core_cm3.c **** {
+ 324:.//CORE/core_cm3.c ****   __ASM("rev16 r0, r0");
+ 325:.//CORE/core_cm3.c ****   __ASM("bx lr");
+ 326:.//CORE/core_cm3.c **** }
+ 327:.//CORE/core_cm3.c **** 
+ 328:.//CORE/core_cm3.c **** /**
+ 329:.//CORE/core_cm3.c ****  * @brief  Reverse bit order of value
+ 330:.//CORE/core_cm3.c ****  *
+ 331:.//CORE/core_cm3.c ****  * @param  value  value to reverse
+ 332:.//CORE/core_cm3.c ****  * @return        reversed value
+ 333:.//CORE/core_cm3.c ****  *
+ 334:.//CORE/core_cm3.c ****  * Reverse bit order of value
+ 335:.//CORE/core_cm3.c ****  */
+ 336:.//CORE/core_cm3.c **** uint32_t __RBIT(uint32_t value)
+ 337:.//CORE/core_cm3.c **** {
+ 338:.//CORE/core_cm3.c ****   __ASM("rbit r0, r0");
+ 339:.//CORE/core_cm3.c ****   __ASM("bx lr");
+ 340:.//CORE/core_cm3.c **** }
+ 341:.//CORE/core_cm3.c **** 
+ 342:.//CORE/core_cm3.c **** /**
+ 343:.//CORE/core_cm3.c ****  * @brief  LDR Exclusive (8 bit)
+ 344:.//CORE/core_cm3.c ****  *
+ 345:.//CORE/core_cm3.c ****  * @param  *addr  address pointer
+ 346:.//CORE/core_cm3.c ****  * @return        value of (*address)
+ 347:.//CORE/core_cm3.c ****  *
+ 348:.//CORE/core_cm3.c ****  * Exclusive LDR command for 8 bit values)
+ 349:.//CORE/core_cm3.c ****  */
+ 350:.//CORE/core_cm3.c **** uint8_t __LDREXB(uint8_t *addr)
+ 351:.//CORE/core_cm3.c **** {
+ 352:.//CORE/core_cm3.c ****   __ASM("ldrexb r0, [r0]");
+ 353:.//CORE/core_cm3.c ****   __ASM("bx lr"); 
+ 354:.//CORE/core_cm3.c **** }
+ 355:.//CORE/core_cm3.c **** 
+ 356:.//CORE/core_cm3.c **** /**
+ 357:.//CORE/core_cm3.c ****  * @brief  LDR Exclusive (16 bit)
+ 358:.//CORE/core_cm3.c ****  *
+ 359:.//CORE/core_cm3.c ****  * @param  *addr  address pointer
+ 360:.//CORE/core_cm3.c ****  * @return        value of (*address)
+ 361:.//CORE/core_cm3.c ****  *
+ 362:.//CORE/core_cm3.c ****  * Exclusive LDR command for 16 bit values
+ 363:.//CORE/core_cm3.c ****  */
+ 364:.//CORE/core_cm3.c **** uint16_t __LDREXH(uint16_t *addr)
+ 365:.//CORE/core_cm3.c **** {
+ 366:.//CORE/core_cm3.c ****   __ASM("ldrexh r0, [r0]");
+ 367:.//CORE/core_cm3.c ****   __ASM("bx lr");
+ 368:.//CORE/core_cm3.c **** }
+ 369:.//CORE/core_cm3.c **** 
+ 370:.//CORE/core_cm3.c **** /**
+ 371:.//CORE/core_cm3.c ****  * @brief  LDR Exclusive (32 bit)
+ 372:.//CORE/core_cm3.c ****  *
+ 373:.//CORE/core_cm3.c ****  * @param  *addr  address pointer
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 8
+
+
+ 374:.//CORE/core_cm3.c ****  * @return        value of (*address)
+ 375:.//CORE/core_cm3.c ****  *
+ 376:.//CORE/core_cm3.c ****  * Exclusive LDR command for 32 bit values
+ 377:.//CORE/core_cm3.c ****  */
+ 378:.//CORE/core_cm3.c **** uint32_t __LDREXW(uint32_t *addr)
+ 379:.//CORE/core_cm3.c **** {
+ 380:.//CORE/core_cm3.c ****   __ASM("ldrex r0, [r0]");
+ 381:.//CORE/core_cm3.c ****   __ASM("bx lr");
+ 382:.//CORE/core_cm3.c **** }
+ 383:.//CORE/core_cm3.c **** 
+ 384:.//CORE/core_cm3.c **** /**
+ 385:.//CORE/core_cm3.c ****  * @brief  STR Exclusive (8 bit)
+ 386:.//CORE/core_cm3.c ****  *
+ 387:.//CORE/core_cm3.c ****  * @param  value  value to store
+ 388:.//CORE/core_cm3.c ****  * @param  *addr  address pointer
+ 389:.//CORE/core_cm3.c ****  * @return        successful / failed
+ 390:.//CORE/core_cm3.c ****  *
+ 391:.//CORE/core_cm3.c ****  * Exclusive STR command for 8 bit values
+ 392:.//CORE/core_cm3.c ****  */
+ 393:.//CORE/core_cm3.c **** uint32_t __STREXB(uint8_t value, uint8_t *addr)
+ 394:.//CORE/core_cm3.c **** {
+ 395:.//CORE/core_cm3.c ****   __ASM("strexb r0, r0, [r1]");
+ 396:.//CORE/core_cm3.c ****   __ASM("bx lr");
+ 397:.//CORE/core_cm3.c **** }
+ 398:.//CORE/core_cm3.c **** 
+ 399:.//CORE/core_cm3.c **** /**
+ 400:.//CORE/core_cm3.c ****  * @brief  STR Exclusive (16 bit)
+ 401:.//CORE/core_cm3.c ****  *
+ 402:.//CORE/core_cm3.c ****  * @param  value  value to store
+ 403:.//CORE/core_cm3.c ****  * @param  *addr  address pointer
+ 404:.//CORE/core_cm3.c ****  * @return        successful / failed
+ 405:.//CORE/core_cm3.c ****  *
+ 406:.//CORE/core_cm3.c ****  * Exclusive STR command for 16 bit values
+ 407:.//CORE/core_cm3.c ****  */
+ 408:.//CORE/core_cm3.c **** uint32_t __STREXH(uint16_t value, uint16_t *addr)
+ 409:.//CORE/core_cm3.c **** {
+ 410:.//CORE/core_cm3.c ****   __ASM("strexh r0, r0, [r1]");
+ 411:.//CORE/core_cm3.c ****   __ASM("bx lr");
+ 412:.//CORE/core_cm3.c **** }
+ 413:.//CORE/core_cm3.c **** 
+ 414:.//CORE/core_cm3.c **** /**
+ 415:.//CORE/core_cm3.c ****  * @brief  STR Exclusive (32 bit)
+ 416:.//CORE/core_cm3.c ****  *
+ 417:.//CORE/core_cm3.c ****  * @param  value  value to store
+ 418:.//CORE/core_cm3.c ****  * @param  *addr  address pointer
+ 419:.//CORE/core_cm3.c ****  * @return        successful / failed
+ 420:.//CORE/core_cm3.c ****  *
+ 421:.//CORE/core_cm3.c ****  * Exclusive STR command for 32 bit values
+ 422:.//CORE/core_cm3.c ****  */
+ 423:.//CORE/core_cm3.c **** uint32_t __STREXW(uint32_t value, uint32_t *addr)
+ 424:.//CORE/core_cm3.c **** {
+ 425:.//CORE/core_cm3.c ****   __ASM("strex r0, r0, [r1]");
+ 426:.//CORE/core_cm3.c ****   __ASM("bx lr");
+ 427:.//CORE/core_cm3.c **** }
+ 428:.//CORE/core_cm3.c **** 
+ 429:.//CORE/core_cm3.c **** #pragma diag_default=Pe940
+ 430:.//CORE/core_cm3.c **** 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 9
+
+
+ 431:.//CORE/core_cm3.c **** 
+ 432:.//CORE/core_cm3.c **** #elif (defined (__GNUC__)) /*------------------ GNU Compiler ---------------------*/
+ 433:.//CORE/core_cm3.c **** /* GNU gcc specific functions */
+ 434:.//CORE/core_cm3.c **** 
+ 435:.//CORE/core_cm3.c **** /**
+ 436:.//CORE/core_cm3.c ****  * @brief  Return the Process Stack Pointer
+ 437:.//CORE/core_cm3.c ****  *
+ 438:.//CORE/core_cm3.c ****  * @return ProcessStackPointer
+ 439:.//CORE/core_cm3.c ****  *
+ 440:.//CORE/core_cm3.c ****  * Return the actual process stack pointer
+ 441:.//CORE/core_cm3.c ****  */
+ 442:.//CORE/core_cm3.c **** uint32_t __get_PSP(void) __attribute__( ( naked ) );
+ 443:.//CORE/core_cm3.c **** uint32_t __get_PSP(void)
+ 444:.//CORE/core_cm3.c **** {
+  28              		.loc 1 444 0
+  29              		.cfi_startproc
+  30              		@ Naked Function: prologue and epilogue provided by programmer.
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              	.LVL0:
+ 445:.//CORE/core_cm3.c ****   uint32_t result=0;
+ 446:.//CORE/core_cm3.c **** 
+ 447:.//CORE/core_cm3.c ****   __ASM volatile ("MRS %0, psp\n\t" 
+  34              		.loc 1 447 0
+  35              		.syntax unified
+  36              	@ 447 ".//CORE/core_cm3.c" 1
+  37 0000 EFF30980 		MRS r0, psp
+  38 0004 0046     		MOV r0, r0 
+  39 0006 7047     		BX  lr     
+  40              		
+  41              	@ 0 "" 2
+  42              	.LVL1:
+ 448:.//CORE/core_cm3.c ****                   "MOV r0, %0 \n\t"
+ 449:.//CORE/core_cm3.c ****                   "BX  lr     \n\t"  : "=r" (result) );
+ 450:.//CORE/core_cm3.c ****   return(result);
+ 451:.//CORE/core_cm3.c **** }
+  43              		.loc 1 451 0
+  44              		.thumb
+  45              		.syntax unified
+  46              		.cfi_endproc
+  47              	.LFE0:
+  49              		.section	.text.__set_PSP,"ax",%progbits
+  50              		.align	2
+  51              		.global	__set_PSP
+  52              		.thumb
+  53              		.thumb_func
+  55              	__set_PSP:
+  56              	.LFB1:
+ 452:.//CORE/core_cm3.c **** 
+ 453:.//CORE/core_cm3.c **** /**
+ 454:.//CORE/core_cm3.c ****  * @brief  Set the Process Stack Pointer
+ 455:.//CORE/core_cm3.c ****  *
+ 456:.//CORE/core_cm3.c ****  * @param  topOfProcStack  Process Stack Pointer
+ 457:.//CORE/core_cm3.c ****  *
+ 458:.//CORE/core_cm3.c ****  * Assign the value ProcessStackPointer to the MSP 
+ 459:.//CORE/core_cm3.c ****  * (process stack pointer) Cortex processor register
+ 460:.//CORE/core_cm3.c ****  */
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 10
+
+
+ 461:.//CORE/core_cm3.c **** void __set_PSP(uint32_t topOfProcStack) __attribute__( ( naked ) );
+ 462:.//CORE/core_cm3.c **** void __set_PSP(uint32_t topOfProcStack)
+ 463:.//CORE/core_cm3.c **** {
+  57              		.loc 1 463 0
+  58              		.cfi_startproc
+  59              		@ Naked Function: prologue and epilogue provided by programmer.
+  60              		@ args = 0, pretend = 0, frame = 0
+  61              		@ frame_needed = 0, uses_anonymous_args = 0
+  62              	.LVL2:
+ 464:.//CORE/core_cm3.c ****   __ASM volatile ("MSR psp, %0\n\t"
+  63              		.loc 1 464 0
+  64              		.syntax unified
+  65              	@ 464 ".//CORE/core_cm3.c" 1
+  66 0000 80F30988 		MSR psp, r0
+  67 0004 7047     		BX  lr     
+  68              		
+  69              	@ 0 "" 2
+ 465:.//CORE/core_cm3.c ****                   "BX  lr     \n\t" : : "r" (topOfProcStack) );
+ 466:.//CORE/core_cm3.c **** }
+  70              		.loc 1 466 0
+  71              		.thumb
+  72              		.syntax unified
+  73              		.cfi_endproc
+  74              	.LFE1:
+  76 0006 00BF     		.section	.text.__get_MSP,"ax",%progbits
+  77              		.align	2
+  78              		.global	__get_MSP
+  79              		.thumb
+  80              		.thumb_func
+  82              	__get_MSP:
+  83              	.LFB2:
+ 467:.//CORE/core_cm3.c **** 
+ 468:.//CORE/core_cm3.c **** /**
+ 469:.//CORE/core_cm3.c ****  * @brief  Return the Main Stack Pointer
+ 470:.//CORE/core_cm3.c ****  *
+ 471:.//CORE/core_cm3.c ****  * @return Main Stack Pointer
+ 472:.//CORE/core_cm3.c ****  *
+ 473:.//CORE/core_cm3.c ****  * Return the current value of the MSP (main stack pointer)
+ 474:.//CORE/core_cm3.c ****  * Cortex processor register
+ 475:.//CORE/core_cm3.c ****  */
+ 476:.//CORE/core_cm3.c **** uint32_t __get_MSP(void) __attribute__( ( naked ) );
+ 477:.//CORE/core_cm3.c **** uint32_t __get_MSP(void)
+ 478:.//CORE/core_cm3.c **** {
+  84              		.loc 1 478 0
+  85              		.cfi_startproc
+  86              		@ Naked Function: prologue and epilogue provided by programmer.
+  87              		@ args = 0, pretend = 0, frame = 0
+  88              		@ frame_needed = 0, uses_anonymous_args = 0
+  89              	.LVL3:
+ 479:.//CORE/core_cm3.c ****   uint32_t result=0;
+ 480:.//CORE/core_cm3.c **** 
+ 481:.//CORE/core_cm3.c ****   __ASM volatile ("MRS %0, msp\n\t" 
+  90              		.loc 1 481 0
+  91              		.syntax unified
+  92              	@ 481 ".//CORE/core_cm3.c" 1
+  93 0000 EFF30880 		MRS r0, msp
+  94 0004 0046     		MOV r0, r0 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 11
+
+
+  95 0006 7047     		BX  lr     
+  96              		
+  97              	@ 0 "" 2
+  98              	.LVL4:
+ 482:.//CORE/core_cm3.c ****                   "MOV r0, %0 \n\t"
+ 483:.//CORE/core_cm3.c ****                   "BX  lr     \n\t"  : "=r" (result) );
+ 484:.//CORE/core_cm3.c ****   return(result);
+ 485:.//CORE/core_cm3.c **** }
+  99              		.loc 1 485 0
+ 100              		.thumb
+ 101              		.syntax unified
+ 102              		.cfi_endproc
+ 103              	.LFE2:
+ 105              		.section	.text.__set_MSP,"ax",%progbits
+ 106              		.align	2
+ 107              		.global	__set_MSP
+ 108              		.thumb
+ 109              		.thumb_func
+ 111              	__set_MSP:
+ 112              	.LFB3:
+ 486:.//CORE/core_cm3.c **** 
+ 487:.//CORE/core_cm3.c **** /**
+ 488:.//CORE/core_cm3.c ****  * @brief  Set the Main Stack Pointer
+ 489:.//CORE/core_cm3.c ****  *
+ 490:.//CORE/core_cm3.c ****  * @param  topOfMainStack  Main Stack Pointer
+ 491:.//CORE/core_cm3.c ****  *
+ 492:.//CORE/core_cm3.c ****  * Assign the value mainStackPointer to the MSP 
+ 493:.//CORE/core_cm3.c ****  * (main stack pointer) Cortex processor register
+ 494:.//CORE/core_cm3.c ****  */
+ 495:.//CORE/core_cm3.c **** void __set_MSP(uint32_t topOfMainStack) __attribute__( ( naked ) );
+ 496:.//CORE/core_cm3.c **** void __set_MSP(uint32_t topOfMainStack)
+ 497:.//CORE/core_cm3.c **** {
+ 113              		.loc 1 497 0
+ 114              		.cfi_startproc
+ 115              		@ Naked Function: prologue and epilogue provided by programmer.
+ 116              		@ args = 0, pretend = 0, frame = 0
+ 117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118              	.LVL5:
+ 498:.//CORE/core_cm3.c ****   __ASM volatile ("MSR msp, %0\n\t"
+ 119              		.loc 1 498 0
+ 120              		.syntax unified
+ 121              	@ 498 ".//CORE/core_cm3.c" 1
+ 122 0000 80F30888 		MSR msp, r0
+ 123 0004 7047     		BX  lr     
+ 124              		
+ 125              	@ 0 "" 2
+ 499:.//CORE/core_cm3.c ****                   "BX  lr     \n\t" : : "r" (topOfMainStack) );
+ 500:.//CORE/core_cm3.c **** }
+ 126              		.loc 1 500 0
+ 127              		.thumb
+ 128              		.syntax unified
+ 129              		.cfi_endproc
+ 130              	.LFE3:
+ 132 0006 00BF     		.section	.text.__get_BASEPRI,"ax",%progbits
+ 133              		.align	2
+ 134              		.global	__get_BASEPRI
+ 135              		.thumb
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 12
+
+
+ 136              		.thumb_func
+ 138              	__get_BASEPRI:
+ 139              	.LFB4:
+ 501:.//CORE/core_cm3.c **** 
+ 502:.//CORE/core_cm3.c **** /**
+ 503:.//CORE/core_cm3.c ****  * @brief  Return the Base Priority value
+ 504:.//CORE/core_cm3.c ****  *
+ 505:.//CORE/core_cm3.c ****  * @return BasePriority
+ 506:.//CORE/core_cm3.c ****  *
+ 507:.//CORE/core_cm3.c ****  * Return the content of the base priority register
+ 508:.//CORE/core_cm3.c ****  */
+ 509:.//CORE/core_cm3.c **** uint32_t __get_BASEPRI(void)
+ 510:.//CORE/core_cm3.c **** {
+ 140              		.loc 1 510 0
+ 141              		.cfi_startproc
+ 142              		@ args = 0, pretend = 0, frame = 0
+ 143              		@ frame_needed = 0, uses_anonymous_args = 0
+ 144              		@ link register save eliminated.
+ 145              	.LVL6:
+ 511:.//CORE/core_cm3.c ****   uint32_t result=0;
+ 512:.//CORE/core_cm3.c ****   
+ 513:.//CORE/core_cm3.c ****   __ASM volatile ("MRS %0, basepri_max" : "=r" (result) );
+ 146              		.loc 1 513 0
+ 147              		.syntax unified
+ 148              	@ 513 ".//CORE/core_cm3.c" 1
+ 149 0000 EFF31280 		MRS r0, basepri_max
+ 150              	@ 0 "" 2
+ 151              	.LVL7:
+ 514:.//CORE/core_cm3.c ****   return(result);
+ 515:.//CORE/core_cm3.c **** }
+ 152              		.loc 1 515 0
+ 153              		.thumb
+ 154              		.syntax unified
+ 155 0004 7047     		bx	lr
+ 156              		.cfi_endproc
+ 157              	.LFE4:
+ 159 0006 00BF     		.section	.text.__set_BASEPRI,"ax",%progbits
+ 160              		.align	2
+ 161              		.global	__set_BASEPRI
+ 162              		.thumb
+ 163              		.thumb_func
+ 165              	__set_BASEPRI:
+ 166              	.LFB5:
+ 516:.//CORE/core_cm3.c **** 
+ 517:.//CORE/core_cm3.c **** /**
+ 518:.//CORE/core_cm3.c ****  * @brief  Set the Base Priority value
+ 519:.//CORE/core_cm3.c ****  *
+ 520:.//CORE/core_cm3.c ****  * @param  basePri  BasePriority
+ 521:.//CORE/core_cm3.c ****  *
+ 522:.//CORE/core_cm3.c ****  * Set the base priority register
+ 523:.//CORE/core_cm3.c ****  */
+ 524:.//CORE/core_cm3.c **** void __set_BASEPRI(uint32_t value)
+ 525:.//CORE/core_cm3.c **** {
+ 167              		.loc 1 525 0
+ 168              		.cfi_startproc
+ 169              		@ args = 0, pretend = 0, frame = 0
+ 170              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 13
+
+
+ 171              		@ link register save eliminated.
+ 172              	.LVL8:
+ 526:.//CORE/core_cm3.c ****   __ASM volatile ("MSR basepri, %0" : : "r" (value) );
+ 173              		.loc 1 526 0
+ 174              		.syntax unified
+ 175              	@ 526 ".//CORE/core_cm3.c" 1
+ 176 0000 80F31188 		MSR basepri, r0
+ 177              	@ 0 "" 2
+ 178              		.thumb
+ 179              		.syntax unified
+ 180 0004 7047     		bx	lr
+ 181              		.cfi_endproc
+ 182              	.LFE5:
+ 184 0006 00BF     		.section	.text.__get_PRIMASK,"ax",%progbits
+ 185              		.align	2
+ 186              		.global	__get_PRIMASK
+ 187              		.thumb
+ 188              		.thumb_func
+ 190              	__get_PRIMASK:
+ 191              	.LFB6:
+ 527:.//CORE/core_cm3.c **** }
+ 528:.//CORE/core_cm3.c **** 
+ 529:.//CORE/core_cm3.c **** /**
+ 530:.//CORE/core_cm3.c ****  * @brief  Return the Priority Mask value
+ 531:.//CORE/core_cm3.c ****  *
+ 532:.//CORE/core_cm3.c ****  * @return PriMask
+ 533:.//CORE/core_cm3.c ****  *
+ 534:.//CORE/core_cm3.c ****  * Return state of the priority mask bit from the priority mask register
+ 535:.//CORE/core_cm3.c ****  */
+ 536:.//CORE/core_cm3.c **** uint32_t __get_PRIMASK(void)
+ 537:.//CORE/core_cm3.c **** {
+ 192              		.loc 1 537 0
+ 193              		.cfi_startproc
+ 194              		@ args = 0, pretend = 0, frame = 0
+ 195              		@ frame_needed = 0, uses_anonymous_args = 0
+ 196              		@ link register save eliminated.
+ 197              	.LVL9:
+ 538:.//CORE/core_cm3.c ****   uint32_t result=0;
+ 539:.//CORE/core_cm3.c **** 
+ 540:.//CORE/core_cm3.c ****   __ASM volatile ("MRS %0, primask" : "=r" (result) );
+ 198              		.loc 1 540 0
+ 199              		.syntax unified
+ 200              	@ 540 ".//CORE/core_cm3.c" 1
+ 201 0000 EFF31080 		MRS r0, primask
+ 202              	@ 0 "" 2
+ 203              	.LVL10:
+ 541:.//CORE/core_cm3.c ****   return(result);
+ 542:.//CORE/core_cm3.c **** }
+ 204              		.loc 1 542 0
+ 205              		.thumb
+ 206              		.syntax unified
+ 207 0004 7047     		bx	lr
+ 208              		.cfi_endproc
+ 209              	.LFE6:
+ 211 0006 00BF     		.section	.text.__set_PRIMASK,"ax",%progbits
+ 212              		.align	2
+ 213              		.global	__set_PRIMASK
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 14
+
+
+ 214              		.thumb
+ 215              		.thumb_func
+ 217              	__set_PRIMASK:
+ 218              	.LFB7:
+ 543:.//CORE/core_cm3.c **** 
+ 544:.//CORE/core_cm3.c **** /**
+ 545:.//CORE/core_cm3.c ****  * @brief  Set the Priority Mask value
+ 546:.//CORE/core_cm3.c ****  *
+ 547:.//CORE/core_cm3.c ****  * @param  priMask  PriMask
+ 548:.//CORE/core_cm3.c ****  *
+ 549:.//CORE/core_cm3.c ****  * Set the priority mask bit in the priority mask register
+ 550:.//CORE/core_cm3.c ****  */
+ 551:.//CORE/core_cm3.c **** void __set_PRIMASK(uint32_t priMask)
+ 552:.//CORE/core_cm3.c **** {
+ 219              		.loc 1 552 0
+ 220              		.cfi_startproc
+ 221              		@ args = 0, pretend = 0, frame = 0
+ 222              		@ frame_needed = 0, uses_anonymous_args = 0
+ 223              		@ link register save eliminated.
+ 224              	.LVL11:
+ 553:.//CORE/core_cm3.c ****   __ASM volatile ("MSR primask, %0" : : "r" (priMask) );
+ 225              		.loc 1 553 0
+ 226              		.syntax unified
+ 227              	@ 553 ".//CORE/core_cm3.c" 1
+ 228 0000 80F31088 		MSR primask, r0
+ 229              	@ 0 "" 2
+ 230              		.thumb
+ 231              		.syntax unified
+ 232 0004 7047     		bx	lr
+ 233              		.cfi_endproc
+ 234              	.LFE7:
+ 236 0006 00BF     		.section	.text.__get_FAULTMASK,"ax",%progbits
+ 237              		.align	2
+ 238              		.global	__get_FAULTMASK
+ 239              		.thumb
+ 240              		.thumb_func
+ 242              	__get_FAULTMASK:
+ 243              	.LFB8:
+ 554:.//CORE/core_cm3.c **** }
+ 555:.//CORE/core_cm3.c **** 
+ 556:.//CORE/core_cm3.c **** /**
+ 557:.//CORE/core_cm3.c ****  * @brief  Return the Fault Mask value
+ 558:.//CORE/core_cm3.c ****  *
+ 559:.//CORE/core_cm3.c ****  * @return FaultMask
+ 560:.//CORE/core_cm3.c ****  *
+ 561:.//CORE/core_cm3.c ****  * Return the content of the fault mask register
+ 562:.//CORE/core_cm3.c ****  */
+ 563:.//CORE/core_cm3.c **** uint32_t __get_FAULTMASK(void)
+ 564:.//CORE/core_cm3.c **** {
+ 244              		.loc 1 564 0
+ 245              		.cfi_startproc
+ 246              		@ args = 0, pretend = 0, frame = 0
+ 247              		@ frame_needed = 0, uses_anonymous_args = 0
+ 248              		@ link register save eliminated.
+ 249              	.LVL12:
+ 565:.//CORE/core_cm3.c ****   uint32_t result=0;
+ 566:.//CORE/core_cm3.c ****   
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 15
+
+
+ 567:.//CORE/core_cm3.c ****   __ASM volatile ("MRS %0, faultmask" : "=r" (result) );
+ 250              		.loc 1 567 0
+ 251              		.syntax unified
+ 252              	@ 567 ".//CORE/core_cm3.c" 1
+ 253 0000 EFF31380 		MRS r0, faultmask
+ 254              	@ 0 "" 2
+ 255              	.LVL13:
+ 568:.//CORE/core_cm3.c ****   return(result);
+ 569:.//CORE/core_cm3.c **** }
+ 256              		.loc 1 569 0
+ 257              		.thumb
+ 258              		.syntax unified
+ 259 0004 7047     		bx	lr
+ 260              		.cfi_endproc
+ 261              	.LFE8:
+ 263 0006 00BF     		.section	.text.__set_FAULTMASK,"ax",%progbits
+ 264              		.align	2
+ 265              		.global	__set_FAULTMASK
+ 266              		.thumb
+ 267              		.thumb_func
+ 269              	__set_FAULTMASK:
+ 270              	.LFB9:
+ 570:.//CORE/core_cm3.c **** 
+ 571:.//CORE/core_cm3.c **** /**
+ 572:.//CORE/core_cm3.c ****  * @brief  Set the Fault Mask value
+ 573:.//CORE/core_cm3.c ****  *
+ 574:.//CORE/core_cm3.c ****  * @param  faultMask  faultMask value
+ 575:.//CORE/core_cm3.c ****  *
+ 576:.//CORE/core_cm3.c ****  * Set the fault mask register
+ 577:.//CORE/core_cm3.c ****  */
+ 578:.//CORE/core_cm3.c **** void __set_FAULTMASK(uint32_t faultMask)
+ 579:.//CORE/core_cm3.c **** {
+ 271              		.loc 1 579 0
+ 272              		.cfi_startproc
+ 273              		@ args = 0, pretend = 0, frame = 0
+ 274              		@ frame_needed = 0, uses_anonymous_args = 0
+ 275              		@ link register save eliminated.
+ 276              	.LVL14:
+ 580:.//CORE/core_cm3.c ****   __ASM volatile ("MSR faultmask, %0" : : "r" (faultMask) );
+ 277              		.loc 1 580 0
+ 278              		.syntax unified
+ 279              	@ 580 ".//CORE/core_cm3.c" 1
+ 280 0000 80F31388 		MSR faultmask, r0
+ 281              	@ 0 "" 2
+ 282              		.thumb
+ 283              		.syntax unified
+ 284 0004 7047     		bx	lr
+ 285              		.cfi_endproc
+ 286              	.LFE9:
+ 288 0006 00BF     		.section	.text.__get_CONTROL,"ax",%progbits
+ 289              		.align	2
+ 290              		.global	__get_CONTROL
+ 291              		.thumb
+ 292              		.thumb_func
+ 294              	__get_CONTROL:
+ 295              	.LFB10:
+ 581:.//CORE/core_cm3.c **** }
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 16
+
+
+ 582:.//CORE/core_cm3.c **** 
+ 583:.//CORE/core_cm3.c **** /**
+ 584:.//CORE/core_cm3.c ****  * @brief  Return the Control Register value
+ 585:.//CORE/core_cm3.c **** * 
+ 586:.//CORE/core_cm3.c **** *  @return Control value
+ 587:.//CORE/core_cm3.c ****  *
+ 588:.//CORE/core_cm3.c ****  * Return the content of the control register
+ 589:.//CORE/core_cm3.c ****  */
+ 590:.//CORE/core_cm3.c **** uint32_t __get_CONTROL(void)
+ 591:.//CORE/core_cm3.c **** {
+ 296              		.loc 1 591 0
+ 297              		.cfi_startproc
+ 298              		@ args = 0, pretend = 0, frame = 0
+ 299              		@ frame_needed = 0, uses_anonymous_args = 0
+ 300              		@ link register save eliminated.
+ 301              	.LVL15:
+ 592:.//CORE/core_cm3.c ****   uint32_t result=0;
+ 593:.//CORE/core_cm3.c **** 
+ 594:.//CORE/core_cm3.c ****   __ASM volatile ("MRS %0, control" : "=r" (result) );
+ 302              		.loc 1 594 0
+ 303              		.syntax unified
+ 304              	@ 594 ".//CORE/core_cm3.c" 1
+ 305 0000 EFF31480 		MRS r0, control
+ 306              	@ 0 "" 2
+ 307              	.LVL16:
+ 595:.//CORE/core_cm3.c ****   return(result);
+ 596:.//CORE/core_cm3.c **** }
+ 308              		.loc 1 596 0
+ 309              		.thumb
+ 310              		.syntax unified
+ 311 0004 7047     		bx	lr
+ 312              		.cfi_endproc
+ 313              	.LFE10:
+ 315 0006 00BF     		.section	.text.__set_CONTROL,"ax",%progbits
+ 316              		.align	2
+ 317              		.global	__set_CONTROL
+ 318              		.thumb
+ 319              		.thumb_func
+ 321              	__set_CONTROL:
+ 322              	.LFB11:
+ 597:.//CORE/core_cm3.c **** 
+ 598:.//CORE/core_cm3.c **** /**
+ 599:.//CORE/core_cm3.c ****  * @brief  Set the Control Register value
+ 600:.//CORE/core_cm3.c ****  *
+ 601:.//CORE/core_cm3.c ****  * @param  control  Control value
+ 602:.//CORE/core_cm3.c ****  *
+ 603:.//CORE/core_cm3.c ****  * Set the control register
+ 604:.//CORE/core_cm3.c ****  */
+ 605:.//CORE/core_cm3.c **** void __set_CONTROL(uint32_t control)
+ 606:.//CORE/core_cm3.c **** {
+ 323              		.loc 1 606 0
+ 324              		.cfi_startproc
+ 325              		@ args = 0, pretend = 0, frame = 0
+ 326              		@ frame_needed = 0, uses_anonymous_args = 0
+ 327              		@ link register save eliminated.
+ 328              	.LVL17:
+ 607:.//CORE/core_cm3.c ****   __ASM volatile ("MSR control, %0" : : "r" (control) );
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 17
+
+
+ 329              		.loc 1 607 0
+ 330              		.syntax unified
+ 331              	@ 607 ".//CORE/core_cm3.c" 1
+ 332 0000 80F31488 		MSR control, r0
+ 333              	@ 0 "" 2
+ 334              		.thumb
+ 335              		.syntax unified
+ 336 0004 7047     		bx	lr
+ 337              		.cfi_endproc
+ 338              	.LFE11:
+ 340 0006 00BF     		.section	.text.__REV,"ax",%progbits
+ 341              		.align	2
+ 342              		.global	__REV
+ 343              		.thumb
+ 344              		.thumb_func
+ 346              	__REV:
+ 347              	.LFB12:
+ 608:.//CORE/core_cm3.c **** }
+ 609:.//CORE/core_cm3.c **** 
+ 610:.//CORE/core_cm3.c **** 
+ 611:.//CORE/core_cm3.c **** /**
+ 612:.//CORE/core_cm3.c ****  * @brief  Reverse byte order in integer value
+ 613:.//CORE/core_cm3.c ****  *
+ 614:.//CORE/core_cm3.c ****  * @param  value  value to reverse
+ 615:.//CORE/core_cm3.c ****  * @return        reversed value
+ 616:.//CORE/core_cm3.c ****  *
+ 617:.//CORE/core_cm3.c ****  * Reverse byte order in integer value
+ 618:.//CORE/core_cm3.c ****  */
+ 619:.//CORE/core_cm3.c **** uint32_t __REV(uint32_t value)
+ 620:.//CORE/core_cm3.c **** {
+ 348              		.loc 1 620 0
+ 349              		.cfi_startproc
+ 350              		@ args = 0, pretend = 0, frame = 0
+ 351              		@ frame_needed = 0, uses_anonymous_args = 0
+ 352              		@ link register save eliminated.
+ 353              	.LVL18:
+ 621:.//CORE/core_cm3.c ****   uint32_t result=0;
+ 622:.//CORE/core_cm3.c ****   
+ 623:.//CORE/core_cm3.c ****   __ASM volatile ("rev %0, %1" : "=r" (result) : "r" (value) );
+ 354              		.loc 1 623 0
+ 355              		.syntax unified
+ 356              	@ 623 ".//CORE/core_cm3.c" 1
+ 357 0000 00BA     		rev r0, r0
+ 358              	@ 0 "" 2
+ 359              	.LVL19:
+ 624:.//CORE/core_cm3.c ****   return(result);
+ 625:.//CORE/core_cm3.c **** }
+ 360              		.loc 1 625 0
+ 361              		.thumb
+ 362              		.syntax unified
+ 363 0002 7047     		bx	lr
+ 364              		.cfi_endproc
+ 365              	.LFE12:
+ 367              		.section	.text.__REV16,"ax",%progbits
+ 368              		.align	2
+ 369              		.global	__REV16
+ 370              		.thumb
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 18
+
+
+ 371              		.thumb_func
+ 373              	__REV16:
+ 374              	.LFB13:
+ 626:.//CORE/core_cm3.c **** 
+ 627:.//CORE/core_cm3.c **** /**
+ 628:.//CORE/core_cm3.c ****  * @brief  Reverse byte order in unsigned short value
+ 629:.//CORE/core_cm3.c ****  *
+ 630:.//CORE/core_cm3.c ****  * @param  value  value to reverse
+ 631:.//CORE/core_cm3.c ****  * @return        reversed value
+ 632:.//CORE/core_cm3.c ****  *
+ 633:.//CORE/core_cm3.c ****  * Reverse byte order in unsigned short value
+ 634:.//CORE/core_cm3.c ****  */
+ 635:.//CORE/core_cm3.c **** uint32_t __REV16(uint16_t value)
+ 636:.//CORE/core_cm3.c **** {
+ 375              		.loc 1 636 0
+ 376              		.cfi_startproc
+ 377              		@ args = 0, pretend = 0, frame = 0
+ 378              		@ frame_needed = 0, uses_anonymous_args = 0
+ 379              		@ link register save eliminated.
+ 380              	.LVL20:
+ 637:.//CORE/core_cm3.c ****   uint32_t result=0;
+ 638:.//CORE/core_cm3.c ****   
+ 639:.//CORE/core_cm3.c ****   __ASM volatile ("rev16 %0, %1" : "=r" (result) : "r" (value) );
+ 381              		.loc 1 639 0
+ 382              		.syntax unified
+ 383              	@ 639 ".//CORE/core_cm3.c" 1
+ 384 0000 40BA     		rev16 r0, r0
+ 385              	@ 0 "" 2
+ 386              	.LVL21:
+ 640:.//CORE/core_cm3.c ****   return(result);
+ 641:.//CORE/core_cm3.c **** }
+ 387              		.loc 1 641 0
+ 388              		.thumb
+ 389              		.syntax unified
+ 390 0002 7047     		bx	lr
+ 391              		.cfi_endproc
+ 392              	.LFE13:
+ 394              		.section	.text.__REVSH,"ax",%progbits
+ 395              		.align	2
+ 396              		.global	__REVSH
+ 397              		.thumb
+ 398              		.thumb_func
+ 400              	__REVSH:
+ 401              	.LFB14:
+ 642:.//CORE/core_cm3.c **** 
+ 643:.//CORE/core_cm3.c **** /**
+ 644:.//CORE/core_cm3.c ****  * @brief  Reverse byte order in signed short value with sign extension to integer
+ 645:.//CORE/core_cm3.c ****  *
+ 646:.//CORE/core_cm3.c ****  * @param  value  value to reverse
+ 647:.//CORE/core_cm3.c ****  * @return        reversed value
+ 648:.//CORE/core_cm3.c ****  *
+ 649:.//CORE/core_cm3.c ****  * Reverse byte order in signed short value with sign extension to integer
+ 650:.//CORE/core_cm3.c ****  */
+ 651:.//CORE/core_cm3.c **** int32_t __REVSH(int16_t value)
+ 652:.//CORE/core_cm3.c **** {
+ 402              		.loc 1 652 0
+ 403              		.cfi_startproc
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 19
+
+
+ 404              		@ args = 0, pretend = 0, frame = 0
+ 405              		@ frame_needed = 0, uses_anonymous_args = 0
+ 406              		@ link register save eliminated.
+ 407              	.LVL22:
+ 653:.//CORE/core_cm3.c ****   uint32_t result=0;
+ 654:.//CORE/core_cm3.c ****   
+ 655:.//CORE/core_cm3.c ****   __ASM volatile ("revsh %0, %1" : "=r" (result) : "r" (value) );
+ 408              		.loc 1 655 0
+ 409              		.syntax unified
+ 410              	@ 655 ".//CORE/core_cm3.c" 1
+ 411 0000 C0BA     		revsh r0, r0
+ 412              	@ 0 "" 2
+ 413              	.LVL23:
+ 656:.//CORE/core_cm3.c ****   return(result);
+ 657:.//CORE/core_cm3.c **** }
+ 414              		.loc 1 657 0
+ 415              		.thumb
+ 416              		.syntax unified
+ 417 0002 7047     		bx	lr
+ 418              		.cfi_endproc
+ 419              	.LFE14:
+ 421              		.section	.text.__RBIT,"ax",%progbits
+ 422              		.align	2
+ 423              		.global	__RBIT
+ 424              		.thumb
+ 425              		.thumb_func
+ 427              	__RBIT:
+ 428              	.LFB15:
+ 658:.//CORE/core_cm3.c **** 
+ 659:.//CORE/core_cm3.c **** /**
+ 660:.//CORE/core_cm3.c ****  * @brief  Reverse bit order of value
+ 661:.//CORE/core_cm3.c ****  *
+ 662:.//CORE/core_cm3.c ****  * @param  value  value to reverse
+ 663:.//CORE/core_cm3.c ****  * @return        reversed value
+ 664:.//CORE/core_cm3.c ****  *
+ 665:.//CORE/core_cm3.c ****  * Reverse bit order of value
+ 666:.//CORE/core_cm3.c ****  */
+ 667:.//CORE/core_cm3.c **** uint32_t __RBIT(uint32_t value)
+ 668:.//CORE/core_cm3.c **** {
+ 429              		.loc 1 668 0
+ 430              		.cfi_startproc
+ 431              		@ args = 0, pretend = 0, frame = 0
+ 432              		@ frame_needed = 0, uses_anonymous_args = 0
+ 433              		@ link register save eliminated.
+ 434              	.LVL24:
+ 669:.//CORE/core_cm3.c ****   uint32_t result=0;
+ 670:.//CORE/core_cm3.c ****   
+ 671:.//CORE/core_cm3.c ****    __ASM volatile ("rbit %0, %1" : "=r" (result) : "r" (value) );
+ 435              		.loc 1 671 0
+ 436              		.syntax unified
+ 437              	@ 671 ".//CORE/core_cm3.c" 1
+ 438 0000 90FAA0F0 		rbit r0, r0
+ 439              	@ 0 "" 2
+ 440              	.LVL25:
+ 672:.//CORE/core_cm3.c ****    return(result);
+ 673:.//CORE/core_cm3.c **** }
+ 441              		.loc 1 673 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 20
+
+
+ 442              		.thumb
+ 443              		.syntax unified
+ 444 0004 7047     		bx	lr
+ 445              		.cfi_endproc
+ 446              	.LFE15:
+ 448 0006 00BF     		.section	.text.__LDREXB,"ax",%progbits
+ 449              		.align	2
+ 450              		.global	__LDREXB
+ 451              		.thumb
+ 452              		.thumb_func
+ 454              	__LDREXB:
+ 455              	.LFB16:
+ 674:.//CORE/core_cm3.c **** 
+ 675:.//CORE/core_cm3.c **** /**
+ 676:.//CORE/core_cm3.c ****  * @brief  LDR Exclusive (8 bit)
+ 677:.//CORE/core_cm3.c ****  *
+ 678:.//CORE/core_cm3.c ****  * @param  *addr  address pointer
+ 679:.//CORE/core_cm3.c ****  * @return        value of (*address)
+ 680:.//CORE/core_cm3.c ****  *
+ 681:.//CORE/core_cm3.c ****  * Exclusive LDR command for 8 bit value
+ 682:.//CORE/core_cm3.c ****  */
+ 683:.//CORE/core_cm3.c **** uint8_t __LDREXB(uint8_t *addr)
+ 684:.//CORE/core_cm3.c **** {
+ 456              		.loc 1 684 0
+ 457              		.cfi_startproc
+ 458              		@ args = 0, pretend = 0, frame = 0
+ 459              		@ frame_needed = 0, uses_anonymous_args = 0
+ 460              		@ link register save eliminated.
+ 461              	.LVL26:
+ 685:.//CORE/core_cm3.c ****     uint8_t result=0;
+ 686:.//CORE/core_cm3.c ****   
+ 687:.//CORE/core_cm3.c ****    __ASM volatile ("ldrexb %0, [%1]" : "=r" (result) : "r" (addr) );
+ 462              		.loc 1 687 0
+ 463              		.syntax unified
+ 464              	@ 687 ".//CORE/core_cm3.c" 1
+ 465 0000 D0E84F0F 		ldrexb r0, [r0]
+ 466              	@ 0 "" 2
+ 467              	.LVL27:
+ 688:.//CORE/core_cm3.c ****    return(result);
+ 689:.//CORE/core_cm3.c **** }
+ 468              		.loc 1 689 0
+ 469              		.thumb
+ 470              		.syntax unified
+ 471 0004 C0B2     		uxtb	r0, r0
+ 472 0006 7047     		bx	lr
+ 473              		.cfi_endproc
+ 474              	.LFE16:
+ 476              		.section	.text.__LDREXH,"ax",%progbits
+ 477              		.align	2
+ 478              		.global	__LDREXH
+ 479              		.thumb
+ 480              		.thumb_func
+ 482              	__LDREXH:
+ 483              	.LFB17:
+ 690:.//CORE/core_cm3.c **** 
+ 691:.//CORE/core_cm3.c **** /**
+ 692:.//CORE/core_cm3.c ****  * @brief  LDR Exclusive (16 bit)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 21
+
+
+ 693:.//CORE/core_cm3.c ****  *
+ 694:.//CORE/core_cm3.c ****  * @param  *addr  address pointer
+ 695:.//CORE/core_cm3.c ****  * @return        value of (*address)
+ 696:.//CORE/core_cm3.c ****  *
+ 697:.//CORE/core_cm3.c ****  * Exclusive LDR command for 16 bit values
+ 698:.//CORE/core_cm3.c ****  */
+ 699:.//CORE/core_cm3.c **** uint16_t __LDREXH(uint16_t *addr)
+ 700:.//CORE/core_cm3.c **** {
+ 484              		.loc 1 700 0
+ 485              		.cfi_startproc
+ 486              		@ args = 0, pretend = 0, frame = 0
+ 487              		@ frame_needed = 0, uses_anonymous_args = 0
+ 488              		@ link register save eliminated.
+ 489              	.LVL28:
+ 701:.//CORE/core_cm3.c ****     uint16_t result=0;
+ 702:.//CORE/core_cm3.c ****   
+ 703:.//CORE/core_cm3.c ****    __ASM volatile ("ldrexh %0, [%1]" : "=r" (result) : "r" (addr) );
+ 490              		.loc 1 703 0
+ 491              		.syntax unified
+ 492              	@ 703 ".//CORE/core_cm3.c" 1
+ 493 0000 D0E85F0F 		ldrexh r0, [r0]
+ 494              	@ 0 "" 2
+ 495              	.LVL29:
+ 704:.//CORE/core_cm3.c ****    return(result);
+ 705:.//CORE/core_cm3.c **** }
+ 496              		.loc 1 705 0
+ 497              		.thumb
+ 498              		.syntax unified
+ 499 0004 80B2     		uxth	r0, r0
+ 500 0006 7047     		bx	lr
+ 501              		.cfi_endproc
+ 502              	.LFE17:
+ 504              		.section	.text.__LDREXW,"ax",%progbits
+ 505              		.align	2
+ 506              		.global	__LDREXW
+ 507              		.thumb
+ 508              		.thumb_func
+ 510              	__LDREXW:
+ 511              	.LFB18:
+ 706:.//CORE/core_cm3.c **** 
+ 707:.//CORE/core_cm3.c **** /**
+ 708:.//CORE/core_cm3.c ****  * @brief  LDR Exclusive (32 bit)
+ 709:.//CORE/core_cm3.c ****  *
+ 710:.//CORE/core_cm3.c ****  * @param  *addr  address pointer
+ 711:.//CORE/core_cm3.c ****  * @return        value of (*address)
+ 712:.//CORE/core_cm3.c ****  *
+ 713:.//CORE/core_cm3.c ****  * Exclusive LDR command for 32 bit values
+ 714:.//CORE/core_cm3.c ****  */
+ 715:.//CORE/core_cm3.c **** uint32_t __LDREXW(uint32_t *addr)
+ 716:.//CORE/core_cm3.c **** {
+ 512              		.loc 1 716 0
+ 513              		.cfi_startproc
+ 514              		@ args = 0, pretend = 0, frame = 0
+ 515              		@ frame_needed = 0, uses_anonymous_args = 0
+ 516              		@ link register save eliminated.
+ 517              	.LVL30:
+ 717:.//CORE/core_cm3.c ****     uint32_t result=0;
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 22
+
+
+ 718:.//CORE/core_cm3.c ****   
+ 719:.//CORE/core_cm3.c ****    __ASM volatile ("ldrex %0, [%1]" : "=r" (result) : "r" (addr) );
+ 518              		.loc 1 719 0
+ 519              		.syntax unified
+ 520              	@ 719 ".//CORE/core_cm3.c" 1
+ 521 0000 50E8000F 		ldrex r0, [r0]
+ 522              	@ 0 "" 2
+ 523              	.LVL31:
+ 720:.//CORE/core_cm3.c ****    return(result);
+ 721:.//CORE/core_cm3.c **** }
+ 524              		.loc 1 721 0
+ 525              		.thumb
+ 526              		.syntax unified
+ 527 0004 7047     		bx	lr
+ 528              		.cfi_endproc
+ 529              	.LFE18:
+ 531 0006 00BF     		.section	.text.__STREXB,"ax",%progbits
+ 532              		.align	2
+ 533              		.global	__STREXB
+ 534              		.thumb
+ 535              		.thumb_func
+ 537              	__STREXB:
+ 538              	.LFB19:
+ 722:.//CORE/core_cm3.c **** 
+ 723:.//CORE/core_cm3.c **** /**
+ 724:.//CORE/core_cm3.c ****  * @brief  STR Exclusive (8 bit)
+ 725:.//CORE/core_cm3.c ****  *
+ 726:.//CORE/core_cm3.c ****  * @param  value  value to store
+ 727:.//CORE/core_cm3.c ****  * @param  *addr  address pointer
+ 728:.//CORE/core_cm3.c ****  * @return        successful / failed
+ 729:.//CORE/core_cm3.c ****  *
+ 730:.//CORE/core_cm3.c ****  * Exclusive STR command for 8 bit values
+ 731:.//CORE/core_cm3.c ****  */
+ 732:.//CORE/core_cm3.c **** uint32_t __STREXB(uint8_t value, uint8_t *addr)
+ 733:.//CORE/core_cm3.c **** {
+ 539              		.loc 1 733 0
+ 540              		.cfi_startproc
+ 541              		@ args = 0, pretend = 0, frame = 0
+ 542              		@ frame_needed = 0, uses_anonymous_args = 0
+ 543              		@ link register save eliminated.
+ 544              	.LVL32:
+ 734:.//CORE/core_cm3.c ****    uint32_t result=0;
+ 735:.//CORE/core_cm3.c ****   
+ 736:.//CORE/core_cm3.c ****    __ASM volatile ("strexb %0, %2, [%1]" : "=&r" (result) : "r" (addr), "r" (value) );
+ 545              		.loc 1 736 0
+ 546              		.syntax unified
+ 547              	@ 736 ".//CORE/core_cm3.c" 1
+ 548 0000 C1E8430F 		strexb r3, r0, [r1]
+ 549              	@ 0 "" 2
+ 550              	.LVL33:
+ 551              		.thumb
+ 552              		.syntax unified
+ 553 0004 1846     		mov	r0, r3
+ 554              	.LVL34:
+ 737:.//CORE/core_cm3.c ****    return(result);
+ 738:.//CORE/core_cm3.c **** }
+ 555              		.loc 1 738 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 23
+
+
+ 556 0006 7047     		bx	lr
+ 557              		.cfi_endproc
+ 558              	.LFE19:
+ 560              		.section	.text.__STREXH,"ax",%progbits
+ 561              		.align	2
+ 562              		.global	__STREXH
+ 563              		.thumb
+ 564              		.thumb_func
+ 566              	__STREXH:
+ 567              	.LFB20:
+ 739:.//CORE/core_cm3.c **** 
+ 740:.//CORE/core_cm3.c **** /**
+ 741:.//CORE/core_cm3.c ****  * @brief  STR Exclusive (16 bit)
+ 742:.//CORE/core_cm3.c ****  *
+ 743:.//CORE/core_cm3.c ****  * @param  value  value to store
+ 744:.//CORE/core_cm3.c ****  * @param  *addr  address pointer
+ 745:.//CORE/core_cm3.c ****  * @return        successful / failed
+ 746:.//CORE/core_cm3.c ****  *
+ 747:.//CORE/core_cm3.c ****  * Exclusive STR command for 16 bit values
+ 748:.//CORE/core_cm3.c ****  */
+ 749:.//CORE/core_cm3.c **** uint32_t __STREXH(uint16_t value, uint16_t *addr)
+ 750:.//CORE/core_cm3.c **** {
+ 568              		.loc 1 750 0
+ 569              		.cfi_startproc
+ 570              		@ args = 0, pretend = 0, frame = 0
+ 571              		@ frame_needed = 0, uses_anonymous_args = 0
+ 572              		@ link register save eliminated.
+ 573              	.LVL35:
+ 751:.//CORE/core_cm3.c ****    uint32_t result=0;
+ 752:.//CORE/core_cm3.c ****   
+ 753:.//CORE/core_cm3.c ****    __ASM volatile ("strexh %0, %2, [%1]" : "=&r" (result) : "r" (addr), "r" (value) );
+ 574              		.loc 1 753 0
+ 575              		.syntax unified
+ 576              	@ 753 ".//CORE/core_cm3.c" 1
+ 577 0000 C1E8530F 		strexh r3, r0, [r1]
+ 578              	@ 0 "" 2
+ 579              	.LVL36:
+ 580              		.thumb
+ 581              		.syntax unified
+ 582 0004 1846     		mov	r0, r3
+ 583              	.LVL37:
+ 754:.//CORE/core_cm3.c ****    return(result);
+ 755:.//CORE/core_cm3.c **** }
+ 584              		.loc 1 755 0
+ 585 0006 7047     		bx	lr
+ 586              		.cfi_endproc
+ 587              	.LFE20:
+ 589              		.section	.text.__STREXW,"ax",%progbits
+ 590              		.align	2
+ 591              		.global	__STREXW
+ 592              		.thumb
+ 593              		.thumb_func
+ 595              	__STREXW:
+ 596              	.LFB21:
+ 756:.//CORE/core_cm3.c **** 
+ 757:.//CORE/core_cm3.c **** /**
+ 758:.//CORE/core_cm3.c ****  * @brief  STR Exclusive (32 bit)
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 24
+
+
+ 759:.//CORE/core_cm3.c ****  *
+ 760:.//CORE/core_cm3.c ****  * @param  value  value to store
+ 761:.//CORE/core_cm3.c ****  * @param  *addr  address pointer
+ 762:.//CORE/core_cm3.c ****  * @return        successful / failed
+ 763:.//CORE/core_cm3.c ****  *
+ 764:.//CORE/core_cm3.c ****  * Exclusive STR command for 32 bit values
+ 765:.//CORE/core_cm3.c ****  */
+ 766:.//CORE/core_cm3.c **** uint32_t __STREXW(uint32_t value, uint32_t *addr)
+ 767:.//CORE/core_cm3.c **** {
+ 597              		.loc 1 767 0
+ 598              		.cfi_startproc
+ 599              		@ args = 0, pretend = 0, frame = 0
+ 600              		@ frame_needed = 0, uses_anonymous_args = 0
+ 601              		@ link register save eliminated.
+ 602              	.LVL38:
+ 768:.//CORE/core_cm3.c ****    uint32_t result=0;
+ 769:.//CORE/core_cm3.c ****   
+ 770:.//CORE/core_cm3.c ****    __ASM volatile ("strex %0, %2, [%1]" : "=r" (result) : "r" (addr), "r" (value) );
+ 603              		.loc 1 770 0
+ 604              		.syntax unified
+ 605              	@ 770 ".//CORE/core_cm3.c" 1
+ 606 0000 41E80000 		strex r0, r0, [r1]
+ 607              	@ 0 "" 2
+ 608              	.LVL39:
+ 771:.//CORE/core_cm3.c ****    return(result);
+ 772:.//CORE/core_cm3.c **** }
+ 609              		.loc 1 772 0
+ 610              		.thumb
+ 611              		.syntax unified
+ 612 0004 7047     		bx	lr
+ 613              		.cfi_endproc
+ 614              	.LFE21:
+ 616 0006 00BF     		.text
+ 617              	.Letext0:
+ 618              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 619              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s 			page 25
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 core_cm3.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:20     .text.__get_PSP:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:25     .text.__get_PSP:0000000000000000 __get_PSP
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:50     .text.__set_PSP:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:55     .text.__set_PSP:0000000000000000 __set_PSP
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:77     .text.__get_MSP:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:82     .text.__get_MSP:0000000000000000 __get_MSP
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:106    .text.__set_MSP:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:111    .text.__set_MSP:0000000000000000 __set_MSP
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:133    .text.__get_BASEPRI:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:138    .text.__get_BASEPRI:0000000000000000 __get_BASEPRI
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:160    .text.__set_BASEPRI:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:165    .text.__set_BASEPRI:0000000000000000 __set_BASEPRI
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:185    .text.__get_PRIMASK:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:190    .text.__get_PRIMASK:0000000000000000 __get_PRIMASK
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:212    .text.__set_PRIMASK:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:217    .text.__set_PRIMASK:0000000000000000 __set_PRIMASK
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:237    .text.__get_FAULTMASK:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:242    .text.__get_FAULTMASK:0000000000000000 __get_FAULTMASK
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:264    .text.__set_FAULTMASK:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:269    .text.__set_FAULTMASK:0000000000000000 __set_FAULTMASK
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:289    .text.__get_CONTROL:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:294    .text.__get_CONTROL:0000000000000000 __get_CONTROL
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:316    .text.__set_CONTROL:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:321    .text.__set_CONTROL:0000000000000000 __set_CONTROL
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:341    .text.__REV:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:346    .text.__REV:0000000000000000 __REV
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:368    .text.__REV16:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:373    .text.__REV16:0000000000000000 __REV16
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:395    .text.__REVSH:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:400    .text.__REVSH:0000000000000000 __REVSH
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:422    .text.__RBIT:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:427    .text.__RBIT:0000000000000000 __RBIT
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:449    .text.__LDREXB:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:454    .text.__LDREXB:0000000000000000 __LDREXB
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:477    .text.__LDREXH:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:482    .text.__LDREXH:0000000000000000 __LDREXH
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:505    .text.__LDREXW:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:510    .text.__LDREXW:0000000000000000 __LDREXW
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:532    .text.__STREXB:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:537    .text.__STREXB:0000000000000000 __STREXB
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:561    .text.__STREXH:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:566    .text.__STREXH:0000000000000000 __STREXH
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:590    .text.__STREXW:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccC8VJNc.s:595    .text.__STREXW:0000000000000000 __STREXW
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,226 @@
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.assert_failed,"ax",%progbits
+  20              		.align	2
+  21              		.global	assert_failed
+  22              		.thumb
+  23              		.thumb_func
+  25              	assert_failed:
+  26              	.LFB30:
+  27              		.file 1 ".//USER/main.c"
+   1:.//USER/main.c **** //////////////////////////////////////////////////////////////////////////////////
+   2:.//USER/main.c **** //本程序只供学习使用，未经作者许可，不得用于其它任何用途
+   3:.//USER/main.c **** //重新整理By：Brotherzhao@lab117-USTC
+   4:.//USER/main.c **** //////////////////////////////////////////////////////////////////////////////////	 
+   5:.//USER/main.c **** //原作者：正点原子@ALIENTEK
+   6:.//USER/main.c **** //All rights reserved
+   7:.//USER/main.c **** //////////////////////////////////////////////////////////////////////////////////
+   8:.//USER/main.c **** 
+   9:.//USER/main.c **** #include "sys.h"
+  10:.//USER/main.c **** #include "stdio.h"
+  11:.//USER/main.c **** #include "delay.h"
+  12:.//USER/main.c **** #include "led.h"
+  13:.//USER/main.c **** 
+  14:.//USER/main.c **** 
+  15:.//USER/main.c **** 
+  16:.//USER/main.c **** //使用keil_v5，必须在mian.c加入这个函数
+  17:.//USER/main.c **** void assert_failed(uint8_t* file, uint32_t line)
+  18:.//USER/main.c **** {
+  28              		.loc 1 18 0
+  29              		.cfi_startproc
+  30              		@ Volatile: function does not return.
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              	.LVL0:
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+  19:.//USER/main.c ****  printf("Wrong parameters value: file %s on line %d\r\n", file, line);
+  39              		.loc 1 19 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s 			page 2
+
+
+  40 0002 0A46     		mov	r2, r1
+  41 0004 0146     		mov	r1, r0
+  42              	.LVL1:
+  43 0006 0248     		ldr	r0, .L4
+  44              	.LVL2:
+  45 0008 FFF7FEFF 		bl	printf
+  46              	.LVL3:
+  47              	.L2:
+  48 000c FEE7     		b	.L2
+  49              	.L5:
+  50 000e 00BF     		.align	2
+  51              	.L4:
+  52 0010 00000000 		.word	.LC0
+  53              		.cfi_endproc
+  54              	.LFE30:
+  56              		.section	.text.main,"ax",%progbits
+  57              		.align	2
+  58              		.global	main
+  59              		.thumb
+  60              		.thumb_func
+  62              	main:
+  63              	.LFB31:
+  20:.//USER/main.c ****  while(1);
+  21:.//USER/main.c **** }
+  22:.//USER/main.c **** 
+  23:.//USER/main.c **** 
+  24:.//USER/main.c **** int cycle=0;
+  25:.//USER/main.c **** 
+  26:.//USER/main.c **** 
+  27:.//USER/main.c **** //main函数
+  28:.//USER/main.c ****  int main(void)
+  29:.//USER/main.c ****  {		
+  64              		.loc 1 29 0
+  65              		.cfi_startproc
+  66              		@ Volatile: function does not return.
+  67              		@ args = 0, pretend = 0, frame = 0
+  68              		@ frame_needed = 0, uses_anonymous_args = 0
+  69 0000 08B5     		push	{r3, lr}
+  70              	.LCFI1:
+  71              		.cfi_def_cfa_offset 8
+  72              		.cfi_offset 3, -8
+  73              		.cfi_offset 14, -4
+  30:.//USER/main.c ****  	 //初始化系统代码以及初始化所有外设代码
+  31:.//USER/main.c **** 	 //以及一些只需要运行一次的代码
+  32:.//USER/main.c **** 	 
+  33:.//USER/main.c **** 	 
+  34:.//USER/main.c **** 	 delay_init();//delay初始化
+  74              		.loc 1 34 0
+  75 0002 FFF7FEFF 		bl	delay_init
+  76              	.LVL4:
+  35:.//USER/main.c ****      LED_Init();//LED初始化
+  77              		.loc 1 35 0
+  78 0006 FFF7FEFF 		bl	LED_Init
+  79              	.LVL5:
+  80              	.L7:
+  36:.//USER/main.c **** 	 
+  37:.//USER/main.c **** 	 
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s 			page 3
+
+
+  38:.//USER/main.c **** 	while(1){
+  39:.//USER/main.c **** 	//用户代码
+  40:.//USER/main.c **** 	//需要反复执行的对优先级不敏感的代码	
+  41:.//USER/main.c **** 		
+  42:.//USER/main.c **** 		LED1_ON();//点亮LED1
+  81              		.loc 1 42 0
+  82 000a FFF7FEFF 		bl	LED1_ON
+  83              	.LVL6:
+  43:.//USER/main.c **** 		LED2_ON();//熄灭LED2
+  84              		.loc 1 43 0
+  85 000e FFF7FEFF 		bl	LED2_ON
+  86              	.LVL7:
+  44:.//USER/main.c **** 		delay_ms(500);
+  87              		.loc 1 44 0
+  88 0012 4FF4FA70 		mov	r0, #500
+  89 0016 FFF7FEFF 		bl	delay_ms
+  90              	.LVL8:
+  45:.//USER/main.c **** 	    LED1_OFF();//熄灭LED1
+  91              		.loc 1 45 0
+  92 001a FFF7FEFF 		bl	LED1_OFF
+  93              	.LVL9:
+  46:.//USER/main.c **** 	    LED2_OFF();//点亮LED2
+  94              		.loc 1 46 0
+  95 001e FFF7FEFF 		bl	LED2_OFF
+  96              	.LVL10:
+  47:.//USER/main.c **** 		delay_ms(500);
+  97              		.loc 1 47 0
+  98 0022 4FF4FA70 		mov	r0, #500
+  99 0026 FFF7FEFF 		bl	delay_ms
+ 100              	.LVL11:
+  48:.//USER/main.c **** 		cycle++;
+ 101              		.loc 1 48 0
+ 102 002a 054A     		ldr	r2, .L10
+ 103 002c 1368     		ldr	r3, [r2]
+ 104 002e 0133     		adds	r3, r3, #1
+ 105 0030 1360     		str	r3, [r2]
+  49:.//USER/main.c **** 		if(cycle==100)
+ 106              		.loc 1 49 0
+ 107 0032 642B     		cmp	r3, #100
+ 108 0034 E9D1     		bne	.L7
+  50:.//USER/main.c **** 		{
+  51:.//USER/main.c **** 			cycle=0;
+ 109              		.loc 1 51 0
+ 110 0036 0022     		movs	r2, #0
+ 111 0038 014B     		ldr	r3, .L10
+ 112 003a 1A60     		str	r2, [r3]
+ 113 003c E5E7     		b	.L7
+ 114              	.L11:
+ 115 003e 00BF     		.align	2
+ 116              	.L10:
+ 117 0040 00000000 		.word	.LANCHOR0
+ 118              		.cfi_endproc
+ 119              	.LFE31:
+ 121              		.global	cycle
+ 122              		.section	.bss.cycle,"aw",%nobits
+ 123              		.align	2
+ 124              		.set	.LANCHOR0,. + 0
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s 			page 4
+
+
+ 127              	cycle:
+ 128 0000 00000000 		.space	4
+ 129              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 130              		.align	2
+ 131              	.LC0:
+ 132 0000 57726F6E 		.ascii	"Wrong parameters value: file %s on line %d\015\012\000"
+ 132      67207061 
+ 132      72616D65 
+ 132      74657273 
+ 132      2076616C 
+ 133              		.text
+ 134              	.Letext0:
+ 135              		.file 2 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h"
+ 136              		.file 3 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h"
+ 137              		.file 4 "CORE/core_cm3.h"
+ 138              		.file 5 "/Users/ertuil/gcc-arm-none-eabi/arm-none-eabi/include/stdio.h"
+ 139              		.file 6 "SYSTEM/delay.h"
+ 140              		.file 7 "HARDWARE/led.h"
+ARM GAS  /var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s:20     .text.assert_failed:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s:25     .text.assert_failed:0000000000000000 assert_failed
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s:52     .text.assert_failed:0000000000000010 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s:57     .text.main:0000000000000000 $t
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s:62     .text.main:0000000000000000 main
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s:117    .text.main:0000000000000040 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s:127    .bss.cycle:0000000000000000 cycle
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s:123    .bss.cycle:0000000000000000 $d
+/var/folders/v3/pl5z0pl12fx5br3g9j_y4ffr0000gn/T//ccIava6S.s:130    .rodata.str1.4:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+printf
+delay_init
+LED_Init
+LED1_ON
+LED2_ON
+delay_ms
+LED1_OFF
+LED2_OFF
