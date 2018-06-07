@@ -48,3 +48,7 @@
 1. make： 编译所有文件，生成.bin,.elf二进制文件
 2. make flash：使用st-flash命令把.bin 下载到单片机0x8000000处，（使用openocd等工具时需要自行修改命令）
 3. make clean：删除所有编译生成的文件。
+
+## 关于调试：
+
+使用 arm-none-eabi-gdb和 st-utils 配合使用可以很方便的进行调试。st-utils打开调试服务器，gdb连接服务器来调试。
